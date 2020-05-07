@@ -60,6 +60,18 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: None
+    - Side: Left
+      Idx: 1
+      Kind: None
+    - Side: Right
+      Idx: 0
+      Kind: None
+    - Side: Right
+      Idx: 1
+      Kind: None
   - Room: "b-00"
     Holes:
     - Side: Up
@@ -222,6 +234,15 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: None
+    - Side: Left
+      Idx: 1
+      Kind: None
+    - Side: Right
+      Idx: 0
+      Kind: None
   - Room: "d-02"
     Holes:
     - Side: Up
@@ -323,6 +344,12 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Up
+      Idx: 0
+      Kind: None
+    - Side: Down
+      Idx: 0
+      Kind: None
 
 BSide:
   - Room: "00"

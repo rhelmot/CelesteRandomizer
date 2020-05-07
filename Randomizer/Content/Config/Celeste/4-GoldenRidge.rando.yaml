@@ -20,6 +20,9 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: None
   - Room: "a-02"
     Holes:
     - Side: Right
@@ -58,14 +61,20 @@ ASide:
     - Side: Down
       Idx: 1
       Kind: inout
-  - Room: "a-05x"
+  - Room: "a-05x"  # wtf is this room?
     Holes:
     - Side: Up
       Idx: 0
-      Kind: inout
+      Kind: None
     - Side: Up
       Idx: 1
-      Kind: inout
+      Kind: None
+    - Side: Down
+      Idx: 0
+      Kind: None
+      Side: Right
+      Idx: 0
+      Kind: None
   - Room: "a-06"
     Holes:
     - Side: Right

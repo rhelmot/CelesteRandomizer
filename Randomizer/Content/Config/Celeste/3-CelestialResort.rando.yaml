@@ -132,7 +132,7 @@ ASide:
     Holes:
     - Side: Left
       Idx: 0
-      Kind: inout
+      Kind: None
     - Side: Down
       Idx: 0
       Kind: inout
@@ -859,13 +859,13 @@ BSide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: None
     - Side: Down
       Idx: 1
-      Kind: inout
+      Kind: out
     - Side: Down
       Idx: 2
-      Kind: inout
+      Kind: None
   - Room: "21"
     Holes:
     - Side: Right
