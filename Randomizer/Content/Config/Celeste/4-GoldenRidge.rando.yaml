@@ -1,69 +1,50 @@
 ASide:
-  - Room: "1"
+  - Room: "a-00"
     Holes:
-    - Side: Up
+    - Side: Right
       Idx: 0
       Kind: inout
-    - Side: Down
-      Idx: 0
-      Kind: inout
-  - Room: "2"
+  - Room: "a-01"
     Holes:
-    - Side: Up
-      Idx: 0
-      Kind: inout
-    - Side: Down
-      Idx: 0
-      Kind: in
-  - Room: "3"
-    Holes:
-    - Side: Up
-      Idx: 0
-      Kind: inout
-    - Side: Down
-      Idx: 0
-      Kind: in
-  - Room: "4"
-    Holes:
-    - Side: Up
-      Idx: 0
-      Kind: inout
-    - Side: Down
-      Idx: 0
-      Kind: in
-  - Room: "3b"
-    Holes:
-    - Side: Up
-      Idx: 0
-      Kind: inout
-    - Side: Down
-      Idx: 0
-      Kind: in
-  - Room: "5"
-    Holes:
-    - Side: Up
-      Idx: 0
-      Kind: inout
     - Side: Right
       Idx: 0
       Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
-    - Side: Down
-      Idx: 0
-      Kind: in
-  - Room: "5a"
-    Holes:
-    - Side: Left
-      Idx: 0
-      Kind: inout
-  - Room: "5z"
+  - Room: "a-01x"
     Holes:
     - Side: Right
       Idx: 0
       Kind: inout
-  - Room: "6"
+    - Side: Left
+      Idx: 0
+      Kind: inout
+  - Room: "a-02"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: inout
+  - Room: "a-03"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: inout
+  - Room: "a-04"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: inout
+  - Room: "a-05"
     Holes:
     - Side: Right
       Idx: 0
@@ -73,68 +54,99 @@ ASide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: in
-  - Room: "6z"
+      Kind: inout
+    - Side: Down
+      Idx: 1
+      Kind: inout
+  - Room: "a-05x"
     Holes:
     - Side: Up
-      Idx: 0
-      Kind: inout
-    - Side: Right
-      Idx: 0
-      Kind: inout
-    - Side: Left
-      Idx: 0
-      Kind: inout
-  - Room: "6zb"
-    Holes:
-    - Side: Up
-      Idx: 0
-      Kind: in
-    - Side: Right
       Idx: 0
       Kind: inout
     - Side: Up
       Idx: 1
-      Kind: None
+      Kind: inout
+  - Room: "a-06"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: inout
+  - Room: "a-07"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: inout
+  - Room: "a-08"
+    Holes:
     - Side: Up
+      Idx: 0
+      Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: inout
+    - Side: Left
+      Idx: 1
+      Kind: inout
+  - Room: "a-09"
+    Holes:
+    - Side: Up
+      Idx: 0
+      Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: inout
+  - Room: "a-10"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: inout
+  - Room: "a-11"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: inout
+  - Room: "b-00"
+    Holes:
+    - Side: Up
+      Idx: 0
+      Kind: inout
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    - Side: Right
+      Idx: 1
+      Kind: inout
+    - Side: Right
       Idx: 2
-      Kind: None
-    - Side: Up
-      Idx: 3
-      Kind: None
-    - Side: Up
-      Idx: 4
-      Kind: None
-  - Room: "7zb"
-    Holes:
-    - Side: Down
-      Idx: 0
-      Kind: inout
-    - Side: Down
-      Idx: 5
-      Kind: inout
-    - Side: Down
-      Idx: 1
-      Kind: None
-    - Side: Down
-      Idx: 2
-      Kind: None
-    - Side: Down
-      Idx: 3
-      Kind: None
-    - Side: Down
-      Idx: 4
-      Kind: None
-  - Room: "6a"
-    Holes:
-    - Side: Right
-      Idx: 0
       Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
-  - Room: "6b"
+    - Side: Left
+      Idx: 1
+      Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: inout
+  - Room: "b-01"
     Holes:
+    - Side: Left
+      Idx: 0
+      Kind: inout
+  - Room: "b-02"
+    Holes:
+    - Side: Up
+      Idx: 0
+      Kind: inout
     - Side: Right
       Idx: 0
       Kind: inout
@@ -144,7 +156,7 @@ ASide:
     - Side: Left
       Idx: 1
       Kind: inout
-  - Room: "s0"
+  - Room: "b-03"
     Holes:
     - Side: Right
       Idx: 0
@@ -152,137 +164,187 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
-  - Room: "s1"
-    Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
-  - Room: "6c"
+  - Room: "b-04"
     Holes:
     - Side: Up
       Idx: 0
       Kind: inout
+    - Side: Right
+      Idx: 0
+      Kind: inout
     - Side: Left
       Idx: 0
-      Kind: out
-    - Side: Left
-      Idx: 1
       Kind: inout
-  - Room: "7"
+  - Room: "b-05"
     Holes:
     - Side: Up
       Idx: 0
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: in
-  - Room: "7z"
-    Holes:
-    - Side: Up
-      Idx: 0
       Kind: inout
-    - Side: Right
-      Idx: 0
-      Kind: inout
-  - Room: "8z"
-    Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
-    - Side: Down
-      Idx: 0
-      Kind: inout
-  - Room: "8zb"
-    Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
-    - Side: Left
-      Idx: 0
-      Kind: inout
-  - Room: "8"
-    Holes:
-    - Side: Up
-      Idx: 0
-      Kind: inout
-    - Side: Right
-      Idx: 0
-      Kind: inout
-    - Side: Left
-      Idx: 0
-      Kind: in
-    - Side: Down
-      Idx: 0
-      Kind: in
     - Side: Down
       Idx: 1
       Kind: inout
     - Side: Down
       Idx: 2
-      Kind: in
-  - Room: "7a"
+      Kind: inout
+  - Room: "b-06"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: inout
+  - Room: "b-07"
     Holes:
     - Side: Up
       Idx: 0
       Kind: inout
+    - Side: Right
+      Idx: 0
+      Kind: inout
+  - Room: "b-08"
+    Holes:
+    - Side: Up
+      Idx: 0
+      Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: inout
+  - Room: "b-08b"
+    Holes:
+    - Side: Up
+      Idx: 0
+      Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: inout
+  - Room: "b-sec"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: inout
+  - Room: "b-secb"
+    Holes:
+    - Side: Left
+      Idx: 0
+      Kind: inout
+  - Room: "c-00"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: inout
+  - Room: "c-01"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: inout
+  - Room: "c-02"
+    Holes:
     - Side: Up
       Idx: 1
       Kind: inout
-  - Room: "9z"
-    Holes:
-    - Side: Down
-      Idx: 0
-      Kind: inout
-  - Room: "8b"
-    Holes:
-    - Side: Up
-      Idx: 0
-      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
-  - Room: "9"
+  - Room: "c-04"
     Holes:
     - Side: Right
       Idx: 0
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: in
-  - Room: "9b"
-    Holes:
-    - Side: Up
-      Idx: 0
       Kind: inout
+  - Room: "c-05"
+    Holes:
     - Side: Up
       Idx: 1
       Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: inout
+  - Room: "c-06"
+    Holes:
+    - Side: Up
+      Idx: 0
+      Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: inout
+  - Room: "c-06b"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: inout
+  - Room: "c-07"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: inout
+  - Room: "c-08"
+    Holes:
+    - Side: Up
+      Idx: 0
+      Kind: inout
     - Side: Right
       Idx: 0
       Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
-  - Room: "9c"
+  - Room: "c-09"
     Holes:
+    - Side: Up
+      Idx: 0
+      Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: inout
+  - Room: "c-10"
+    Holes:
+    - Side: Up
+      Idx: 0
+      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
-  - Room: "10"
+  - Room: "d-00"
     Holes:
-    - Side: Up
+    - Side: Right
       Idx: 0
-      Kind: out
-    - Side: Up
+      Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: inout
+    - Side: Down
       Idx: 1
-      Kind: in
-    - Side: Left
+      Kind: inout
+  - Room: "d-00b"
+    Holes:
+    - Side: Right
       Idx: 0
       Kind: inout
-    - Side: Down
-      Idx: 0
-      Kind: inout
-  - Room: "10z"
+  - Room: "d-01"
     Holes:
     - Side: Right
       Idx: 0
@@ -290,118 +352,123 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
-  - Room: "10zb"
+  - Room: "d-02"
     Holes:
     - Side: Right
       Idx: 0
       Kind: inout
-  - Room: "10a"
-    Holes:
-    - Side: Up
-      Idx: 0
-      Kind: inout
-    - Side: Down
-      Idx: 0
-      Kind: inout
-  - Room: "11"
-    Holes:
     - Side: Left
       Idx: 0
       Kind: inout
-    - Side: Down
+  - Room: "d-03"
+    Holes:
+    - Side: Right
       Idx: 0
-      Kind: in
-    - Side: Down
+      Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: inout
+  - Room: "d-04"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: inout
+  - Room: "d-05"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: inout
+  - Room: "d-06"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: inout
+  - Room: "d-07"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: inout
+  - Room: "d-08"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: inout
+  - Room: "d-09"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: inout
+  - Room: "d-10"
+    Holes:
+    - Side: Left
       Idx: 1
       Kind: inout
-    - Side: Up
-      Idx: 0
-      Kind: None
-      Side: Down
-      Idx: 2
-      Kind: None
-#    Subrooms:
-#    - Holes:
-#      - Side: Up
-#        Idx: 0
-#        Kind: inout
-#      - Side: Down
-#        Idx: 2
-#        Kind: inout
-  - Room: "11z"
-    Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
-  - Room: "12"
-    Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
-    - Side: Left
-      Idx: 0
-      Kind: inout
-    - Side: Down
-      Idx: 0
-      Kind: in
-  - Room: "12z"
-    Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
-  - Room: "12a"
-    Holes:
-    - Side: Up
-      Idx: 0
-      Kind: inout
-    - Side: Left
-      Idx: 0
-      Kind: inout
-  - Room: "end"
-    Holes:
-    - Side: Down
-      Idx: 0
-      Kind: in
 
 BSide:
-  - Room: "00"
-    Holes:
-    - Side: Up
-      Idx: 0
-      Kind: inout
-  - Room: "01"
-    Holes:
-    - Side: Up
-      Idx: 0
-      Kind: inout
-    - Side: Down
-      Idx: 0
-      Kind: inout
-  - Room: "02"
-    Holes:
-    - Side: Up
-      Idx: 0
-      Kind: inout
-    - Side: Down
-      Idx: 0
-      Kind: inout
-  - Room: "02b"
-    Holes:
-    - Side: Up
-      Idx: 0
-      Kind: inout
-    - Side: Down
-      Idx: 0
-      Kind: inout
-  - Room: "03"
+  - Room: "a-00"
     Holes:
     - Side: Right
       Idx: 0
       Kind: inout
-    - Side: Down
+  - Room: "a-01"
+    Holes:
+    - Side: Right
       Idx: 0
       Kind: inout
-  - Room: "04"
+    - Side: Left
+      Idx: 0
+      Kind: inout
+  - Room: "a-02"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: inout
+  - Room: "a-03"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: inout
+  - Room: "a-04"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: inout
+  - Room: "b-00"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: inout
+  - Room: "b-01"
     Holes:
     - Side: Up
       Idx: 1
@@ -409,7 +476,7 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: inout
-  - Room: "05"
+  - Room: "b-02"
     Holes:
     - Side: Up
       Idx: 0
@@ -417,15 +484,15 @@ BSide:
     - Side: Down
       Idx: 0
       Kind: inout
-  - Room: "05b"
+  - Room: "b-03"
     Holes:
     - Side: Up
-      Idx: 0
+      Idx: 1
       Kind: inout
     - Side: Down
       Idx: 0
       Kind: inout
-  - Room: "06"
+  - Room: "b-04"
     Holes:
     - Side: Right
       Idx: 0
@@ -433,39 +500,7 @@ BSide:
     - Side: Down
       Idx: 0
       Kind: inout
-  - Room: "07"
-    Holes:
-    - Side: Up
-      Idx: 0
-      Kind: inout
-    - Side: Left
-      Idx: 0
-      Kind: inout
-  - Room: "08"
-    Holes:
-    - Side: Up
-      Idx: 0
-      Kind: inout
-    - Side: Down
-      Idx: 0
-      Kind: inout
-  - Room: "08b"
-    Holes:
-    - Side: Up
-      Idx: 0
-      Kind: inout
-    - Side: Down
-      Idx: 0
-      Kind: inout
-  - Room: "09"
-    Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
-    - Side: Down
-      Idx: 0
-      Kind: inout
-  - Room: "10"
+  - Room: "c-00"
     Holes:
     - Side: Right
       Idx: 0
@@ -473,9 +508,65 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: inout
-  - Room: "11"
+  - Room: "c-01"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: inout
+  - Room: "c-02"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: inout
+  - Room: "c-03"
     Holes:
     - Side: Up
+      Idx: 0
+      Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: inout
+  - Room: "c-04"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: inout
+  - Room: "d-00"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: inout
+  - Room: "d-01"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: inout
+  - Room: "d-02"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: inout
+  - Room: "d-03"
+    Holes:
+    - Side: Right
       Idx: 0
       Kind: inout
     - Side: Left
@@ -483,7 +574,7 @@ BSide:
       Kind: inout
   - Room: "end"
     Holes:
-    - Side: Down
+    - Side: Left
       Idx: 0
       Kind: inout
 

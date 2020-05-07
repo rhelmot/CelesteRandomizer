@@ -1,0 +1,21 @@
+ASide:
+  - Room: "bridge"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: inout
+  - Room: "inside"
+    Holes:
+  - Room: "outside"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: inout
+  - Room: "secret"
+    Holes:
+    - Side: Left
+      Idx: 0
+      Kind: inout

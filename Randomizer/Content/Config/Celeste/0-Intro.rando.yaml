@@ -1,0 +1,49 @@
+ASide:
+  - Room: "-1"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: inout
+  - Room: "0"
+    Holes:
+    - Side: Up
+      Idx: 0
+      Kind: inout
+    - Side: Up
+      Idx: 1
+      Kind: inout
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: inout
+  - Room: "0b"
+    Holes:
+    - Side: Down
+      Idx: 0
+      Kind: inout
+    - Side: Down
+      Idx: 1
+      Kind: inout
+  - Room: "1"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: inout
+  - Room: "2"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: inout
+  - Room: "3"
+    Holes:
+    - Side: Left
+      Idx: 0
+      Kind: inout

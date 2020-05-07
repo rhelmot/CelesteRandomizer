@@ -49,11 +49,11 @@ namespace Celeste.Mod.Randomizer {
                 Logger.Log("randomizer", "ASide:");
                 YamlSkeleton(area.Mode[0].MapData);
             }
-            if (area.Mode[1] != null) {
+            if (area.Mode.Length > 1 && area.Mode[1] != null) {
                 Logger.Log("randomizer", "BSide:");
                 YamlSkeleton(area.Mode[1].MapData);
             }
-            if (area.Mode[2] != null) {
+            if (area.Mode.Length > 2 && area.Mode[2] != null) {
                 Logger.Log("randomizer", "CSide:");
                 YamlSkeleton(area.Mode[2].MapData);
             }
