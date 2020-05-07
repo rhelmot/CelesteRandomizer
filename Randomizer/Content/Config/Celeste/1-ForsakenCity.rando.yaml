@@ -6,7 +6,7 @@ ASide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: none
   - Room: "2"
     Holes:
     - Side: Up
@@ -78,7 +78,7 @@ ASide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: inout
+      Kind: none
     - Side: Right
       Idx: 0
       Kind: inout
@@ -164,7 +164,7 @@ ASide:
       Kind: inout
     - Side: Left
       Idx: 0
-      Kind: out
+      Kind: inout
     - Side: Left
       Idx: 1
       Kind: inout
@@ -316,10 +316,10 @@ ASide:
       Kind: inout
     - Side: Up
       Idx: 0
-      Kind: None
+      Kind: inout
       Side: Down
       Idx: 2
-      Kind: None
+      Kind: in
 #    Subrooms:
 #    - Holes:
 #      - Side: Up
