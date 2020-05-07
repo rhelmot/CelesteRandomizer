@@ -86,6 +86,9 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Right
+      Idx: 0
+      Kind: none # inaccessable
   - Room: "2"
     Holes:
     - Side: Up
@@ -148,6 +151,9 @@ ASide:
   - Room: "8"
     Holes:
     - Side: Up
+      Idx: 0
+      Kind: none
+    - Side: Up
       Idx: 1
       Kind: none
     - Side: Right
@@ -156,6 +162,9 @@ ASide:
     - Side: Down
       Idx: 1
       Kind: in
+    - Side: Left
+      Idx: 0
+      Kind: None
   - Room: "9"
     Holes:
     - Side: Up
