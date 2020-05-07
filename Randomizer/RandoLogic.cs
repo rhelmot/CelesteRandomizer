@@ -390,6 +390,9 @@ namespace Celeste.Mod.Randomizer {
                 if (!config.TryGetValue(level.Name, out RandoConfigFileRoom roomConfig)) {
                     continue;
                 }
+                if (roomConfig == null || roomConfig.Holes == null) {
+                    continue;
+                }
                 var holes = RandoLogic.FindHoles(level);
                 var room = new RandoRoom(prefix, level, holes);
                 result.Add(room);
@@ -427,7 +430,7 @@ namespace Celeste.Mod.Randomizer {
                 return result;
             }
 
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < area.Mode.Length; i++) {
                 if (area.Mode[i] == null) {
                     continue;
                 }

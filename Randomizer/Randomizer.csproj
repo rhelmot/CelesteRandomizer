@@ -129,6 +129,36 @@
     <EmbeddedResource Include="Content\Config\Celeste\1-ForsakenCity.rando.yaml">
       <LogicalName>Content\Config\Celeste\1-ForsakenCity.rando.yaml</LogicalName>
     </EmbeddedResource>
+    <EmbeddedResource Include="Content\Config\Celeste\0-Intro.rando.yaml">
+      <LogicalName>Content\Config\Celeste\0-Intro.rando.yaml</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Content\Config\Celeste\2-OldSite.rando.yaml">
+      <LogicalName>Content\Config\Celeste\2-OldSite.rando.yaml</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Content\Config\Celeste\3-CelestialResort.rando.yaml">
+      <LogicalName>Content\Config\Celeste\3-CelestialResort.rando.yaml</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Content\Config\Celeste\4-GoldenRidge.rando.yaml">
+      <LogicalName>Content\Config\Celeste\4-GoldenRidge.rando.yaml</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Content\Config\Celeste\5-MirrorTemple.rando.yaml">
+      <LogicalName>Content\Config\Celeste\5-MirrorTemple.rando.yaml</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Content\Config\Celeste\6-Reflection.rando.yaml">
+      <LogicalName>Content\Config\Celeste\6-Reflection.rando.yaml</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Content\Config\Celeste\7-Summit.rando.yaml">
+      <LogicalName>Content\Config\Celeste\7-Summit.rando.yaml</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Content\Config\Celeste\8-Epilogue.rando.yaml">
+      <LogicalName>Content\Config\Celeste\8-Epilogue.rando.yaml</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Content\Config\Celeste\9-Core.rando.yaml">
+      <LogicalName>Content\Config\Celeste\9-Core.rando.yaml</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Content\Config\Celeste\LostLevels.rando.yaml">
+      <LogicalName>Content\Config\Celeste\LostLevels.rando.yaml</LogicalName>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
