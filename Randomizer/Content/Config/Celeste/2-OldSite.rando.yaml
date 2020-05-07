@@ -20,7 +20,7 @@ ASide:
       Kind: inout
     - Side: Left
       Idx: 0
-      Kind: inout
+      Kind: none #inaccessible
     - Side: Left
       Idx: 1
       Kind: inout
@@ -34,7 +34,7 @@ ASide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: out
   - Room: "11"
     Holes:
     - Side: Right
@@ -67,7 +67,7 @@ ASide:
       Kind: inout
     - Side: Down
       Idx: 1
-      Kind: inout
+      Kind: in
   - Room: "12c"
     Holes:
     - Side: Down
@@ -77,7 +77,7 @@ ASide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: inout
+      Kind: in
     - Side: Up
       Idx: 1
       Kind: inout
@@ -90,13 +90,13 @@ ASide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: inout
+      Kind: in
     - Side: Right
       Idx: 0
       Kind: inout
     - Side: Left
       Idx: 0
-      Kind: inout
+      Kind: none #inaccessible
   - Room: "3"
     Holes:
     - Side: Up
@@ -104,7 +104,7 @@ ASide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "3x"
     Holes:
     - Side: Up
@@ -120,7 +120,7 @@ ASide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "5"
     Holes:
     - Side: Up
@@ -128,7 +128,7 @@ ASide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "6"
     Holes:
     - Side: Up
@@ -136,57 +136,57 @@ ASide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "7"
     Holes:
     - Side: Up
       Idx: 0
-      Kind: inout
+      Kind: out
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "8"
     Holes:
     - Side: Up
       Idx: 1
-      Kind: inout
+      Kind: none
     - Side: Right
       Idx: 0
       Kind: inout
     - Side: Down
       Idx: 1
-      Kind: inout
+      Kind: in
   - Room: "9"
     Holes:
     - Side: Up
       Idx: 0
-      Kind: inout
+      Kind: in
     - Side: Up
       Idx: 1
       Kind: inout
     - Side: Up
       Idx: 2
-      Kind: inout
+      Kind: none
     - Side: Left
       Idx: 0
       Kind: inout
     - Side: Down
       Idx: 1
-      Kind: inout
+      Kind: out
   - Room: "9b"
     Holes:
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: none
     - Side: Down
       Idx: 1
       Kind: inout
     - Side: Down
       Idx: 2
-      Kind: inout
+      Kind: in
     - Side: Down
       Idx: 3
-      Kind: inout
+      Kind: none
   - Room: "d0"
     Holes:
     - Side: Up
@@ -228,7 +228,7 @@ ASide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: inout
+      Kind: in
     - Side: Right
       Idx: 0
       Kind: inout
@@ -245,7 +245,7 @@ ASide:
       Kind: inout
     - Side: Left
       Idx: 2
-      Kind: inout
+      Kind: none #inaccessible
   - Room: "d4"
     Holes:
     - Side: Right
@@ -282,7 +282,7 @@ ASide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: inout
+      Kind: out
     - Side: Right
       Idx: 1
       Kind: inout
@@ -298,10 +298,10 @@ ASide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: inout
+      Kind: in 
     - Side: Up
       Idx: 1
-      Kind: inout
+      Kind: in #the two ins are accessible from each other technically
     - Side: Right
       Idx: 0
       Kind: inout
@@ -309,7 +309,7 @@ ASide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: inout
+      Kind: in
     - Side: Right
       Idx: 0
       Kind: inout
@@ -329,7 +329,7 @@ ASide:
       Kind: inout
     - Side: Right
       Idx: 1
-      Kind: inout
+      Kind: none #inaccessible
     - Side: Left
       Idx: 0
       Kind: inout
@@ -338,7 +338,7 @@ ASide:
       Kind: inout
     - Side: Left
       Idx: 2
-      Kind: inout
+      Kind: none #inaccessible
   - Room: "end_3"
     Holes:
     - Side: Right
@@ -431,14 +431,14 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: inout
-  - Room: "s1"
+  - Room: "s1" #questionable
     Holes:
     - Side: Up
       Idx: 0
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: out
   - Room: "s2"
     Holes:
     - Side: Down
@@ -448,7 +448,7 @@ ASide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: inout
+      Kind: in
     - Side: Right
       Idx: 0
       Kind: inout
