@@ -525,6 +525,9 @@ ASide:
     - Side: Right
       Idx: 0
       Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: None
   - Room: "d-08"
     Holes:
     - Side: Up
