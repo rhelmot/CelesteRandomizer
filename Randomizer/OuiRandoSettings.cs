@@ -14,7 +14,12 @@ namespace Celeste.Mod.Randomizer {
         private const float onScreenX = 960f;
         private const float offScreenX = 2880f;
 
+        private int seed;
+        private const int MAX_SEED_DIGITS = 6;
+
         public OuiRandoSettings() {
+            var r = new Random();
+            seed = r.Next((int)Math.Pow(10, MAX_SEED_DIGITS));
         }
 
         public override IEnumerator Enter(Oui from) {
@@ -62,41 +67,34 @@ namespace Celeste.Mod.Randomizer {
 
         private void ReloadMenu() {
             menu = new TextMenu {
-                new TextMenu.Header(Dialog.Clean("MODOPTIONS_RANDOMIZER_HEADER")),
-                new TextMenu.Button(Dialog.Clean("MODOPTIONS_RANDOMIZER_START")).Pressed(() => {
+            new TextMenu.Header(Dialog.Clean("MODOPTIONS_RANDOMIZER_HEADER")),
+            new TextMenu.Button(Dialog.Clean("MODOPTIONS_RANDOMIZER_SEED") + ": " + seed.ToString(MAX_SEED_DIGITS)).Pressed(() => {
+                    Audio.Play(SFX.ui_main_savefile_rename_start);
+                    menu.SceneAs<Overworld>().Goto<UI.OuiNumberEntry>().Init<OuiRandoSettings>(
+                        seed,
+                        (v) => this.seed = (int)v,
+                        MAX_SEED_DIGITS,
+                        false,
+                        false);
+                }),
+                    
+
+            new TextMenu.Button(Dialog.Clean("MODOPTIONS_RANDOMIZER_START")).Pressed(() => {
                     Audio.SetMusic((string) null, true, true);
                     Audio.SetAmbience((string) null, true);
                     Audio.Play("event:/ui/main/savefile_begin");
                     SaveData.InitializeDebugMode();
-
-                    /*AreaData newarea = AreaData.Areas[1].Copy();
-                    newarea.ID = AreaData.Areas.Count;
-                    newarea.SetSID("randomizer/random");
-                    AreaData.Areas.Add(newarea);
-                    newarea.Mode[1] = null;
-                    newarea.Mode[2] = null;
-
-                    AreaKey newkey = new AreaKey(newarea.ID);
-                    Logger.Log("randomizer", $"new AreaKey({newarea.ID}).ID = {newkey.ID}");
-                    newarea.Mode[0].MapData.Area = newkey;
-                    //newarea.Mode[0].MapData.Data = newarea;
-
-                    // test: swap rooms 2 and 3
-                    LevelData lvl2 = newarea.Mode[0].MapData.Get("2");
-                    LevelData lvl3 = newarea.Mode[0].MapData.Get("3");
-                    Vector2 tmp = lvl2.Position;
-                    lvl2.Position = lvl3.Position;
-                    lvl3.Position = tmp;
-
-                    Logger.Log("randomizer", "loading area " + newarea.ID.ToString() + " with key " + newkey.ToString());
-                    Logger.Log("randomizer", "AreaData.Areas has " + AreaData.Areas.Count.ToString() + " elements");
-
-                    LevelEnter.Go(new Session(newkey, (string) null, (AreaStats) null), true);*/
                     
                     Logger.Log("randomizer", "Processing level data...");
                     RandoLogic.ProcessAreas();
-                    AreaKey newArea = RandoLogic.GenerateMap(1238, false);
+                    AreaKey newArea = RandoLogic.GenerateMap(seed, false);
                     LevelEnter.Go(new Session(newArea, null, null), true);
+
+                    /*foreach (AreaData area in AreaData.Areas) {
+                        Logger.Log("randomizer", $"Skeleton for {area.GetSID()}");
+                        RandoConfigFile.YamlSkeleton(area);
+
+                    }*/
                 })
             };
 

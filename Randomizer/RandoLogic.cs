@@ -257,42 +257,44 @@ namespace Celeste.Mod.Randomizer {
             this.Holes = Holes;
         }
 
-        private LevelData LevelCopy() {
+        private LevelData LevelCopy(Vector2 newPosition) {
             var result = this.Level.Copy();
             result.Name = this.Name;
+            result.Position = newPosition;
             return result;
         }
 
         public LevelData LinkStart() {
-            var result = this.LevelCopy();
-            result.Position = Vector2.Zero;
-            return result;
+            return this.LevelCopy(Vector2.Zero);
         }
 
         public LevelData LinkAdjacent(LevelData against, ScreenDirection side, int offset) {
+            return this.LevelCopy(this.NewPosition(against, side, offset));
+        }
+
+        public Rectangle QuickLinkAdjacent(LevelData against, ScreenDirection side, int offset) {
+            var pos = this.NewPosition(against, side, offset);
+            return new Rectangle((int)pos.X, (int)pos.Y, this.Level.Bounds.Width, this.Level.Bounds.Height);
+        }
+
+        private Vector2 NewPosition(LevelData against, ScreenDirection side, int offset) {
             int roundUp(int inp) {
                 while (inp % 8 != 0) {
                     inp++;
                 }
                 return inp;
             }
-            var result = this.LevelCopy();
             switch (side) {
                 case ScreenDirection.Up:
-                    result.Position = against.Position + new Vector2(offset*8, -roundUp(result.Bounds.Height));
-                    break;
+                    return against.Position + new Vector2(offset * 8, -roundUp(this.Level.Bounds.Height));
                 case ScreenDirection.Down:
-                    result.Position = against.Position + new Vector2(offset*8, roundUp(against.Bounds.Height));
-                    break;
+                    return against.Position + new Vector2(offset * 8, roundUp(against.Bounds.Height));
                 case ScreenDirection.Left:
-                    result.Position = against.Position + new Vector2(-roundUp(result.Bounds.Width), offset*8);
-                    break;
+                    return against.Position + new Vector2(-roundUp(this.Level.Bounds.Width), offset * 8);
                 case ScreenDirection.Right:
-                    result.Position = against.Position + new Vector2(roundUp(against.Bounds.Width), offset*8);
-                    break;
+                default:
+                    return against.Position + new Vector2(roundUp(against.Bounds.Width), offset * 8);
             }
-            //Logger.Log("randomizer", $"Linking {result.Name} against {against.Name} on the {side} side, with offset {offset}, combined with {against.Position} resulting in {result.Position}");
-            return result;
         }
     }
 
@@ -414,7 +416,7 @@ namespace Celeste.Mod.Randomizer {
                     if (matchedHole == null) {
                         throw new Exception($"Could not find the hole identified by room:{roomConfig.Room} side:{holeConfig.Side} idx:{holeConfig.Idx}");
                     } else {
-                        Logger.Log("randomizer", $"Matching {roomConfig.Room} {holeConfig.Side} {holeConfig.Idx} to {matchedHole}");
+                        //Logger.Log("randomizer", $"Matching {roomConfig.Room} {holeConfig.Side} {holeConfig.Idx} to {matchedHole}");
                         matchedHole.Kind = HoleKindMethods.FromString(holeConfig.Kind);
                     }
                 }
@@ -423,7 +425,7 @@ namespace Celeste.Mod.Randomizer {
             return result;
         }
 
-        private static List<RandoRoom> ProcessArea(AreaData area) {
+        private static List<RandoRoom> ProcessArea(AreaData area, AreaMode? mode=null) {
             RandoConfigFile config = RandoConfigFile.Load(area);
             var result = new List<RandoRoom>();
             if (config == null) {
@@ -432,6 +434,9 @@ namespace Celeste.Mod.Randomizer {
 
             for (int i = 0; i < area.Mode.Length; i++) {
                 if (area.Mode[i] == null) {
+                    continue;
+                }
+                if (mode != null && mode != (AreaMode?)i) {
                     continue;
                 }
                 var mapConfig = config.GetRoomMapping((AreaMode)i);
@@ -450,6 +455,8 @@ namespace Celeste.Mod.Randomizer {
                 return;
             }
             RandoLogic.AllRooms = new List<RandoRoom>();
+            /*RandoLogic.AllRooms.AddRange(RandoLogic.ProcessArea(AreaData.Areas[1], AreaMode.Normal));
+            return;*/
 
             foreach (var area in AreaData.Areas) {
                 RandoLogic.AllRooms.AddRange(RandoLogic.ProcessArea(area));
@@ -459,6 +466,7 @@ namespace Celeste.Mod.Randomizer {
         public static AreaKey GenerateMap(int seed, bool repeatRooms) {
             var newArea = new AreaData {
                 IntroType = Player.IntroTypes.WakeUp,
+                Icon = AreaData.Areas[0].Icon,
                 Interlude = false,
                 Dreaming = false,
                 ID = AreaData.Areas.Count,
@@ -585,46 +593,62 @@ namespace Celeste.Mod.Randomizer {
                 queue.RemoveAt(0);
                 LevelData lvl = entry.Item1;
                 Hole startHole = entry.Item2;
-
                 var possibilities = new List<ShuffleTuple>();
-                foreach (RandoRoom prospect in this.RemainingRooms) {
-                    foreach (Hole prospectHole in prospect.Holes) {
-                        if (prospectHole.Kind == HoleKind.None) {
-                            continue;
-                        }
-                        int offset = startHole.Compatible(prospectHole);
-                        if (offset != Hole.INCOMPATIBLE) {
-                            possibilities.Add(new ShuffleTuple(prospect, prospectHole, offset));
+
+                // quick check: is it impossible to attach anything to this hole?
+                Hole transplant = new Hole(lvl, startHole.Side, startHole.LowBound, startHole.HighBound, startHole.HighOpen);
+                Vector2 push = transplant.Side.Unit() * (transplant.Side == ScreenDirection.Up || transplant.Side == ScreenDirection.Down ? 180 : 320);
+                Vector2 pt1 = transplant.LowCoord + push;
+                Vector2 pt2 = transplant.HighCoord + push;
+
+                if ((result.GetAt(pt1) ?? result.GetAt(pt2)) == null) {
+                    foreach (RandoRoom prospect in this.RemainingRooms) {
+                        foreach (Hole prospectHole in prospect.Holes) {
+                            if (prospectHole.Kind == HoleKind.None || prospectHole.Kind == HoleKind.Out) {
+                                continue;
+                            }
+                            int offset = startHole.Compatible(prospectHole);
+                            if (offset != Hole.INCOMPATIBLE) {
+                                possibilities.Add(new ShuffleTuple(prospect, prospectHole, offset));
+                            }
                         }
                     }
                 }
 
                 possibilities.Shuffle(this.Random);
 
-                bool broken1 = false;
+                bool foundWorking = false;
+                LevelData cachedConflict = null;
                 foreach (var prospectTuple in possibilities) {
                     RandoRoom prospect = prospectTuple.Item1;
                     Hole prospectHole = prospectTuple.Item2;
                     int offset = prospectTuple.Item3;
 
-                    LevelData newLvl = prospect.LinkAdjacent(lvl, startHole.Side, offset);
-                    bool broken2 = false;
-                    foreach (LevelData checkLvl in result.Levels) {
-                        if (checkLvl.Bounds.Intersects(newLvl.Bounds)) {
-                            broken2 = true;
-                            break;
+                    Rectangle newLvlRect = prospect.QuickLinkAdjacent(lvl, startHole.Side, offset);
+                    bool foundConflict = false;
+
+                    if (cachedConflict != null && cachedConflict.Bounds.Intersects(newLvlRect)) {
+                        foundConflict = true;
+                    } else {
+                        foreach (LevelData checkLvl in result.Levels) {
+                            if (checkLvl.Bounds.Intersects(newLvlRect)) {
+                                cachedConflict = checkLvl;
+                                foundConflict = true;
+                                break;
+                            }
                         }
                     }
 
-                    if (!broken2) {
+                    if (!foundConflict) {
                         // it works!!!
-                        addLevel(prospect, newLvl, prospectHole);
-                        broken1 = true;
+                        Logger.Log("randomizer", $"Attached {lvl.Name} {startHole} to {prospect.Name} {prospectHole}");
+                        addLevel(prospect, prospect.LinkAdjacent(lvl, startHole.Side, offset), prospectHole);
+                        foundWorking = true;
                         break;
                     }
                 }
 
-                if (!broken1) {
+                if (!foundWorking) {
                     Logger.Log("randomizer", $"Failed to attach room to {lvl.Name} {startHole}");
                 }
             }
