@@ -376,7 +376,7 @@ BSide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "02"
     Holes:
     - Side: Up
@@ -384,7 +384,7 @@ BSide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "02b"
     Holes:
     - Side: Up
@@ -392,7 +392,7 @@ BSide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "03"
     Holes:
     - Side: Right
@@ -416,7 +416,7 @@ BSide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "05b"
     Holes:
     - Side: Up
@@ -424,7 +424,7 @@ BSide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "06"
     Holes:
     - Side: Right
@@ -432,7 +432,7 @@ BSide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in
     - Side: Left
       Idx: 0
       Kind: None
@@ -451,7 +451,7 @@ BSide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "08b"
     Holes:
     - Side: Up
@@ -459,7 +459,7 @@ BSide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "09"
     Holes:
     - Side: Right
@@ -467,7 +467,7 @@ BSide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "10"
     Holes:
     - Side: Right
@@ -539,37 +539,55 @@ CSide:
       Idx: 1
       Kind: None
     - Side: Down
-      Idx: 1
+      Idx: 2
       Kind: None
     - Side: Down
-      Idx: 1
+      Idx: 3
       Kind: None
     - Side: Down
-      Idx: 1
+      Idx: 4
       Kind: None
     - Side: Down
-      Idx: 1
+      Idx: 5
       Kind: None
     - Side: Down
-      Idx: 1
+      Idx: 6
       Kind: None
     - Side: Down
-      Idx: 1
+      Idx: 7
       Kind: None
     - Side: Down
-      Idx: 1
+      Idx: 8
       Kind: None
     - Side: Down
-      Idx: 1
+      Idx: 9
       Kind: None
     - Side: Down
-      Idx: 1
+      Idx: 10
       Kind: None
     - Side: Down
-      Idx: 1
+      Idx: 11
       Kind: None
     - Side: Down
+      Idx: 12
+      Kind: None
+    - Side: Up
       Idx: 1
+      Kind: None
+    - Side: Up
+      Idx: 2
+      Kind: None
+    - Side: Up
+      Idx: 3
+      Kind: None
+    - Side: Up
+      Idx: 4
+      Kind: None
+    - Side: Up
+      Idx: 5
+      Kind: None
+    - Side: Up
+      Idx: 6
       Kind: None
   - Room: "01"
     Holes:
@@ -638,3 +656,6 @@ CSide:
     - Side: Down
       Idx: 5
       Kind: None
+    - Side: Down
+      Idx: 6
+      Kind: inout   # shhhh ;)

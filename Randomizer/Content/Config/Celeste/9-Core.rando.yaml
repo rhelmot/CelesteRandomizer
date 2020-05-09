@@ -530,6 +530,12 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Up
+      Idx: 0
+      Kind: None
+    - Side: Down
+      Idx: 0
+      Kind: None
 
 CSide:
   - Room: "00"
