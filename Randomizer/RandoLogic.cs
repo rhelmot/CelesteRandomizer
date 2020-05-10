@@ -454,8 +454,10 @@ namespace Celeste.Mod.Randomizer {
             if (RandoLogic.AllRooms != null) {
                 return;
             }
+            Logger.Log("randomizer", "Processing level data...");
+
             RandoLogic.AllRooms = new List<RandoRoom>();
-            /*RandoLogic.AllRooms.AddRange(RandoLogic.ProcessArea(AreaData.Areas[1], AreaMode.Normal));
+            /*RandoLogic.AllRooms.AddRange(RandoLogic.ProcessArea(AreaData.Areas[1], null));
             return;*/
 
             foreach (var area in AreaData.Areas) {
@@ -473,7 +475,7 @@ namespace Celeste.Mod.Randomizer {
                 Name = seed.ToString(),
                 Mode = new ModeProperties[3] {
                     new ModeProperties {
-                        Inventory = PlayerInventory.Default,
+                        Inventory = PlayerInventory.TheSummit,
                     }, null, null
                 },
             };
@@ -489,7 +491,6 @@ namespace Celeste.Mod.Randomizer {
             newArea.Mode[0].MapData = r.MakeMap();
 
             Logger.Log("randomizer", $"new area {newArea.GetSID()}");
-            Logger.Log("randomizer", $"load seed {newArea.Mode[0].MapData.LoadSeed}");
 
             return key;
         }

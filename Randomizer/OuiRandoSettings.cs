@@ -80,14 +80,14 @@ namespace Celeste.Mod.Randomizer {
                     
 
             new TextMenu.Button(Dialog.Clean("MODOPTIONS_RANDOMIZER_START")).Pressed(() => {
+                    RandoLogic.ProcessAreas();
+
+                    AreaKey newArea = RandoLogic.GenerateMap(seed, false);
                     Audio.SetMusic((string) null, true, true);
                     Audio.SetAmbience((string) null, true);
                     Audio.Play("event:/ui/main/savefile_begin");
                     SaveData.InitializeDebugMode();
-                    
-                    Logger.Log("randomizer", "Processing level data...");
-                    RandoLogic.ProcessAreas();
-                    AreaKey newArea = RandoLogic.GenerateMap(seed, false);
+
                     LevelEnter.Go(new Session(newArea, null, null), true);
 
                     /*foreach (AreaData area in AreaData.Areas) {
