@@ -99,66 +99,63 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Content\Dialog\English.txt">
-      <LogicalName>Content\Dialog\English.txt</LogicalName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Content\Graphics\Atlases\Gameplay\characters\player\foxbangs00.png">
-      <LogicalName>Content\Graphics\Atlases\Gameplay\characters\player\foxbangs00.png</LogicalName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Content\Graphics\Atlases\Gameplay\characters\player\foxbangs01.png">
-      <LogicalName>Content\Graphics\Atlases\Gameplay\characters\player\foxbangs01.png</LogicalName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Content\Graphics\Atlases\Gameplay\characters\player\foxbangs02.png">
-      <LogicalName>Content\Graphics\Atlases\Gameplay\characters\player\foxbangs02.png</LogicalName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Content\Graphics\Atlases\Gameplay\characters\player\foxhair00.png">
-      <LogicalName>Content\Graphics\Atlases\Gameplay\characters\player\foxhair00.png</LogicalName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Content\Graphics\Atlases\Gameplay\characters\player\foxhair01.png">
-      <LogicalName>Content\Graphics\Atlases\Gameplay\characters\player\foxhair01.png</LogicalName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Content\Graphics\Atlases\Gameplay\characters\player\skateboard.png">
-      <LogicalName>Content\Graphics\Atlases\Gameplay\characters\player\skateboard.png</LogicalName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Content\Graphics\Atlases\Gameplay\characters\player\dab.png">
-      <LogicalName>Content\Graphics\Atlases\Gameplay\characters\player\dab.png</LogicalName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Content\Graphics\Atlases\Gui\menu\randomizer.png">
-      <LogicalName>Content\Graphics\Atlases\Gui\menu\randomizer.png</LogicalName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Content\Config\Celeste\1-ForsakenCity.rando.yaml">
-      <LogicalName>Content\Config\Celeste\1-ForsakenCity.rando.yaml</LogicalName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Content\Config\Celeste\0-Intro.rando.yaml">
+    <Content Include="Config\Celeste\0-Intro.rando.yaml">
       <LogicalName>Content\Config\Celeste\0-Intro.rando.yaml</LogicalName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Content\Config\Celeste\2-OldSite.rando.yaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\Celeste\1-ForsakenCity.rando.yaml">
+      <LogicalName>Config\Celeste\1-ForsakenCity.rando.yaml</LogicalName>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dialog\English.txt">
+      <LogicalName>Content\Dialog\English.txt</LogicalName>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Graphics\Atlases\Gui\menu\randomizer.png">
+      <LogicalName>Content\Graphics\Atlases\Gui\menu\randomizer.png</LogicalName>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\Celeste\2-OldSite.rando.yaml">
       <LogicalName>Content\Config\Celeste\2-OldSite.rando.yaml</LogicalName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Content\Config\Celeste\3-CelestialResort.rando.yaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\Celeste\3-CelestialResort.rando.yaml">
       <LogicalName>Content\Config\Celeste\3-CelestialResort.rando.yaml</LogicalName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Content\Config\Celeste\4-GoldenRidge.rando.yaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\Celeste\4-GoldenRidge.rando.yaml">
       <LogicalName>Content\Config\Celeste\4-GoldenRidge.rando.yaml</LogicalName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Content\Config\Celeste\5-MirrorTemple.rando.yaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\Celeste\5-MirrorTemple.rando.yaml">
       <LogicalName>Content\Config\Celeste\5-MirrorTemple.rando.yaml</LogicalName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Content\Config\Celeste\6-Reflection.rando.yaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\Celeste\6-Reflection.rando.yaml">
       <LogicalName>Content\Config\Celeste\6-Reflection.rando.yaml</LogicalName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Content\Config\Celeste\7-Summit.rando.yaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\Celeste\7-Summit.rando.yaml">
       <LogicalName>Content\Config\Celeste\7-Summit.rando.yaml</LogicalName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Content\Config\Celeste\8-Epilogue.rando.yaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\Celeste\8-Epilogue.rando.yaml">
       <LogicalName>Content\Config\Celeste\8-Epilogue.rando.yaml</LogicalName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Content\Config\Celeste\9-Core.rando.yaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\Celeste\9-Core.rando.yaml">
       <LogicalName>Content\Config\Celeste\9-Core.rando.yaml</LogicalName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Content\Config\Celeste\LostLevels.rando.yaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\Celeste\LostLevels.rando.yaml">
       <LogicalName>Content\Config\Celeste\LostLevels.rando.yaml</LogicalName>
-    </EmbeddedResource>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Config\" />
+    <Folder Include="Dialog\" />
+    <Folder Include="Graphics\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
