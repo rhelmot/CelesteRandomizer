@@ -454,6 +454,8 @@ namespace Celeste.Mod.Randomizer {
             if (RandoLogic.AllRooms != null) {
                 return;
             }
+            Logger.Log("randomizer", "Processing level data...");
+
             RandoLogic.AllRooms = new List<RandoRoom>();
             /*RandoLogic.AllRooms.AddRange(RandoLogic.ProcessArea(AreaData.Areas[1], null));
             return;*/
