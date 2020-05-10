@@ -430,6 +430,9 @@ ASide:
     - Side: Left
       Idx: 1
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: none
 
 BSide:
   - Room: "a-00"
