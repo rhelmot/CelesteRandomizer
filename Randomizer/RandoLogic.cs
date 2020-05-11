@@ -257,19 +257,19 @@ namespace Celeste.Mod.Randomizer {
             this.Holes = Holes;
         }
 
-        private LevelData LevelCopy(Vector2 newPosition) {
+        private LevelData LevelCopy(Vector2 newPosition, int? nonce) {
             var result = this.Level.Copy();
-            result.Name = this.Name;
+            result.Name = nonce == null ? this.Name : this.Name + "/" + nonce.ToString();
             result.Position = newPosition;
             return result;
         }
 
-        public LevelData LinkStart() {
-            return this.LevelCopy(Vector2.Zero);
+        public LevelData LinkStart(int? nonce = null) {
+            return this.LevelCopy(Vector2.Zero, nonce);
         }
 
-        public LevelData LinkAdjacent(LevelData against, ScreenDirection side, int offset) {
-            return this.LevelCopy(this.NewPosition(against, side, offset));
+        public LevelData LinkAdjacent(LevelData against, ScreenDirection side, int offset, int? nonce) {
+            return this.LevelCopy(this.NewPosition(against, side, offset), nonce);
         }
 
         public Rectangle QuickLinkAdjacent(LevelData against, ScreenDirection side, int offset) {
@@ -457,34 +457,40 @@ namespace Celeste.Mod.Randomizer {
             Logger.Log("randomizer", "Processing level data...");
 
             RandoLogic.AllRooms = new List<RandoRoom>();
-            /*RandoLogic.AllRooms.AddRange(RandoLogic.ProcessArea(AreaData.Areas[1], null));
-            return;*/
+            /*RandoLogic.AllRooms.AddRange(RandoLogic.ProcessArea(AreaData.Areas[1], AreaMode.BSide));
+            return;/**/
 
             foreach (var area in AreaData.Areas) {
                 RandoLogic.AllRooms.AddRange(RandoLogic.ProcessArea(area));
             }
         }
 
-        public static AreaKey GenerateMap(int seed, bool repeatRooms) {
+        public static AreaKey GenerateMap(RandoSettings settings) {
             var newArea = new AreaData {
                 IntroType = Player.IntroTypes.WakeUp,
-                Icon = AreaData.Areas[0].Icon,
                 Interlude = false,
                 Dreaming = false,
                 ID = AreaData.Areas.Count,
-                Name = seed.ToString(),
+                Name = settings.Seed.ToString(),
                 Mode = new ModeProperties[3] {
                     new ModeProperties {
                         Inventory = PlayerInventory.TheSummit,
                     }, null, null
                 },
+                Icon = AreaData.Areas[0].Icon,
+                MountainIdle = AreaData.Areas[0].MountainIdle,
+                MountainZoom = AreaData.Areas[0].MountainZoom,
+                MountainState = AreaData.Areas[0].MountainState,
+                MountainCursor = AreaData.Areas[0].MountainCursor,
+                MountainSelect = AreaData.Areas[0].MountainSelect,
+                MountainCursorScale = AreaData.Areas[0].MountainCursorScale,
             };
-            newArea.SetSID($"randomizer/{seed}");
+            newArea.SetSID($"randomizer/{settings.Seed}");
             AreaData.Areas.Add(newArea);
 
             var key = new AreaKey(newArea.ID);
 
-            var r = new RandoLogic(seed, repeatRooms, key);
+            var r = new RandoLogic(settings, key);
 
             newArea.Wipe = r.PickWipe();
             newArea.Mode[0].AudioState = r.PickAudio();
@@ -496,15 +502,26 @@ namespace Celeste.Mod.Randomizer {
         }
 
         private Random Random;
-        private bool RepeatRooms;
         private List<RandoRoom> RemainingRooms;
         private AreaKey Key;
+        private RandoSettings Settings;
+        private int? Nonce;
 
-        private RandoLogic(int seed, bool repeatRooms, AreaKey key) {
-            this.Random = new Random(seed);
-            this.RepeatRooms = repeatRooms;
+        private int? NextNonce {
+            get {
+                return this.Nonce == null ? null : this.Nonce++;
+            }
+        }
+
+        private RandoLogic(RandoSettings settings, AreaKey key) {
+            this.Random = new Random(settings.Seed);
+            this.Settings = settings;
             this.RemainingRooms = new List<RandoRoom>(RandoLogic.AllRooms);
             this.Key = key;
+
+            if (this.Settings.RepeatRooms) {
+                this.Nonce = 0;
+            }
         }
 
         private Action<Scene, bool, Action> PickWipe() {
@@ -573,7 +590,7 @@ namespace Celeste.Mod.Randomizer {
             var queue = new List<QueueTuple>();
 
             void addLevel(RandoRoom rRoom, LevelData cRoom, Hole fromHole) {
-                if (!this.RepeatRooms) {
+                if (!this.Settings.RepeatRooms) {
                     this.RemainingRooms.Remove(rRoom);
                 }
 
@@ -586,7 +603,7 @@ namespace Celeste.Mod.Randomizer {
             }
 
             RandoRoom startRoom = this.RemainingRooms[this.Random.Next(this.RemainingRooms.Count)];
-            LevelData startLinked = startRoom.LinkStart();
+            LevelData startLinked = startRoom.LinkStart(this.NextNonce);
             addLevel(startRoom, startLinked, null);
 
             while (queue.Count != 0) {
@@ -643,7 +660,7 @@ namespace Celeste.Mod.Randomizer {
                     if (!foundConflict) {
                         // it works!!!
                         Logger.Log("randomizer", $"Attached {lvl.Name} {startHole} to {prospect.Name} {prospectHole}");
-                        addLevel(prospect, prospect.LinkAdjacent(lvl, startHole.Side, offset), prospectHole);
+                        addLevel(prospect, prospect.LinkAdjacent(lvl, startHole.Side, offset, this.NextNonce), prospectHole);
                         foundWorking = true;
                         break;
                     }

@@ -14,13 +14,23 @@ namespace Celeste.Mod.Randomizer {
     public class RandoModule : EverestModule {
         public static RandoModule Instance;
 
+        public RandoSettings Settings;
+        public const int MAX_SEED_DIGITS = 6;
+
         public RandoModule() {
             Instance = this;
+
+            var r = new Random();
+            Settings = new RandoSettings {
+                Seed = r.Next((int)Math.Pow(10, MAX_SEED_DIGITS)),
+                RepeatRooms = false,
+            };
         }
 
         public override void Load() {
             Everest.Events.MainMenu.OnCreateButtons += CreateMainMenuButton;
             Everest.Events.Level.OnCreatePauseMenuButtons += ModifyLevelMenu;
+            On.Celeste.OverworldLoader.ctor += EnterToRandoMenu;
         }
 
         public override void LoadContent(bool firstLoad) {
@@ -30,11 +40,28 @@ namespace Celeste.Mod.Randomizer {
         public override void Unload() {
             Everest.Events.MainMenu.OnCreateButtons -= CreateMainMenuButton;
             Everest.Events.Level.OnCreatePauseMenuButtons -= ModifyLevelMenu;
+            On.Celeste.OverworldLoader.ctor -= EnterToRandoMenu;
 
         }
 
         public override void CreateModMenuSection(TextMenu menu, bool inGame, EventInstance snapshot) {
             base.CreateModMenuSection(menu, inGame, snapshot);
+        }
+
+        public bool InRandomizer {
+            get {
+                if (SaveData.Instance == null) {
+                    return false;
+                }
+                if (SaveData.Instance.CurrentSession == null) {
+                    return false;
+                }
+                if (SaveData.Instance.CurrentSession.Area == null) {
+                    return false;
+                }
+                AreaData area = AreaData.Get(SaveData.Instance.CurrentSession.Area);
+                return area.GetSID().StartsWith("randomizer/");
+            }
         }
 
         public void CreateMainMenuButton(OuiMainMenu menu, List<MenuButton> buttons) {
@@ -47,8 +74,7 @@ namespace Celeste.Mod.Randomizer {
         }
 
         public void ModifyLevelMenu(Level level, TextMenu pausemenu, bool minimal) {
-            var area = AreaData.Get(level.Session.Area);
-            if (area.GetSID().StartsWith("randomizer/")) {
+            if (this.InRandomizer) {
                 foreach (var item in new List<TextMenu.Item>(pausemenu.GetItems())) {
                     if (item.GetType() == typeof(TextMenu.Button)) {
                         var btn = (TextMenu.Button)item;
@@ -97,6 +123,13 @@ namespace Celeste.Mod.Randomizer {
                     level.Add((Entity)menu);
                 }));
             }
+        }
+
+        public void EnterToRandoMenu(On.Celeste.OverworldLoader.orig_ctor orig, OverworldLoader self, Overworld.StartMode startMode, HiresSnow snow) {
+            if (startMode == Overworld.StartMode.MainMenu && this.InRandomizer) {
+                startMode = (Overworld.StartMode)55;
+            }
+            orig(self, startMode, snow);
         }
     }
 }
