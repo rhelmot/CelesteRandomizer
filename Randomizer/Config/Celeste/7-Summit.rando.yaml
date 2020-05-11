@@ -1220,28 +1220,28 @@ BSide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: none
     - Side: Down
       Idx: 1
-      Kind: inout
+      Kind: none
     - Side: Down
       Idx: 2
-      Kind: inout
+      Kind: none
     - Side: Down
       Idx: 3
-      Kind: inout
+      Kind: none
     - Side: Down
       Idx: 4
-      Kind: inout
+      Kind: in
     - Side: Down
       Idx: 5
-      Kind: inout
+      Kind: none
     - Side: Down
       Idx: 6
-      Kind: inout
+      Kind: none
     - Side: Down
       Idx: 7
-      Kind: inout
+      Kind: none
   - Room: "b-03"
     Holes:
     - Side: Up
