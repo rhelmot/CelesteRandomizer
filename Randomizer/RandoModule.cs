@@ -31,6 +31,7 @@ namespace Celeste.Mod.Randomizer {
             Everest.Events.MainMenu.OnCreateButtons += CreateMainMenuButton;
             Everest.Events.Level.OnCreatePauseMenuButtons += ModifyLevelMenu;
             On.Celeste.OverworldLoader.ctor += EnterToRandoMenu;
+            On.Celeste.MapData.Load += DontLoadRandoMaps;
         }
 
         public override void LoadContent(bool firstLoad) {
@@ -41,7 +42,7 @@ namespace Celeste.Mod.Randomizer {
             Everest.Events.MainMenu.OnCreateButtons -= CreateMainMenuButton;
             Everest.Events.Level.OnCreatePauseMenuButtons -= ModifyLevelMenu;
             On.Celeste.OverworldLoader.ctor -= EnterToRandoMenu;
-
+            On.Celeste.MapData.Load -= DontLoadRandoMaps;
         }
 
         public override void CreateModMenuSection(TextMenu menu, bool inGame, EventInstance snapshot) {
@@ -130,6 +131,13 @@ namespace Celeste.Mod.Randomizer {
                 startMode = (Overworld.StartMode)55;
             }
             orig(self, startMode, snow);
+        }
+
+        public void DontLoadRandoMaps(On.Celeste.MapData.orig_Load orig, MapData self) {
+            if (self.Data?.GetSID()?.StartsWith("randomizer/") ?? false) {
+                return;
+            }
+            orig(self);
         }
     }
 }
