@@ -84,6 +84,7 @@
     <Compile Include="DeepCopy.cs" />
     <Compile Include="RandoLogic.cs" />
     <Compile Include="RandoConfigFile.cs" />
+    <Compile Include="RandoSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Everest\Celeste.Mod.mm\Celeste.Mod.mm.csproj">

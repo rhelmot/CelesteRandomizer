@@ -669,12 +669,15 @@ ASide:
       Kind: inout
   - Room: "h-07"
     Holes:
+    - Side: Left
+      Idx: 0
+      Kind: None
     - Side: Right
       Idx: 0
-      Kind: inout
+      Kind: out
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "h-08"
     Holes:
     - Side: Right

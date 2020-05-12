@@ -14,12 +14,10 @@ namespace Celeste.Mod.Randomizer {
         private const float onScreenX = 960f;
         private const float offScreenX = 2880f;
 
-        private int seed;
-        private const int MAX_SEED_DIGITS = 6;
-
-        public OuiRandoSettings() {
-            var r = new Random();
-            seed = r.Next((int)Math.Pow(10, MAX_SEED_DIGITS));
+        public RandoSettings Settings {
+            get {
+                return RandoModule.Instance.Settings;
+            }
         }
 
         public override IEnumerator Enter(Oui from) {
@@ -55,6 +53,14 @@ namespace Celeste.Mod.Randomizer {
 
         }
 
+        public override bool IsStart(Overworld overworld, Overworld.StartMode start) {
+            if (start == (Overworld.StartMode)55) {
+                this.Add((Component)new Coroutine(this.Enter((Oui)null), true));
+                return true;
+            }
+            return false;
+        }
+
         public override void Update() {
             if (menu != null && menu.Focused &&
                 Selected && Input.MenuCancel.Pressed) {
@@ -67,22 +73,25 @@ namespace Celeste.Mod.Randomizer {
 
         private void ReloadMenu() {
             menu = new TextMenu {
-            new TextMenu.Header(Dialog.Clean("MODOPTIONS_RANDOMIZER_HEADER")),
-            new TextMenu.Button(Dialog.Clean("MODOPTIONS_RANDOMIZER_SEED") + ": " + seed.ToString(MAX_SEED_DIGITS)).Pressed(() => {
+                new TextMenu.Header(Dialog.Clean("MODOPTIONS_RANDOMIZER_HEADER")),
+                new TextMenu.Button(Dialog.Clean("MODOPTIONS_RANDOMIZER_SEED") + ": " + Settings.Seed.ToString(RandoModule.MAX_SEED_DIGITS)).Pressed(() => {
                     Audio.Play(SFX.ui_main_savefile_rename_start);
                     menu.SceneAs<Overworld>().Goto<UI.OuiNumberEntry>().Init<OuiRandoSettings>(
-                        seed,
-                        (v) => this.seed = (int)v,
-                        MAX_SEED_DIGITS,
+                        Settings.Seed,
+                        (v) => Settings.Seed = (int)v,
+                        RandoModule.MAX_SEED_DIGITS,
                         false,
                         false);
                 }),
-                    
 
-            new TextMenu.Button(Dialog.Clean("MODOPTIONS_RANDOMIZER_START")).Pressed(() => {
+                new TextMenu.OnOff(Dialog.Clean("MODOPTIONS_RANDOMIZER_REPEATROOMS"), Settings.RepeatRooms).Change((val) => {
+                    Settings.RepeatRooms = val;
+                }),
+
+                new TextMenu.Button(Dialog.Clean("MODOPTIONS_RANDOMIZER_START")).Pressed(() => {
                     RandoLogic.ProcessAreas();
 
-                    AreaKey newArea = RandoLogic.GenerateMap(seed, false);
+                    AreaKey newArea = RandoLogic.GenerateMap(Settings);
                     Audio.SetMusic((string) null, true, true);
                     Audio.SetAmbience((string) null, true);
                     Audio.Play("event:/ui/main/savefile_begin");
@@ -95,7 +104,7 @@ namespace Celeste.Mod.Randomizer {
                         RandoConfigFile.YamlSkeleton(area);
 
                     }*/
-                })
+                }),
             };
 
             Scene.Add(menu);
