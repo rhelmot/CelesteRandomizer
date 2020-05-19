@@ -88,6 +88,16 @@ namespace Celeste.Mod.Randomizer {
                     Settings.RepeatRooms = val;
                 }),
 
+                new TextMenu.OnOff(Dialog.Clean("MODOPTIONS_RANDOMIZER_ENTERUNKNOWN"), Settings.EnterUnknown).Change((val) => {
+                    Settings.EnterUnknown = val;
+                }),
+
+                new TextMenu.Slider(Dialog.Clean("MODOPTIONS_RANDOMIZER_LOGIC"), (i) => {
+                    return Dialog.Clean("MODOPTIONS_RANDOMIZER_LOGIC_" + Enum.GetNames(typeof(LogicType))[i].ToUpperInvariant());
+                }, 0, (int)LogicType.LastLogic - 1, (int)Settings.Algorithm).Change((i) => {
+                    Settings.Algorithm = (LogicType)i;
+                }),
+
                 new TextMenu.Button(Dialog.Clean("MODOPTIONS_RANDOMIZER_START")).Pressed(() => {
                     RandoLogic.ProcessAreas();
 
