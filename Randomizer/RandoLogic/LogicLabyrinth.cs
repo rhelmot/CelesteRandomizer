@@ -64,7 +64,7 @@ namespace Celeste.Mod.Randomizer {
             }
 
             public override bool Next() {
-                var available = this.FindPossibilities(Room, Hole, this.CheckApplicable);
+                var available = this.FindPossibilities(this.Room, this.Hole, this.CheckApplicable);
 
                 bool Retry() {
                     if (this.CurrentRoom == null) {

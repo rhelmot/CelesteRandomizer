@@ -136,6 +136,9 @@ namespace Celeste.Mod.Randomizer {
                 default:
                     this.Tasks.AddToFront(new TaskLabyrinthStart(this));
                     break;
+                case LogicType.Pathway:
+                    this.Tasks.AddToFront(new TaskPathwayStart(this));
+                    break;
             }
 
             while (this.Tasks.Count != 0) {
