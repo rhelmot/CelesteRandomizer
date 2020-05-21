@@ -119,7 +119,7 @@ namespace Celeste.Mod.Randomizer {
                     }
 
                     if (matchedHole == null) {
-                        throw new Exception($"Could not find the hole identified by room:{roomConfig.Room} side:{holeConfig.Side} idx:{holeConfig.Idx}");
+                        throw new Exception($"Could not find the hole identified by area:{map.Area} room:{roomConfig.Room} side:{holeConfig.Side} idx:{holeConfig.Idx}");
                     } else {
                         //Logger.Log("randomizer", $"Matching {roomConfig.Room} {holeConfig.Side} {holeConfig.Idx} to {matchedHole}");
                         matchedHole.Kind = HoleKindMethods.FromString(holeConfig.Kind);

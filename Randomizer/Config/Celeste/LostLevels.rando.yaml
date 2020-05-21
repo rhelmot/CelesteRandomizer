@@ -332,12 +332,6 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: in
-    - Side: Left
-      Idx: 0
-      Kind: None
-    - Side: Right
-      Idx: 0
-      Kind: None
   - Room: "e-00b"
     Holes:
     - Side: Up
@@ -345,7 +339,7 @@ ASide:
       Kind: inout
     - Side: Up
       Idx: 1
-      Kind: inout
+      Kind: none
     - Side: Down
       Idx: 0
       Kind: None

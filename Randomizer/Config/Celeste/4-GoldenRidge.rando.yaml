@@ -440,6 +440,9 @@ BSide:
     - Side: Right
       Idx: 0
       Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: inout
   - Room: "a-01"
     Holes:
     - Side: Right
@@ -452,10 +455,10 @@ BSide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: inout
+      Kind: out
     - Side: Left
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "a-03"
     Holes:
     - Side: Right
@@ -495,15 +498,15 @@ BSide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "b-03"
     Holes:
     - Side: Up
       Idx: 1
-      Kind: inout
+      Kind: out
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "b-04"
     Holes:
     - Side: Right
@@ -511,12 +514,12 @@ BSide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "c-00"
     Holes:
     - Side: Right
       Idx: 0
-      Kind: inout
+      Kind: out
     - Side: Left
       Idx: 0
       Kind: inout
@@ -532,18 +535,18 @@ BSide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: inout
+      Kind: out
     - Side: Left
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "c-03"
     Holes:
     - Side: Up
       Idx: 0
-      Kind: inout
+      Kind: out
     - Side: Left
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "c-04"
     Holes:
     - Side: Right
@@ -551,7 +554,7 @@ BSide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "d-00"
     Holes:
     - Side: Right
@@ -564,10 +567,10 @@ BSide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: inout
+      Kind: out
     - Side: Left
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "d-02"
     Holes:
     - Side: Right
@@ -575,15 +578,15 @@ BSide:
       Kind: inout
     - Side: Left
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "d-03"
     Holes:
     - Side: Right
       Idx: 0
-      Kind: inout
+      Kind: out
     - Side: Left
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "end"
     Holes:
     - Side: Left
@@ -594,6 +597,9 @@ CSide:
   - Room: "00"
     Holes:
     - Side: Right
+      Idx: 0
+      Kind: inout
+    - Side: Left
       Idx: 0
       Kind: inout
   - Room: "01"

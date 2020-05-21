@@ -1310,9 +1310,9 @@ BSide:
       Kind: in
   - Room: "c-02"
     Holes:
-    - Side: out
+    - Side: Right
       Idx: 0
-      Kind: inout
+      Kind: out
     - Side: Down
       Idx: 0
       Kind: in
