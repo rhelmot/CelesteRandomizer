@@ -3,7 +3,15 @@ namespace Celeste.Mod.Randomizer {
     public enum LogicType {
         Pathway,
         Labyrinth,
-        LastLogic
+        Last
+    }
+
+    public enum MapLength {
+        Short,
+        Medium,
+        Long,
+        Enormous,
+        Last
     }
 
     public class RandoSettings {
@@ -11,5 +19,6 @@ namespace Celeste.Mod.Randomizer {
         public bool RepeatRooms;
         public bool EnterUnknown;
         public LogicType Algorithm;
+        public MapLength Length;
     }
 }

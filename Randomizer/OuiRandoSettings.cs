@@ -94,8 +94,14 @@ namespace Celeste.Mod.Randomizer {
 
                 new TextMenu.Slider(Dialog.Clean("MODOPTIONS_RANDOMIZER_LOGIC"), (i) => {
                     return Dialog.Clean("MODOPTIONS_RANDOMIZER_LOGIC_" + Enum.GetNames(typeof(LogicType))[i].ToUpperInvariant());
-                }, 0, (int)LogicType.LastLogic - 1, (int)Settings.Algorithm).Change((i) => {
+                }, 0, (int)LogicType.Last - 1, (int)Settings.Algorithm).Change((i) => {
                     Settings.Algorithm = (LogicType)i;
+                }),
+
+                new TextMenu.Slider(Dialog.Clean("MODOPTIONS_RANDOMIZER_LENGTH"), (i) => {
+                    return Dialog.Clean("MODOPTIONS_RANDOMIZER_LENGTH_" + Enum.GetNames(typeof(MapLength))[i].ToUpperInvariant());
+                }, 0, (int)MapLength.Last - 1, (int)Settings.Length).Change((i) => {
+                    Settings.Length = (MapLength)i;
                 }),
 
                 new TextMenu.Button(Dialog.Clean("MODOPTIONS_RANDOMIZER_START")).Pressed(() => {

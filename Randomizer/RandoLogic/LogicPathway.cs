@@ -57,7 +57,7 @@ namespace Celeste.Mod.Randomizer {
             public override bool Next() {
                 List<Hole> available = new List<Hole>(this.AvailableHoles());
                 if (available.Count == 0) {
-                    return this.Logic.Map.Levels.Count > 20;
+                    return false;
                 }
 
                 var picked = available[this.Logic.Random.Next(available.Count)];
@@ -71,13 +71,24 @@ namespace Celeste.Mod.Randomizer {
             private LevelData Linked;
             private Hole Hole;
             private HashSet<RandoRoom> TriedRooms = new HashSet<RandoRoom>();
+            private bool IsEnd;
+
+            private static readonly int[] Minimums = { 15, 30, 50, 80 };
+            private static readonly int[] Ranges = { 15, 30, 30, 70 };
 
             public TaskPathwayPickRoom(RandoLogic Logic, LevelData linked, Hole hole) : base(Logic) {
                 this.Linked = linked;
                 this.Hole = hole;
+
+                double progress = (double)(Logic.Map.Levels.Count - Minimums[(int)Logic.Settings.Length]) / (double)Ranges[(int)Logic.Settings.Length];
+                Logger.Log("randomizer", $"Minimums[{(int)Logic.Settings.Length}] = {Minimums[(int)Logic.Settings.Length]}");
+                this.IsEnd = progress > Logic.Random.NextDouble();
             }
 
             private bool CheckApplicable(RandoRoom room, Hole hole) {
+                if (room.End != this.IsEnd) {
+                    return false;
+                }
                 return !TriedRooms.Contains(room); // overapproximation. good enough
                 // maybe the better version is that we split room-pick and hole-pick into different tasks
             }
@@ -97,7 +108,9 @@ namespace Celeste.Mod.Randomizer {
                 var pickedLinked = picked.Item1.LinkAdjacent(this.Linked, this.Hole.Side, picked.Item3, this.Logic.NextNonce);
                 this.TriedRooms.Add(picked.Item1);
                 this.AddLevel(picked.Item1, pickedLinked);
-                this.AddNextTask(new TaskPathwayPickHole(this.Logic, picked.Item1, pickedLinked));
+                if (!this.IsEnd) {
+                    this.AddNextTask(new TaskPathwayPickHole(this.Logic, picked.Item1, pickedLinked));
+                }
 
                 return true;
             }
