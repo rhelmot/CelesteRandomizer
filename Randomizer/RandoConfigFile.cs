@@ -91,11 +91,15 @@ namespace Celeste.Mod.Randomizer {
         public String Room { get; set; }
         public List<RandoConfigFileHole> Holes { get; set; }
         public List<RandoConfigFileRoom> Subrooms { get; set; }
+        public bool End { get; set; }
     }
 
     public class RandoConfigFileHole {
         public String Side { get; set; }
         public int Idx { get; set; }
         public String Kind { get; set; }
+        public int? LowBound { get; set; }
+        public int? HighBound { get; set; }
+        public bool? HighOpen { get; set; }
     }
 }

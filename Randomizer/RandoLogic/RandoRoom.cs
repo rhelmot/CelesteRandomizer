@@ -7,6 +7,7 @@ namespace Celeste.Mod.Randomizer {
         public LevelData Level;
         public List<Hole> Holes;
         public readonly String Name;
+        public bool End;
 
         public RandoRoom(String prefix, LevelData Level, List<Hole> Holes) {
             this.Name = prefix + Level.Name;

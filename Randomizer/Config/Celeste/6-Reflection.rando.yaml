@@ -544,6 +544,7 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: in
+    End: true
 
 BSide:
   - Room: "a-00"

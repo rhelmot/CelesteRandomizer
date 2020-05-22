@@ -882,6 +882,7 @@ BSide:
     - Side: Up
       Idx: 0
       Kind: inout
+    End: true
 
 CSide:
   - Room: "00"

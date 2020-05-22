@@ -997,6 +997,7 @@ ASide:
     - Side: Right
       Idx: 1
       Kind: None
+    End: true
   - Room: "credits-city"
     Holes:
   - Room: "credits-clouds"
