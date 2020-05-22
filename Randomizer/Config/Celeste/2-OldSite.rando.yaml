@@ -404,6 +404,7 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    End: true
   - Room: "end_s0"
     Holes:
     - Side: Up

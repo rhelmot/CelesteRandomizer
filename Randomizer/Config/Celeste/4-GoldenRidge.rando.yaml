@@ -592,6 +592,7 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: inout
+    End: true
 
 CSide:
   - Room: "00"

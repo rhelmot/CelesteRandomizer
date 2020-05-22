@@ -815,6 +815,7 @@ ASide:
     - Side: Right
       Idx: 0
       Kind: None
+    End: true
   - Room: "void"
     Holes:
 

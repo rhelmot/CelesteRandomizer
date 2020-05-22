@@ -102,6 +102,7 @@ namespace Celeste.Mod.Randomizer {
                 }
                 var holes = RandoLogic.FindHoles(level);
                 var room = new RandoRoom(prefix, level, holes);
+                room.End = roomConfig.End;
                 result.Add(room);
 
                 foreach (RandoConfigFileHole holeConfig in roomConfig.Holes) {
@@ -123,6 +124,15 @@ namespace Celeste.Mod.Randomizer {
                     } else {
                         //Logger.Log("randomizer", $"Matching {roomConfig.Room} {holeConfig.Side} {holeConfig.Idx} to {matchedHole}");
                         matchedHole.Kind = HoleKindMethods.FromString(holeConfig.Kind);
+                        if (holeConfig.LowBound != null) {
+                            matchedHole.LowBound = (int)holeConfig.LowBound;
+                        }
+                        if (holeConfig.HighBound != null) {
+                            matchedHole.HighBound = (int)holeConfig.HighBound;
+                        }
+                        if (holeConfig.HighOpen != null) {
+                            matchedHole.HighOpen = (int)holeConfig.HighOpen;
+                        }
                     }
                 }
             }
