@@ -131,7 +131,7 @@ namespace Celeste.Mod.Randomizer {
                             matchedHole.HighBound = (int)holeConfig.HighBound;
                         }
                         if (holeConfig.HighOpen != null) {
-                            matchedHole.HighOpen = (int)holeConfig.HighOpen;
+                            matchedHole.HighOpen = (bool)holeConfig.HighOpen;
                         }
                     }
                 }
