@@ -1,4 +1,63 @@
 ASide:
+  - Room: "s0"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    - Side: Right
+      Idx: 1
+      Kind: None
+    - Side: Down
+      Idx: 0
+      Kind: None
+  - Room: "s1"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    - Side: Right
+      Idx: 1
+      Kind: inout
+    - Side: Right
+      Idx: 2
+      Kind: None
+    - Side: Left
+      Idx: 0
+      Kind: inout
+    - Side: Left
+      Idx: 1
+      Kind: None
+  - Room: "s2"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    - Side: Right
+      Idx: 1
+      Kind: None
+    - Side: Left
+      Idx: 0
+      Kind: inout
+    - Side: Left
+      Idx: 1
+      Kind: inout
+    - Side: Left
+      Idx: 2
+      Kind: none
+  - Room: "s3"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: none
+    - Side: Right
+      Idx: 1
+      Kind: out
+    - Side: Left
+      Idx: 0
+      Kind: inout
+    - Side: Left
+      Idx: 1
+      Kind: None
   - Room: "00-a"
     Holes:
     - Side: Right
@@ -556,11 +615,21 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: None
+    - Side: Down
+      Idx: 1
+      Kind: None
+    - Side: Down
+      Idx: 2
+      Kind: None
   - Room: "roof00"
     Holes:
     - Side: Right
       Idx: 0
       Kind: inout
+      HighBound: 19
     - Side: Down
       Idx: 0
       Kind: in
@@ -569,25 +638,30 @@ ASide:
     - Side: Right
       Idx: 0
       Kind: inout
+      HighBound: 19
     - Side: Left
       Idx: 0
       Kind: in
+      HighBound: 19
   - Room: "roof02"
     Holes:
     - Side: Right
       Idx: 0
       Kind: inout
+      HighBound: 19
     - Side: Left
       Idx: 0
       Kind: in
+      HighBound: 19
   - Room: "roof03"
     Holes:
     - Side: Right
       Idx: 0
-      Kind: inout
+      Kind: out
     - Side: Left
       Idx: 0
       Kind: in
+      HighBound: 19
   - Room: "roof04"
     Holes:
     - Side: Right
@@ -601,14 +675,7 @@ ASide:
     - Side: Right
       Idx: 0
       Kind: inout
-    - Side: Left
-      Idx: 0
-      Kind: in
-  - Room: "roof06"
-    Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
+      HighBound: 17
     - Side: Left
       Idx: 0
       Kind: in
@@ -617,73 +684,31 @@ ASide:
     - Side: Right
       Idx: 0
       Kind: inout
+      HighBound: 17
     - Side: Left
       Idx: 0
       Kind: in
+      HighBound: 17
+  - Room: "roof06"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: inout
+      HighBound: 10
+    - Side: Left
+      Idx: 0
+      Kind: in
+      HighBound: 17
   - Room: "roof07"
     Holes:
     - Side: Left
       Idx: 0
       Kind: in
-  - Room: "s0"
-    Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
-    - Side: Right
-      Idx: 1
-      Kind: None
-    - Side: Down
-      Idx: 0
-      Kind: None
-  - Room: "s1"
-    Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
-    - Side: Right
-      Idx: 1
-      Kind: inout
-    - Side: Right
-      Idx: 2
-      Kind: None
-    - Side: Left
-      Idx: 0
-      Kind: inout
-    - Side: Left
-      Idx: 1
-      Kind: None
-  - Room: "s2"
-    Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
-    - Side: Right
-      Idx: 1
-      Kind: None
-    - Side: Left
-      Idx: 0
-      Kind: inout
-    - Side: Left
-      Idx: 1
-      Kind: inout
-    - Side: Left
-      Idx: 2
-      Kind: none
-  - Room: "s3"
-    Holes:
+      HighBound: 10
     - Side: Right
       Idx: 0
       Kind: none
-    - Side: Right
-      Idx: 1
-      Kind: out
-    - Side: Left
-      Idx: 0
-      Kind: inout
-    - Side: Left
-      Idx: 1
-      Kind: None
+    End: true
 
 BSide:
   - Room: "00"
@@ -729,6 +754,9 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: None
   - Room: "05"
     Holes:
     - Side: Right
@@ -833,21 +861,34 @@ BSide:
     - Side: Right
       Idx: 0
       Kind: inout
+      HighBound: 19
     - Side: Down
       Idx: 0
-      Kind: None
+      Kind: in
     - Side: Down
       Idx: 1
-      Kind: in
+      Kind: None
   - Room: "18"
     Holes:
     - Side: Right
       Idx: 0
       Kind: inout
+      HighBound: 19
     - Side: Left
       Idx: 0
       Kind: in
+      HighBound: 19
   - Room: "19"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: inout
+      HighBound: 19
+    - Side: Left
+      Idx: 0
+      Kind: in
+      HighBound: 19
+  - Room: "21"
     Holes:
     - Side: Right
       Idx: 0
@@ -855,11 +896,13 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: in
+      HighBound: 19
   - Room: "20"
     Holes:
     - Side: Left
       Idx: 0
       Kind: in
+      HighBound: 19
     - Side: Down
       Idx: 0
       Kind: None
@@ -869,14 +912,6 @@ BSide:
     - Side: Down
       Idx: 2
       Kind: None
-  - Room: "21"
-    Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
-    - Side: Left
-      Idx: 0
-      Kind: in
   - Room: "end"
     Holes:
     - Side: Up

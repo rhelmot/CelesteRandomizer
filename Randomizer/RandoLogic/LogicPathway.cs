@@ -81,7 +81,6 @@ namespace Celeste.Mod.Randomizer {
                 this.Hole = hole;
 
                 double progress = (double)(Logic.Map.Levels.Count - Minimums[(int)Logic.Settings.Length]) / (double)Ranges[(int)Logic.Settings.Length];
-                Logger.Log("randomizer", $"Minimums[{(int)Logic.Settings.Length}] = {Minimums[(int)Logic.Settings.Length]}");
                 this.IsEnd = progress > Logic.Random.NextDouble();
             }
 

@@ -172,7 +172,7 @@ namespace Celeste.Mod.Randomizer {
             Logger.Log("randomizer", "Processing level data...");
 
             RandoLogic.AllRooms = new List<RandoRoom>();
-            /*RandoLogic.AllRooms.AddRange(RandoLogic.ProcessArea(AreaData.Areas[1], AreaMode.BSide));
+            /*RandoLogic.AllRooms.AddRange(RandoLogic.ProcessArea(AreaData.Areas[3], null));
             return;/**/
 
             foreach (var area in AreaData.Areas) {
