@@ -25,6 +25,12 @@ namespace Celeste.Mod.Randomizer {
             menu.Visible = Visible = true;
             menu.Focused = false;
 
+            // restore selection if coming from a submenu.
+            if (savedMenuIndex != -1) {
+                menu.Selection = Math.Min(savedMenuIndex, menu.LastPossibleSelection);
+                menu.Position.Y = menu.ScrollTargetY;
+            }
+
             for (float p = 0f; p < 1f; p += Engine.DeltaTime * 4f) {
                 menu.X = offScreenX + -1920f * Ease.CubeOut(p);
                 alpha = Ease.CubeOut(p);
