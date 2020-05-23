@@ -1,14 +1,8 @@
-﻿using Celeste.Mod;
-using FMOD.Studio;
+﻿using FMOD.Studio;
 using Microsoft.Xna.Framework;
 using Monocle;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Mono.Cecil.Cil;
 
 namespace Celeste.Mod.Randomizer {
     public class RandoModule : EverestModule {
@@ -32,6 +26,7 @@ namespace Celeste.Mod.Randomizer {
             Everest.Events.Level.OnCreatePauseMenuButtons += ModifyLevelMenu;
             On.Celeste.OverworldLoader.ctor += EnterToRandoMenu;
             On.Celeste.MapData.Load += DontLoadRandoMaps;
+            On.Celeste.AreaData.Load += InitRandoData;
         }
 
         public override void LoadContent(bool firstLoad) {
@@ -43,6 +38,7 @@ namespace Celeste.Mod.Randomizer {
             Everest.Events.Level.OnCreatePauseMenuButtons -= ModifyLevelMenu;
             On.Celeste.OverworldLoader.ctor -= EnterToRandoMenu;
             On.Celeste.MapData.Load -= DontLoadRandoMaps;
+            On.Celeste.AreaData.Load -= InitRandoData;
         }
 
         public override void CreateModMenuSection(TextMenu menu, bool inGame, EventInstance snapshot) {
@@ -138,6 +134,15 @@ namespace Celeste.Mod.Randomizer {
                 return;
             }
             orig(self);
+        }
+
+        public void InitRandoData(On.Celeste.AreaData.orig_Load orig) {
+            orig();
+            RandoLogic.ProcessAreas();
+
+            foreach (var key in RandoLogic.AvailableAreas) {
+                RandoModule.Instance.Settings.EnableMap(key);
+            }
         }
     }
 }

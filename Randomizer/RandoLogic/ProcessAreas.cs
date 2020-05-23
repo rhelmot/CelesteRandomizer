@@ -4,7 +4,8 @@ using System.Text.RegularExpressions;
 
 namespace Celeste.Mod.Randomizer {
     public partial class RandoLogic {
-        public static List<RandoRoom> AllRooms;
+        public static List<RandoRoom> AllRooms = new List<RandoRoom>();
+        public static List<AreaKey> AvailableAreas = new List<AreaKey>();
 
         public static List<Hole> FindHoles(LevelData data) {
             List<Hole> result = new List<Hole>();
@@ -101,7 +102,7 @@ namespace Celeste.Mod.Randomizer {
                     continue;
                 }
                 var holes = RandoLogic.FindHoles(level);
-                var room = new RandoRoom(prefix, level, holes);
+                var room = new RandoRoom(map.Area, prefix, level, holes);
                 room.End = roomConfig.End;
                 result.Add(room);
 
@@ -140,11 +141,10 @@ namespace Celeste.Mod.Randomizer {
             return result;
         }
 
-        private static List<RandoRoom> ProcessArea(AreaData area, AreaMode? mode = null) {
+        private static void ProcessArea(AreaData area, AreaMode? mode = null) {
             RandoConfigFile config = RandoConfigFile.Load(area);
-            var result = new List<RandoRoom>();
             if (config == null) {
-                return result;
+                return;
             }
 
             for (int i = 0; i < area.Mode.Length; i++) {
@@ -159,24 +159,19 @@ namespace Celeste.Mod.Randomizer {
                     continue;
                 }
 
-                result.AddRange(RandoLogic.ProcessMap(area.Mode[i].MapData, mapConfig));
+                RandoLogic.AllRooms.AddRange(RandoLogic.ProcessMap(area.Mode[i].MapData, mapConfig));
+                RandoLogic.AvailableAreas.Add(new AreaKey(area.ID, (AreaMode)i));
             }
-
-            return result;
         }
 
         public static void ProcessAreas() {
-            if (RandoLogic.AllRooms != null) {
+            if (RandoLogic.AllRooms.Count != 0) {
                 return;
             }
             Logger.Log("randomizer", "Processing level data...");
 
-            RandoLogic.AllRooms = new List<RandoRoom>();
-            /*RandoLogic.AllRooms.AddRange(RandoLogic.ProcessArea(AreaData.Areas[3], null));
-            return;/**/
-
             foreach (var area in AreaData.Areas) {
-                RandoLogic.AllRooms.AddRange(RandoLogic.ProcessArea(area));
+                RandoLogic.ProcessArea(area);
             }
         }
 

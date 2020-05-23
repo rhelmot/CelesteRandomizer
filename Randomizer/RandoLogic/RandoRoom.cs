@@ -4,12 +4,14 @@ using Microsoft.Xna.Framework;
 
 namespace Celeste.Mod.Randomizer {
     public class RandoRoom {
+        public AreaKey Area;
         public LevelData Level;
         public List<Hole> Holes;
         public readonly String Name;
         public bool End;
 
-        public RandoRoom(String prefix, LevelData Level, List<Hole> Holes) {
+        public RandoRoom(AreaKey Area, String prefix, LevelData Level, List<Hole> Holes) {
+            this.Area = Area;
             this.Name = prefix + Level.Name;
             this.Level = Level;
             this.Holes = Holes;

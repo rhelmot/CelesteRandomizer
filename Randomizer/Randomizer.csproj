@@ -92,6 +92,7 @@
     <Compile Include="RandoLogic\LogicLabyrinth.cs" />
     <Compile Include="Deque.cs" />
     <Compile Include="RandoLogic\LogicPathway.cs" />
+    <Compile Include="OuiMapPicker.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Everest\Celeste.Mod.mm\Celeste.Mod.mm.csproj">

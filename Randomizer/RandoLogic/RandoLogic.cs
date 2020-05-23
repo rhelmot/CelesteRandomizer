@@ -59,7 +59,12 @@ namespace Celeste.Mod.Randomizer {
         private RandoLogic(RandoSettings settings, AreaKey key) {
             this.Random = new Random(settings.Seed);
             this.Settings = settings;
-            this.RemainingRooms = new List<RandoRoom>(RandoLogic.AllRooms);
+            this.RemainingRooms = new List<RandoRoom>();
+            foreach (var room in RandoLogic.AllRooms) {
+                if (settings.MapIncluded(room.Area)) {
+                    this.RemainingRooms.Add(room);
+                }
+            }
             this.Key = key;
 
             if (this.Settings.RepeatRooms) {

@@ -50,7 +50,6 @@ namespace Celeste.Mod.Randomizer {
             menu.Visible = Visible = false;
             menu.RemoveSelf();
             menu = null;
-
         }
 
         public override bool IsStart(Overworld overworld, Overworld.StartMode start) {
@@ -84,6 +83,14 @@ namespace Celeste.Mod.Randomizer {
                         false);
                 }),
 
+                new TextMenu.Button(Dialog.Clean("MODOPTIONS_RANDOMIZER_MAPPICKER")).Pressed(() => {
+                    Audio.Play(SFX.ui_main_button_select);
+                    menu.SceneAs<Overworld>().Goto<OuiMapPicker>();
+                }),
+                new TextMenuExt.SubHeaderExt(Settings.LevelCount.ToString() + " " + Dialog.Clean("MODOPTIONS_RANDOMIZER_MAPPICKER_LEVELS")) {
+                    HeightExtra = 0f
+                },
+
                 new TextMenu.OnOff(Dialog.Clean("MODOPTIONS_RANDOMIZER_REPEATROOMS"), Settings.RepeatRooms).Change((val) => {
                     Settings.RepeatRooms = val;
                 }),
@@ -105,8 +112,6 @@ namespace Celeste.Mod.Randomizer {
                 }),
 
                 new TextMenu.Button(Dialog.Clean("MODOPTIONS_RANDOMIZER_START")).Pressed(() => {
-                    RandoLogic.ProcessAreas();
-
                     AreaKey newArea = RandoLogic.GenerateMap(Settings);
                     Audio.SetMusic((string) null, true, true);
                     Audio.SetAmbience((string) null, true);
