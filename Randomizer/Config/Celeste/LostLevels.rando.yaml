@@ -403,10 +403,10 @@ ASide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: in
+      Kind: out
     - Side: Left
       Idx: 0
-      Kind: out
+      Kind: in
     - Side: down
       Idx: 0
       Kind: None
