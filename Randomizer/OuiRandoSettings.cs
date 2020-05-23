@@ -88,7 +88,8 @@ namespace Celeste.Mod.Randomizer {
                     menu.SceneAs<Overworld>().Goto<OuiMapPicker>();
                 }),
                 new TextMenuExt.SubHeaderExt(Settings.LevelCount.ToString() + " " + Dialog.Clean("MODOPTIONS_RANDOMIZER_MAPPICKER_LEVELS")) {
-                    HeightExtra = 0f
+                    HeightExtra = -10f,
+                    Offset = new Vector2(30, -5),
                 },
 
                 new TextMenu.OnOff(Dialog.Clean("MODOPTIONS_RANDOMIZER_REPEATROOMS"), Settings.RepeatRooms).Change((val) => {
