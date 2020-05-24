@@ -102,8 +102,10 @@ namespace Celeste.Mod.Randomizer {
                     continue;
                 }
                 var holes = RandoLogic.FindHoles(level);
-                var room = new RandoRoom(map.Area, prefix, level, holes);
-                room.End = roomConfig.End;
+                var room = new RandoRoom(map.Area, prefix, level, holes) {
+                    End = roomConfig.End,
+                    Tweaks = roomConfig.Tweaks
+                };
                 result.Add(room);
 
                 foreach (RandoConfigFileHole holeConfig in roomConfig.Holes) {

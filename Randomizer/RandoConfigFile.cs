@@ -92,6 +92,7 @@ namespace Celeste.Mod.Randomizer {
         public List<RandoConfigFileHole> Holes { get; set; }
         public List<RandoConfigFileRoom> Subrooms { get; set; }
         public bool End { get; set; }
+        public List<RandoConfigEdit> Tweaks { get; set; }
     }
 
     public class RandoConfigFileHole {
@@ -101,5 +102,23 @@ namespace Celeste.Mod.Randomizer {
         public int? LowBound { get; set; }
         public int? HighBound { get; set; }
         public bool? HighOpen { get; set; }
+    }
+
+    public class RandoConfigEdit {
+        public String Name { get; set; }
+        public int? ID { get; set; }
+        public float? X { get; set; }
+        public float? Y { get; set; }
+        public RandoConfigUpdate Update { get; set; }
+    }
+
+    public class RandoConfigUpdate {
+        public bool Remove { get; set; }
+        public bool Add { get; set; }
+
+        public float? X { get; set; }
+        public float? Y { get; set; }
+        public int? Width { get; set; }
+        public int? Height { get; set; }
     }
 }

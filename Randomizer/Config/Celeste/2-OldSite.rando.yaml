@@ -64,7 +64,7 @@ ASide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: out
     - Side: Down
       Idx: 1
       Kind: in

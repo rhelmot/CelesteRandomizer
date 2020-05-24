@@ -146,6 +146,10 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: in
+    Tweaks:
+    - ID: 4     # change respawn trigger in top right
+      Update:
+        Remove: true
   - Room: "b-01"
     Holes:
     - Side: Left
