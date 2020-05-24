@@ -104,7 +104,7 @@ ASide:
       Kind: inout
     - Side: Right
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "01-b"
     Holes:
     - Side: Right
@@ -633,6 +633,10 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: in
+    - Side: Left
+      Idx: 0
+      Kind: unknown
+      HighBound: 19
   - Room: "roof01"
     Holes:
     - Side: Right
@@ -699,6 +703,9 @@ ASide:
       Idx: 0
       Kind: in
       HighBound: 17
+    - Side: Up
+      Idx: 1
+      Kind: none
   - Room: "roof07"
     Holes:
     - Side: Left
@@ -765,6 +772,13 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: None
+      Kind: in
+    - Side: Down
+      Idx: 2
+      Kind: None
   - Room: "06"
     Holes:
     - Side: Right

@@ -401,7 +401,7 @@ BSide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "04"
     Holes:
     - Side: Up
@@ -473,10 +473,10 @@ BSide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: inout
+      Kind: out
     - Side: Left
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "11"
     Holes:
     - Side: Up
@@ -594,7 +594,7 @@ CSide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: inout
+      Kind: out
     - Side: Left
       Idx: 0
       Kind: inout

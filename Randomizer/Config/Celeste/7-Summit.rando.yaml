@@ -955,7 +955,7 @@ ASide:
       Kind: none
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in          # TODO: remove unidirectional
   - Room: "g-00b"
     Holes:
     - Side: Up
@@ -964,6 +964,27 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: in
+    - Side: Left
+      Idx: 0
+      Kind: none
+    - Side: Left
+      Idx: 1
+      Kind: none
+    - Side: Left
+      Idx: 2
+      Kind: none
+    - Side: Left
+      Idx: 3
+      Kind: none
+    - Side: Right
+      Idx: 0
+      Kind: none
+    - Side: Right
+      Idx: 1
+      Kind: none
+    - Side: Right
+      Idx: 2
+      Kind: none
   - Room: "g-01"
     Holes:
     - Side: Up
@@ -1276,6 +1297,12 @@ BSide:
     - Side: Down
       Idx: 7
       Kind: none
+    - Side: Down
+      Idx: 9
+      Kind: none
+    - Side: Down
+      Idx: 12
+      Kind: none
     - Side: Up
       Idx: 1
       Kind: None
@@ -1485,6 +1512,9 @@ CSide:
     - Side: Up
       Idx: 0
       Kind: out
+    - Side: Down
+      Idx: 1
+      Kind: None
   - Room: "02"
     Holes:
     - Side: Up

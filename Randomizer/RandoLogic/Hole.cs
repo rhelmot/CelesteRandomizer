@@ -17,6 +17,8 @@ namespace Celeste.Mod.Randomizer {
                     return HoleKind.Out;
                 case "inout":
                     return HoleKind.InOut;
+                case "unknown":
+                    return HoleKind.Unknown;
                 default:
                     throw new Exception("Bad hole kind " + str);
             }
