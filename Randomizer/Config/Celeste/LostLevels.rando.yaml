@@ -532,10 +532,14 @@ ASide:
       Kind: inout
     - Side: Left
       Idx: 0
-      Kind: in       # TODO: remove oneway
+      Kind: inout
     - Side: Up
       Idx: 0
       Kind: none
+    Tweaks:
+    - ID: 56            # remove one-way barrier
+      Update:
+        Remove: true
   - Room: "f-04"
     Holes:
     - Side: Right
@@ -941,7 +945,11 @@ ASide:
       Kind: inout
     - Side: Left
       Idx: 0
-      Kind: in  # TODO: remove no-exit restriction
+      Kind: inout
+    Tweaks:
+    - ID: 207
+      Update:
+        Remove: true
   - Room: "j-08"
     Holes:
     - Side: Right
