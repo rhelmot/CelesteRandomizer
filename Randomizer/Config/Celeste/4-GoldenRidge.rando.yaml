@@ -338,6 +338,12 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    Tweaks:
+    - Name: spawn
+      Update:
+        Add: true
+        X: 24
+        Y: 24
   - Room: "d-00"
     Holes:
     - Side: Right
@@ -590,6 +596,9 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Up
+      Idx: 0
+      Kind: none
   - Room: "d-03"
     Holes:
     - Side: Right

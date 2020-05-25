@@ -294,6 +294,12 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: None
+    - Side: Down
+      Idx: 1
+      Kind: None
   - Room: "d-05"
     Holes:
     - Side: Up
@@ -878,6 +884,9 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 1
+      Kind: none
   - Room: "j-01"
     Holes:
     - Side: Right
@@ -1007,6 +1016,9 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 1
+      Kind: none
   - Room: "j-14"
     Holes:
     - Side: Right

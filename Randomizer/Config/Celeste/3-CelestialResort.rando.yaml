@@ -637,6 +637,12 @@ ASide:
       Idx: 0
       Kind: unknown
       HighBound: 19
+    Tweaks:
+    - Name: spawn
+      Update:
+        Add: true
+        X: 400
+        Y: 160
   - Room: "roof01"
     Holes:
     - Side: Right
@@ -645,8 +651,17 @@ ASide:
       HighBound: 19
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
       HighBound: 19
+    Tweaks:
+    - ID: 1             # remove invisible barrier
+      Update:
+        Remove: true
+    - Name: spawn
+      Update:
+        Add: true
+        X: 400
+        Y: 160
   - Room: "roof02"
     Holes:
     - Side: Right
@@ -655,8 +670,17 @@ ASide:
       HighBound: 19
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
       HighBound: 19
+    Tweaks:
+    - ID: 1             # remove invisible barrier
+      Update:
+        Remove: true
+    - Name: spawn
+      Update:
+        Add: true
+        X: 448
+        Y: 160
   - Room: "roof03"
     Holes:
     - Side: Right
@@ -664,8 +688,12 @@ ASide:
       Kind: out
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
       HighBound: 19
+    Tweaks:
+    - ID: 2             # remove invisible barrier
+      Update:
+        Remove: true
   - Room: "roof04"
     Holes:
     - Side: Right
@@ -673,7 +701,16 @@ ASide:
       Kind: inout
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
+    Tweaks:
+    - ID: 2             # remove invisible barrier
+      Update:
+        Remove: true
+    - Name: spawn
+      Update:
+        Add: true
+        X: 320
+        Y: 144
   - Room: "roof05"
     Holes:
     - Side: Right
@@ -682,7 +719,16 @@ ASide:
       HighBound: 17
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
+    Tweaks:
+    - ID: 2             # remove invisible barrier
+      Update:
+        Remove: true
+    - Name: spawn
+      Update:
+        Add: true
+        X: 584
+        Y: 144
   - Room: "roof06b"
     Holes:
     - Side: Right
@@ -691,8 +737,17 @@ ASide:
       HighBound: 17
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
       HighBound: 17
+    Tweaks:
+    - ID: 183             # remove invisible barrier
+      Update:
+        Remove: true
+    - Name: spawn
+      Update:
+        Add: true
+        X: 584
+        Y: 144
   - Room: "roof06"
     Holes:
     - Side: Right
@@ -701,11 +756,20 @@ ASide:
       HighBound: 10
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
       HighBound: 17
     - Side: Up
       Idx: 1
       Kind: none
+    Tweaks:
+    - ID: 1             # remove invisible barrier
+      Update:
+        Remove: true
+    - Name: spawn
+      Update:
+        Add: true
+        X: 1968
+        Y: 104
   - Room: "roof07"
     Holes:
     - Side: Left
@@ -724,6 +788,9 @@ BSide:
       Idx: 0
       Kind: inout
     - Side: Right
+      Idx: 1
+      Kind: None
+    - Side: Left
       Idx: 1
       Kind: None
   - Room: "01"
@@ -882,6 +949,12 @@ BSide:
     - Side: Down
       Idx: 1
       Kind: None
+    Tweaks:
+    - Name: spawn
+      Update:
+        Add: true
+        X: 640
+        Y: 160
   - Room: "18"
     Holes:
     - Side: Right
@@ -890,8 +963,17 @@ BSide:
       HighBound: 19
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
       HighBound: 19
+    Tweaks:
+    - ID: 183             # remove invisible barrier
+      Update:
+        Remove: true
+    - Name: spawn
+      Update:
+        Add: true
+        X: 736
+        Y: 160
   - Room: "19"
     Holes:
     - Side: Right
@@ -900,8 +982,17 @@ BSide:
       HighBound: 19
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
       HighBound: 19
+    Tweaks:
+    - ID: 183             # remove invisible barrier
+      Update:
+        Remove: true
+    - Name: spawn
+      Update:
+        Add: true
+        X: 400
+        Y: 160
   - Room: "21"
     Holes:
     - Side: Right
@@ -909,13 +1000,22 @@ BSide:
       Kind: inout
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
       HighBound: 19
+    Tweaks:
+    - ID: 183             # remove invisible barrier
+      Update:
+        Remove: true
+    - Name: spawn
+      Update:
+        Add: true
+        X: 744
+        Y: 160
   - Room: "20"
     Holes:
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
       HighBound: 19
     - Side: Down
       Idx: 0
@@ -926,6 +1026,10 @@ BSide:
     - Side: Down
       Idx: 2
       Kind: None
+    Tweaks:
+    - ID: 183             # remove invisible barrier
+      Update:
+        Remove: true
   - Room: "end"
     Holes:
     - Side: Up

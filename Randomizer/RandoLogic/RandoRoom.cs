@@ -64,7 +64,7 @@ namespace Celeste.Mod.Randomizer {
             void processSpawn(Vector2 spawn) {
                 foreach (var econfig in this.Tweaks) {
                     if (!(econfig.Update?.Add ?? false) &&
-                        econfig.Name.ToLower() == "spawn" &&
+                        econfig.Name?.ToLower() == "spawn" &&
                         (econfig.X == null || econfig.X == spawn.X) &&
                         (econfig.Y == null || econfig.Y == spawn.Y)) {
                         if (econfig.Update?.Remove ?? false) {

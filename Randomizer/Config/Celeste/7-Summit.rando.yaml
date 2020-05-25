@@ -962,6 +962,9 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: in          # TODO: remove unidirectional
+    - Side: Right
+      Idx: 0
+      Kind: none
   - Room: "g-00b"
     Holes:
     - Side: Up
