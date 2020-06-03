@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace Celeste.Mod.Randomizer {
     public partial class RandoLogic {
-        public static List<RandoRoom> AllRooms = new List<RandoRoom>();
+        public static List<StaticRoom> AllRooms = new List<StaticRoom>();
         public static List<AreaKey> AvailableAreas = new List<AreaKey>();
 
         public static List<Hole> FindHoles(LevelData data) {
@@ -35,12 +35,12 @@ namespace Celeste.Mod.Randomizer {
                 if (clear && curHole == -1) {
                     curHole = i;
                 } else if (!clear && curHole != -1) {
-                    result.Add(new Hole(data, ScreenDirection.Up, curHole, i - 1, false));
+                    result.Add(new Hole(ScreenDirection.Up, curHole, i - 1, false));
                     curHole = -1;
                 }
             }
             if (curHole != -1) {
-                result.Add(new Hole(data, ScreenDirection.Up, curHole, data.TileBounds.Width - 1, true));
+                result.Add(new Hole(ScreenDirection.Up, curHole, data.TileBounds.Width - 1, true));
             }
 
             curHole = -1;
@@ -49,12 +49,12 @@ namespace Celeste.Mod.Randomizer {
                 if (clear && curHole == -1) {
                     curHole = i;
                 } else if (!clear && curHole != -1) {
-                    result.Add(new Hole(data, ScreenDirection.Right, curHole, i - 1, false));
+                    result.Add(new Hole(ScreenDirection.Right, curHole, i - 1, false));
                     curHole = -1;
                 }
             }
             if (curHole != -1) {
-                result.Add(new Hole(data, ScreenDirection.Right, curHole, data.TileBounds.Height - 1, true));
+                result.Add(new Hole(ScreenDirection.Right, curHole, data.TileBounds.Height - 1, true));
             }
 
             curHole = -1;
@@ -64,12 +64,12 @@ namespace Celeste.Mod.Randomizer {
                 if (clear && curHole == -1) {
                     curHole = i;
                 } else if (!clear && curHole != -1) {
-                    result.Add(new Hole(data, ScreenDirection.Left, curHole, i - 1, false));
+                    result.Add(new Hole(ScreenDirection.Left, curHole, i - 1, false));
                     curHole = -1;
                 }
             }
             if (curHole != -1) {
-                result.Add(new Hole(data, ScreenDirection.Left, curHole, data.TileBounds.Height - 1, true));
+                result.Add(new Hole(ScreenDirection.Left, curHole, data.TileBounds.Height - 1, true));
             }
 
             curHole = -1;
@@ -79,65 +79,32 @@ namespace Celeste.Mod.Randomizer {
                 if (clear && curHole == -1) {
                     curHole = i;
                 } else if (!clear && curHole != -1) {
-                    result.Add(new Hole(data, ScreenDirection.Down, curHole, i - 1, false));
+                    result.Add(new Hole(ScreenDirection.Down, curHole, i - 1, false));
                     curHole = -1;
                 }
             }
             if (curHole != -1) {
-                result.Add(new Hole(data, ScreenDirection.Down, curHole, data.TileBounds.Width - 1, true));
+                result.Add(new Hole(ScreenDirection.Down, curHole, data.TileBounds.Width - 1, true));
             }
 
             return result;
         }
 
-        private static List<RandoRoom> ProcessMap(MapData map, Dictionary<String, RandoConfigFileRoom> config) {
-            var result = new List<RandoRoom>();
-            String prefix = AreaData.Get(map.Area).GetSID() + "/" + (map.Area.Mode == AreaMode.Normal ? "A" : map.Area.Mode == AreaMode.BSide ? "B" : "C") + "/";
+        private static List<StaticRoom> ProcessMap(MapData map, Dictionary<String, RandoConfigRoom> config) {
+            var result = new List<StaticRoom>();
 
             foreach (LevelData level in map.Levels) {
-                if (!config.TryGetValue(level.Name, out RandoConfigFileRoom roomConfig)) {
+                if (level.Dummy) {
+                    continue;
+                }
+                if (!config.TryGetValue(level.Name, out RandoConfigRoom roomConfig)) {
                     continue;
                 }
                 if (roomConfig == null || roomConfig.Holes == null) {
                     continue;
                 }
                 var holes = RandoLogic.FindHoles(level);
-                var room = new RandoRoom(map.Area, prefix, level, holes) {
-                    End = roomConfig.End,
-                    Tweaks = roomConfig.Tweaks
-                };
-                result.Add(room);
-
-                foreach (RandoConfigFileHole holeConfig in roomConfig.Holes) {
-                    Hole matchedHole = null;
-                    int remainingMatches = holeConfig.Idx;
-                    foreach (Hole hole in holes) {
-                        if (hole.Side == ScreenDirectionMethods.FromString(holeConfig.Side)) {
-                            if (remainingMatches == 0) {
-                                matchedHole = hole;
-                                break;
-                            } else {
-                                remainingMatches--;
-                            }
-                        }
-                    }
-
-                    if (matchedHole == null) {
-                        throw new Exception($"Could not find the hole identified by area:{map.Area} room:{roomConfig.Room} side:{holeConfig.Side} idx:{holeConfig.Idx}");
-                    } else {
-                        //Logger.Log("randomizer", $"Matching {roomConfig.Room} {holeConfig.Side} {holeConfig.Idx} to {matchedHole}");
-                        matchedHole.Kind = HoleKindMethods.FromString(holeConfig.Kind);
-                        if (holeConfig.LowBound != null) {
-                            matchedHole.LowBound = (int)holeConfig.LowBound;
-                        }
-                        if (holeConfig.HighBound != null) {
-                            matchedHole.HighBound = (int)holeConfig.HighBound;
-                        }
-                        if (holeConfig.HighOpen != null) {
-                            matchedHole.HighOpen = (bool)holeConfig.HighOpen;
-                        }
-                    }
-                }
+                result.Add(new StaticRoom(map.Area, roomConfig, level, holes));
             }
 
             return result;

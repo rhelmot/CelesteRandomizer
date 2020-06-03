@@ -17,7 +17,7 @@ namespace Celeste.Mod.Randomizer {
             var r = new Random();
             Settings = new RandoSettings {
                 Seed = r.Next((int)Math.Pow(10, MAX_SEED_DIGITS)),
-                RepeatRooms = false,
+                Dashes = NumDashes.One,
             };
         }
 

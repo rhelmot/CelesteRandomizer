@@ -118,6 +118,18 @@ namespace Celeste.Mod.Randomizer {
                     Settings.Length = (MapLength)i;
                 }),
 
+                new TextMenu.Slider(Dialog.Clean("MODOPTIONS_RANDOMIZER_NUMDASHES"), (i) => {
+                    return Dialog.Clean("MODOPTIONS_RANDOMIZER_NUMDASHES_" + Enum.GetNames(typeof(NumDashes))[i].ToUpperInvariant());
+                }, 0, (int)NumDashes.Last - 1, (int)Settings.Dashes).Change((i) => {
+                    Settings.Dashes = (NumDashes)i;
+                }),
+
+                new TextMenu.Slider(Dialog.Clean("MODOPTIONS_RANDOMIZER_DIFFICULTY"), (i) => {
+                    return Dialog.Clean("MODOPTIONS_RANDOMIZER_DIFFICULTY_" + Enum.GetNames(typeof(Difficulty))[i].ToUpperInvariant());
+                }, 0, (int)Difficulty.Last - 1, (int)Settings.Difficulty).Change((i) => {
+                    Settings.Difficulty = (Difficulty)i;
+                }),
+
                 new TextMenu.Button(Dialog.Clean("MODOPTIONS_RANDOMIZER_START")).Pressed(() => {
                     AreaKey newArea = RandoLogic.GenerateMap(Settings);
                     Audio.SetMusic((string) null, true, true);
@@ -134,6 +146,21 @@ namespace Celeste.Mod.Randomizer {
                     }*/
                 }),
             };
+
+            var showHash = new TextMenuExt.EaseInSubHeaderExt("{hash}", false, menu) {
+                HeightExtra = -10f,
+                Offset = new Vector2(30, -5),
+            };
+            var menuItems = menu.GetItems();
+            var startButton = menuItems[menuItems.Count - 1];
+            startButton.OnEnter += () => {
+                showHash.Title = Dialog.Clean("MODOPTIONS_RANDOMIZER_HASH") + " " + this.Settings.Hash;
+                showHash.FadeVisible = true;
+            };
+            startButton.OnLeave += () => {
+                showHash.FadeVisible = false;
+            };
+            menu.Add(showHash);
 
             Scene.Add(menu);
         }

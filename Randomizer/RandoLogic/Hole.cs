@@ -26,7 +26,6 @@ namespace Celeste.Mod.Randomizer {
     }
 
     public class Hole {
-        public LevelData Level;
         public ScreenDirection Side;
         public HoleKind Kind = HoleKind.Unknown;
         public int LowBound;
@@ -77,36 +76,31 @@ namespace Celeste.Mod.Randomizer {
             }
         }
 
-        public Vector2 LowCoord {
-            get {
-                Vector2 corner;
-                switch (this.Side) {
-                    case ScreenDirection.Up:
-                        corner = new Vector2(Level.Bounds.Left + 4, Level.Bounds.Top - 5);
-                        break;
-                    case ScreenDirection.Left:
-                        corner = new Vector2(Level.Bounds.Left - 5, Level.Bounds.Top + 4);
-                        break;
-                    case ScreenDirection.Down:
-                        corner = new Vector2(Level.Bounds.Left + 4, Level.Bounds.Bottom + 4);
-                        break;
-                    case ScreenDirection.Right:
-                    default:
-                        corner = new Vector2(Level.Bounds.Right + 4, Level.Bounds.Top + 4);
-                        break;
-                }
-                return corner + this.AlongDir.Unit() * this.LowBound * 8;
+        public Vector2 LowCoord(Rectangle levelBounds) {
+            Vector2 corner;
+            switch (this.Side) {
+                case ScreenDirection.Up:
+                    corner = new Vector2(levelBounds.Left + 4, levelBounds.Top - 5);
+                    break;
+                case ScreenDirection.Left:
+                    corner = new Vector2(levelBounds.Left - 5, levelBounds.Top + 4);
+                    break;
+                case ScreenDirection.Down:
+                    corner = new Vector2(levelBounds.Left + 4, levelBounds.Bottom + 4);
+                    break;
+                case ScreenDirection.Right:
+                default:
+                    corner = new Vector2(levelBounds.Right + 4, levelBounds.Top + 4);
+                    break;
             }
+            return corner + this.AlongDir.Unit() * this.LowBound * 8;
         }
 
-        public Vector2 HighCoord {
-            get {
-                return this.LowCoord + this.AlongDir.Unit() * 8 * (this.Size - 1);
-            }
+        public Vector2 HighCoord(Rectangle levelBounds) {
+            return this.LowCoord(levelBounds) + this.AlongDir.Unit() * 8 * (this.Size - 1);
         }
 
-        public Hole(LevelData Level, ScreenDirection Side, int LowBound, int HighBound, bool HighOpen) {
-            this.Level = Level;
+        public Hole(ScreenDirection Side, int LowBound, int HighBound, bool HighOpen) {
             this.Side = Side;
             this.LowBound = LowBound;
             this.HighBound = HighBound;

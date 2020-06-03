@@ -998,6 +998,7 @@ BSide:
     - Side: Right
       Idx: 0
       Kind: inout
+      HighBound: 19
     - Side: Left
       Idx: 0
       Kind: inout

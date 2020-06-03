@@ -86,13 +86,15 @@
     <Compile Include="RandoLogic\RandoLogic.cs" />
     <Compile Include="RandoLogic\ProcessAreas.cs" />
     <Compile Include="RandoLogic\Hole.cs" />
-    <Compile Include="RandoLogic\RandoRoom.cs" />
+    <Compile Include="RandoLogic\StaticRoom.cs" />
     <Compile Include="RandoLogic\ScreenDirection.cs" />
     <Compile Include="RandoLogic\RandoTask.cs" />
     <Compile Include="RandoLogic\LogicLabyrinth.cs" />
     <Compile Include="Deque.cs" />
     <Compile Include="RandoLogic\LogicPathway.cs" />
     <Compile Include="OuiMapPicker.cs" />
+    <Compile Include="RandoLogic\LinkedRoom.cs" />
+    <Compile Include="RandoLogic\Receipt.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Everest\Celeste.Mod.mm\Celeste.Mod.mm.csproj">

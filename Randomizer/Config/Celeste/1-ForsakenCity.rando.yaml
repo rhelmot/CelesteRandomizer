@@ -14,7 +14,17 @@ ASide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
+      ReqBoth:          # both directions dashless require a double jump
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: hard
+    Tweaks:
+    - ID: 7             # shorten jumpthru
+      Update:
+        X: 16
+        Width: 32
   - Room: "3"
     Holes:
     - Side: Up
@@ -22,7 +32,22 @@ ASide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
+      ReqIn:          # traversing upward dashless requires a double jump
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: hard
+    Tweaks:
+    - ID: 0             # shorten jumpthru
+      Update:
+        Width: 24
+        X: 24
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 264
+        Y: 64
   - Room: "4"
     Holes:
     - Side: Up
@@ -30,7 +55,12 @@ ASide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
+    Tweaks:
+    - ID: 0             # shorten jumpthru
+      Update:
+        Width: 24
+        X: 32
   - Room: "3b"
     Holes:
     - Side: Up
@@ -38,7 +68,12 @@ ASide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
+    Tweaks:
+    - ID: 0             # shorten jumpthru
+      Update:
+        X: 40
+        Width: 24
   - Room: "5"
     Holes:
     - Side: Up
@@ -47,12 +82,18 @@ ASide:
     - Side: Right
       Idx: 0
       Kind: inout
+      ReqOut:
+        Dashes: one
     - Side: Left
       Idx: 0
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
+    Tweaks:
+    - ID: 0             # shorten jumpthru
+      Update:
+        Width: 16
   - Room: "5a"
     Holes:
     - Side: Left
@@ -68,23 +109,45 @@ ASide:
     - Side: Right
       Idx: 0
       Kind: inout
+      ReqBoth:           # traversing the room dashless requires a corner boost or something?
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: expert
     - Side: Left
       Idx: 0
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
+    Tweaks:
+    - ID: 0
+      Update:
+        Width: 16
+        X: 16
+    - Name: "spawn"
+      X: 16
+      Y: 168
+      Update:
+        X: 24
   - Room: "6z"
     Holes:
-    - Side: Up
-      Idx: 0
-      Kind: inout
     - Side: Right
       Idx: 0
       Kind: inout
-    - Side: Left
-      Idx: 0
-      Kind: inout
+    InternalEdges:
+    - To: "left"
+      ReqBoth:
+        Dashes: one
+    Subrooms:
+    - Room: "left"
+      Holes:
+      - Side: Up
+        Idx: 0
+        Kind: inout
+      - Side: Left
+        Idx: 0
+        Kind: inout
   - Room: "6zb"
     Holes:
     - Side: Up
@@ -133,6 +196,11 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+      ReqIn:                    # coffee shop jump
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: expert
   - Room: "6b"
     Holes:
     - Side: Right
@@ -165,9 +233,17 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+      ReqOut:
+        Dashes: one
     - Side: Left
       Idx: 1
       Kind: inout
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 280
+        Y: 40
   - Room: "7"
     Holes:
     - Side: Up
@@ -175,12 +251,23 @@ ASide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
+    Tweaks:
+    - ID: 0
+      Update:
+        Width: 16
+        X: 64
+    - Name: "spawn"
+      X: 64
+      Update:
+        X: 72
   - Room: "7z"
     Holes:
     - Side: Up
       Idx: 0
       Kind: inout
+      ReqOut:
+        Dashes: one
     - Side: Right
       Idx: 0
       Kind: inout
@@ -200,6 +287,11 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+      ReqOut:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: hard
   - Room: "8"
     Holes:
     - Side: Up
@@ -213,13 +305,31 @@ ASide:
       Kind: in
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
+      ReqIn:                    # fuck this jump in particular
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: expert
+      ReqOut:
+        Dashes: one             # can't traverse backwards without a dash
     - Side: Down
       Idx: 1
       Kind: inout
+      ReqOut:
+        Dashes: one
     - Side: Down
       Idx: 2
       Kind: in
+    Tweaks:
+    - ID: 0
+      Update:
+        Width: 16
+        X: 24
+    - Name: "spawn"
+      X: 24
+      Update:
+        X: 32
   - Room: "7a"
     Holes:
     - Side: Up
@@ -238,9 +348,20 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: inout
+      ReqIn:
+        Or:
+        - Difficulty: hard
+          Dashes: zero
+        - Dashes: one
     - Side: Left
       Idx: 0
       Kind: inout
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 280
+        Y: 32
   - Room: "9"
     Holes:
     - Side: Right
@@ -248,21 +369,39 @@ ASide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
+      ReqOut:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: expert
+    Tweaks:
+    - ID: 0
+      Update:
+        Width: 24
   - Room: "9b"
     Holes:
     - Side: Up
       Idx: 0
       Kind: inout
-    - Side: Up
-      Idx: 1
-      Kind: inout
-    - Side: Right
-      Idx: 0
-      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - To: "right"
+      ReqIn:
+        Dashes: one
+      ReqOut:
+        Dashes: zero
+    Subrooms:
+    - Room: "right"
+      Holes:
+      - Side: Up
+        Idx: 1
+        Kind: inout
+      - Side: Right
+        Idx: 0
+        Kind: inout
   - Room: "9c"
     Holes:
     - Side: Left
@@ -300,34 +439,78 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: inout
+      ReqBoth:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: expert
     - Side: Down
       Idx: 0
       Kind: inout
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 56
+        Y: 96
   - Room: "11"
     Holes:
-    - Side: Left
-      Idx: 0
-      Kind: inout
     - Side: Down
-      Idx: 0
-      Kind: in
-    - Side: Down
-      Idx: 1
-      Kind: none
-    - Side: Up
-      Idx: 0
-      Kind: none
-      Side: Down
       Idx: 2
-      Kind: in
-#    Subrooms:
-#    - Holes:
-#      - Side: Up
-#        Idx: 0
-#        Kind: inout
-#      - Side: Down
-#        Idx: 2
-#        Kind: inout
+      Kind: inout
+    InternalEdges:
+    - To: "exit"
+      ReqBoth:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: expert
+    Subrooms:
+    - Room: "exit"
+      Holes:
+      - Side: Up
+        Idx: 0
+        Kind: inout
+    - Room: "secret"
+      Holes:
+      - Side: Left
+        Idx: 0
+        Kind: inout
+        ReqOut:
+          Dashes: one
+      - Side: Down
+        Idx: 0
+        Kind: inout
+      - Side: Down
+        Idx: 1
+        Kind: inout
+        ReqIn:
+          Or:
+          - Dashes: one
+          - Dashes: zero
+            Difficulty: expert
+        ReqOut:
+          Dashes: one
+    Tweaks:
+    - ID: 11
+      Update:
+        Width: 16
+    - ID: 0
+      Update:
+        Width: 8
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 88
+        Y: 80
+    - Name: "spawn"
+      X: 48
+      Update:
+        X: 40
+    - Name: "spawn"
+      X: 368
+      Update:
+        X: 360
   - Room: "11z"
     Holes:
     - Side: Right
@@ -338,12 +521,37 @@ ASide:
     - Side: Right
       Idx: 0
       Kind: inout
+      ReqBoth:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: expert
     - Side: Left
       Idx: 0
       Kind: inout
+      ReqBoth:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: expert
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
+      ReqBoth:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: expert
+    Tweaks:
+    - ID: 0
+      Update:
+        X: 40
+        Width: 16
+    - Name: "spawn"
+      X: 32
+      Y: 216
+      Update:
+        X: 40
   - Room: "12z"
     Holes:
     - Side: Right
@@ -354,9 +562,20 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: inout
+      ReqOut:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: expert
     - Side: Left
       Idx: 0
       Kind: inout
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 80
+        Y: 32
   - Room: "end"
     Holes:
     - Side: Down

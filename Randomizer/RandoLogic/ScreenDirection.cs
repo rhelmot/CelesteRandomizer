@@ -37,6 +37,20 @@ namespace Celeste.Mod.Randomizer {
             }
         }
 
+        public static ScreenDirection Opposite(this ScreenDirection self) {
+            switch (self) {
+                case ScreenDirection.Up:
+                    return ScreenDirection.Down;
+                case ScreenDirection.Down:
+                    return ScreenDirection.Up;
+                case ScreenDirection.Left:
+                    return ScreenDirection.Right;
+                case ScreenDirection.Right:
+                default:
+                    return ScreenDirection.Left;
+            }
+        }
+
         public static ScreenDirection FromString(String str) {
             switch (str.ToLower()) {
                 case "up":

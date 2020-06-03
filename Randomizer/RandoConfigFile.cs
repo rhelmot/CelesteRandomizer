@@ -4,9 +4,9 @@ using YamlDotNet.Serialization;
 
 namespace Celeste.Mod.Randomizer {
     public class RandoConfigFile {
-        public List<RandoConfigFileRoom> ASide { get; set; }
-        public List<RandoConfigFileRoom> BSide { get; set; }
-        public List<RandoConfigFileRoom> CSide { get; set; }
+        public List<RandoConfigRoom> ASide { get; set; }
+        public List<RandoConfigRoom> BSide { get; set; }
+        public List<RandoConfigRoom> CSide { get; set; }
 
         public static RandoConfigFile Load(AreaData area) {
             String fullpath = "Config/" + area.GetSID() + ".rando";
@@ -34,7 +34,7 @@ namespace Celeste.Mod.Randomizer {
                         lastDirection = hole.Side;
                     }
 
-                    LevelData targetlvl = map.GetAt(hole.LowCoord) ?? map.GetAt(hole.HighCoord);
+                    LevelData targetlvl = map.GetAt(hole.LowCoord(lvl.Bounds)) ?? map.GetAt(hole.HighCoord(lvl.Bounds));
                     if (targetlvl != null) {
                         Logger.Log("randomizer", $"    - Side: {hole.Side}");
                         Logger.Log("randomizer", $"      Idx: {holeIdx}");
@@ -59,8 +59,8 @@ namespace Celeste.Mod.Randomizer {
             }
         }
 
-        public Dictionary<String, RandoConfigFileRoom> GetRoomMapping(AreaMode mode) {
-            List<RandoConfigFileRoom> rooms = null;
+        public Dictionary<String, RandoConfigRoom> GetRoomMapping(AreaMode mode) {
+            List<RandoConfigRoom> rooms = null;
             switch (mode) {
                 case AreaMode.Normal:
                 default:
@@ -78,8 +78,8 @@ namespace Celeste.Mod.Randomizer {
                 return null;
             }
 
-            var result = new Dictionary<String, RandoConfigFileRoom>();
-            foreach (RandoConfigFileRoom room in rooms) {
+            var result = new Dictionary<String, RandoConfigRoom>();
+            foreach (RandoConfigRoom room in rooms) {
                 result.Add(room.Room, room);
             }
 
@@ -87,21 +87,60 @@ namespace Celeste.Mod.Randomizer {
         }
     }
 
-    public class RandoConfigFileRoom {
+    public class RandoConfigRoom {
         public String Room { get; set; }
-        public List<RandoConfigFileHole> Holes { get; set; }
-        public List<RandoConfigFileRoom> Subrooms { get; set; }
+        public List<RandoConfigHole> Holes { get; set; }
+        public List<RandoConfigRoom> Subrooms { get; set; }
+        public List<RandoConfigInternalEdge> InternalEdges { get; set; }
         public bool End { get; set; }
         public List<RandoConfigEdit> Tweaks { get; set; }
     }
 
-    public class RandoConfigFileHole {
-        public String Side { get; set; }
+    public class RandoConfigHole {
+        public ScreenDirection Side { get; set; }
         public int Idx { get; set; }
-        public String Kind { get; set; }
         public int? LowBound { get; set; }
         public int? HighBound { get; set; }
         public bool? HighOpen { get; set; }
+
+        public RandoConfigReq ReqIn { get; set; }
+        public RandoConfigReq ReqOut { get; set; }
+        public RandoConfigReq ReqBoth {
+            get {
+                return null;
+            }
+
+            set {
+                this.ReqIn = value;
+                this.ReqOut = value;
+            }
+        }
+        public HoleKind Kind { get; set; }
+    }
+
+    public class RandoConfigInternalEdge {
+        public String To { get; set; }
+        public RandoConfigReq ReqIn { get; set; }
+        public RandoConfigReq ReqOut { get; set; }
+        public RandoConfigReq ReqBoth {
+            get {
+                return null;
+            }
+
+            set {
+                this.ReqIn = value;
+                this.ReqOut = value;
+            }
+        }
+    }
+
+    public class RandoConfigReq {
+        public List<RandoConfigReq> And { get; set; }
+        public List<RandoConfigReq> Or { get; set; }
+
+        public Difficulty Difficulty { get; set; }
+        public NumDashes? Dashes { get; set; }
+        public bool Key;
     }
 
     public class RandoConfigEdit {

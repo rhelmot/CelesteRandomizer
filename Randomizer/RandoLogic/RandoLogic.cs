@@ -11,10 +11,12 @@ namespace Celeste.Mod.Randomizer {
                 Interlude = false,
                 Dreaming = false,
                 ID = AreaData.Areas.Count,
-                Name = settings.Seed.ToString(),
+                Name = $"{settings.Seed}_{settings.Hash}",
                 Mode = new ModeProperties[3] {
                     new ModeProperties {
-                        Inventory = PlayerInventory.TheSummit,
+                        Inventory = settings.Dashes == NumDashes.Zero ? PlayerInventory.Prologue : 
+                                    settings.Dashes == NumDashes.One ? PlayerInventory.Default : 
+                                                                        PlayerInventory.TheSummit,
                     }, null, null
                 },
                 Icon = AreaData.Areas[0].Icon,
@@ -25,7 +27,7 @@ namespace Celeste.Mod.Randomizer {
                 MountainSelect = AreaData.Areas[0].MountainSelect,
                 MountainCursorScale = AreaData.Areas[0].MountainCursorScale,
             };
-            newArea.SetSID($"randomizer/{settings.Seed}");
+            newArea.SetSID($"randomizer/{newArea.Name}");
             AreaData.Areas.Add(newArea);
 
             var key = new AreaKey(newArea.ID);
@@ -43,24 +45,18 @@ namespace Celeste.Mod.Randomizer {
         }
 
         private Random Random;
-        private List<RandoRoom> RemainingRooms;
+        private List<StaticRoom> RemainingRooms;
         private AreaKey Key;
-        private MapData Map;
+        private LinkedMap Map;
         private RandoSettings Settings;
-        private int? Nonce;
+        private Capabilities Caps;
         private Deque<RandoTask> Tasks = new Deque<RandoTask>();
         private Stack<RandoTask> CompletedTasks = new Stack<RandoTask>();
-
-        private int? NextNonce {
-            get {
-                return this.Nonce == null ? null : this.Nonce++;
-            }
-        }
 
         private RandoLogic(RandoSettings settings, AreaKey key) {
             this.Random = new Random(settings.Seed);
             this.Settings = settings;
-            this.RemainingRooms = new List<RandoRoom>();
+            this.RemainingRooms = new List<StaticRoom>();
             foreach (var room in RandoLogic.AllRooms) {
                 if (settings.MapIncluded(room.Area)) {
                     this.RemainingRooms.Add(room);
@@ -68,9 +64,10 @@ namespace Celeste.Mod.Randomizer {
             }
             this.Key = key;
 
-            if (this.Settings.RepeatRooms) {
-                this.Nonce = 0;
-            }
+            this.Caps = new Capabilities {
+                Dashes = settings.Dashes,
+                PlayerSkill = settings.Difficulty,
+            };
         }
 
         private Action<Scene, bool, Action> PickWipe() {
@@ -241,31 +238,8 @@ namespace Celeste.Mod.Randomizer {
             }
         }
 
-        private class QueueTuple {
-            public LevelData Item1;
-            public Hole Item2;
-
-            public QueueTuple(LevelData Item1, Hole Item2) {
-                this.Item1 = Item1;
-                this.Item2 = Item2;
-            }
-        }
-
-        private class ShuffleTuple {
-            public RandoRoom Item1;
-            public Hole Item2;
-            public int Item3;
-
-            public ShuffleTuple (RandoRoom Item1, Hole Item2, int Item3) {
-                this.Item1 = Item1;
-                this.Item2 = Item2;
-                this.Item3 = Item3;
-            }
-        }
-
         private MapData MakeMap() {
-            this.Map = new MapData(this.Key);
-            this.Map.Levels = new List<LevelData>();
+            this.Map = new LinkedMap();
 
             switch (this.Settings.Algorithm) {
                 case LogicType.Labyrinth:
@@ -293,18 +267,22 @@ namespace Celeste.Mod.Randomizer {
                 this.CompletedTasks.Push(nextTask);
             }
 
-            this.SetMapBounds();
-            this.SetForeground();
-            this.SetBackground();
-            return this.Map;
+            var map = new MapData(this.Key);
+            map.Levels = new List<LevelData>();
+
+            this.Map.FillMap(map);
+            this.SetMapBounds(map);
+            this.SetForeground(map);
+            this.SetBackground(map);
+            return map;
         }
 
-        private void SetMapBounds() {
+        private void SetMapBounds(MapData map) {
             int num1 = int.MaxValue;
             int num2 = int.MaxValue;
             int num3 = int.MinValue;
             int num4 = int.MinValue;
-            foreach (LevelData level in this.Map.Levels) {
+            foreach (LevelData level in map.Levels) {
                 if (level.Bounds.Left < num1)
                     num1 = level.Bounds.Left;
                 if (level.Bounds.Top < num2)
@@ -315,10 +293,10 @@ namespace Celeste.Mod.Randomizer {
                     num4 = level.Bounds.Bottom;
             }
 
-            this.Map.Bounds = new Rectangle(num1, num2, num3 - num1, num4 - num2);
+            map.Bounds = new Rectangle(num1, num2, num3 - num1, num4 - num2);
         }
 
-        private void SetForeground() {
+        private void SetForeground(MapData map) {
             string fgName = null;
             bool needsWind = true;
             switch (this.Random.Next(15)) {
@@ -351,22 +329,22 @@ namespace Celeste.Mod.Randomizer {
                     break;
             }
 
-            this.Map.Foreground = new BinaryPacker.Element{ Children = new List<BinaryPacker.Element>() };
+            map.Foreground = new BinaryPacker.Element{ Children = new List<BinaryPacker.Element>() };
             if (fgName != null) {
-                this.Map.Foreground.Children.Add(new BinaryPacker.Element { Name = fgName });
+                map.Foreground.Children.Add(new BinaryPacker.Element { Name = fgName });
             }
             if (needsWind) {
                 fgName = this.Random.Next(2) == 0 ? "stardust" : "windsnow";
-                this.Map.Foreground.Children.Add(new BinaryPacker.Element {
+                map.Foreground.Children.Add(new BinaryPacker.Element {
                     Name = fgName,
                     Attributes = new Dictionary<string, object> {
-                        {"only", string.Join(",", this.FindWindyLevels())}
+                        {"only", string.Join(",", this.FindWindyLevels(map))}
                     }
                 });
             }
         }
 
-        private void SetBackground() {
+        private void SetBackground(MapData map) {
             string bgEffect = null;
             //string bgParallax = null;
             switch (this.Random.Next(6)) {
@@ -389,14 +367,14 @@ namespace Celeste.Mod.Randomizer {
                     bgEffect = "planets";
                     break;
             }
-            this.Map.Background = new BinaryPacker.Element { Children = new List<BinaryPacker.Element>() };
+            map.Background = new BinaryPacker.Element { Children = new List<BinaryPacker.Element>() };
             if (bgEffect != null) {
-                this.Map.Background.Children.Add(new BinaryPacker.Element { Name = bgEffect });
+                map.Background.Children.Add(new BinaryPacker.Element { Name = bgEffect });
             }
         }
 
-        private IEnumerable<string> FindWindyLevels() {
-            foreach (var lvl in this.Map.Levels) {
+        private IEnumerable<string> FindWindyLevels(MapData map) {
+            foreach (var lvl in map.Levels) {
                 if (lvl.WindPattern != WindController.Patterns.None) {
                     yield return lvl.Name;
                 } else {

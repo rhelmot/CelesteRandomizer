@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using Monocle;
 
 namespace Celeste.Mod.Randomizer {
     public partial class RandoLogic {
         private class TaskLabyrinthStart : RandoTask {
-            private HashSet<RandoRoom> TriedRooms;
+            private HashSet<StaticRoom> TriedRooms = new HashSet<StaticRoom>();
 
             public TaskLabyrinthStart(RandoLogic logic) : base(logic) {
-                TriedRooms = new HashSet<RandoRoom>();
             }
 
-            private IEnumerable<RandoRoom> AvailableRooms() {
+            private IEnumerable<StaticRoom> AvailableRooms() {
                 foreach (var room in Logic.RemainingRooms) {
                     if (!TriedRooms.Contains(room)) {
                         yield return room;
@@ -18,87 +18,109 @@ namespace Celeste.Mod.Randomizer {
                 }
             }
 
-            public override bool Next() {
-                var available = new List<RandoRoom>(AvailableRooms());
+            private StartRoomReceipt WorkingPossibility() {
+                var available = new List<StaticRoom>(AvailableRooms());
 
                 if (available.Count == 0) {
-                    return false;
+                    return null;
                 }
 
                 var picked = available[this.Logic.Random.Next(available.Count)];
-                var pickedLinked = picked.LinkStart(this.Logic.NextNonce);
-                this.TriedRooms.Add(picked);
-                this.AddLevel(picked, pickedLinked);
+                return StartRoomReceipt.Do(this.Logic, picked);
+            }
 
-                foreach (var hole in picked.Holes) {
-                    if (hole.Kind == HoleKind.Out || hole.Kind == HoleKind.InOut) {
-                        this.AddLastTask(new TaskLabyrinthContinue(this.Logic, pickedLinked, hole));
-                    }
+            public override bool Next() {
+                var receipt = this.WorkingPossibility();
+                if (receipt == null) {
+                    return false;
+                }
+
+                this.TriedRooms.Add(receipt.NewRoom.Room);
+                this.AddReceipt(receipt);
+
+                this.AddLastTask(new TaskLabyrinthFinish(this.Logic));
+
+                var node = receipt.NewRoom.Nodes["main"];
+                foreach (var edge in node.UnlinkedEdges(this.Logic.Caps, true)) {
+                    this.AddNextTask(new TaskLabyrinthContinue(this.Logic, node, edge));
                 }
                 return true;
             }
         }
 
         private class TaskLabyrinthContinue : RandoTask {
-            private LevelData Room;
-            private Hole Hole;
+            private LinkedNode Node;
+            private StaticEdge Edge;
 
-            private HashSet<RandoRoom> TriedRooms = new HashSet<RandoRoom>();
-            private RandoRoom CurrentRoom;
-            private HashSet<Hole> TriedHoles = new HashSet<Hole>();
+            private HashSet<StaticEdge> TriedEdges = new HashSet<StaticEdge>();
 
-            public TaskLabyrinthContinue(RandoLogic logic, LevelData room, Hole hole) : base(logic) {
-                this.Room = room;
-                this.Hole = hole;
+            public TaskLabyrinthContinue(RandoLogic logic, LinkedNode node, StaticEdge edge) : base(logic) {
+                this.Node = node;
+                this.Edge = edge;
             }
 
-            private bool CheckApplicable(RandoRoom room, Hole hole) {
-                if (CurrentRoom == null) {
-                    return !TriedRooms.Contains(room);
-                } else {
-                    if (CurrentRoom != room) {
-                        return false;
+            private IEnumerable<StaticEdge> AvailableEdges() {
+                foreach (var room in this.Logic.RemainingRooms) {
+                    foreach (var node in room.Nodes.Values) {
+                        foreach (var edge in node.Edges) {
+                            if (edge.HoleTarget == null || TriedEdges.Contains(edge)) {
+                                continue;
+                            }
+
+                            yield return edge;
+                        }
                     }
-                    return !TriedHoles.Contains(hole);
                 }
+            }
+
+            private ConnectAndMapReceipt WorkingPossibility() {
+                var possibilities = new List<StaticEdge>(this.AvailableEdges());
+                possibilities.Shuffle(this.Logic.Random);
+
+                foreach (var edge in possibilities) {
+                    if (!edge.ReqIn.Able(this.Logic.Caps) || !edge.ReqOut.Able(this.Logic.Caps)) {
+                        continue;
+                    }
+
+                    var result = ConnectAndMapReceipt.Do(this.Logic, this.Node.Room, this.Edge, edge);
+                    if (result != null) {
+                        return result;
+                    }
+                }
+
+                return null;
             }
 
             public override bool Next() {
-                var available = this.FindPossibilities(this.Room, this.Hole, this.CheckApplicable);
-
-                bool Retry() {
-                    if (this.CurrentRoom == null) {
-                        return true; // never return false, simply allow failures to be failures
-                    }
-
-                    this.TriedRooms.Add(this.CurrentRoom);
-                    this.TriedHoles.Clear();
-                    this.CurrentRoom = null;
-                    return this.Next();
+                if (this.TriedEdges.Count > 5) {
+                    return false;
                 }
 
-                if (available.Count == 0) {
-                    return Retry();
+                var receipt = this.WorkingPossibility();
+                if (receipt == null) {
+                    return true; // never fail!
                 }
 
-                var picked = this.FindWorkingPosiibility(available, this.Room, this.Hole);
-                if (picked == null) {
-                    return Retry();
+                this.AddReceipt(receipt);
+                this.TriedEdges.Add(receipt.Edge.CorrespondingEdge(this.Node));
+                var targetNode = receipt.Edge.OtherNode(this.Node);
+
+                foreach (var node in targetNode.Closure(this.Logic.Caps, true, true)) {
+                    foreach (var edge in node.UnlinkedEdges(this.Logic.Caps, true)) {
+                        this.AddNextTask(new TaskLabyrinthContinue(this.Logic, targetNode, edge));
+                    }
                 }
+                return true;
+            }
+        }
 
-                var linked = picked.Item1.LinkAdjacent(this.Room, this.Hole.Side, picked.Item3, this.Logic.NextNonce);
+        private class TaskLabyrinthFinish : RandoTask {
+            public TaskLabyrinthFinish(RandoLogic logic) : base(logic) {
+            }
 
-                this.CurrentRoom = picked.Item1;
-                this.TriedHoles.Add(picked.Item2);
-
-                this.AddLevel(picked.Item1, linked);
-                foreach (var hole in picked.Item1.Holes) {
-                    if (hole == picked.Item2) {
-                        continue;
-                    }
-                    if (hole.Kind == HoleKind.Out || hole.Kind == HoleKind.InOut) {
-                        AddLastTask(new TaskLabyrinthContinue(Logic, linked, hole));
-                    }
+            public override bool Next() {
+                if (Logic.Map.Count < 10) {
+                    return false;
                 }
                 return true;
             }

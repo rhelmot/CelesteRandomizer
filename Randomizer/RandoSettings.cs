@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 
 namespace Celeste.Mod.Randomizer {
+    // WHEN YOU ADD A NEW MEMBER TO ANY OF THESE INCREMENT THE HASH VERSION
     public enum LogicType {
         Pathway,
         Labyrinth,
@@ -15,13 +16,78 @@ namespace Celeste.Mod.Randomizer {
         Last
     }
 
+    public enum NumDashes {
+        Zero,
+        One, 
+        Two,
+        Last
+    }
+
+    public enum Difficulty {
+        Normal,
+        Hard,
+        Expert,
+        Perfect,
+        Last
+    }
+
     public class RandoSettings {
+        // WHEN YOU ADD A NEW FIELD HERE ADD IT TO THE HASH GENERATOR AND INCREMENT THE VERSION
+        private const uint VERSION = 0;
         public int Seed;
         public bool RepeatRooms;
         public bool EnterUnknown;
         public LogicType Algorithm;
         public MapLength Length;
+        public NumDashes Dashes;
+        public Difficulty Difficulty;
         private HashSet<AreaKeyNotStupid> IncludedMaps = new HashSet<AreaKeyNotStupid>();
+
+        private IEnumerable<uint> HashParts() {
+            yield return VERSION;
+            yield return (uint)Seed;
+            yield return RepeatRooms ? 1u : 0u;
+            yield return EnterUnknown ? 1u : 0u;
+            yield return (uint)Algorithm;
+            yield return (uint)Length;
+            yield return (uint)Dashes;
+            yield return (uint)Difficulty;
+
+            var sortedMaps = new List<AreaKeyNotStupid>(IncludedMaps);
+            sortedMaps.Sort((AreaKeyNotStupid x, AreaKeyNotStupid y) => {
+                var xs = x.Stupid.GetSID();
+                var ys = y.Stupid.GetSID();
+                var cmp1 = xs.CompareTo(ys);
+                if (cmp1 != 0) {
+                    return cmp1;
+                }
+                if (x.Mode < y.Mode) {
+                    return -1;
+                }
+                if (x.Mode > y.Mode) {
+                    return 1;
+                }
+                return 0;
+            });
+            foreach (var thing in sortedMaps) {
+                yield return (uint)thing.Mode;
+                foreach (var ch in thing.Stupid.GetSID()) {
+                    yield return (uint)ch;
+                }
+                yield return 0u;
+            }
+        }
+
+        public string Hash {
+            get {
+                // djb2 impl
+                uint h = 5381;
+                foreach (var i in this.HashParts()) {
+                    h = ((h << 5) + h) + i;
+                }
+                return h.ToString();
+            }
+        }
 
         public int LevelCount {
             get {
