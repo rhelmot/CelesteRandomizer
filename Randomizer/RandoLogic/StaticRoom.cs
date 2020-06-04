@@ -100,6 +100,9 @@ namespace Celeste.Mod.Randomizer {
 
         private void ProcessSubroom(StaticNode node, RandoConfigRoom config) {
             foreach (RandoConfigHole holeConfig in config.Holes ?? new List<RandoConfigHole>()) {
+                if (holeConfig.Kind == HoleKind.None) {
+                    continue;
+                }
 
                 Hole matchedHole = null;
                 int remainingMatches = holeConfig.Idx;
@@ -139,7 +142,51 @@ namespace Celeste.Mod.Randomizer {
             }
 
             foreach (var edge in config.InternalEdges ?? new List<RandoConfigInternalEdge>()) {
-                var toNode = this.Nodes[edge.To];
+                StaticNode toNode;
+                if (edge.To != null) {
+                    toNode = this.Nodes[edge.To];
+                } else if (edge.Split != null) {
+                    if (node.Edges.Count != 2) {
+                        throw new Exception("Cannot split: must have exactly two edges");
+                    }
+
+                    toNode = new StaticNode() {
+                        Name = node.Name + "_autosplit",
+                        ParentRoom = node.ParentRoom
+                    };
+                    node.ParentRoom.Nodes[toNode.Name] = toNode;
+
+                    bool firstMain;
+                    var first = node.Edges[0].HoleTarget;
+                    var second = node.Edges[1].HoleTarget;
+                    switch (edge.Split) {
+                        case RandoConfigInternalEdge.SplitKind.BottomToTop:
+                            firstMain = first.Side == ScreenDirection.Down || second.Side == ScreenDirection.Up || 
+                                (first.Side != ScreenDirection.Up && second.Side != ScreenDirection.Down && first.HighBound > second.HighBound);
+                            break;
+                        case RandoConfigInternalEdge.SplitKind.TopToBottom:
+                            firstMain = first.Side == ScreenDirection.Up || second.Side == ScreenDirection.Down || 
+                                (first.Side != ScreenDirection.Down && second.Side != ScreenDirection.Up && first.LowBound < second.LowBound);
+                            break;
+                        case RandoConfigInternalEdge.SplitKind.RightToLeft:
+                            firstMain = first.Side == ScreenDirection.Right || second.Side == ScreenDirection.Left || 
+                                (first.Side != ScreenDirection.Left && second.Side != ScreenDirection.Right && first.HighBound > second.HighBound);
+                            break;
+                        case RandoConfigInternalEdge.SplitKind.LeftToRight:
+                        default:
+                            firstMain = first.Side == ScreenDirection.Left || second.Side == ScreenDirection.Right || 
+                                (first.Side != ScreenDirection.Right && second.Side != ScreenDirection.Left && first.LowBound < second.LowBound);
+                            break;
+                    }
+
+                    var secondary = firstMain ? node.Edges[1] : node.Edges[0];
+                    node.Edges.Remove(secondary);
+                    toNode.Edges.Add(secondary);
+                    secondary.FromNode = toNode;
+                } else {
+                    throw new Exception("Internal edge must have either To or Split");
+                }
+
                 var reqIn = this.ProcessReqs(edge.ReqIn, null, false);
                 var reqOut = this.ProcessReqs(edge.ReqOut, null, true);
 
@@ -242,13 +289,13 @@ namespace Celeste.Mod.Randomizer {
                             removals.Add(entity);
                         } else {
                             if (econfig.Update?.X != null)
-                                entity.Position.X = (float)econfig.Update.X;
+                                entity.Position.X = econfig.Update.X.Value;
                             if (econfig.Update?.Y != null)
-                                entity.Position.Y = (float)econfig.Update.Y;
+                                entity.Position.Y = econfig.Update.Y.Value;
                             if (econfig.Update?.Width != null)
-                                entity.Width = (int)econfig.Update.Width;
+                                entity.Width = econfig.Update.Width.Value;
                             if (econfig.Update?.Height != null)
-                                entity.Height = (int)econfig.Update.Height;
+                                entity.Height = econfig.Update.Height.Value;
                         }
                         break;
                     }
@@ -264,9 +311,9 @@ namespace Celeste.Mod.Randomizer {
                             toRemoveSpawns.Add(spawn);
                         } else {
                             if (econfig.Update?.X != null)
-                                spawn.X = (float)econfig.Update.X;
+                                spawn.X = econfig.Update.X.Value;
                             if (econfig.Update?.Y != null)
-                                spawn.Y = (float)econfig.Update.Y;
+                                spawn.Y = econfig.Update.Y.Value;
                         }
                         break;
                     }
@@ -298,14 +345,17 @@ namespace Celeste.Mod.Randomizer {
 
             foreach (var econfig in this.Tweaks) {
                 if (econfig.Update?.Add ?? false) {
+                    if (econfig.Update?.X == null || econfig.Update?.Y == null) {
+                        throw new Exception("Incomplete new entity: must have X and Y");
+                    }
                     if (econfig.Name.ToLower() == "spawn") {
                         result.Spawns.Add(new Vector2((float)econfig.Update.X + result.Position.X, (float)econfig.Update.Y + result.Position.Y));
                     } else {
                         var entity = new EntityData() {
                             Name = econfig.Name,
                             Position = new Vector2((float)econfig.Update.X, (float)econfig.Update.Y),
-                            Width = (int)econfig.Update.Width,
-                            Height = (int)econfig.Update.Height,
+                            Width = econfig.Update.Width ?? 0,
+                            Height = econfig.Update.Height ?? 0,
                             ID = ++maxID,
                         };
 

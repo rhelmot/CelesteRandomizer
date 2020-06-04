@@ -33,12 +33,6 @@ namespace Celeste.Mod.Randomizer {
             public LinkedEdge Edge;
 
             public static ConnectAndMapReceipt Do(RandoLogic logic, LinkedRoom fromRoom, StaticEdge fromEdge, StaticEdge toEdge) {
-                if (toEdge == null) {
-                    throw new Exception("flag 1");
-                }
-                if (toEdge.FromNode == null) {
-                    throw new Exception("flag 2");
-                }
                 var toRoomStatic = toEdge.FromNode.ParentRoom;
 
                 if (fromEdge.HoleTarget == null || toEdge.HoleTarget == null) {

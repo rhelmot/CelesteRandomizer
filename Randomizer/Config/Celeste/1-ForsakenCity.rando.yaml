@@ -586,17 +586,67 @@ ASide:
 BSide:
   - Room: "00"
     Holes:
+    - Side: Left
+      Idx: 0
+      Kind: inout
     - Side: Up
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - Split: BottomToTop
+      ReqOut:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: expert
+      ReqIn:
+        Dashes: zero
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 272
+        Y: 64
   - Room: "01"
     Holes:
-    - Side: Up
-      Idx: 0
-      Kind: inout
     - Side: Down
       Idx: 0
       Kind: in
+    - Side: Up
+      Idx: 0
+      Kind: inout
+    InternalEdges:
+    - Split: BottomToTop
+      ReqOut:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: hard
+      ReqIn:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: expert
+    Tweaks:
+    - ID: 0
+      Update:
+        Width: 16
+    - Name: "spawn"
+      X: 40
+      Y: 168
+      Update:
+        X: 32
+    - Name: "jumpThru"
+      Update:
+        Add: true
+        X: 272
+        Y: 24
+        Width: 16
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 280
+        Y: 24
   - Room: "02"
     Holes:
     - Side: Up
@@ -605,6 +655,32 @@ BSide:
     - Side: Down
       Idx: 0
       Kind: in
+    InternalEdges:
+    - Split: BottomToTop
+      ReqOut:
+        Dashes: one
+      ReqIn:
+        Or:
+        - Dashes: one
+          Difficulty: expert
+        - Dashes: two
+          Difficulty: hard
+    Tweaks:
+    - ID: 17
+      Update:
+        X: 16
+        Width: 24
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 304
+        Y: 40
+    - Name: "jumpThru"
+      Update:
+        Add: true
+        X: 296
+        Y: 40
+        Width: 16
   - Room: "02b"
     Holes:
     - Side: Up
@@ -613,6 +689,31 @@ BSide:
     - Side: Down
       Idx: 0
       Kind: in
+    InternalEdges:
+    - Split: BottomToTop
+      ReqOut:
+        Dashes: zero
+      ReqIn:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: hard
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 368
+        Y: 32
+    - Name: "jumpThru"
+      Update:
+        Add: true
+        X: 360
+        Y: 32
+        Width: 16
+    - ID: 0
+      Update:
+        X: 24
+        Width: 24
   - Room: "03"
     Holes:
     - Side: Right
@@ -621,6 +722,20 @@ BSide:
     - Side: Down
       Idx: 0
       Kind: in
+    InternalEdges:
+    - Split: LeftToRight
+      ReqBoth:
+        Dashes: one
+    Tweaks:
+    - ID: 0
+      Update:
+        X: 24
+        Width: 24
+    - Name: "spawn"
+      X: 24
+      Y: 264
+      Update:
+        X: 32
   - Room: "04"
     Holes:
     - Side: Up
@@ -629,11 +744,21 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - Split: LeftToRight
+      ReqBoth:
+        Dashes: one
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 288
+        Y: 64
   - Room: "05"
     Holes:
     - Side: Up
       Idx: 0
-      Kind: inout
+      Kind: out
     - Side: Down
       Idx: 0
       Kind: in
@@ -645,6 +770,33 @@ BSide:
     - Side: Down
       Idx: 0
       Kind: in
+    InternalEdges:
+    - Split: BottomToTop
+      ReqOut:
+        Dashes: one
+      ReqIn:
+        Dashes: two
+    Tweaks:
+    - ID: 0
+      Update:
+        X: 24
+        Width: 16
+    - Name: "spawn"
+      X: 24
+      Y: 168
+      Update:
+        X: 32
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 352
+        Y: 32
+    - Name: "jumpThru"
+      Update:
+        Add: true
+        X: 344
+        Y: 32
+        Width: 16
   - Room: "06"
     Holes:
     - Side: Right
@@ -656,6 +808,14 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: None
+    InternalEdges:
+    - Split: LeftToRight
+      ReqBoth:
+        Dashes: one
+    Tweaks:
+    - ID: 0
+      Update:
+        Width: 16
   - Room: "07"
     Holes:
     - Side: Up
@@ -664,11 +824,25 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - Split: BottomToTop
+      ReqOut:
+        Dashes: one
+      ReqIn:
+        Dashes: zero
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 88
+        Y: 32
   - Room: "08"
     Holes:
     - Side: Up
       Idx: 0
-      Kind: inout
+      Kind: out
+      ReqOut:
+        Dashes: one
     - Side: Down
       Idx: 0
       Kind: in
@@ -676,7 +850,9 @@ BSide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: inout
+      Kind: out
+      ReqOut:
+        Dashes: one
     - Side: Down
       Idx: 0
       Kind: in
@@ -687,12 +863,35 @@ BSide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
+    InternalEdges:
+    - Split: BottomToTop
+      ReqOut:
+        Dashes: one
+      ReqIn:
+        Dashes: zero
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 304
+        Y: 40
+    - Name: "spawn"
+      X: 24
+      Y: 378
+      Update:
+        X: 32
+    - ID: 0
+      Update:
+        X: 24
+        Width: 16
   - Room: "10"
     Holes:
     - Side: Right
       Idx: 0
       Kind: out
+      ReqOut:
+        Dashes: one
     - Side: Left
       Idx: 0
       Kind: in
@@ -704,6 +903,16 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - Split: BottomToTop
+      ReqBoth:
+        Dashes: one
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 120
+        Y: 24
   - Room: "end"
     Holes:
     - Side: Down
@@ -745,10 +954,14 @@ BSide:
     - Side: Right
       Idx: 3
       Kind: None
+    End: true
 
 CSide:
   - Room: "00"
     Holes:
+    - Side: Left
+      Idx: 0
+      Kind: inout
     - Side: Right
       Idx: 0
       Kind: inout
@@ -809,6 +1022,17 @@ CSide:
     - Side: Up
       Idx: 6
       Kind: None
+    InternalEdges:
+    - Split: LeftToRight
+      ReqOut:
+        Dashes: one
+        Difficulty: hard
+      ReqIn:
+        Or:
+        - Dashes: two
+          Difficulty: hard
+        - Dashes: one
+          Difficulty: perfect
   - Room: "01"
     Holes:
     - Side: Right
@@ -817,11 +1041,22 @@ CSide:
     - Side: Left
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - Split: LeftToRight
+      ReqOut:
+        Or:
+        - Dashes: one
+          Difficulty: hard
+        - Dashes: two
+          Difficulty: normal
   - Room: "02"
     Holes:
     - Side: Left
       Idx: 0
       Kind: inout
+      ReqIn:
+        Dashes: one
+        Difficulty: hard
     - Side: Up
       Idx: 0
       Kind: None
@@ -878,4 +1113,5 @@ CSide:
       Kind: None
     - Side: Down
       Idx: 6
-      Kind: inout   # shhhh ;)
+      Kind: None
+    End: true

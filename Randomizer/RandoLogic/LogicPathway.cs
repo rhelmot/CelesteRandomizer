@@ -139,7 +139,7 @@ namespace Celeste.Mod.Randomizer {
                 this.AddReceipt(receipt);
                 this.TriedRooms.Add(receipt.NewRoom.Room);
                 if (!this.IsEnd) {
-                    var newNode = receipt.Edge.OtherNode(this.Node.Room.Nodes[this.Edge.FromNode.Name]);
+                    var newNode = receipt.Edge.OtherNode(this.Node);
                     this.AddNextTask(new TaskPathwayPickEdge(this.Logic, newNode));
                 }
 

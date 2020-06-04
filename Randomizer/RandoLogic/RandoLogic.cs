@@ -27,6 +27,14 @@ namespace Celeste.Mod.Randomizer {
                 MountainSelect = AreaData.Areas[0].MountainSelect,
                 MountainCursorScale = AreaData.Areas[0].MountainCursorScale,
             };
+            newArea.SetMeta(new Meta.MapMeta {
+                Modes = new Meta.MapMetaModeProperties[] {
+                    new Meta.MapMetaModeProperties {
+                        HeartIsEnd = true,
+                    },
+                    null, null
+                }
+            });
             newArea.SetSID($"randomizer/{newArea.Name}");
             AreaData.Areas.Add(newArea);
 

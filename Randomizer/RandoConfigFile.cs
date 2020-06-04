@@ -132,6 +132,15 @@ namespace Celeste.Mod.Randomizer {
                 this.ReqOut = value;
             }
         }
+
+        public enum SplitKind {
+            TopToBottom,
+            BottomToTop,
+            LeftToRight,
+            RightToLeft,
+        }
+
+        public SplitKind? Split;
     }
 
     public class RandoConfigReq {
