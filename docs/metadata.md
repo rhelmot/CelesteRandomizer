@@ -38,7 +38,7 @@ InternalEdges:
 - <internal edge description>
 ```
 
-### Holes
+## Holes
 
 To specify which hole you're referring to, you need to specify which side of the room the hole is on (up, down, left, right), and then the index of the hole, counting from hole zero which is the first hole to the top or the left of the edge.
 
