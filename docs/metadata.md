@@ -75,7 +75,7 @@ Using the tweaks section, you can make edits to the room's entities.
 
 To delete this entity:
 
-![Ahorn screenshot of the edit entity dialog](docs/img/ahorn_1.png)
+![Ahorn screenshot of the edit entity dialog](img/ahorn_1.png)
 
 Use this syntax:
 
@@ -88,7 +88,7 @@ Tweaks:
 
 To add this spawn point:
 
-![Ahorn screenshot of the edit spawn dialog](docs/img/ahorn_2.png)
+![Ahorn screenshot of the edit spawn dialog](img/ahorn_2.png)
 
 Use this syntax:
 
@@ -107,7 +107,7 @@ You can combine the two syntaxes and specify neither Add nor Remove to update at
 
 The internal logic of the randomizer treats the level data as a [graph](https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)), where each room is a node and each hole is an edge. The problem with this model is that it assumes that movement within each node is free and each edge can be accessed coming in from any other edge. In order to resolve this problem, we allow rooms to be divided into subrooms and for connections to be described between subrooms. For example, for this room from City:
 
-![screenshot of a room with two exits on the left, a long pit in the middle, and one exit on the right](docs/img/ahorn_3.png)
+![screenshot of a room with two exits on the left, a long pit in the middle, and one exit on the right](img/ahorn_3.png)
 
 The best way to describe it would be as follows:
 
