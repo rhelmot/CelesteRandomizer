@@ -214,9 +214,12 @@ namespace Celeste.Mod.Randomizer {
                 if (!isOut && matchHole.Kind == HoleKind.Out) {
                     return new Impossible();
                 }
+                if (config == null) {
+                    return new Possible();
+                }
             }
             if (config == null) {
-                return new Possible();
+                return new Impossible();
             }
 
             var conjunction = new List<Requirement>();
