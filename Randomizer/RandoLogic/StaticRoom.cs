@@ -283,12 +283,16 @@ namespace Celeste.Mod.Randomizer {
                 }
 
                 foreach (var econfig in this.Tweaks) {
+                    if (econfig.Update?.Remove ?? false) {
+                        Logger.Log("randomizer", $"config may remove; entity: {entity.Name} {entity.ID}; config: {econfig.Name} {econfig.ID}");
+                    }
                     if (!(econfig.Update?.Add ?? false) &&
                         (econfig.ID == null || econfig.ID == entity.ID) &&
                         (econfig.Name == null || econfig.Name.ToLower() == entity.Name.ToLower()) &&
-                        (econfig.X == null || econfig.X == entity.Position.X) &&
-                        (econfig.Y == null || econfig.Y == entity.Position.Y)) {
+                        (econfig.X == null || nearlyEqual(econfig.X.Value, entity.Position.X)) &&
+                        (econfig.Y == null || nearlyEqual(econfig.Y.Value, entity.Position.Y))) {
                         if (econfig.Update?.Remove ?? false) {
+                            Logger.Log("randomizer", "...removed");
                             removals.Add(entity);
                         } else {
                             if (econfig.Update?.X != null)
@@ -304,23 +308,45 @@ namespace Celeste.Mod.Randomizer {
                     }
                 }
             }
-            void processSpawn(Vector2 spawn) {
+            Vector2? processSpawn(Vector2 spawn) {
                 foreach (var econfig in this.Tweaks) {
                     if (!(econfig.Update?.Add ?? false) &&
                         econfig.Name?.ToLower() == "spawn" &&
-                        (econfig.X == null || econfig.X == spawn.X) &&
-                        (econfig.Y == null || econfig.Y == spawn.Y)) {
+                        (econfig.X == null || nearlyEqual(econfig.X.Value, spawn.X - newPosition.X)) &&
+                        (econfig.Y == null || nearlyEqual(econfig.Y.Value, spawn.Y - newPosition.Y))) {
                         if (econfig.Update?.Remove ?? false) {
                             toRemoveSpawns.Add(spawn);
                         } else {
                             if (econfig.Update?.X != null)
-                                spawn.X = econfig.Update.X.Value;
+                                spawn.X = econfig.Update.X.Value + newPosition.X;
                             if (econfig.Update?.Y != null)
-                                spawn.Y = econfig.Update.Y.Value;
+                                spawn.Y = econfig.Update.Y.Value + newPosition.Y;
                         }
-                        break;
+                        return spawn;
                     }
                 }
+                return null;
+            }
+            bool nearlyEqual(float a, float b, float epsilon=0.1f) {
+                // https://stackoverflow.com/questions/3874627/floating-point-comparison-functions-for-c-sharp
+                const float floatNormal = (1 << 23) * float.Epsilon;
+                float absA = Math.Abs(a);
+                float absB = Math.Abs(b);
+                float diff = Math.Abs(a - b);
+
+                if (a == b) {
+                    // Shortcut, handles infinities
+                    return true;
+                }
+
+                if (a == 0.0f || b == 0.0f || diff < floatNormal) {
+                    // a or b is zero, or both are extremely close to it.
+                    // relative error is less meaningful here
+                    return diff < (epsilon * floatNormal);
+                }
+
+                // use relative error
+                return diff / Math.Min((absA + absB), float.MaxValue) < epsilon;
             }
 
             int maxID = 0;
@@ -332,8 +358,8 @@ namespace Celeste.Mod.Randomizer {
                 maxID = Math.Max(maxID, entity.ID);
                 processEntity(entity, toRemoveTriggers);
             }
-            foreach (var spawn in result.Spawns) {
-                processSpawn(spawn);
+            for (int i = 0; i < result.Spawns.Count; i++) {
+                result.Spawns[i] = processSpawn(result.Spawns[i]) ?? result.Spawns[i];
             }
 
             foreach (var entity in toRemoveEntities) {
@@ -352,7 +378,7 @@ namespace Celeste.Mod.Randomizer {
                         throw new Exception("Incomplete new entity: must have X and Y");
                     }
                     if (econfig.Name.ToLower() == "spawn") {
-                        result.Spawns.Add(new Vector2((float)econfig.Update.X + result.Position.X, (float)econfig.Update.Y + result.Position.Y));
+                        result.Spawns.Add(new Vector2(econfig.Update.X.Value + result.Position.X, econfig.Update.Y.Value + result.Position.Y));
                     } else {
                         var entity = new EntityData() {
                             Name = econfig.Name,
@@ -360,6 +386,7 @@ namespace Celeste.Mod.Randomizer {
                             Width = econfig.Update.Width ?? 0,
                             Height = econfig.Update.Height ?? 0,
                             ID = ++maxID,
+                            Level = result,
                         };
 
                         if (econfig.Name.ToLower().EndsWith("trigger")) {

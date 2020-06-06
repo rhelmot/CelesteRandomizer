@@ -25,6 +25,11 @@ ASide:
       Update:
         X: 16
         Width: 32
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 288
+        Y: 120
   - Room: "3"
     Holes:
     - Side: Up
@@ -294,33 +299,38 @@ ASide:
           Difficulty: hard
   - Room: "8"
     Holes:
-    - Side: Up
-      Idx: 0
-      Kind: inout
-    - Side: Right
-      Idx: 0
-      Kind: inout
     - Side: Left
       Idx: 0
       Kind: in
     - Side: Down
       Idx: 0
       Kind: inout
-      ReqIn:                    # fuck this jump in particular
+    InternalEdges:
+    - To: "right"
+      ReqOut:
         Or:
         - Dashes: one
         - Dashes: zero
           Difficulty: expert
-      ReqOut:
+      ReqIn:
         Dashes: one             # can't traverse backwards without a dash
-    - Side: Down
-      Idx: 1
-      Kind: inout
-      ReqOut:
-        Dashes: one
-    - Side: Down
-      Idx: 2
-      Kind: in
+    Subrooms:
+    - Room: "right"
+      Holes:
+      - Side: Up
+        Idx: 0
+        Kind: inout
+      - Side: Right
+        Idx: 0
+        Kind: inout
+      - Side: Down
+        Idx: 1
+        Kind: inout
+        ReqOut:
+          Dashes: one
+      - Side: Down
+        Idx: 2
+        Kind: in
     Tweaks:
     - ID: 0
       Update:
@@ -402,6 +412,11 @@ ASide:
       - Side: Right
         Idx: 0
         Kind: inout
+    Tweaks:
+    - ID: 0
+      Name: "changeRespawnTrigger"
+      Update:
+        Remove: true
   - Room: "9c"
     Holes:
     - Side: Left
@@ -412,6 +427,8 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: out
+      ReqOut:
+        Dashes: one
     - Side: Up
       Idx: 1
       Kind: in
@@ -429,6 +446,12 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - Split: RightToLeft
+      ReqOut:
+        Dashes: zero
+      ReqIn:
+        Dashes: one
   - Room: "10zb"
     Holes:
     - Side: Right
@@ -545,7 +568,7 @@ ASide:
     Tweaks:
     - ID: 0
       Update:
-        X: 40
+        X: 32
         Width: 16
     - Name: "spawn"
       X: 32
@@ -759,6 +782,8 @@ BSide:
     - Side: Up
       Idx: 0
       Kind: out
+      ReqOut:
+        Dashes: one
     - Side: Down
       Idx: 0
       Kind: in
@@ -918,6 +943,13 @@ BSide:
     - Side: Down
       Idx: 0
       Kind: in
+      ReqIn:
+        Dashes: one
+    - Side: Left
+      Idx: 0
+      Kind: unknown
+      ReqIn:
+        Dashes: one
     - Side: Down
       Idx: 1
       Kind: None

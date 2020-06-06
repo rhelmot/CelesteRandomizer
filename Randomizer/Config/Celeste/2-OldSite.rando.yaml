@@ -49,9 +49,13 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: inout
+      ReqOut:
+        Dashes: one
     - Side: Right
       Idx: 0
       Kind: inout
+      ReqBoth:
+        Dashes: one
     - Side: Right
       Idx: 1
       Kind: inout
@@ -251,12 +255,12 @@ ASide:
     - Side: Right
       Idx: 0
       Kind: inout
-      ReqOut:
+      ReqBoth:
         Dashes: one
     - Side: Left
       Idx: 0
       Kind: inout
-      ReqOut:
+      ReqBoth:
         Dashes: one
     - Side: Down
       Idx: 0
@@ -330,6 +334,8 @@ ASide:
       - Side: Right
         Idx: 2
         Kind: inout
+        ReqOut:
+          Dashes: one
       InternalEdges:
       - To: "middle_right"
         ReqOut:
@@ -352,6 +358,8 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: inout
+      ReqOut:
+        Dashes: one
   - Room: "d2"
     Holes:
     - Side: Up
@@ -371,6 +379,10 @@ ASide:
     - Side: Left
       Idx: 1
       Kind: inout
+    InternalEdges:
+    - Split: TopToBottom
+      ReqBoth:
+        Dashes: one
     Subrooms:
     - Room: "berry"
       Holes:
@@ -567,12 +579,16 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: inout
+      ReqOut:
+        Dashes: one
     - Side: Up
       Idx: 1
       Kind: inout
     - Side: Up
       Idx: 2
       Kind: inout
+      ReqOut:
+        Dashes: one
     - Side: Down
       Idx: 0
       Kind: inout
@@ -602,7 +618,7 @@ BSide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "00"
     Holes:
     - Side: Right
@@ -692,6 +708,8 @@ BSide:
     - Side: Down
       Idx: 0
       Kind: in
+      ReqIn:
+        Dashes: one
   - Room: "04"
     Holes:
     - Side: Up
@@ -700,6 +718,8 @@ BSide:
     - Side: Down
       Idx: 0
       Kind: in
+      ReqIn:
+        Dashes: one
   - Room: "05"
     Holes:
     - Side: Up

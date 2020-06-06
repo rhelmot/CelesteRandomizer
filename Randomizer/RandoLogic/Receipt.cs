@@ -16,6 +16,10 @@ namespace Celeste.Mod.Randomizer {
 
                 logic.Map.AddRoom(newRoom);
 
+                if (!logic.Settings.RepeatRooms) {
+                    logic.RemainingRooms.Remove(newRoomStatic);
+                }
+
                 return new StartRoomReceipt {
                     Logic = logic,
                     NewRoom = newRoom,
@@ -24,6 +28,10 @@ namespace Celeste.Mod.Randomizer {
 
             public override void Undo() {
                 Logic.Map.RemoveRoom(NewRoom);
+
+                if (!this.Logic.Settings.RepeatRooms) {
+                    this.Logic.RemainingRooms.Add(this.NewRoom.Room);
+                }
             }
         }
 
