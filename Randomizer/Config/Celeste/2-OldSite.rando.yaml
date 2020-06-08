@@ -182,6 +182,9 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: None
+    - Side: Down
+      Idx: 0
+      Kind: None
     InternalEdges:
     - Split: BottomToTop
       ReqBoth:
