@@ -100,10 +100,6 @@ namespace Celeste.Mod.Randomizer {
 
         private void ProcessSubroom(StaticNode node, RandoConfigRoom config) {
             foreach (RandoConfigHole holeConfig in config.Holes ?? new List<RandoConfigHole>()) {
-                if (holeConfig.Kind == HoleKind.None) {
-                    continue;
-                }
-
                 Hole matchedHole = null;
                 int remainingMatches = holeConfig.Idx;
                 foreach (Hole hole in this.Holes) {
@@ -133,12 +129,14 @@ namespace Celeste.Mod.Randomizer {
                     matchedHole.HighOpen = (bool)holeConfig.HighOpen;
                 }
 
-                node.Edges.Add(new StaticEdge() {
-                    FromNode = node,
-                    HoleTarget = matchedHole,
-                    ReqIn = this.ProcessReqs(holeConfig.ReqIn, matchedHole, false),
-                    ReqOut = this.ProcessReqs(holeConfig.ReqOut, matchedHole, true)
-                });
+                if (holeConfig.Kind != HoleKind.None) {
+                    node.Edges.Add(new StaticEdge() {
+                        FromNode = node,
+                        HoleTarget = matchedHole,
+                        ReqIn = this.ProcessReqs(holeConfig.ReqIn, matchedHole, false),
+                        ReqOut = this.ProcessReqs(holeConfig.ReqOut, matchedHole, true)
+                    });
+                }
             }
 
             foreach (var edge in config.InternalEdges ?? new List<RandoConfigInternalEdge>()) {
