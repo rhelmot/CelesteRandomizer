@@ -135,7 +135,12 @@ namespace Celeste.Mod.Randomizer {
                     Audio.SetMusic((string) null, true, true);
                     Audio.SetAmbience((string) null, true);
                     Audio.Play("event:/ui/main/savefile_begin");
+
+                    // use the debug file
                     SaveData.InitializeDebugMode();
+                    // turn on variants mode
+                    SaveData.Instance.VariantMode = true;
+                    SaveData.Instance.AssistMode = false;
 
                     LevelEnter.Go(new Session(newArea, null, null), true);
 
