@@ -56,7 +56,7 @@ namespace Celeste.Mod.Randomizer {
 
         public void FillMap(MapData map) {
             foreach (var room in this.Rooms) {
-                map.Levels.Add(room.Room.MakeLevelData(new Vector2(room.Bounds.Left, room.Bounds.Top), this.nonce++));
+                map.Levels.Add(room.Static.MakeLevelData(new Vector2(room.Bounds.Left, room.Bounds.Top), this.nonce++));
             }
         }
 
@@ -69,11 +69,11 @@ namespace Celeste.Mod.Randomizer {
 
     public class LinkedRoom {
         public Rectangle Bounds;
-        public StaticRoom Room;
+        public StaticRoom Static;
         public Dictionary<string, LinkedNode> Nodes;
 
         public LinkedRoom(StaticRoom Room, Vector2 Position) {
-            this.Room = Room;
+            this.Static = Room;
             this.Bounds = new Rectangle((int)Position.X, (int)Position.Y, Room.Level.Bounds.Width, Room.Level.Bounds.Height);
             this.Nodes = new Dictionary<string, LinkedNode>();
             foreach (var staticnode in Room.Nodes.Values) {

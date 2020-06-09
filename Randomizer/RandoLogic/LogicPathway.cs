@@ -35,7 +35,7 @@ namespace Celeste.Mod.Randomizer {
                     return false;
                 }
 
-                this.TriedRooms.Add(receipt.NewRoom.Room);
+                this.TriedRooms.Add(receipt.NewRoom.Static);
                 this.AddReceipt(receipt);
                 this.AddNextTask(new TaskPathwayPickEdge(this.Logic, receipt.NewRoom.Nodes["main"]));
 
@@ -137,7 +137,7 @@ namespace Celeste.Mod.Randomizer {
                 }
 
                 this.AddReceipt(receipt);
-                this.TriedRooms.Add(receipt.NewRoom.Room);
+                this.TriedRooms.Add(receipt.NewRoom.Static);
                 if (!this.IsEnd) {
                     var newNode = receipt.Edge.OtherNode(this.Node);
                     this.AddNextTask(new TaskPathwayPickEdge(this.Logic, newNode));

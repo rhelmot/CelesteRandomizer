@@ -30,7 +30,7 @@ namespace Celeste.Mod.Randomizer {
                 Logic.Map.RemoveRoom(NewRoom);
 
                 if (!this.Logic.Settings.RepeatRooms) {
-                    this.Logic.RemainingRooms.Add(this.NewRoom.Room);
+                    this.Logic.RemainingRooms.Add(this.NewRoom.Static);
                 }
             }
         }
@@ -91,7 +91,7 @@ namespace Celeste.Mod.Randomizer {
                 this.Edge.NodeB.Edges.Remove(this.Edge);
 
                 if (!this.Logic.Settings.RepeatRooms) {
-                    this.Logic.RemainingRooms.Add(this.NewRoom.Room);
+                    this.Logic.RemainingRooms.Add(this.NewRoom.Static);
                 }
             }
         }

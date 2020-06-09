@@ -35,7 +35,7 @@ namespace Celeste.Mod.Randomizer {
                     return false;
                 }
 
-                this.TriedRooms.Add(receipt.NewRoom.Room);
+                this.TriedRooms.Add(receipt.NewRoom.Static);
                 this.AddReceipt(receipt);
 
                 this.AddLastTask(new TaskLabyrinthFinish(this.Logic));
