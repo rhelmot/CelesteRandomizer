@@ -6,11 +6,13 @@ namespace Celeste.Mod.Randomizer {
     public class StaticRoom {
         public AreaKey Area;
         public LevelData Level;
-        public List<Hole> Holes;
-        public readonly String Name;
-        public bool End;
-        public List<RandoConfigEdit> Tweaks;
+        public readonly string Name;
+        public readonly bool End;
+        private List<RandoConfigEdit> Tweaks;
         public Dictionary<string, StaticNode> Nodes;
+
+        private List<Hole> Holes;
+        private List<StaticCollectable> Collectables;
 
         public StaticRoom(AreaKey Area, RandoConfigRoom config, LevelData Level, List<Hole> Holes) {
             this.Area = Area;
@@ -20,6 +22,32 @@ namespace Celeste.Mod.Randomizer {
             this.Name = AreaData.Get(Area).GetSID() + "/" + (Area.Mode == AreaMode.Normal ? "A" : Area.Mode == AreaMode.BSide ? "B" : "C") + "/" + Level.Name;
             this.End = config.End;
             this.Tweaks = config.Tweaks ?? new List<RandoConfigEdit>();
+
+            this.Collectables = new List<StaticCollectable>();
+            foreach (var entity in Level.Entities) {
+                switch (entity.Name.ToLower()) {
+                    case "strawberry":
+                    case "key":
+                        this.Collectables.Add(new StaticCollectable {
+                            Position = entity.Position,
+                            MustFly = false,
+                        });
+                        break;
+                }
+            }
+            this.Collectables.Sort((StaticCollectable a, StaticCollectable b) => {
+                if (a.Position.Y > b.Position.Y) {
+                    return 1;
+                } else if (a.Position.Y < b.Position.Y) {
+                    return -1;
+                } else if (a.Position.X > b.Position.X) {
+                    return 1;
+                } else if (a.Position.X < b.Position.X) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            });
 
             this.Nodes = new Dictionary<string, StaticNode>() {
                 { "main", new StaticNode() {
@@ -39,6 +67,7 @@ namespace Celeste.Mod.Randomizer {
                 this.ProcessSubroom(this.Nodes[subroom.Room], subroom);
             }
 
+            // assign unmarked holes
             foreach (var uhole in this.Holes) {
                 if (uhole.Kind != HoleKind.Unknown) {
                     continue;
@@ -94,6 +123,55 @@ namespace Celeste.Mod.Randomizer {
                         ReqIn = this.ProcessReqs(null, uhole, false),
                         ReqOut = this.ProcessReqs(null, uhole, true),
                     });
+                }
+            }
+
+            // assign unmarked collectables
+            foreach (var c in this.Collectables) {
+                if (c.ParentNode != null) {
+                    continue;
+                }
+
+                var bestDist = 1000f;
+                StaticNode bestNode = null;
+                foreach (var node in this.Nodes.Values) {
+                    foreach (var edge in node.Edges) {
+                        if (edge.HoleTarget == null) {
+                            continue;
+                        }
+
+                        var pos = edge.HoleTarget.LowCoord(new Rectangle(0, 0, this.Level.Bounds.Width, this.Level.Bounds.Height));
+                        var dist = (pos - c.Position).Length();
+                        if (dist < bestDist) {
+                            bestDist = dist;
+                            bestNode = node;
+                        }
+
+                        pos = edge.HoleTarget.HighCoord(new Rectangle(0, 0, this.Level.Bounds.Width, this.Level.Bounds.Height));
+                        dist = (pos - c.Position).Length();
+                        if (dist < bestDist) {
+                            bestDist = dist;
+                            bestNode = node;
+                        }
+                    }
+                }
+
+                if (bestNode != null) {
+                    c.ParentNode = bestNode;
+                    bestNode.Collectables.Add(c);
+                }
+            }
+
+            if (this.Name == "Celeste/3-CelestialResort/A/03-b") {
+                Logger.Log("randomizer", "b-03 collectables");
+                foreach (var c in this.Collectables) {
+                    Logger.Log("randomizer", $"collectable {c.Position} {c.ParentNode == null}");
+                }
+                foreach (var node in this.Nodes.Values) {
+                    Logger.Log("randomizer", $"03-b:{node.Name}");
+                    foreach (var col in node.Collectables) {
+                        Logger.Log("randomizer", $"collectable {col.Position}");
+                    }
                 }
             }
         }
@@ -152,6 +230,9 @@ namespace Celeste.Mod.Randomizer {
                         Name = node.Name + "_autosplit",
                         ParentRoom = node.ParentRoom
                     };
+                    if (node.ParentRoom.Nodes.ContainsKey(toNode.Name)) {
+                        throw new Exception("You may only autosplit a room once");
+                    }
                     node.ParentRoom.Nodes[toNode.Name] = toNode;
 
                     bool firstMain;
@@ -159,20 +240,20 @@ namespace Celeste.Mod.Randomizer {
                     var second = node.Edges[1].HoleTarget;
                     switch (edge.Split) {
                         case RandoConfigInternalEdge.SplitKind.BottomToTop:
-                            firstMain = first.Side == ScreenDirection.Down || second.Side == ScreenDirection.Up || 
+                            firstMain = first.Side == ScreenDirection.Down || second.Side == ScreenDirection.Up ||
                                 (first.Side != ScreenDirection.Up && second.Side != ScreenDirection.Down && first.HighBound > second.HighBound);
                             break;
                         case RandoConfigInternalEdge.SplitKind.TopToBottom:
-                            firstMain = first.Side == ScreenDirection.Up || second.Side == ScreenDirection.Down || 
+                            firstMain = first.Side == ScreenDirection.Up || second.Side == ScreenDirection.Down ||
                                 (first.Side != ScreenDirection.Down && second.Side != ScreenDirection.Up && first.LowBound < second.LowBound);
                             break;
                         case RandoConfigInternalEdge.SplitKind.RightToLeft:
-                            firstMain = first.Side == ScreenDirection.Right || second.Side == ScreenDirection.Left || 
+                            firstMain = first.Side == ScreenDirection.Right || second.Side == ScreenDirection.Left ||
                                 (first.Side != ScreenDirection.Left && second.Side != ScreenDirection.Right && first.HighBound > second.HighBound);
                             break;
                         case RandoConfigInternalEdge.SplitKind.LeftToRight:
                         default:
-                            firstMain = first.Side == ScreenDirection.Left || second.Side == ScreenDirection.Right || 
+                            firstMain = first.Side == ScreenDirection.Left || second.Side == ScreenDirection.Right ||
                                 (first.Side != ScreenDirection.Right && second.Side != ScreenDirection.Left && first.LowBound < second.LowBound);
                             break;
                     }
@@ -181,8 +262,24 @@ namespace Celeste.Mod.Randomizer {
                     node.Edges.Remove(secondary);
                     toNode.Edges.Add(secondary);
                     secondary.FromNode = toNode;
+                } else if (edge.Collectable != null) {
+                    toNode = new StaticNode() {
+                        Name = node.Name + "_autosplit",
+                        ParentRoom = node.ParentRoom
+                    };
+                    if (node.ParentRoom.Nodes.ContainsKey(toNode.Name)) {
+                        throw new Exception("You may only autosplit a room once");
+                    }
+                    node.ParentRoom.Nodes[toNode.Name] = toNode;
+
+                    var thing = this.Collectables[edge.Collectable.Value];
+                    if (thing.ParentNode != null) {
+                        throw new Exception("Can only assign a collectable to one owner");
+                    }
+                    thing.ParentNode = toNode;
+                    toNode.Collectables.Add(thing); 
                 } else {
-                    throw new Exception("Internal edge must have either To or Split");
+                    throw new Exception("Internal edge must have either To or Split or Collectable");
                 }
 
                 var reqIn = this.ProcessReqs(edge.ReqIn, null, false);
@@ -198,6 +295,25 @@ namespace Celeste.Mod.Randomizer {
 
                 node.Edges.Add(forward);
                 toNode.Edges.Add(reverse);
+            }
+
+            foreach (var col in config.Collectables) {
+                if (col.Idx != null) {
+                    var thing = this.Collectables[col.Idx.Value];
+                    if (thing.ParentNode != null) {
+                        throw new Exception("Can only assign a collectable to one owner");
+                    }
+                    thing.ParentNode = node;
+                    node.Collectables.Add(thing);
+                } else if (col.X != null && col.Y != null) {
+                    node.Collectables.Add(new StaticCollectable {
+                        ParentNode = node,
+                        Position = new Vector2((float)col.X.Value, (float)col.Y.Value),
+                        MustFly = col.MustFly
+                    });
+                } else {
+                    throw new Exception("Collectable must specify Idx or X/Y");
+                }
             }
         }
 
@@ -249,6 +365,10 @@ namespace Celeste.Mod.Randomizer {
                 conjunction.Add(new HoleRequirement(matchHole));
             }
 
+            if (config.Key) {
+                conjunction.Add(new KeyRequirement());
+            }
+
             if (conjunction.Count == 0) {
                 throw new Exception("this should be unreachable");
             } else if (conjunction.Count == 1) {
@@ -273,24 +393,29 @@ namespace Celeste.Mod.Randomizer {
             var toRemoveTriggers = new List<EntityData>();
             var toRemoveSpawns = new List<Vector2>();
             void processEntity(EntityData entity, List<EntityData> removals) {
-                if (entity.Name == "goldenBerry" || entity.Name == "musicTrigger" || entity.Name == "noRefillTrigger" || entity.Name == "checkpoint") {
-                    removals.Add(entity);
-                    return;
-                } else if (entity.Name == "finalBoss") {
-                    entity.Values["canChangeMusic"] = false;
+                switch (entity.Name.ToLower()) {
+                    case "goldenberry":
+                    case "musictrigger":
+                    case "musicfadetrigger":
+                    case "norefilltrigger":
+                    case "checkpoint":
+                    case "strawberry":
+                    case "key":
+                        removals.Add(entity);
+                        return;
+                    case "finalboss":
+                    case "badelineoldsite":
+                        entity.Values["canChangeMusic"] = false;
+                        break;
                 }
 
                 foreach (var econfig in this.Tweaks) {
-                    if (econfig.Update?.Remove ?? false) {
-                        Logger.Log("randomizer", $"config may remove; entity: {entity.Name} {entity.ID}; config: {econfig.Name} {econfig.ID}");
-                    }
                     if (!(econfig.Update?.Add ?? false) &&
                         (econfig.ID == null || econfig.ID == entity.ID) &&
                         (econfig.Name == null || econfig.Name.ToLower() == entity.Name.ToLower()) &&
                         (econfig.X == null || nearlyEqual(econfig.X.Value, entity.Position.X)) &&
                         (econfig.Y == null || nearlyEqual(econfig.Y.Value, entity.Position.Y))) {
                         if (econfig.Update?.Remove ?? false) {
-                            Logger.Log("randomizer", "...removed");
                             removals.Add(entity);
                         } else {
                             if (econfig.Update?.X != null)
@@ -429,7 +554,14 @@ namespace Celeste.Mod.Randomizer {
     public class StaticNode {
         public string Name;
         public List<StaticEdge> Edges = new List<StaticEdge>();
+        public List<StaticCollectable> Collectables = new List<StaticCollectable>();
         public StaticRoom ParentRoom;
+    }
+
+    public class StaticCollectable {
+        public Vector2 Position;
+        public bool MustFly;
+        public StaticNode ParentNode;
     }
 
     public class StaticEdge {
@@ -549,11 +681,29 @@ namespace Celeste.Mod.Randomizer {
         }
     }
 
+    public class KeyRequirement : Requirement {
+        public override bool Able(Capabilities state) {
+            return state.HasKey;
+        }
+    }
+
     public class Capabilities {
         public NumDashes Dashes;
         public NumDashes RefillDashes;
         public Difficulty PlayerSkill;
 
         public Hole MatchHole;
+        public bool HasKey;
+
+        public Capabilities WithoutKey() {
+            return new Capabilities {
+                Dashes = Dashes,
+                RefillDashes = RefillDashes,
+                PlayerSkill = PlayerSkill,
+
+                MatchHole = MatchHole,
+                HasKey = false,
+            };
+        }
     }
 }

@@ -12,6 +12,7 @@ namespace Celeste.Mod.Randomizer {
             public LinkedRoom NewRoom;
 
             public static StartRoomReceipt Do(RandoLogic logic, StaticRoom newRoomStatic) {
+                Logger.Log("randomizer", $"Adding room {newRoomStatic.Name} at start");
                 var newRoom = new LinkedRoom(newRoomStatic, Vector2.Zero);
 
                 logic.Map.AddRoom(newRoom);
@@ -27,6 +28,7 @@ namespace Celeste.Mod.Randomizer {
             }
 
             public override void Undo() {
+                Logger.Log("randomizer", $"Undo: Adding room {NewRoom.Static.Name} at start");
                 Logic.Map.RemoveRoom(NewRoom);
 
                 if (!this.Logic.Settings.RepeatRooms) {
@@ -39,12 +41,17 @@ namespace Celeste.Mod.Randomizer {
             public LinkedRoom NewRoom;
             private RandoLogic Logic;
             public LinkedEdge Edge;
+            public LinkedNode EntryNode;
 
             public static ConnectAndMapReceipt Do(RandoLogic logic, LinkedRoom fromRoom, StaticEdge fromEdge, StaticEdge toEdge) {
                 var toRoomStatic = toEdge.FromNode.ParentRoom;
 
                 if (fromEdge.HoleTarget == null || toEdge.HoleTarget == null) {
                     return null;
+                }
+
+                if (!fromRoom.Static.Nodes.ContainsKey(fromEdge.FromNode.Name)) {
+                    throw new Exception("Programming error - passed edge which does not correspond to room");
                 }
 
                 // this check is maaaaaybe the responsibility of the caller?
@@ -78,14 +85,17 @@ namespace Celeste.Mod.Randomizer {
                     logic.RemainingRooms.Remove(toRoomStatic);
                 }
 
+                Logger.Log("randomizer", $"Adding room {toRoomStatic.Name} at {newPosition}");
                 return new ConnectAndMapReceipt {
                     NewRoom = toRoom,
                     Logic = logic,
                     Edge = newEdge,
+                    EntryNode = toRoom.Nodes[toEdge.FromNode.Name],
                 };
             }
 
             public override void Undo() {
+                Logger.Log("randomizer", $"Undo: Adding room {NewRoom.Static.Name} at {NewRoom.Bounds}");
                 this.Logic.Map.RemoveRoom(this.NewRoom);
                 this.Edge.NodeA.Edges.Remove(this.Edge);
                 this.Edge.NodeB.Edges.Remove(this.Edge);
@@ -93,6 +103,25 @@ namespace Celeste.Mod.Randomizer {
                 if (!this.Logic.Settings.RepeatRooms) {
                     this.Logic.RemainingRooms.Add(this.NewRoom.Static);
                 }
+            }
+        }
+
+        public class PlaceCollectableReceipt : Receipt {
+            private LinkedNode Node;
+            private StaticCollectable Place;
+
+            public static PlaceCollectableReceipt Do(LinkedNode node, StaticCollectable place, LinkedNode.LinkedCollectable item) {
+                Logger.Log("randomizer", $"Placing collectable {item} in {node.Room.Static.Name}:{node.Static.Name}");
+                node.Collectables[place] = item;
+                return new PlaceCollectableReceipt {
+                    Node = node,
+                    Place = place
+                };
+            }
+
+            public override void Undo() {
+                Logger.Log("randomizer", $"Undo: Placing collectable in {Node.Room.Static.Name}:{Node.Static.Name}");
+                this.Node.Collectables.Remove(this.Place);
             }
         }
     }

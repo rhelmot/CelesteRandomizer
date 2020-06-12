@@ -88,7 +88,8 @@ namespace Celeste.Mod.Randomizer {
     }
 
     public class RandoConfigRoom {
-        public String Room { get; set; }
+        public String Room;
+        public List<RandoConfigCollectable> Collectables = new List<RandoConfigCollectable>();
         public List<RandoConfigHole> Holes { get; set; }
         public List<RandoConfigRoom> Subrooms { get; set; }
         public List<RandoConfigInternalEdge> InternalEdges { get; set; }
@@ -118,6 +119,13 @@ namespace Celeste.Mod.Randomizer {
         public HoleKind Kind { get; set; }
     }
 
+    public class RandoConfigCollectable {
+        public int? Idx;
+        public int? X;
+        public int? Y;
+        public bool MustFly;
+    }
+
     public class RandoConfigInternalEdge {
         public String To { get; set; }
         public RandoConfigReq ReqIn { get; set; }
@@ -141,6 +149,8 @@ namespace Celeste.Mod.Randomizer {
         }
 
         public SplitKind? Split;
+
+        public int? Collectable;
     }
 
     public class RandoConfigReq {

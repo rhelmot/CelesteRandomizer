@@ -75,6 +75,7 @@ namespace Celeste.Mod.Randomizer {
             this.Caps = new Capabilities {
                 Dashes = settings.Dashes,
                 PlayerSkill = settings.Difficulty,
+                HasKey = true,
             };
         }
 

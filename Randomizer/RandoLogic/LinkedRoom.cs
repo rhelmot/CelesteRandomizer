@@ -56,7 +56,7 @@ namespace Celeste.Mod.Randomizer {
 
         public void FillMap(MapData map) {
             foreach (var room in this.Rooms) {
-                map.Levels.Add(room.Static.MakeLevelData(new Vector2(room.Bounds.Left, room.Bounds.Top), this.nonce++));
+                map.Levels.Add(room.Bake(this.nonce++));
             }
         }
 
@@ -81,12 +81,65 @@ namespace Celeste.Mod.Randomizer {
                 this.Nodes.Add(staticnode.Name, node);
             }
         }
+
+        public LevelData Bake(int? nonce) {
+            var result = this.Static.MakeLevelData(new Vector2(this.Bounds.Left, this.Bounds.Top), nonce);
+
+            int maxID = 0;
+            foreach (var e in result.Entities) {
+                maxID = Math.Max(maxID, e.ID);
+            }
+
+            bool disableDown = true;
+            foreach (var node in this.Nodes.Values) {
+                foreach (var edge in node.Edges) {
+                    var hole = edge.CorrespondingEdge(node).HoleTarget;
+                    if (hole != null && hole.Side == ScreenDirection.Down) {
+                        disableDown = false;
+                    }
+                }
+
+                foreach (var kv in node.Collectables) {
+                    string name = null;
+                    switch (kv.Value) {
+                        case LinkedNode.LinkedCollectable.Key:
+                            name = "key";
+                            break;
+                        case LinkedNode.LinkedCollectable.Strawberry:
+                        case LinkedNode.LinkedCollectable.WingedStrawberry:
+                            name = "strawberry";
+                            break;
+                    }
+
+                    var e = new EntityData {
+                        ID = ++maxID,
+                        Name = name,
+                        Level = result,
+                        Position = kv.Key.Position,
+                    };
+                    if (kv.Value == LinkedNode.LinkedCollectable.WingedStrawberry) {
+                        e.Values["winged"] = "true";
+                    }
+                    result.Entities.Add(e);
+                }
+            }
+
+            result.DisableDownTransition = disableDown;
+            return result;
+        }
     }
 
     public class LinkedNode {
         public StaticNode Static;
         public LinkedRoom Room;
         public List<LinkedEdge> Edges = new List<LinkedEdge>();
+        public Dictionary<StaticCollectable, LinkedCollectable> Collectables = new Dictionary<StaticCollectable, LinkedCollectable>();
+
+        public enum LinkedCollectable {
+            Strawberry,
+            WingedStrawberry,
+            Key
+        }
 
         public IEnumerable<LinkedNode> Successors(Capabilities caps, bool requireReverse, bool onlyInternal=false) {
             foreach (var iedge in this.Static.Edges) {
@@ -137,6 +190,14 @@ namespace Celeste.Mod.Randomizer {
                     continue;
                 }
                 yield return staticedge;
+            }
+        }
+
+        public IEnumerable<StaticCollectable> UnlinkedCollectables() {
+            foreach (var c in this.Static.Collectables) {
+                if (!this.Collectables.ContainsKey(c)) {
+                    yield return c;
+                }
             }
         }
 

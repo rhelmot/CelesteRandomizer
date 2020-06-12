@@ -56,28 +56,34 @@ ASide:
     - Side: Left
       Idx: 2
       Kind: none
-    - Room: "s3"  # TODO: key
+    - Room: "s3"
     Holes:
     - Side: Right
       Idx: 1
-      Kind: out
-      ReqOut:
-        Or:
-        - Dashes: one
-        - Dashes: zero
-          Difficulty: hard
+      Kind: inout
+      ReqBoth:
+        Key: true
     - Side: Left
       Idx: 0
       Kind: inout
     - Side: Left
       Idx: 1
       Kind: None
+    InternalEdges:
+    - Collectable: 1
+      ReqBoth:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: hard
     Subrooms:
     - Room: "berry"
       Holes:
       - Side: Right
         Idx: 0
         Kind: inout
+      Collectables:
+      - Idx: 0
   - Room: "0x-a"
     Holes:
     - Side: Right
@@ -113,7 +119,9 @@ ASide:
       Holes:
       - Side: Right
         Idx: 0
-        Kind: None #TODO key door
+        Kind: inout
+        ReqBoth:
+          Key: true
       InternalEdges:
       - To: "main"
         ReqOut:
@@ -296,9 +304,16 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
-    - Side: Right
-      Idx: 0
-      Kind: None #TODO key door
+    InternalEdges:
+    - To: "right"
+      ReqBoth:
+        Key: true
+    Subrooms:
+    - Room: "right"
+      Holes:
+      - Side: Right
+        Idx: 0
+        Kind: inout
   - Room: "07-b" # key loop start/end
     Holes:
     - Side: Right
@@ -310,12 +325,25 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - To: "key"
+      ReqIn:
+        Dashes: zero
     Subrooms:
     - Room: "berry"
       Holes:
       - Side: Up
         Idx: 0
         Kind: None
+      Collectables:
+      - Idx: 0
+    - Room: "key"
+      Holes:
+      - Side: Right
+        Idx: 0
+        Kind: in
+      Collectables:
+      - Idx: 1
   - Room: "06-b" # key loop 1
     Holes:
     - Side: Up
@@ -423,9 +451,6 @@ ASide:
   - Room: "09-b"  # huge mess
     Holes:
     - Side: Up
-      Idx: 0
-      Kind: None #TODO key door
-    - Side: Up
       Idx: 1
       Kind: in
     - Side: Up
@@ -449,6 +474,30 @@ ASide:
     - Side: Down
       Idx: 2
       Kind: out
+    InternalEdges:
+    - To: "exit"
+      ReqBoth:
+        Key: true
+    - To: "key"  # TODO: all three buttons
+    Subrooms:
+    - Room: "exit"
+      Holes:
+      - Side: Up
+        Idx: 0
+        Kind: inout
+    - Room: "key"
+      Collectables:
+      - Idx: 0
+    Tweaks:
+    - ID: 36
+      Update:
+        Remove: true
+    - ID: 37
+      Update:
+        Remove: true
+    - ID: 38
+      Update:
+        Remove: true
   - Room: "10-x" # chest 1/end
     Holes:
     - Side: Down
@@ -769,15 +818,24 @@ ASide:
     - Side: Right
       Idx: 0
       Kind: inout
-    - Side: Left
-      Idx: 0
-      Kind: inout
-    InternalEdges:
-    - Split: RightToLeft
-      ReqOut:
-        Dashes: one
-      ReqIn:
-        Dashes: two
+    Subrooms:
+    - Room: "berry"
+      InternalEdges:
+      - To: "exit"
+        ReqOut:
+          Dashes: one
+        ReqIn:
+          Dashes: two
+      - To: "main"
+        ReqBoth:
+          Dashes: one
+      Collectables:
+      - Idx: 0
+    - Room: "exit"
+      Holes:
+      - Side: Left
+        Idx: 0
+        Kind: inout
     Tweaks:
     - ID: 28
       Update:
@@ -816,17 +874,28 @@ ASide:
       - Side: Down
         Idx: 0
         Kind: inout
+    Tweaks:
+    - ID: 87
+      Update:
+        Remove: true
   - Room: "04-c"  # shaft offshoot 1
     Holes:
-    - Side: Up
-      Idx: 0
-      Kind: None #TODO key door
     - Side: Up
       Idx: 1
       Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - To: "exit"
+      ReqBoth:
+        Key: true
+    Subrooms:
+    - Room: "exit"
+      Holes:
+      - Side: Up
+        Idx: 0
+        Kind: inout
   - Room: "02-c"  # shaft offshoot 2
     Holes:
     - Side: Right

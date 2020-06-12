@@ -20,6 +20,10 @@ ASide:
         - Dashes: one
         - Dashes: zero
           Difficulty: hard
+    InternalEdges:
+    - Collectable: 0
+      ReqBoth:
+        Dashes: one
     Tweaks:
     - ID: 7             # shorten jumpthru
       Update:
