@@ -43,29 +43,20 @@ namespace Celeste.Mod.Randomizer {
             public LinkedEdge Edge;
             public LinkedNode EntryNode;
 
-            public static ConnectAndMapReceipt Do(RandoLogic logic, LinkedRoom fromRoom, StaticEdge fromEdge, StaticEdge toEdge) {
+            public static ConnectAndMapReceipt Do(RandoLogic logic, UnlinkedEdge fromEdge, StaticEdge toEdge) {
                 var toRoomStatic = toEdge.FromNode.ParentRoom;
+                var fromRoom = fromEdge.Node.Room;
 
-                if (fromEdge.HoleTarget == null || toEdge.HoleTarget == null) {
+                if (fromEdge.Static.HoleTarget == null || toEdge.HoleTarget == null) {
                     return null;
                 }
 
-                if (!fromRoom.Static.Nodes.ContainsKey(fromEdge.FromNode.Name)) {
-                    throw new Exception("Programming error - passed edge which does not correspond to room");
-                }
-
-                // this check is maaaaaybe the responsibility of the caller?
-                // it is less the world of connection ability and more the world of logic
-                if (toEdge.HoleTarget.Kind == HoleKind.Unknown && !logic.Settings.EnterUnknown) {
-                    return null;
-                }
-
-                var newOffset = fromEdge.HoleTarget.Compatible(toEdge.HoleTarget);
+                var newOffset = fromEdge.Static.HoleTarget.Compatible(toEdge.HoleTarget);
                 if (newOffset == Hole.INCOMPATIBLE) {
                     return null;
                 }
 
-                var newPosition = toRoomStatic.AdjacentPosition(fromRoom.Bounds, fromEdge.HoleTarget.Side, newOffset);
+                var newPosition = toRoomStatic.AdjacentPosition(fromRoom.Bounds, fromEdge.Static.HoleTarget.Side, newOffset);
                 var toRoom = new LinkedRoom(toRoomStatic, newPosition);
                 if (!logic.Map.AreaFree(toRoom.Bounds)) {
                     return null;
@@ -73,9 +64,9 @@ namespace Celeste.Mod.Randomizer {
 
                 logic.Map.AddRoom(toRoom);
                 var newEdge = new LinkedEdge {
-                    NodeA = fromRoom.Nodes[fromEdge.FromNode.Name],
+                    NodeA = fromEdge.Node,
                     NodeB = toRoom.Nodes[toEdge.FromNode.Name],
-                    StaticA = fromEdge,
+                    StaticA = fromEdge.Static,
                     StaticB = toEdge,
                 };
                 newEdge.NodeA.Edges.Add(newEdge);

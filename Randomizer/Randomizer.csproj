@@ -92,6 +92,8 @@
     <Compile Include="OuiMapPicker.cs" />
     <Compile Include="RandoLogic\LinkedRoom.cs" />
     <Compile Include="RandoLogic\Receipt.cs" />
+    <Compile Include="PriorityQueue.cs" />
+    <Compile Include="RandoLogic\Requirements.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Everest\Celeste.Mod.mm\Celeste.Mod.mm.csproj">

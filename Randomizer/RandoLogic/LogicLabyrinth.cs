@@ -40,22 +40,21 @@ namespace Celeste.Mod.Randomizer {
 
                 this.AddLastTask(new TaskLabyrinthFinish(this.Logic));
 
+                var closure = LinkedNodeSet.Closure(receipt.NewRoom.Nodes["main"], this.Logic.Caps, this.Logic.Caps, true);
                 var node = receipt.NewRoom.Nodes["main"];
-                foreach (var edge in node.UnlinkedEdges(this.Logic.Caps, true)) {
-                    this.AddNextTask(new TaskLabyrinthContinue(this.Logic, node, edge));
+                foreach (var edge in closure.UnlinkedEdges()) {
+                    this.AddNextTask(new TaskLabyrinthContinue(this.Logic, edge));
                 }
                 return true;
             }
         }
 
         private class TaskLabyrinthContinue : RandoTask {
-            private LinkedNode Node;
-            private StaticEdge Edge;
+            private UnlinkedEdge Edge;
 
             private HashSet<StaticEdge> TriedEdges = new HashSet<StaticEdge>();
 
-            public TaskLabyrinthContinue(RandoLogic logic, LinkedNode node, StaticEdge edge) : base(logic) {
-                this.Node = node;
+            public TaskLabyrinthContinue(RandoLogic logic, UnlinkedEdge edge) : base(logic) {
                 this.Edge = edge;
             }
 
@@ -82,7 +81,7 @@ namespace Celeste.Mod.Randomizer {
                         continue;
                     }
 
-                    var result = ConnectAndMapReceipt.Do(this.Logic, this.Node.Room, this.Edge, edge);
+                    var result = ConnectAndMapReceipt.Do(this.Logic, this.Edge, edge);
                     if (result != null) {
                         return result;
                     }
@@ -102,13 +101,12 @@ namespace Celeste.Mod.Randomizer {
                 }
 
                 this.AddReceipt(receipt);
-                this.TriedEdges.Add(receipt.Edge.CorrespondingEdge(this.Node));
-                var targetNode = receipt.Edge.OtherNode(this.Node);
+                this.TriedEdges.Add(receipt.Edge.CorrespondingEdge(this.Edge.Node));
+                var targetNode = receipt.Edge.OtherNode(this.Edge.Node);
+                var closure = LinkedNodeSet.Closure(targetNode, this.Logic.Caps, this.Logic.Caps, true);
 
-                foreach (var node in targetNode.Closure(this.Logic.Caps, true, true)) {
-                    foreach (var edge in node.UnlinkedEdges(this.Logic.Caps, true)) {
-                        this.AddNextTask(new TaskLabyrinthContinue(this.Logic, targetNode, edge));
-                    }
+                foreach (var newedge in closure.UnlinkedEdges()) {
+                    this.AddNextTask(new TaskLabyrinthContinue(this.Logic, newedge));
                 }
                 return true;
             }

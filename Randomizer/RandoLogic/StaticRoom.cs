@@ -361,10 +361,6 @@ namespace Celeste.Mod.Randomizer {
             // not nullable
             conjunction.Add(new SkillRequirement(config.Difficulty));
 
-            if (matchHole != null) {
-                conjunction.Add(new HoleRequirement(matchHole));
-            }
-
             if (config.Key) {
                 conjunction.Add(new KeyRequirement());
             }
@@ -591,119 +587,6 @@ namespace Celeste.Mod.Randomizer {
             get {
                 return Child.ReqIn;
             }
-        }
-
-    }
-
-    public abstract class Requirement {
-        public abstract bool Able(Capabilities state);
-    }
-
-    public class Impossible : Requirement {
-        public override bool Able(Capabilities state) {
-            return false;
-        }
-    }
-
-    public class Possible : Requirement {
-        public override bool Able(Capabilities state) {
-            return true;
-        }
-    }
-
-    public class Conjunction : Requirement {
-        public List<Requirement> Children;
-        public Conjunction(List<Requirement> Children) {
-            this.Children = Children;
-        }
-
-        public override bool Able(Capabilities state) {
-            foreach (var child in this.Children) {
-                if (!child.Able(state)) {
-                    return false;
-                }
-            }
-            return true;
-        }
-    }
-
-    public class Disjunction : Requirement {
-        public List<Requirement> Children;
-        public Disjunction(List<Requirement> Children) {
-            this.Children = Children;
-        }
-
-        public override bool Able(Capabilities state) {
-            foreach (var child in this.Children) {
-                if (child.Able(state)) {
-                    return true;
-                }
-            }
-            return false;
-        }
-    }
-
-    public class DashRequirement : Requirement {
-        public NumDashes Dashes;
-        public DashRequirement(NumDashes dashes) {
-            this.Dashes = dashes;
-        }
-
-        public override bool Able(Capabilities state) {
-            return state.Dashes >= this.Dashes;
-        }
-    }
-
-    public class SkillRequirement : Requirement {
-        public Difficulty Difficulty;
-        public SkillRequirement(Difficulty Difficulty) {
-            this.Difficulty = Difficulty;
-        }
-
-        public override bool Able(Capabilities state) {
-            return state.PlayerSkill >= this.Difficulty;
-        }
-    }
-
-    public class HoleRequirement : Requirement {
-        public Hole Hole;
-        public HoleRequirement(Hole Hole) {
-            this.Hole = Hole;
-        }
-
-        public override bool Able(Capabilities state) {
-            if (state.MatchHole == null) {
-                return true;
-            }
-
-            // not the most efficient! but who cares!
-            return this.Hole.Compatible(state.MatchHole) != Hole.INCOMPATIBLE;
-        }
-    }
-
-    public class KeyRequirement : Requirement {
-        public override bool Able(Capabilities state) {
-            return state.HasKey;
-        }
-    }
-
-    public class Capabilities {
-        public NumDashes Dashes;
-        public NumDashes RefillDashes;
-        public Difficulty PlayerSkill;
-
-        public Hole MatchHole;
-        public bool HasKey;
-
-        public Capabilities WithoutKey() {
-            return new Capabilities {
-                Dashes = Dashes,
-                RefillDashes = RefillDashes,
-                PlayerSkill = PlayerSkill,
-
-                MatchHole = MatchHole,
-                HasKey = false,
-            };
         }
     }
 }

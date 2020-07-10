@@ -396,5 +396,35 @@ namespace Celeste.Mod.Randomizer {
                 }
             }
         }
+
+        private List<StaticEdge> AvailableNewEdges(Capabilities capsIn, Capabilities capsOut, Func<StaticEdge, bool> filter=null) {
+            var result = new List<StaticEdge>();
+
+            foreach (var room in this.RemainingRooms) {
+                foreach (var node in room.Nodes.Values) {
+                    foreach (var edge in node.Edges) {
+                        if (edge.HoleTarget == null) {
+                            continue;
+                        }
+                        if (edge.HoleTarget.Kind == HoleKind.Unknown && !this.Settings.EnterUnknown) {
+                            continue;
+                        }
+                        if (capsIn != null && !edge.ReqIn.Able(capsIn)) {
+                            continue;
+                        }
+                        if (capsOut != null && !edge.ReqOut.Able(capsOut)) {
+                            continue;
+                        }
+                        if (filter != null && !filter(edge)) {
+                            continue;
+                        }
+                        result.Add(edge);
+                    }
+                }
+            }
+
+            result.Shuffle(this.Random);
+            return result;
+        }
     }
 }

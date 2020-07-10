@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Monocle;
 
 namespace Celeste.Mod.Randomizer {
     public class LinkedMap {
@@ -129,11 +130,22 @@ namespace Celeste.Mod.Randomizer {
         }
     }
 
-    public class LinkedNode {
+    public class LinkedNode : IComparable<LinkedNode>, IComparable {
         public StaticNode Static;
         public LinkedRoom Room;
         public List<LinkedEdge> Edges = new List<LinkedEdge>();
         public Dictionary<StaticCollectable, LinkedCollectable> Collectables = new Dictionary<StaticCollectable, LinkedCollectable>();
+
+        public int CompareTo(LinkedNode obj) {
+            return 0;
+        }
+
+        public int CompareTo(object obj) {
+            if (!(obj is LinkedNode other)) {
+                throw new ArgumentException("Must compare LinkedNode to LinkedNode");
+            }
+            return this.CompareTo(other);
+        }
 
         public enum LinkedCollectable {
             Strawberry,
@@ -141,12 +153,15 @@ namespace Celeste.Mod.Randomizer {
             Key
         }
 
-        public IEnumerable<LinkedNode> Successors(Capabilities caps, bool requireReverse, bool onlyInternal=false) {
+        public IEnumerable<LinkedNode> Successors(Capabilities capsForward, Capabilities capsReverse, bool onlyInternal = false) {
             foreach (var iedge in this.Static.Edges) {
                 if (iedge.NodeTarget == null) {
                     continue;
                 }
-                if (!iedge.ReqOut.Able(caps)) {
+                if (capsForward != null && !iedge.ReqOut.Able(capsForward)) {
+                    continue;
+                }
+                if (capsReverse != null && !iedge.ReqIn.Able(capsReverse)) {
                     continue;
                 }
                 yield return this.Room.Nodes[iedge.NodeTarget.Name];
@@ -157,10 +172,10 @@ namespace Celeste.Mod.Randomizer {
                     var check1 = edge.CorrespondingEdge(this);
                     var check2 = edge.OtherEdge(this);
 
-                    if (!check1.ReqOut.Able(caps) || !check2.ReqIn.Able(caps)) {
+                    if (capsForward != null && (!check1.ReqOut.Able(capsForward) || !check2.ReqIn.Able(capsForward))) {
                         continue;
                     }
-                    if (requireReverse && (!check1.ReqIn.Able(caps) || !check2.ReqOut.Able(caps))) {
+                    if (capsReverse != null && (!check1.ReqIn.Able(capsReverse) || !check2.ReqOut.Able(capsReverse))) {
                         continue;
                     }
                     yield return edge.OtherNode(this);
@@ -168,7 +183,34 @@ namespace Celeste.Mod.Randomizer {
             }
         }
 
-        public IEnumerable<StaticEdge> UnlinkedEdges(Capabilities caps, bool requireReverse) {
+        public IEnumerable<Tuple<LinkedNode, Requirement>> SuccessorsRequires(Capabilities capsForward, bool onlyInternal = false) {
+            foreach (var iedge in this.Static.Edges) {
+                if (iedge.NodeTarget == null) {
+                    continue;
+                }
+                var reqs = iedge.ReqOut.Conflicts(capsForward);
+                if (reqs is Impossible) {
+                    continue;
+                }
+
+                yield return Tuple.Create(this.Room.Nodes[iedge.NodeTarget.Name], reqs);
+            }
+
+            if (!onlyInternal) {
+                foreach (var edge in this.Edges) {
+                    var check1 = edge.CorrespondingEdge(this);
+                    var check2 = edge.OtherEdge(this);
+
+                    var reqs = Requirement.And(new List<Requirement> { check1.ReqOut.Conflicts(capsForward), check2.ReqIn.Conflicts(capsForward) });
+                    if (reqs is Impossible) {
+                        continue;
+                    }
+                    yield return Tuple.Create(edge.OtherNode(this), reqs);
+                }
+            }
+        }
+
+        public IEnumerable<StaticEdge> UnlinkedEdges(Capabilities capsForward, Capabilities capsReverse) {
             foreach (var staticedge in this.Static.Edges) {
                 if (staticedge.HoleTarget == null) {
                     continue;
@@ -183,10 +225,10 @@ namespace Celeste.Mod.Randomizer {
                 if (found) {
                     continue;
                 }
-                if (!staticedge.ReqOut.Able(caps)) {
+                if (capsForward != null && !staticedge.ReqOut.Able(capsForward)) {
                     continue;
                 }
-                if (requireReverse && !staticedge.ReqIn.Able(caps)) {
+                if (capsReverse != null && !staticedge.ReqIn.Able(capsReverse)) {
                     continue;
                 }
                 yield return staticedge;
@@ -199,28 +241,6 @@ namespace Celeste.Mod.Randomizer {
                     yield return c;
                 }
             }
-        }
-
-        public HashSet<LinkedNode> Closure(Capabilities caps, bool requireReverse, bool onlyInternal=false) {
-            var result = new HashSet<LinkedNode>();
-            var queue = new Queue<LinkedNode>();
-            void enqueue(LinkedNode node) {
-                if (!result.Contains(node)) {
-                    queue.Enqueue(node);
-                    result.Add(node);
-                }
-            }
-            enqueue(this);
-
-            while (queue.Count != 0) {
-                var item = queue.Dequeue();
-
-                foreach (var succ in item.Successors(caps, requireReverse, onlyInternal)) {
-                    enqueue(succ);
-                }
-            }
-
-            return result;
         }
     }
 
@@ -238,6 +258,142 @@ namespace Celeste.Mod.Randomizer {
 
         public StaticEdge OtherEdge(LinkedNode One) {
             return One == NodeA ? StaticB : One == NodeB ? StaticA : null;
+        }
+    }
+
+    public class UnlinkedEdge {
+        public StaticEdge Static;
+        public LinkedNode Node;
+    }
+
+    public class UnlinkedCollectable {
+        public StaticCollectable Static;
+        public LinkedNode Node;
+    }
+
+    public class LinkedNodeSet {
+        private List<LinkedNode> Nodes;
+        private Capabilities CapsForward;
+        private Capabilities CapsReverse;
+        private Random Random;
+
+        public static LinkedNodeSet Closure(LinkedNode start, Capabilities capsForward, Capabilities capsReverse, bool internalOnly) {
+            var result = new HashSet<LinkedNode>();
+            var queue = new Queue<LinkedNode>();
+            void enqueue(LinkedNode node) {
+                if (!result.Contains(node)) {
+                    queue.Enqueue(node);
+                    result.Add(node);
+                }
+            }
+            enqueue(start);
+
+            while (queue.Count != 0) {
+                var item = queue.Dequeue();
+
+                foreach (var succ in item.Successors(capsForward, capsReverse, internalOnly)) {
+                    enqueue(succ);
+                }
+            }
+
+            return new LinkedNodeSet(result) {
+                CapsForward = capsForward,
+                CapsReverse = capsReverse,
+            };
+        }
+
+        public static Requirement TraversalRequires(LinkedNode start, Capabilities capsForward, bool internalOnly, UnlinkedEdge end) {
+            return Requirement.And(new List<Requirement> { TraversalRequires(start, capsForward, internalOnly, end.Node),
+                                                           end.Static.ReqOut.Conflicts(capsForward)
+            });
+        }
+
+        public static Requirement TraversalRequires(LinkedNode start, Capabilities capsForward, bool internalOnly, LinkedNode end) {
+            var queue = new PriorityQueue<Tuple<Requirement, LinkedNode>>();
+            var seen = new Dictionary<LinkedNode, List<Requirement>>();
+
+            Requirement p = new Possible();
+            queue.Enqueue(Tuple.Create(p, start));
+            seen[start] = new List<Requirement> { p };
+
+            // implementation question: should this loop break as soon as one path to end is found, or should it exhaust the queue?
+            // for now, let's go with exhaust the queue so if there's a Possible we don't miss it
+
+            while (queue.Count != 0) {
+                var entry = queue.Dequeue();
+                var entryReq = entry.Item1;
+                var entryNode = entry.Item2;
+
+                foreach (var where in entryNode.SuccessorsRequires(capsForward)) {
+                    var realReq = Requirement.And(new List<Requirement> { entryReq, where.Item2 });
+                    var nextNode = where.Item1;
+
+                    if (!seen.TryGetValue(nextNode, out var seenLst)) {
+                        seenLst = new List<Requirement>();
+                        seen[nextNode] = seenLst;
+                    }
+
+                    // search for any requirement already seen which obsoletes this new requirement
+                    var found = false;
+                    foreach (var req in seenLst) {
+                        if (req.Equals(realReq) || req.StrictlyBetterThan(realReq)) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) {
+                        seenLst.Add(realReq);
+                        queue.Enqueue(Tuple.Create(realReq, nextNode));
+                    }
+                }
+            }
+
+            if (!seen.TryGetValue(end, out var disjunct)) {
+                return new Impossible();
+            }
+
+            return Requirement.Or(disjunct);
+        }
+
+        private LinkedNodeSet(List<LinkedNode> nodes) {
+            this.Nodes = nodes;
+        }
+
+        private LinkedNodeSet(IEnumerable<LinkedNode> nodes) : this(new List<LinkedNode>(nodes)) { }
+
+        public LinkedNodeSet Shuffle(Random random) {
+            this.Random = random;
+            return this;
+        }
+
+        public List<UnlinkedEdge> UnlinkedEdges(Func<UnlinkedEdge, bool> filter=null) {
+            var result = new List<UnlinkedEdge>();
+            foreach (var node in this.Nodes) {
+                foreach (var edge in node.UnlinkedEdges(this.CapsForward, this.CapsReverse)) {
+                    var uEdge = new UnlinkedEdge { Node = node, Static = edge };
+                    if (filter != null && !filter(uEdge)) {
+                        continue;
+                    }
+                    result.Add(uEdge);
+                }
+            }
+            if (this.Random != null) {
+                result.Shuffle(this.Random);
+            }
+            return result;
+        }
+
+        public List<UnlinkedCollectable> UnlinkedCollectables() {
+            var result = new List<UnlinkedCollectable>();
+            foreach (var node in this.Nodes) {
+                foreach (var col in node.UnlinkedCollectables()) {
+                    result.Add(new UnlinkedCollectable { Node = node, Static = col });
+                }
+            }
+            if (this.Random != null) {
+                result.Shuffle(this.Random);
+            }
+            return result;
         }
     }
 }
