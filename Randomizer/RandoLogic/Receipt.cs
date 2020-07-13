@@ -76,7 +76,7 @@ namespace Celeste.Mod.Randomizer {
                     logic.RemainingRooms.Remove(toRoomStatic);
                 }
 
-                Logger.Log("randomizer", $"Adding room {toRoomStatic.Name} at {newPosition}");
+                Logger.Log("randomizer", $"Adding room {toRoomStatic.Name} at {newPosition} ({logic.Map.Count})");
                 return new ConnectAndMapReceipt {
                     NewRoom = toRoom,
                     Logic = logic,

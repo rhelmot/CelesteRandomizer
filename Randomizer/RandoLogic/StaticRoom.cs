@@ -161,19 +161,6 @@ namespace Celeste.Mod.Randomizer {
                     bestNode.Collectables.Add(c);
                 }
             }
-
-            if (this.Name == "Celeste/3-CelestialResort/A/03-b") {
-                Logger.Log("randomizer", "b-03 collectables");
-                foreach (var c in this.Collectables) {
-                    Logger.Log("randomizer", $"collectable {c.Position} {c.ParentNode == null}");
-                }
-                foreach (var node in this.Nodes.Values) {
-                    Logger.Log("randomizer", $"03-b:{node.Name}");
-                    foreach (var col in node.Collectables) {
-                        Logger.Log("randomizer", $"collectable {col.Position}");
-                    }
-                }
-            }
         }
 
         private void ProcessSubroom(StaticNode node, RandoConfigRoom config) {

@@ -1,4 +1,12 @@
 ASide:
+  - Room: "0x"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: inout
   - Room: "00"
     Holes:
     - Side: Right
@@ -15,19 +23,20 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
-  - Room: "02"
+    InternalEdges:
+    - Split: LeftToRight
+      ReqIn:
+        Dashes: zero
+      ReqOut:
+        Dashes: one
+  - Room: "02"  # TODO: hearts
     Holes:
     - Side: Right
       Idx: 0
-      Kind: inout
+      Kind: None
     - Side: Left
       Idx: 0
-      Kind: inout
-  - Room: "0x"
-    Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
+      Kind: None
   - Room: "a-00"
     Holes:
     - Side: Right
@@ -36,6 +45,15 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - Split: LeftToRight
+      ReqOut:
+        Or:
+        - Dashes: one
+          Difficulty: hard
+        - Dashes: two
+      ReqIn:
+        Dashes: one
   - Room: "a-01"
     Holes:
     - Side: Right
@@ -44,6 +62,10 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - Split: LeftToRight
+      ReqBoth:
+        Dashes: one
   - Room: "a-02"
     Holes:
     - Side: Up
@@ -52,14 +74,28 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - Split: LeftToRight
+      ReqOut:
+        Or:
+        - Dashes: one
+          Difficulty: hard
+        - Dashes: two
+      ReqIn:
+        Dashes: one
   - Room: "a-03"
     Holes:
     - Side: Up
       Idx: 0
       Kind: inout
+      ReqOut:
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: hard
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in
     - Side: Left
       Idx: 0
       Kind: None
@@ -77,6 +113,9 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: inout
+      ReqOut:
+        Dashes: two
+        Diffuclty: hard
     - Side: Right
       Idx: 0
       Kind: inout
@@ -85,7 +124,7 @@ ASide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "b-01"
     Holes:
     - Side: Right
@@ -102,6 +141,10 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - Split: LeftToRight
+      ReqBoth:
+        Dashes: one
   - Room: "b-03"
     Holes:
     - Side: Right
@@ -110,38 +153,56 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - Split: LeftToRight
+      ReqOut:
+        Dashes: zero
+      ReqIn:
+        Or:
+        - Dashes: zero
+          Difficulty: expert
+        - Dashes: one
   - Room: "b-04"
     Holes:
     - Side: Up
       Idx: 0
       Kind: inout
-    - Side: Up
-      Idx: 1
-      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
-  - Room: "b-05"
+    InternalEdges:
+    - To: Right
+      ReqOut:
+        Dashes: one
+      ReqIn:
+        Dashes: two
+    Subrooms:
+    - Room: Right
+      Holes:
+      - Side: Up
+        Idx: 1
+        Kind: inout
+    - Room: "b-05"  # TODO: Add fire/ice toggle in second version of room
     Holes:
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: out
     - Side: Down
       Idx: 1
-      Kind: inout
-  - Room: "b-06"
+      Kind: in
+      ReqIn:
+        Dashes: two
+        Difficulty: hard
+  - Room: "b-06"  # TODO: Add fire/ice toggle in second version of room
     Holes:
     - Side: Right
       Idx: 0
       Kind: inout
-  - Room: "b-07"
-    Holes:
-    - Side: Up
-      Idx: 0
-      Kind: inout
-    - Side: Down
-      Idx: 0
-      Kind: inout
+    InternalEdges:
+    - Collectable: 0
+      ReqBoth:
+        Difficulty: expert
+        Dashes: two
   - Room: "b-07b"
     Holes:
     - Side: Up
@@ -149,23 +210,63 @@ ASide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: inout
-  - Room: "c-00"
+      Kind: in
+      ReqIn:
+        Dashes: one
+  - Room: "b-07"
     Holes:
     - Side: Up
       Idx: 0
-      Kind: inout
-    - Side: Right
+      Kind: out
+    - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in
+      ReqIn:
+        Dashes: one
+  - Room: "c-00"
+    Holes:
     - Side: Down
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - To: "Right"
+      ReqOut:
+        Dashes: zero
+      ReqIn:
+        Or:
+        - Dashes: one
+          Difficulty: hard
+        - Dashes: two
+    Subrooms:
+    - Room: Right
+      Holes:
+      - Side: Up
+        Idx: 0
+        Kind: inout
+        ReqOut:
+          Dashes: one
+      - Side: Right
+        Idx: 0
+        Kind: inout
+    Tweaks:
+    - ID: 183
+      Update:
+        X: 72
+        Width: 32
+    - Name: "spawn"
+      X: 88
+      Y: 160
+      Update:
+        X: 98
   - Room: "c-00b"
     Holes:
     - Side: Down
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - Collectable: 0
+      ReqBoth:
+        Dashes: zero
   - Room: "c-01"
     Holes:
     - Side: Right
@@ -174,39 +275,82 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - Split: LeftToRight
+      ReqBoth:
+        Dashes: two
   - Room: "c-02"
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - To: "Right"
+      ReqOut:
+        Dashes: one
+      ReqIn:
+        Dashes: two
+    - To: "Berry"
+      ReqBoth:
+        Dashes: one
+    Subrooms:
+    - Room: "Right"
+      Holes:
+      - Side: Right
+        Idx: 0
+        Kind: inout
+    - Room: "Berry"
+      Collectables:
+      - Idx: 0
   - Room: "c-03"
     Holes:
     - Side: Up
       Idx: 0
-      Kind: inout
-    - Side: Up
-      Idx: 1
-      Kind: inout
-    - Side: Up
-      Idx: 2
-      Kind: inout
-    - Side: Right
-      Idx: 0
-      Kind: inout
+      Kind: in
     - Side: Left
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - To: "TopExit"
+      ReqOut:
+        Dashes: two
+    - To: "Right"
+      ReqOut:
+        Or:
+        - Dashes: two
+          Difficulty: hard
+        - Dashes: one
+          Difficulty: expert
+      ReqIn:
+        Dashes: two
+        Difficulty: expert
+    Subrooms:
+    - Room: "TopExit"
+      Holes:
+      - Side: Up
+        Idx: 1
+        Kind: out
+    - Room: "Right"
+      Holes:
+      - Side: Up
+        Idx: 2
+        Kind: in
+      - Side: Right
+        Idx: 0
+        Kind: inout
+      InternalEdges:
+      - To: "TopExit"
+        ReqOut:
+          Dashes: two
+          Difficulty: hard
   - Room: "c-03b"
     Holes:
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in
     - Side: Down
       Idx: 1
-      Kind: inout
+      Kind: in
     - Side: Down
       Idx: 2
       Kind: inout
@@ -218,22 +362,28 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - Split: LeftToRight
+      ReqBoth:
+        Dashes: one
   - Room: "d-00"
     Holes:
     - Side: Up
       Idx: 0
-      Kind: inout
+      Kind: out
+      ReqOut:
+        Dashes: one
     - Side: Left
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "d-01"
     Holes:
     - Side: Up
       Idx: 0
-      Kind: inout
+      Kind: out
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in
     - Side: Left
       Idx: 0
       Kind: None
@@ -247,58 +397,77 @@ ASide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: inout
+      Kind: out
+      ReqOut:
+        Dashes: one
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "d-03"
     Holes:
     - Side: Up
       Idx: 0
-      Kind: inout
+      Kind: out
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "d-04"
     Holes:
     - Side: Up
       Idx: 0
-      Kind: inout
+      Kind: out
+      ReqOut:
+        Dashes: one
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "d-05"
     Holes:
     - Side: Up
       Idx: 0
-      Kind: inout
+      Kind: out
+      ReqOut:
+        Dashes: one
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "d-06"
     Holes:
     - Side: Up
       Idx: 0
-      Kind: inout
+      Kind: out
+      ReqOut:
+        Dashes: one
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in
+    InternalEdges:
+    - Collectable: 0
+      ReqBoth:
+        Dashes: one
   - Room: "d-07"
     Holes:
     - Side: Up
       Idx: 0
-      Kind: inout
+      Kind: out
+      ReqOut:
+        Dashes: two
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "d-08"
     Holes:
     - Side: Right
       Idx: 0
       Kind: inout
+      ReqOut:
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: hard
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "d-09"
     Holes:
     - Side: Right
@@ -307,14 +476,36 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - Split: LeftToRight
+      ReqOut:
+        Or:
+        - Dashes: One
+          Difficulty:
+            Hard
+        - Dashes: two
+      ReqIn:
+        Dashes: two
+        Difficulty: expert  # mom holy fuck
   - Room: "d-10"
     Holes:
     - Side: Right
       Idx: 0
-      Kind: inout
+      Kind: out
+      ReqOut:
+        Or:
+        - Dashes: zero
+          Difficulty: hard
+        - Dashes: one
     - Side: Left
       Idx: 0
-      Kind: inout
+      Kind: in
+    Tweaks:
+    - Name: "coreModeToggle"
+      Update:
+        Add: true
+        X: 64
+        Y: 104
   - Room: "d-10b"
     Holes:
     - Side: Right
@@ -323,33 +514,48 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - Split: LeftToRight
+      ReqOut:
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: expert # demodash
+      ReqIn:
+        Dashes: two
+        Difficulty: expert # corner kick
   - Room: "d-10c"
     Holes:
     - Side: Right
       Idx: 0
-      Kind: inout
+      Kind: out
+      ReqOut:
+        Dashes: two
     - Side: Left
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "d-11"
     Holes:
     - Side: Right
       Idx: 0
-      Kind: inout
+      Kind: out
     - Side: Left
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "space"
     Holes:
     - Side: Left
       Idx: 0
       Kind: inout
+      ReqIn:
+        Dashes: one
     - Side: Up
       Idx: 0
       Kind: None
     - Side: Down
       Idx: 0
       Kind: None
+    End: true
 
 BSide:
   - Room: "00"
@@ -357,14 +563,23 @@ BSide:
     - Side: Right
       Idx: 0
       Kind: inout
-  - Room: "01"
-    Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
+  - Room: "01"  # TODO: Hearts
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: none
+    - Side: Left
+      Idx: 0
+      Kind: none
+    - Side: Up
+      Idx: 0
+      Kind: none
+    - Side: Down
+      Idx: 0
+      Kind: none
   - Room: "a-00"
     Holes:
     - Side: Right
@@ -373,6 +588,10 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - Split: LeftToRight
+      ReqBoth:
+        Dashes: two
   - Room: "a-01"
     Holes:
     - Side: Right
@@ -381,6 +600,10 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - Split: LeftToRight
+      ReqOut:
+        Dashes: two
   - Room: "a-02"
     Holes:
     - Side: Up
@@ -397,54 +620,103 @@ BSide:
     - Side: Down
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - Split: LeftToRight
+      ReqBoth:
+        Dashes: one
+    Tweaks:
+    - Name: "coreModeToggle"
+      Update:
+        Add: true
+        X: 72
+        Y: 104
+    - Name: "coreModeToggle"
+      Update:
+        Add: true
+        X: 712
+        Y: 40
+    - ID: 72
+      Update:
+        X: 32
+        Width: 24
   - Room: "a-04"
     Holes:
     - Side: Right
       Idx: 0
-      Kind: inout
+      Kind: out
+      ReqOut:
+        Dashes: two
     - Side: Left
       Idx: 0
-      Kind: inout
+      Kind: in
+    Tweaks:
+    - Name: "coreModeToggle"
+      Update:
+        Add: true
+        X: 32
+        Y: 40
   - Room: "a-05"
     Holes:
     - Side: Up
       Idx: 0
-      Kind: inout
+      Kind: out
+      ReqOut:
+        Dashes: two
     - Side: Left
       Idx: 0
-      Kind: inout
+      Kind: in
+    Tweaks:
+    - Name: "coreModeToggle"
+      Update:
+        Add: true
+        X: 40
+        Y: 120
   - Room: "b-00"
     Holes:
     - Side: Right
       Idx: 0
-      Kind: inout
+      Kind: out
+      ReqOut:
+        Dashes: one
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "b-01"
     Holes:
     - Side: Right
       Idx: 0
-      Kind: inout
+      Kind: out
+      ReqOut:
+        Dashes: one
     - Side: Left
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "b-02"
     Holes:
     - Side: Right
       Idx: 0
-      Kind: inout
+      Kind: out
+      ReqOut:
+        Dashes: two
     - Side: Left
       Idx: 0
-      Kind: inout
+      Kind: in
+    Tweaks:
+    - Name: "coreModeToggle"
+      Update:
+        Add: true
+        X: 40
+        Y: 56
   - Room: "b-03"
     Holes:
     - Side: Right
       Idx: 0
-      Kind: inout
+      Kind: out
+      ReqOut:
+        Dashes: two
     - Side: Left
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "b-04"
     Holes:
     - Side: Right
@@ -453,54 +725,88 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - Split: LeftToRight
+      ReqOut:
+        Dashes: two
+      ReqIn:
+        Dashes: two
+        Difficulty: expert
   - Room: "b-05"
     Holes:
     - Side: Right
       Idx: 0
-      Kind: inout
+      Kind: out
+      ReqOut:
+        Dashes: two
     - Side: Left
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "c-01"
     Holes:
     - Side: Up
       Idx: 0
-      Kind: inout
+      Kind: out
+      ReqOut:
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: hard
     - Side: Left
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "c-02"
     Holes:
     - Side: Up
       Idx: 0
-      Kind: inout
+      Kind: out
+      ReqOut:
+        Dashes: one
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "c-03"
     Holes:
     - Side: Up
       Idx: 0
-      Kind: inout
+      Kind: out
+      ReqOut:
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: expert # corner kick, neutral jumps
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "c-04"
     Holes:
     - Side: Up
       Idx: 0
-      Kind: inout
+      Kind: out
+      ReqOut:
+        Dashes: one
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "c-05"
     Holes:
     - Side: Right
       Idx: 0
       Kind: inout
+      ReqBoth:
+        Dashes: two
     - Side: Down
       Idx: 0
       Kind: inout
+    Tweaks:
+    - ID: 162
+      Update:
+        Remove: true
+    - Name: "spawn"
+      X: 160
+      Y: 160
+      Update:
+        X: 176
   - Room: "c-06"
     Holes:
     - Side: Right
@@ -509,6 +815,25 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - Split: LeftToRight
+      ReqOut:
+        Dashes: one
+      ReqIn:
+        Dashes: two
+  - Room: "c-08"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: out
+      ReqOut:
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: hard
+    - Side: Left
+      Idx: 0
+      Kind: in
   - Room: "c-07"
     Holes:
     - Side: Right
@@ -517,27 +842,39 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: inout
-  - Room: "c-08"
-    Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
-    - Side: Left
-      Idx: 0
-      Kind: inout
+    InternalEdges:
+    - Split: LeftToRight
+      ReqOut:
+        Dashes: zero
+      ReqIn:
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: hard
   - Room: "space"
     Holes:
     - Side: Left
       Idx: 0
       Kind: inout
+      ReqIn:
+        Dashes: one
     - Side: Up
       Idx: 0
       Kind: None
     - Side: Down
       Idx: 0
       Kind: None
+    End: true
 
 CSide:
+  - Room: "intro"  # TODO: hearts
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: None
+    - Side: Left
+      Idx: 0
+      Kind: None
   - Room: "00"
     Holes:
     - Side: Right
@@ -546,21 +883,30 @@ CSide:
     - Side: Left
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - Split: LeftToRight
+      ReqBoth:
+        Difficulty: hard
+        Dashes: two
   - Room: "01"
     Holes:
     - Side: Right
       Idx: 0
-      Kind: inout
+      Kind: out
     - Side: Left
       Idx: 0
-      Kind: inout
+      Kind: in
+    InternalEdges:
+    - Split: LeftToRight
+      ReqBoth:
+        Dashes: two
+        Difficulty: hard
   - Room: "02"
     Holes:
     - Side: Left
       Idx: 0
       Kind: inout
-  - Room: "intro"
-    Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
+      ReqIn:
+        Dashes: two
+        Difficulty: hard
+    End: true

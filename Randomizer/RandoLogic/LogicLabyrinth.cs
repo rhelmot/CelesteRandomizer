@@ -4,6 +4,10 @@ using Monocle;
 
 namespace Celeste.Mod.Randomizer {
     public partial class RandoLogic {
+
+        private static readonly int[] LabyrinthMinimums = { 30, 50, 80, 120 };
+        private static readonly int[] LabyrinthMaximums = { 50, 80, 120, 1000 };
+
         private class TaskLabyrinthStart : RandoTask {
             private HashSet<StaticRoom> TriedRooms = new HashSet<StaticRoom>();
 
@@ -51,11 +55,13 @@ namespace Celeste.Mod.Randomizer {
 
         private class TaskLabyrinthContinue : RandoTask {
             private UnlinkedEdge Edge;
+            private int Goodwill;
 
             private HashSet<StaticEdge> TriedEdges = new HashSet<StaticEdge>();
 
-            public TaskLabyrinthContinue(RandoLogic logic, UnlinkedEdge edge) : base(logic) {
+            public TaskLabyrinthContinue(RandoLogic logic, UnlinkedEdge edge, int goodwill=5) : base(logic) {
                 this.Edge = edge;
+                this.Goodwill = goodwill;
             }
 
             private IEnumerable<StaticEdge> AvailableEdges() {
@@ -91,12 +97,21 @@ namespace Celeste.Mod.Randomizer {
             }
 
             public override bool Next() {
-                if (this.TriedEdges.Count > 5) {
+                if (this.Goodwill <= 0) {
                     return false;
+                }
+
+                int minCount = LabyrinthMinimums[(int)this.Logic.Settings.Length];
+                int maxCount = LabyrinthMaximums[(int)this.Logic.Settings.Length];
+                double progress = (double)(Logic.Map.Count - minCount) / (double)(maxCount - minCount);
+                if (progress > Math.Sqrt(Logic.Random.NextDouble())) {
+                    this.Goodwill = 0; // if we need to backtrack go past this
+                    return true;
                 }
 
                 var receipt = this.WorkingPossibility();
                 if (receipt == null) {
+                    this.Goodwill = 0; // if we need to backtrack go past this
                     return true; // never fail!
                 }
 
@@ -106,18 +121,21 @@ namespace Celeste.Mod.Randomizer {
                 var closure = LinkedNodeSet.Closure(targetNode, this.Logic.Caps, this.Logic.Caps, true);
 
                 foreach (var newedge in closure.UnlinkedEdges()) {
-                    this.AddNextTask(new TaskLabyrinthContinue(this.Logic, newedge));
+                    this.AddNextTask(new TaskLabyrinthContinue(this.Logic, newedge, Math.Min(5, this.Goodwill + 1)));
                 }
+                this.Goodwill--;
                 return true;
             }
         }
 
         private class TaskLabyrinthFinish : RandoTask {
+
             public TaskLabyrinthFinish(RandoLogic logic) : base(logic) {
             }
 
             public override bool Next() {
-                if (Logic.Map.Count < 10) {
+                int minCount = LabyrinthMinimums[(int)this.Logic.Settings.Length];
+                if (Logic.Map.Count < minCount) {
                     return false;
                 }
                 return true;

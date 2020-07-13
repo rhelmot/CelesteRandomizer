@@ -351,10 +351,10 @@ ASide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: in
+      Kind: out
     - Side: Left
       Idx: 0
-      Kind: out
+      Kind: in
   - Room: "boss-00"
     Holes:
     - Side: Left

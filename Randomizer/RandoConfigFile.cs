@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using YamlDotNet.Serialization;
 
 namespace Celeste.Mod.Randomizer {
@@ -13,7 +14,14 @@ namespace Celeste.Mod.Randomizer {
             if (!Everest.Content.TryGet(fullpath, out ModAsset asset)) {
                 return null;
             } else {
-                return asset.Deserialize<RandoConfigFile>();
+                try {
+                    using (StreamReader reader = new StreamReader(asset.Stream)) {
+                        return YamlHelper.Deserializer.Deserialize<RandoConfigFile>(reader);
+                    }
+                } catch (Exception e) {
+                    Logger.Log("randomizer", $"Failed loading config for area {area}: {e.Message}");
+                    return null;
+                }
             }
         }
 

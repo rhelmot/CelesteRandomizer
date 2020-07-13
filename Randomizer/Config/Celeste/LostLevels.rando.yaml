@@ -1060,6 +1060,15 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+    Tweaks:
+    - ID: 56            # remove cutscene trigger as it changes your dash inventory
+      Name: "eventTrigger"
+      Update:
+        Remove: true
+    - ID: 678           # remove final bird so you have to take the moon berry route
+      Name: "flingBird"
+      Update:
+        Remove: true
   - Room: "j-17"
     Holes:
     - Side: Up

@@ -24,6 +24,7 @@ namespace Celeste.Mod.Randomizer {
         public override void Load() {
             Everest.Events.MainMenu.OnCreateButtons += CreateMainMenuButton;
             Everest.Events.Level.OnCreatePauseMenuButtons += ModifyLevelMenu;
+            Everest.Events.Level.OnTransitionTo += ResetCoreMode;
             On.Celeste.OverworldLoader.ctor += EnterToRandoMenu;
             On.Celeste.MapData.Load += DontLoadRandoMaps;
             On.Celeste.AreaData.Load += InitRandoData;
@@ -36,6 +37,7 @@ namespace Celeste.Mod.Randomizer {
         public override void Unload() {
             Everest.Events.MainMenu.OnCreateButtons -= CreateMainMenuButton;
             Everest.Events.Level.OnCreatePauseMenuButtons -= ModifyLevelMenu;
+            Everest.Events.Level.OnTransitionTo -= ResetCoreMode;
             On.Celeste.OverworldLoader.ctor -= EnterToRandoMenu;
             On.Celeste.MapData.Load -= DontLoadRandoMaps;
             On.Celeste.AreaData.Load -= InitRandoData;
@@ -119,6 +121,13 @@ namespace Celeste.Mod.Randomizer {
                     });
                     level.Add((Entity)menu);
                 }));
+            }
+        }
+
+        public void ResetCoreMode(Level level, LevelData next, Vector2 direction) {
+            if (this.InRandomizer) {
+                level.CoreMode = Session.CoreModes.None;
+                level.Session.CoreMode = Session.CoreModes.None;
             }
         }
 
