@@ -218,6 +218,9 @@ ASide:
         Add: true
         X: 208
         Y: 24
+    - ID: 33
+      Update:
+        Remove: true
   - Room: "9b"
     Holes:
     - Side: Down
