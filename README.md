@@ -15,6 +15,18 @@ I'll put this on gamebanana when I'm confident that it's ready. In the meantime,
 Player Advice
 -------------
 
-As of now, the metadata that allows the number-of-dashes and difficulty settings to work is only implemented for chapters 1A/1B/1C/2A/2B/2C/3A/3B/3C. All other maps will be randomized with their reachability checks assuming the hardest difficulty and two dashes settings regardless of what you select. If you want to help with this, check out the [metadata guide](docs/metadata.md) and consider contributing :)
+### Difficulty modes
 
-It is highly recommended for you to disable the core levels pending [this issue](https://github.com/rhelmot/CelesteRandomizer/issues/3). They can and will lead to uncompletable maps.
+The difficulty modes are intended as follows:
+
+- *Normal:* Player is comfortable with the A-sides and can figure out a B-side room given some time
+- *Hard:* Player is comfortable with Farewell and the C-Sides, knows a little bit of speedrun tech
+- *Expert:* Player is comfortable with spike jumps, corner boosts, easy demodashes
+- *Perfect:* Player knows the above tech and is using slowdown and savestates
+
+All of this is entirely subjective and was categorized by me, so if you have any questions or suggestions on what should be easier or harder, let me know :)
+
+### Map construction algorithms
+
+- The *pathway* algorithm constructs a straight-line path from a start to an end. It may add side-routes to place keys necessary to proceed. It may not be traversable in reverse.
+- The *labyrinth* algorithm constructs a sprawling map with no defined goals. It is designed for exploring and having fun. Every room is accessable from every other room; every passage can be traveresed in both directions with respect to the current number of dashes and player skill level.

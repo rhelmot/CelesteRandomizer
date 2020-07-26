@@ -244,7 +244,7 @@ ASide:
         Idx: 0
         Kind: inout
       InternalEdges:
-      - To: "bottomRight"
+      - To: "bottomright"
         ReqOut:
           Dashes: zero
     - Room: "bottomright"

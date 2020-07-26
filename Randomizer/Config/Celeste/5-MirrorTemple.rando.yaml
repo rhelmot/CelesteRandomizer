@@ -1048,12 +1048,13 @@ ASide:
       Kind: in
     Subrooms:
     - Room: "passage"
-    - Side: Right
-      Idx: 1
-      Kind: inout
-    - Side: Down
-      Idx: 1
-      Kind: inout
+      Holes:
+      - Side: Right
+        Idx: 1
+        Kind: inout
+      - Side: Down
+        Idx: 1
+        Kind: inout
   - Room: "d-20"
     Holes:
     - Side: Right
@@ -1308,7 +1309,6 @@ BSide:
         Kind: inout
       Collectables:
       - Idx: 0
-    Subrooms:
     - Room: "rightkey"
       Holes:
       - Side: Right

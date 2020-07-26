@@ -159,6 +159,7 @@ namespace Celeste.Mod.Randomizer {
         public SplitKind? Split;
 
         public int? Collectable;
+        public bool MustFly;
     }
 
     public class RandoConfigReq {

@@ -251,7 +251,7 @@ namespace Celeste.Mod.Randomizer {
                     secondary.FromNode = toNode;
                 } else if (edge.Collectable != null) {
                     toNode = new StaticNode() {
-                        Name = node.Name + "_autosplit",
+                        Name = node.Name + "_coll" + edge.Collectable.ToString(),
                         ParentRoom = node.ParentRoom
                     };
                     if (node.ParentRoom.Nodes.ContainsKey(toNode.Name)) {
