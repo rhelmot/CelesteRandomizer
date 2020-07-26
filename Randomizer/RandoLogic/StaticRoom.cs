@@ -388,6 +388,7 @@ namespace Celeste.Mod.Randomizer {
                         return;
                     case "finalboss":
                     case "badelineoldsite":
+                    case "darkchaser":
                         entity.Values["canChangeMusic"] = false;
                         break;
                 }
