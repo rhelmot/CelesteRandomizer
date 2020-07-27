@@ -2,7 +2,7 @@
 
 In order for the randomizer to work, each map must have a configuration file created for it describing for each room how its entrances and exits are linked. The config file should be a resource named "Config/{map SID}.rando.yaml". This means that custom maps can be added to the randomizer too!
 
-These config files are yaml files. If you need an introduction to yaml you may start [here](https://github.com/Animosity/CraftIRC/wiki/Complete-idiot's-introduction-to-yaml).
+These config files are yaml files. If you need an introduction to yaml you may start [here](https://github.com/Animosity/CraftIRC/wiki/Complete-idiot's-introduction-to-yaml). If you would like to look at some examples of this format, you can look at the [bundled metadata for Celeste's maps](../Randomizer/Config/Celeste).
 
 The general file structure is a map with keys ASide, BSide, and CSide, each containing a list of room descriptions:
 
@@ -20,7 +20,7 @@ CSide:
 
 ## Rooms
 
-A room description contains the name of the room, a listing of all the Holes in the room (gaps in the level geometry through which the player could theoretically enter or exit) along with their properties. Additionally, it can contain Tweaks (modifications to the level data), Subrooms (room descritpions that allow you to partition some of the room as separate from the rest of the room), and InternalEdges (relationships between subrooms).
+A room description contains the name of the room, a listing of all the Holes in the room (gaps in the level geometry through which the player could theoretically enter or exit) along with their properties. Additionally, it can contain Tweaks (modifications to the level data), Subrooms (room descriptions that allow you to partition some of the room as separate from the rest of the room) InternalEdges (relationships between subrooms), and Collectables (keys and berries). It may also contain a key called End, indicating whether this room can be used to end the level. Rooms with crystal hearts should be classified as level-ending.
 
 ```
 Room: <room name>
@@ -36,6 +36,10 @@ Subrooms:
 InternalEdges:
 - <internal edge description>
 - <internal edge description>
+Collectables:
+- <collectable description>
+- <collectable description>
+End: {true/false}
 ```
 
 ## Holes
@@ -82,9 +86,12 @@ Use this syntax:
 ```
 Tweaks:
   - ID: 4     # ID copied from ahorn
+    Name: "changeRespawnTrigger"
     Update:
       Remove: true
 ```
+
+The `Name` field is optional, and is provided to disambiguate between normal entities and triggers, which can have overlapping ID numbers.
 
 To add this spawn point:
 
@@ -162,6 +169,7 @@ Now, let's finally get to the bottom of these ReqIn/ReqOut/ReqBoth directives. A
 ```
 Dashes: {zero, one, two (default)}
 Difficulty: {normal (default), hard, expert, perfect}
+Key: {true, false}   # that is, set it to true if the path is blocked by a locked door
 Or: [list of sub-requirements]
 ```
 
@@ -174,3 +182,34 @@ ReqBoth:
   - Dashes: one
     Difficulty: hard
 ```
+
+## Collectables
+
+You can specify which subrooms contain which collectables, i.e. keys and berries. The syntax for this is as follows:
+
+```
+  - Room: "a-00"
+    Collectables:
+    - Idx: 0
+```
+
+Where the idx is the index of the collectable, with the first (zeroth) collectable being at the top right, and the numbering proceeding left to right and then top to bottom, like scanlines on a television.
+
+Recall that we have the assumption that movement is free within each subroom. So then, if a berry requires a dash to reach, it is important that it be placed in a separate subroom with an edge and a dash requirement. This is very cumbersome, so there is a special syntax you can use in the `InternalEdges` key to automatically split a collectable off into its own subroom:
+
+```
+  - Room: "a-00"
+    ...
+    InternalEdges:
+    - Collectable: 0
+      ReqOut:
+        Dashes: one
+      ReqIn:
+        Dashes: zero
+```
+
+As of right now you can't add new collectables to fun spots, though this is a planned feature.
+
+## Debugging
+
+There are a handful of ways malformed metadata can cause errors. The first is that you have described a layout which is actually not possible to traverse, in which case the randomizer may generate impossible maps. The second is if you have an error in your YAML syntax, in which case the map will simply be excluded from the list of available rooms to randomize and the error message will be shown in Celeste's `log.txt`. The third is if you describe in correct syntax things which do not exist in the level, such as extra holes or collectables. This will cause Celeste to crash on startup. I've tried to make these error messages as friendly as possible, but if you can't tell what you've done wrong, drop me a line and I'll help you out.
