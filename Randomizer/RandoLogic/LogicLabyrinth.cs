@@ -97,20 +97,25 @@ namespace Celeste.Mod.Randomizer {
             }
 
             public override bool Next() {
-                if (this.Goodwill <= 0) {
-                    return false;
-                }
 
                 int minCount = LabyrinthMinimums[(int)this.Logic.Settings.Length];
                 int maxCount = LabyrinthMaximums[(int)this.Logic.Settings.Length];
                 double progress = (double)(Logic.Map.Count - minCount) / (double)(maxCount - minCount);
-                if (progress > Math.Sqrt(Logic.Random.NextDouble())) {
+                Logger.Log("randomizer", $"Progress: {progress}");
+                if (progress > Logic.Random.NextDouble()) {
+                    Logger.Log("randomizer", "No need to proceed");
                     this.Goodwill = 0; // if we need to backtrack go past this
                     return true;
                 }
 
+                if (this.Goodwill <= 0) {
+                    Logger.Log("randomizer", "Failure: ran out of goodwill");
+                    return false;
+                }
+
                 var receipt = this.WorkingPossibility();
                 if (receipt == null) {
+                    Logger.Log("randomizer", "No working possibilities");
                     this.Goodwill = 0; // if we need to backtrack go past this
                     return true; // never fail!
                 }
@@ -120,10 +125,16 @@ namespace Celeste.Mod.Randomizer {
                 var targetNode = receipt.Edge.OtherNode(this.Edge.Node);
                 var closure = LinkedNodeSet.Closure(targetNode, this.Logic.Caps, this.Logic.Caps, true);
 
+                var any = false;
                 foreach (var newedge in closure.UnlinkedEdges()) {
+                    any = true;
                     this.AddNextTask(new TaskLabyrinthContinue(this.Logic, newedge, Math.Min(5, this.Goodwill + 1)));
                 }
-                this.Goodwill--;
+                if (!any) {
+                    this.Goodwill = 0;
+                } else {
+                    this.Goodwill--;
+                }
                 return true;
             }
         }
@@ -136,6 +147,7 @@ namespace Celeste.Mod.Randomizer {
             public override bool Next() {
                 int minCount = LabyrinthMinimums[(int)this.Logic.Settings.Length];
                 if (Logic.Map.Count < minCount) {
+                    Logger.Log("randomizer", "Failure: map is too short");
                     return false;
                 }
                 return true;

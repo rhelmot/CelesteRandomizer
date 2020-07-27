@@ -210,7 +210,7 @@ namespace Celeste.Mod.Randomizer {
                     toNode = this.Nodes[edge.To];
                 } else if (edge.Split != null) {
                     if (node.Edges.Count != 2) {
-                        throw new Exception("Cannot split: must have exactly two edges");
+                        throw new Exception($"Cannot split: must have exactly two edges ({this.Name} {node.Name})");
                     }
 
                     toNode = new StaticNode() {
