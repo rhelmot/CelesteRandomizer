@@ -26,6 +26,7 @@ namespace Celeste.Mod.Randomizer {
             Everest.Events.Level.OnCreatePauseMenuButtons += ModifyLevelMenu;
             Everest.Events.Level.OnTransitionTo += ResetCoreMode;
             On.Celeste.OverworldLoader.ctor += EnterToRandoMenu;
+            On.Celeste.Overworld.ctor += HideMaddy;
             On.Celeste.MapData.Load += DontLoadRandoMaps;
             On.Celeste.AreaData.Load += InitRandoData;
             On.Celeste.TextMenu.MoveSelection += DisableMenuMovement;
@@ -41,6 +42,7 @@ namespace Celeste.Mod.Randomizer {
             Everest.Events.Level.OnCreatePauseMenuButtons -= ModifyLevelMenu;
             Everest.Events.Level.OnTransitionTo -= ResetCoreMode;
             On.Celeste.OverworldLoader.ctor -= EnterToRandoMenu;
+            On.Celeste.Overworld.ctor -= HideMaddy;
             On.Celeste.MapData.Load -= DontLoadRandoMaps;
             On.Celeste.AreaData.Load -= InitRandoData;
             On.Celeste.TextMenu.MoveSelection -= DisableMenuMovement;
@@ -140,10 +142,19 @@ namespace Celeste.Mod.Randomizer {
         }
 
         public void EnterToRandoMenu(On.Celeste.OverworldLoader.orig_ctor orig, OverworldLoader self, Overworld.StartMode startMode, HiresSnow snow) {
-            if (startMode == Overworld.StartMode.MainMenu && this.InRandomizer) {
+            if ((startMode == Overworld.StartMode.MainMenu || startMode == Overworld.StartMode.AreaComplete) && this.InRandomizer) {
                 startMode = (Overworld.StartMode)55;
+                Logger.Log("randomizer", "cursor at " + AreaData.Areas[AreaData.Areas.Count - 1].MountainCursor.ToString());
             }
             orig(self, startMode, snow);
+        }
+
+        // This is a bit of a hack. is there a better way to control this?
+        public void HideMaddy(On.Celeste.Overworld.orig_ctor orig, Overworld self, OverworldLoader loader) {
+            orig(self, loader);
+            if (this.InRandomizer) {
+                self.Maddy.Hide();
+            }
         }
 
         public void DontLoadRandoMaps(On.Celeste.MapData.orig_Load orig, MapData self) {
@@ -158,7 +169,7 @@ namespace Celeste.Mod.Randomizer {
             RandoLogic.ProcessAreas();
 
             foreach (var key in RandoLogic.AvailableAreas) {
-                RandoModule.Instance.Settings.EnableMap(key);
+                Settings.EnableMap(key);
             }
         }
 

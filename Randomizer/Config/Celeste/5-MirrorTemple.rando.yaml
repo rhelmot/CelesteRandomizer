@@ -773,6 +773,9 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+      ReqIn:
+        Dashes: one
+        Difficulty: hard
     - Side: Down
       Idx: 0
       Kind: in

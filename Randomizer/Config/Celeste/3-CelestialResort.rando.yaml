@@ -1260,7 +1260,6 @@ BSide:
     - Side: Down
       Idx: 0
       Kind: None
-      Kind: in
     - Side: Down
       Idx: 2
       Kind: None

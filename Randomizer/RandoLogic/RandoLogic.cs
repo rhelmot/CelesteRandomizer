@@ -20,16 +20,16 @@ namespace Celeste.Mod.Randomizer {
                 Name = $"{settings.Seed}_{settings.Hash}",
                 Mode = new ModeProperties[3] {
                     new ModeProperties {
-                        Inventory = settings.Dashes == NumDashes.Zero ? PlayerInventory.Prologue : 
-                                    settings.Dashes == NumDashes.One ? PlayerInventory.Default : 
-                                                                        PlayerInventory.TheSummit,
+                        Inventory = settings.Dashes == NumDashes.Zero ? PlayerInventory.Prologue :
+                                    settings.Dashes == NumDashes.One ? PlayerInventory.Default :
+                                                                        PlayerInventory.CH6End,
                     }, null, null
                 },
                 Icon = AreaData.Areas[0].Icon,
                 MountainIdle = AreaData.Areas[0].MountainIdle,
                 MountainZoom = AreaData.Areas[0].MountainZoom,
                 MountainState = AreaData.Areas[0].MountainState,
-                MountainCursor = AreaData.Areas[0].MountainCursor,
+                MountainCursor = new Vector3(0, 100000, 0),  // ???
                 MountainSelect = AreaData.Areas[0].MountainSelect,
                 MountainCursorScale = AreaData.Areas[0].MountainCursorScale,
             };
@@ -53,6 +53,7 @@ namespace Celeste.Mod.Randomizer {
             var r = new RandoLogic(settings, key);
 
             newArea.Wipe = r.PickWipe();
+            newArea.CompleteScreenName = r.PickCompleteScreen();
             newArea.CassetteSong = r.PickCassetteAudio();
             newArea.Mode[0].AudioState = new AudioState(r.PickMusicAudio(), r.PickAmbienceAudio());
             newArea.Mode[0].MapData = r.MakeMap();
@@ -191,8 +192,8 @@ namespace Celeste.Mod.Randomizer {
                     return "event:/music/remix/07_summit";
                 case 40:
                     return "event:/music/remix/09_core";
+            }
         }
-    }
 
         private string PickAmbienceAudio() {
             switch (this.Random.Next(16)) {
@@ -230,8 +231,8 @@ namespace Celeste.Mod.Randomizer {
                 case 15:
                     return "event:/env/amb/worldmap";
 
+            }
         }
-    }
 
         private string PickCassetteAudio() {
             switch (this.Random.Next(9)) {
@@ -254,6 +255,28 @@ namespace Celeste.Mod.Randomizer {
                 case 8:
                 default:
                     return "event:/new_content/music/lvl10/cassette_rooms";
+            }
+        }
+
+        private string PickCompleteScreen() {
+            switch (this.Random.Next(8)) {
+                case 0:
+                    return AreaData.Areas[1].CompleteScreenName;
+                case 1:
+                    return AreaData.Areas[2].CompleteScreenName;
+                case 2:
+                    return AreaData.Areas[3].CompleteScreenName;
+                case 3:
+                    return AreaData.Areas[4].CompleteScreenName;
+                case 4:
+                    return AreaData.Areas[5].CompleteScreenName;
+                case 5:
+                    return AreaData.Areas[6].CompleteScreenName;
+                case 6:
+                    return AreaData.Areas[7].CompleteScreenName;
+                case 7:
+                default:
+                    return AreaData.Areas[9].CompleteScreenName;
             }
         }
 

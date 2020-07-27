@@ -10,6 +10,7 @@ namespace Celeste.Mod.Randomizer {
         private int savedMenuIndex = -1;
         private TextMenu.Button startButton;
         private Thread builderThread;
+        private bool entering;
 
         private float alpha;
 
@@ -140,6 +141,10 @@ namespace Celeste.Mod.Randomizer {
 
             this.startButton = new TextMenu.Button(Dialog.Clean("MODOPTIONS_RANDOMIZER_START"));
             this.startButton.Pressed(() => {
+                if (this.entering) {
+                    return;
+                }
+
                 if (this.builderThread == null) {
                     this.startButton.Label = Dialog.Clean("MODOPTIONS_RANDOMIZER_CANCEL");
                     showHash.Title = Dialog.Clean("MODOPTIONS_RANDOMIZER_GENERATING");
@@ -147,6 +152,7 @@ namespace Celeste.Mod.Randomizer {
 
                     this.builderThread = new Thread(() => {
                         AreaKey newArea = RandoLogic.GenerateMap(Settings);
+                        this.entering = true;
 
                         Audio.SetMusic((string)null, true, true);
                         Audio.SetAmbience((string)null, true);
