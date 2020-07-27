@@ -158,7 +158,7 @@ namespace Celeste.Mod.Randomizer {
                         SaveData.Instance.VariantMode = true;
                         SaveData.Instance.AssistMode = false;
 
-                        LevelEnter.Go(new Session(newArea, null, null), true);
+                        new FadeWipe(this.Scene, false, () => LevelEnter.Go(new Session(newArea, null, null), true));
 
                         /*foreach (AreaData area in AreaData.Areas) {
                             Logger.Log("randomizer", $"Skeleton for {area.GetSID()}");
