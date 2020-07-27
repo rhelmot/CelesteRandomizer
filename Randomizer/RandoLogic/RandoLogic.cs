@@ -6,11 +6,17 @@ using Monocle;
 namespace Celeste.Mod.Randomizer {
     public partial class RandoLogic {
         public static AreaKey GenerateMap(RandoSettings settings) {
+            var lastarea = AreaData.Areas[AreaData.Areas.Count - 1];
+            var newID = AreaData.Areas.Count;
+            if (lastarea.GetLevelSet() == "randomizer") {
+                newID--;
+            }
+
             var newArea = new AreaData {
                 IntroType = Player.IntroTypes.WakeUp,
                 Interlude = false,
                 Dreaming = false,
-                ID = AreaData.Areas.Count,
+                ID = newID,
                 Name = $"{settings.Seed}_{settings.Hash}",
                 Mode = new ModeProperties[3] {
                     new ModeProperties {
@@ -36,7 +42,11 @@ namespace Celeste.Mod.Randomizer {
                 }
             });
             newArea.SetSID($"randomizer/{newArea.Name}");
-            AreaData.Areas.Add(newArea);
+            if (lastarea.GetLevelSet() == "randomizer") {
+                AreaData.Areas[AreaData.Areas.Count - 1] = newArea;
+            } else {
+                AreaData.Areas.Add(newArea);
+            }
 
             var key = new AreaKey(newArea.ID);
 

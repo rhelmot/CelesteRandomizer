@@ -2,12 +2,14 @@
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections;
-using System.Collections.Generic;
+using System.Threading;
 
 namespace Celeste.Mod.Randomizer {
     public class OuiRandoSettings : Oui {
-        private TextMenu menu;
+        private DisablableTextMenu menu;
         private int savedMenuIndex = -1;
+        private TextMenu.Button startButton;
+        private Thread builderThread;
 
         private float alpha;
 
@@ -77,7 +79,7 @@ namespace Celeste.Mod.Randomizer {
         }
 
         private void ReloadMenu() {
-            menu = new TextMenu {
+            menu = new DisablableTextMenu {
                 new TextMenu.Header(Dialog.Clean("MODOPTIONS_RANDOMIZER_HEADER")),
                 new TextMenu.Button(Dialog.Clean("MODOPTIONS_RANDOMIZER_SEED") + ": " + Settings.Seed.ToString(RandoModule.MAX_SEED_DIGITS)).Pressed(() => {
                     Audio.Play(SFX.ui_main_savefile_rename_start);
@@ -129,40 +131,57 @@ namespace Celeste.Mod.Randomizer {
                 }, 0, (int)Difficulty.Last - 1, (int)Settings.Difficulty).Change((i) => {
                     Settings.Difficulty = (Difficulty)i;
                 }),
-
-                new TextMenu.Button(Dialog.Clean("MODOPTIONS_RANDOMIZER_START")).Pressed(() => {
-                    AreaKey newArea = RandoLogic.GenerateMap(Settings);
-                    Audio.SetMusic((string) null, true, true);
-                    Audio.SetAmbience((string) null, true);
-                    Audio.Play("event:/ui/main/savefile_begin");
-
-                    // use the debug file
-                    SaveData.InitializeDebugMode();
-                    // turn on variants mode
-                    SaveData.Instance.VariantMode = true;
-                    SaveData.Instance.AssistMode = false;
-
-                    LevelEnter.Go(new Session(newArea, null, null), true);
-
-                    /*foreach (AreaData area in AreaData.Areas) {
-                        Logger.Log("randomizer", $"Skeleton for {area.GetSID()}");
-                        RandoConfigFile.YamlSkeleton(area);
-
-                    }*/
-                }),
             };
 
             var showHash = new TextMenuExt.EaseInSubHeaderExt("{hash}", false, menu) {
                 HeightExtra = -10f,
                 Offset = new Vector2(30, -5),
             };
-            var menuItems = menu.GetItems();
-            var startButton = menuItems[menuItems.Count - 1];
-            startButton.OnEnter += () => {
+
+            this.startButton = new TextMenu.Button(Dialog.Clean("MODOPTIONS_RANDOMIZER_START"));
+            this.startButton.Pressed(() => {
+                if (this.builderThread == null) {
+                    this.startButton.Label = Dialog.Clean("MODOPTIONS_RANDOMIZER_CANCEL");
+                    showHash.Title = Dialog.Clean("MODOPTIONS_RANDOMIZER_GENERATING");
+                    menu.DisableMovement = true;
+
+                    this.builderThread = new Thread(() => {
+                        AreaKey newArea = RandoLogic.GenerateMap(Settings);
+
+                        Audio.SetMusic((string)null, true, true);
+                        Audio.SetAmbience((string)null, true);
+                        Audio.Play("event:/ui/main/savefile_begin");
+
+                        // use the debug file
+                        SaveData.InitializeDebugMode();
+                        // turn on variants mode
+                        SaveData.Instance.VariantMode = true;
+                        SaveData.Instance.AssistMode = false;
+
+                        LevelEnter.Go(new Session(newArea, null, null), true);
+
+                        /*foreach (AreaData area in AreaData.Areas) {
+                            Logger.Log("randomizer", $"Skeleton for {area.GetSID()}");
+                            RandoConfigFile.YamlSkeleton(area);
+
+                        }*/
+                    });
+                    this.builderThread.Start();
+                } else {
+                    this.builderThread.Abort();
+                    this.builderThread = null;
+
+                    this.startButton.Label = Dialog.Clean("MODOPTIONS_RANDOMIZER_START");
+                    this.startButton.OnEnter();
+                    menu.DisableMovement = false;
+                }
+            });
+            menu.Add(this.startButton);
+            this.startButton.OnEnter += () => {
                 showHash.Title = Dialog.Clean("MODOPTIONS_RANDOMIZER_HASH") + " " + this.Settings.Hash;
                 showHash.FadeVisible = true;
             };
-            startButton.OnLeave += () => {
+            this.startButton.OnLeave += () => {
                 showHash.FadeVisible = false;
             };
             menu.Add(showHash);

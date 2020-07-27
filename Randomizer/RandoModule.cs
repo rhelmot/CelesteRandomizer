@@ -28,6 +28,8 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.OverworldLoader.ctor += EnterToRandoMenu;
             On.Celeste.MapData.Load += DontLoadRandoMaps;
             On.Celeste.AreaData.Load += InitRandoData;
+            On.Celeste.TextMenu.MoveSelection += DisableMenuMovement;
+            //On.Celeste.AutoSplitterInfo.Update += wtf;
         }
 
         public override void LoadContent(bool firstLoad) {
@@ -41,6 +43,12 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.OverworldLoader.ctor -= EnterToRandoMenu;
             On.Celeste.MapData.Load -= DontLoadRandoMaps;
             On.Celeste.AreaData.Load -= InitRandoData;
+            On.Celeste.TextMenu.MoveSelection -= DisableMenuMovement;
+            //On.Celeste.AutoSplitterInfo.Update -= wtf;
+        }
+
+        public void wtf(On.Celeste.AutoSplitterInfo.orig_Update orig, AutoSplitterInfo self) {
+            orig(self);
         }
 
         public override void CreateModMenuSection(TextMenu menu, bool inGame, EventInstance snapshot) {
@@ -153,5 +161,16 @@ namespace Celeste.Mod.Randomizer {
                 RandoModule.Instance.Settings.EnableMap(key);
             }
         }
+
+        public void DisableMenuMovement(On.Celeste.TextMenu.orig_MoveSelection orig, TextMenu self, int direction, bool wiggle = false) {
+            if (self is DisablableTextMenu newself && newself.DisableMovement) {
+                return;
+            }
+            orig(self, direction, wiggle);
+        }
+    }
+
+    public class DisablableTextMenu : TextMenu {
+        public bool DisableMovement;
     }
 }

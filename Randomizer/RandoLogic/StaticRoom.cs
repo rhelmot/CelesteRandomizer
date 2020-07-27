@@ -389,6 +389,9 @@ namespace Celeste.Mod.Randomizer {
                     case "finalboss":
                     case "badelineoldsite":
                     case "darkchaser":
+                        if (entity.Values == null) {
+                            entity.Values = new Dictionary<string, object>();
+                        }
                         entity.Values["canChangeMusic"] = false;
                         break;
                 }
