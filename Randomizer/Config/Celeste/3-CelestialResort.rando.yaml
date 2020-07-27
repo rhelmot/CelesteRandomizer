@@ -1596,13 +1596,13 @@ CSide:
         Or:
         - Dashes: two
         - Dashes: one
-        - Difficulty: hard
+          Difficulty: hard
       ReqIn:
         Or:
         - Dashes: two
           Difficulty: hard
         - Dashes: one
-        - Difficulty: expert
+          Difficulty: expert
     Tweaks:
     - ID: 23
       Update:
@@ -1622,6 +1622,7 @@ CSide:
       Kind: inout
       ReqIn:
         Dashes: one
+        Difficulty: hard
     - Side: Down
       Idx: 0
       Kind: None
