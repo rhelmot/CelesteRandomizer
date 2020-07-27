@@ -144,7 +144,6 @@ namespace Celeste.Mod.Randomizer {
         public void EnterToRandoMenu(On.Celeste.OverworldLoader.orig_ctor orig, OverworldLoader self, Overworld.StartMode startMode, HiresSnow snow) {
             if ((startMode == Overworld.StartMode.MainMenu || startMode == Overworld.StartMode.AreaComplete) && this.InRandomizer) {
                 startMode = (Overworld.StartMode)55;
-                Logger.Log("randomizer", "cursor at " + AreaData.Areas[AreaData.Areas.Count - 1].MountainCursor.ToString());
             }
             orig(self, startMode, snow);
         }
