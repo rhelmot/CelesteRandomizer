@@ -71,7 +71,8 @@ namespace Celeste.Mod.Randomizer {
 
         public override void Update() {
             if (menu != null && menu.Focused &&
-                Selected && Input.MenuCancel.Pressed) {
+                Selected && Input.MenuCancel.Pressed
+                && builderThread == null) {
                 Audio.Play(SFX.ui_main_button_back);
                 Overworld.Goto<OuiMainMenu>();
             }
@@ -164,7 +165,11 @@ namespace Celeste.Mod.Randomizer {
                         SaveData.Instance.VariantMode = true;
                         SaveData.Instance.AssistMode = false;
 
-                        new FadeWipe(this.Scene, false, () => LevelEnter.Go(new Session(newArea, null, null), true));
+                        new FadeWipe(this.Scene, false, () => {
+                            LevelEnter.Go(new Session(newArea, null, null), true);
+                            this.builderThread = null;
+                            this.entering = false;
+                        });
 
                         /*foreach (AreaData area in AreaData.Areas) {
                             Logger.Log("randomizer", $"Skeleton for {area.GetSID()}");

@@ -120,7 +120,7 @@ namespace Celeste.Mod.Randomizer {
         }
 
         // negative MIN_INT is still MIN_INT
-        public const int INCOMPATIBLE = -0x80000000;
+        public const int INCOMPATIBLE = int.MinValue;
 
         public int Compatible(Hole other) {
             int alignLow() {

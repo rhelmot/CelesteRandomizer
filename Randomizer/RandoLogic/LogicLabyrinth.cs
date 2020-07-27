@@ -16,9 +16,13 @@ namespace Celeste.Mod.Randomizer {
 
             private IEnumerable<StaticRoom> AvailableRooms() {
                 foreach (var room in Logic.RemainingRooms) {
-                    if (!TriedRooms.Contains(room)) {
-                        yield return room;
+                    if (room.End) {
+                        continue;
                     }
+                    if (TriedRooms.Contains(room)) {
+                        continue;
+                    }
+                    yield return room;
                 }
             }
 
@@ -44,7 +48,7 @@ namespace Celeste.Mod.Randomizer {
 
                 this.AddLastTask(new TaskLabyrinthFinish(this.Logic));
 
-                var closure = LinkedNodeSet.Closure(receipt.NewRoom.Nodes["main"], this.Logic.Caps, this.Logic.Caps, true);
+                var closure = LinkedNodeSet.Closure(receipt.NewRoom.Nodes["main"], this.Logic.Caps.WithoutKey(), this.Logic.Caps.WithoutKey(), true);
                 var node = receipt.NewRoom.Nodes["main"];
                 foreach (var edge in closure.UnlinkedEdges()) {
                     this.AddNextTask(new TaskLabyrinthContinue(this.Logic, edge));
@@ -64,29 +68,10 @@ namespace Celeste.Mod.Randomizer {
                 this.Goodwill = goodwill;
             }
 
-            private IEnumerable<StaticEdge> AvailableEdges() {
-                foreach (var room in this.Logic.RemainingRooms) {
-                    foreach (var node in room.Nodes.Values) {
-                        foreach (var edge in node.Edges) {
-                            if (edge.HoleTarget == null || TriedEdges.Contains(edge)) {
-                                continue;
-                            }
-
-                            yield return edge;
-                        }
-                    }
-                }
-            }
-
             private ConnectAndMapReceipt WorkingPossibility() {
-                var possibilities = new List<StaticEdge>(this.AvailableEdges());
-                possibilities.Shuffle(this.Logic.Random);
+                var possibilities = this.Logic.AvailableNewEdges(this.Logic.Caps.WithoutKey(), this.Logic.Caps.WithoutKey(), (StaticEdge edge) => !edge.FromNode.ParentRoom.End && !this.TriedEdges.Contains(edge));
 
                 foreach (var edge in possibilities) {
-                    if (!edge.ReqIn.Able(this.Logic.Caps) || !edge.ReqOut.Able(this.Logic.Caps)) {
-                        continue;
-                    }
-
                     var result = ConnectAndMapReceipt.Do(this.Logic, this.Edge, edge);
                     if (result != null) {
                         return result;
@@ -123,7 +108,7 @@ namespace Celeste.Mod.Randomizer {
                 this.AddReceipt(receipt);
                 this.TriedEdges.Add(receipt.Edge.CorrespondingEdge(this.Edge.Node));
                 var targetNode = receipt.Edge.OtherNode(this.Edge.Node);
-                var closure = LinkedNodeSet.Closure(targetNode, this.Logic.Caps, this.Logic.Caps, true);
+                var closure = LinkedNodeSet.Closure(targetNode, this.Logic.Caps.WithoutKey(), this.Logic.Caps.WithoutKey(), true);
 
                 var any = false;
                 foreach (var newedge in closure.UnlinkedEdges()) {
