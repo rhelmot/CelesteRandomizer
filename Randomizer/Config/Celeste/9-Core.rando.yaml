@@ -227,7 +227,7 @@ ASide:
     Holes:
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in
     InternalEdges:
     - To: "Right"
       ReqOut:

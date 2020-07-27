@@ -256,6 +256,7 @@ ASide:
       Collectables:
       - Idx: 0
     - Room: "berry2"
+      Collectables:
       - Idx: 1
   - Room: "b-02"
     Holes:
@@ -305,14 +306,14 @@ ASide:
       Idx: 0
       Kind: inout
     InternalEdges:
-    - To: "Berry"
-      ReqIn:
-        Dashes: zero
     - Split: RightToLeft
       ReqOut:
         Dashes: zero
       ReqIn:
         Dashes: one
+    - To: "Berry"
+      ReqIn:
+        Dashes: zero
     Subrooms:
     - Room: "Berry"
       Holes:
@@ -566,8 +567,8 @@ ASide:
       Kind: inout
     InternalEdges:
     - Split: BottomToTop
-        ReqBoth:
-          Dashes: one
+      ReqBoth:
+        Dashes: one
     Tweaks:
     - Name: spawn
       Update:
