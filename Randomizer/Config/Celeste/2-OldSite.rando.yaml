@@ -779,6 +779,11 @@ BSide:
     - Side: Down
       Idx: 0
       Kind: in
+    Tweaks:
+    - ID: 12
+      Update:
+        Y: 16
+        Height: 104
   - Room: "08"
     Holes:
     - Side: Up

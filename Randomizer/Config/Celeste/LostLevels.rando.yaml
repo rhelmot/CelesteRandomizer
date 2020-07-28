@@ -1151,6 +1151,12 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: None
+    - Side: Up
+      Idx: 0
+      Kind: None
+    - Side: Up
+      Idx: 1
+      Kind: None
   - Room: "i-01"
     Holes:
     - Side: Right
@@ -1535,7 +1541,7 @@ ASide:
     - Side: Right
       Idx: 3
       Kind: None
-    End: true
+    #End: true          # TODO turn on end when we can add the cinematic rooms
   - Room: "end-cinematic"
     Holes:
   - Room: "end-golden"

@@ -769,13 +769,17 @@ ASide:
         Dashes: one
     - Side: Right
       Idx: 0
-      Kind: in
+      Kind: inout
+      ReqOut:
+        Dashes: two
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
       ReqIn:
         Dashes: one
         Difficulty: hard
+      ReqOut:
+        Dashes: two
     - Side: Down
       Idx: 0
       Kind: in
@@ -1196,6 +1200,15 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: none
+    - Side: Down
+      Idx: 1
+      Kind: none
+    - Side: Down
+      Idx: 2
+      Kind: none
   - Room: "a-01"
     Holes:
     - Side: Right

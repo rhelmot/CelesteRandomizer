@@ -502,7 +502,7 @@ ASide:
     Holes:
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in   # TODO shorten jumpthru
     - Side: Up
       Idx: 0
       Kind: out

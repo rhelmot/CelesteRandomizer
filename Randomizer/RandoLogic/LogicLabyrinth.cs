@@ -6,7 +6,7 @@ namespace Celeste.Mod.Randomizer {
     public partial class RandoLogic {
 
         private static readonly int[] LabyrinthMinimums = { 30, 50, 80, 120 };
-        private static readonly int[] LabyrinthMaximums = { 50, 80, 120, 1000 };
+        private static readonly int[] LabyrinthMaximums = { 50, 80, 120, 200 };
 
         private class TaskLabyrinthStart : RandoTask {
             private HashSet<StaticRoom> TriedRooms = new HashSet<StaticRoom>();
