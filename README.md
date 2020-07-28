@@ -8,6 +8,12 @@ This is an [Everest](https://everestapi.github.io/) mod for [Celeste](http://www
 ![debug mode map](docs/img/debug.png)
 
 
+Installation
+------------
+
+Download from the [gamebanana page](https://gamebanana.com/tools/6848) and copy the zip file into your Celeste installation's `Mods` folder.
+
+
 Player Advice
 -------------
 
