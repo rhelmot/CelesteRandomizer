@@ -1,5 +1,6 @@
 #!/bin/sh
 
+msbuild
 VERSION=$(cat Randomizer/everest.yaml | grep '^  Version' | cut -d' ' -f 4)
 FILENAME=dist/Randomizer_${VERSION}.zip
 rm -f $FILENAME

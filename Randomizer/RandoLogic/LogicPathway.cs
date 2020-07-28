@@ -12,9 +12,13 @@ namespace Celeste.Mod.Randomizer {
 
             private IEnumerable<StaticRoom> AvailableRooms() {
                 foreach (var room in Logic.RemainingRooms) {
-                    if (!TriedRooms.Contains(room)) {
-                        yield return room;
+                    if (TriedRooms.Contains(room)) {
+                        continue;
                     }
+                    if (room.End) {
+                        continue;
+                    }
+                    yield return room;
                 }
             }
 
