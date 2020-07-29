@@ -347,7 +347,7 @@ ASide:
     Holes:
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: out
     - Side: Down
       Idx: 1
       Kind: in
