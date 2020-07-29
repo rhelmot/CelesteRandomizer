@@ -198,7 +198,12 @@ namespace Celeste.Mod.Randomizer {
             orig(version, ease, alpha);
 
             if (this.InRandomizer) {
-                ActiveFont.DrawOutline(this.Settings.Hash.ToString(), new Vector2(1820f + 300f * (1f - Ease.CubeOut(ease)), 954f), new Vector2(0.5f, 0f), Vector2.One * 0.5f, Color.White, 2f, Color.Black);
+                var text = this.Settings.Seed.ToString(RandoModule.MAX_SEED_DIGITS);
+                if (this.Settings.Rules != Ruleset.Custom) {
+                    text += " " + this.Settings.Rules.ToString();
+                }
+                text += "\n#" + this.Settings.Hash.ToString();
+                ActiveFont.DrawOutline(text, new Vector2(1820f + 300f * (1f - Ease.CubeOut(ease)), 925f), new Vector2(0.5f, 0f), Vector2.One * 0.5f, Color.White, 2f, Color.Black);
             }
         }
     }
