@@ -180,6 +180,7 @@ namespace Celeste.Mod.Randomizer {
                             Width = !topbottom ? 8 : hole.Size*8,
                             Height = topbottom ? 8 : hole.Size*8,
                             Position = corner,
+                            Level = result,
                         };
                         result.Entities.Add(e);
                     }
