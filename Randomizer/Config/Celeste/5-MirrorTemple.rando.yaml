@@ -138,6 +138,12 @@ ASide:
     - Collectable: 0
       ReqBoth:
         Dashes: one
+    Tweaks:
+    - Name: spawn
+      X: 48
+      Y: 80
+      Update:
+        Default: true
   - Room: "a-06"
     Holes:
     - Side: Left

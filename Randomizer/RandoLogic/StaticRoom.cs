@@ -418,7 +418,7 @@ namespace Celeste.Mod.Randomizer {
                     }
                 }
             }
-            Vector2? processSpawn(Vector2 spawn) {
+            Tuple<Vector2, bool> processSpawn(Vector2 spawn) {
                 foreach (var econfig in this.Tweaks) {
                     if (!(econfig.Update?.Add ?? false) &&
                         econfig.Name?.ToLower() == "spawn" &&
@@ -432,7 +432,7 @@ namespace Celeste.Mod.Randomizer {
                             if (econfig.Update?.Y != null)
                                 spawn.Y = econfig.Update.Y.Value + newPosition.Y;
                         }
-                        return spawn;
+                        return Tuple.Create(spawn, econfig.Update.Default);
                     }
                 }
                 return null;
@@ -468,8 +468,21 @@ namespace Celeste.Mod.Randomizer {
                 maxID = Math.Max(maxID, entity.ID);
                 processEntity(entity, toRemoveTriggers);
             }
+
+            int? defaultSpawn = null;
             for (int i = 0; i < result.Spawns.Count; i++) {
-                result.Spawns[i] = processSpawn(result.Spawns[i]) ?? result.Spawns[i];
+                var thing = processSpawn(result.Spawns[i]);
+                if (thing != null) {
+                    result.Spawns[i] = thing.Item1;
+                    if (thing.Item2) {
+                        defaultSpawn = i;
+                    }
+                }
+            }
+            if (defaultSpawn != null) {
+                var thing = result.Spawns[defaultSpawn.Value];
+                result.Spawns.RemoveAt(defaultSpawn.Value);
+                result.Spawns.Insert(0, thing);
             }
 
             foreach (var entity in toRemoveEntities) {
@@ -483,6 +496,7 @@ namespace Celeste.Mod.Randomizer {
             }
 
             foreach (var econfig in this.Tweaks) {
+                // implement add
                 if (econfig.Update?.Add ?? false) {
                     if (econfig.Update?.X == null || econfig.Update?.Y == null) {
                         throw new Exception("Incomplete new entity: must have X and Y");

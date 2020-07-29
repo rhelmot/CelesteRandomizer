@@ -182,6 +182,7 @@ namespace Celeste.Mod.Randomizer {
     public class RandoConfigUpdate {
         public bool Remove { get; set; }
         public bool Add { get; set; }
+        public bool Default { get; set; }
 
         public float? X { get; set; }
         public float? Y { get; set; }
