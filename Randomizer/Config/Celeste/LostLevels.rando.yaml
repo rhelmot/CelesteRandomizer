@@ -1501,6 +1501,12 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: in
+    Tweaks:
+    - Name: "spawn"
+      X: 272
+      Y: 64
+      Update:
+        Remove: true
   - Room: "j-18"
     Holes:
     - Side: Right

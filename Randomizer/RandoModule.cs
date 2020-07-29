@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using Monocle;
 using System;
-using System.Collections.Generic;
+using System.Collections;
 
 namespace Celeste.Mod.Randomizer {
     public class RandoModule : EverestModule {
@@ -30,6 +30,7 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.MapData.Load += DontLoadRandoMaps;
             On.Celeste.AreaData.Load += InitRandoData;
             On.Celeste.TextMenu.MoveSelection += DisableMenuMovement;
+            On.Celeste.Cassette.CollectRoutine += NeverCollectCassettes;
             //On.Celeste.AutoSplitterInfo.Update += wtf;
         }
 
@@ -46,6 +47,7 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.MapData.Load -= DontLoadRandoMaps;
             On.Celeste.AreaData.Load -= InitRandoData;
             On.Celeste.TextMenu.MoveSelection -= DisableMenuMovement;
+            On.Celeste.Cassette.CollectRoutine -= NeverCollectCassettes;
             //On.Celeste.AutoSplitterInfo.Update -= wtf;
         }
 
@@ -73,7 +75,7 @@ namespace Celeste.Mod.Randomizer {
             }
         }
 
-        public void CreateMainMenuButton(OuiMainMenu menu, List<MenuButton> buttons) {
+        public void CreateMainMenuButton(OuiMainMenu menu, System.Collections.Generic.List<MenuButton> buttons) {
             MainMenuSmallButton btn = new MainMenuSmallButton("MODOPTIONS_RANDOMIZER_TOPMENU", "menu/randomizer", menu, Vector2.Zero, Vector2.Zero, () => {
                 Audio.Play(SFX.ui_main_button_select);
                 Audio.Play(SFX.ui_main_whoosh_large_in);
@@ -84,7 +86,7 @@ namespace Celeste.Mod.Randomizer {
 
         public void ModifyLevelMenu(Level level, TextMenu pausemenu, bool minimal) {
             if (this.InRandomizer) {
-                foreach (var item in new List<TextMenu.Item>(pausemenu.GetItems())) {
+                foreach (var item in new System.Collections.Generic.List<TextMenu.Item>(pausemenu.GetItems())) {
                     if (item.GetType() == typeof(TextMenu.Button)) {
                         var btn = (TextMenu.Button)item;
                         if (btn.Label == Dialog.Clean("MENU_PAUSE_SAVEQUIT") || btn.Label == Dialog.Clean("MENU_PAUSE_RETURN")) {
@@ -177,6 +179,18 @@ namespace Celeste.Mod.Randomizer {
                 return;
             }
             orig(self, direction, wiggle);
+        }
+
+        public IEnumerator NeverCollectCassettes(On.Celeste.Cassette.orig_CollectRoutine orig, Cassette self, Player player) {
+            var thing = orig(self, player);
+            while (thing.MoveNext()) {  // why does it not let me use foreach?
+                yield return thing.Current;
+            }
+
+            if (this.InRandomizer) {
+                var level = self.Scene as Level;
+                level.Session.Cassette = false;
+            }
         }
     }
 
