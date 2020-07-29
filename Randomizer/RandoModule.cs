@@ -31,6 +31,7 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.AreaData.Load += InitRandoData;
             On.Celeste.TextMenu.MoveSelection += DisableMenuMovement;
             On.Celeste.Cassette.CollectRoutine += NeverCollectCassettes;
+            On.Celeste.AreaComplete.VersionNumberAndVariants += AreaCompleteDrawHash;
             //On.Celeste.AutoSplitterInfo.Update += wtf;
         }
 
@@ -48,6 +49,7 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.AreaData.Load -= InitRandoData;
             On.Celeste.TextMenu.MoveSelection -= DisableMenuMovement;
             On.Celeste.Cassette.CollectRoutine -= NeverCollectCassettes;
+            On.Celeste.AreaComplete.VersionNumberAndVariants += AreaCompleteDrawHash;
             //On.Celeste.AutoSplitterInfo.Update -= wtf;
         }
 
@@ -190,6 +192,17 @@ namespace Celeste.Mod.Randomizer {
             if (this.InRandomizer) {
                 var level = self.Scene as Level;
                 level.Session.Cassette = false;
+            }
+        }
+
+        public void AreaCompleteDrawHash(On.Celeste.AreaComplete.orig_VersionNumberAndVariants orig, string version, float ease, float alpha) {
+            if (this.InRandomizer) {
+                SaveData.Instance.VariantMode = false;
+            }
+            orig(version, ease, alpha);
+
+            if (this.InRandomizer) {
+                ActiveFont.DrawOutline(this.Settings.Hash.ToString(), new Vector2(1820f + 300f * (1f - Ease.CubeOut(ease)), 954f), new Vector2(0.5f, 0f), Vector2.One * 0.5f, Color.White, 2f, Color.Black);
             }
         }
     }
