@@ -1,6 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Celeste.Mod.Randomizer {
+    public enum SeedType {
+        Random,
+        Custom,
+        Last
+    }
+
+    public enum Ruleset {
+        Custom,
+        A,
+        B,
+        C,
+        D,
+        Last
+    }
+
     public enum LogicType {
         Pathway,
         Labyrinth,
@@ -31,7 +47,9 @@ namespace Celeste.Mod.Randomizer {
     }
 
     public class RandoSettings {
+        public SeedType SeedType;
         public int Seed;
+        public Ruleset Rules;
         public bool RepeatRooms;
         public bool EnterUnknown;
         public LogicType Algorithm;
@@ -39,6 +57,58 @@ namespace Celeste.Mod.Randomizer {
         public NumDashes Dashes;
         public Difficulty Difficulty;
         private HashSet<AreaKeyNotStupid> IncludedMaps = new HashSet<AreaKeyNotStupid>();
+
+        public void Enforce() {
+            if (this.SeedType == SeedType.Random) {
+                this.Seed = new Random().Next((int)Math.Pow(10, RandoModule.MAX_SEED_DIGITS));
+            }
+            switch (this.Rules) {
+                case Ruleset.A:
+                    this.SetNormalMaps();
+                    this.RepeatRooms = false;
+                    this.EnterUnknown = false;
+                    this.Algorithm = LogicType.Pathway;
+                    this.Length = MapLength.Short;
+                    this.Dashes = NumDashes.One;
+                    this.Difficulty = Difficulty.Normal;
+                    break;
+                case Ruleset.B:
+                    this.SetNormalMaps();
+                    this.RepeatRooms = false;
+                    this.EnterUnknown = false;
+                    this.Algorithm = LogicType.Pathway;
+                    this.Length = MapLength.Medium;
+                    this.Dashes = NumDashes.Two;
+                    this.Difficulty = Difficulty.Normal;
+                    break;
+                case Ruleset.C:
+                    this.SetNormalMaps();
+                    this.RepeatRooms = false;
+                    this.EnterUnknown = false;
+                    this.Algorithm = LogicType.Pathway;
+                    this.Length = MapLength.Medium;
+                    this.Dashes = NumDashes.One;
+                    this.Difficulty = Difficulty.Expert;
+                    break;
+                case Ruleset.D:
+                    this.SetNormalMaps();
+                    this.RepeatRooms = false;
+                    this.EnterUnknown = false;
+                    this.Algorithm = LogicType.Pathway;
+                    this.Length = MapLength.Long;
+                    this.Dashes = NumDashes.Two;
+                    this.Difficulty = Difficulty.Expert;
+                    break;
+            }
+        }
+
+        public void SetNormalMaps() {
+            foreach (var key in RandoLogic.AvailableAreas) {
+                if (key.GetLevelSet() == "Celeste") {
+                    this.EnableMap(key);
+                }
+            }
+        }
 
         private IEnumerable<uint> HashParts() {
             yield return (uint)RandoModule.Instance.Metadata.Version.Major;
@@ -130,6 +200,10 @@ namespace Celeste.Mod.Randomizer {
 
         public void DisableMap(AreaKey map) {
             this.IncludedMaps.Remove(new AreaKeyNotStupid(map));
+        }
+
+        public void DisableAllMaps() {
+            this.IncludedMaps.Clear();
         }
 
         public IEnumerable<AreaKey> EnabledMaps {

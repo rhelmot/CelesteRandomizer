@@ -14,9 +14,8 @@ namespace Celeste.Mod.Randomizer {
         public RandoModule() {
             Instance = this;
 
-            var r = new Random();
             Settings = new RandoSettings {
-                Seed = r.Next((int)Math.Pow(10, MAX_SEED_DIGITS)),
+                Seed = 0,
                 Dashes = NumDashes.One,
             };
         }
@@ -170,10 +169,7 @@ namespace Celeste.Mod.Randomizer {
         public void InitRandoData(On.Celeste.AreaData.orig_Load orig) {
             orig();
             RandoLogic.ProcessAreas();
-
-            foreach (var key in RandoLogic.AvailableAreas) {
-                Settings.EnableMap(key);
-            }
+            Settings.SetNormalMaps();
         }
 
         public void DisableMenuMovement(On.Celeste.TextMenu.orig_MoveSelection orig, TextMenu self, int direction, bool wiggle = false) {

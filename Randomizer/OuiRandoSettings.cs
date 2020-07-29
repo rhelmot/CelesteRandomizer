@@ -8,7 +8,6 @@ namespace Celeste.Mod.Randomizer {
     public class OuiRandoSettings : Oui {
         private DisablableTextMenu menu;
         private int savedMenuIndex = -1;
-        private TextMenu.Button startButton;
         private Thread builderThread;
         private bool entering;
 
@@ -82,76 +81,119 @@ namespace Celeste.Mod.Randomizer {
 
         private void ReloadMenu() {
             menu = new DisablableTextMenu {
-                new TextMenu.Header(Dialog.Clean("MODOPTIONS_RANDOMIZER_HEADER")),
-                new TextMenu.Button(Dialog.Clean("MODOPTIONS_RANDOMIZER_SEED") + ": " + Settings.Seed.ToString(RandoModule.MAX_SEED_DIGITS)).Pressed(() => {
-                    Audio.Play(SFX.ui_main_savefile_rename_start);
-                    menu.SceneAs<Overworld>().Goto<UI.OuiNumberEntry>().Init<OuiRandoSettings>(
-                        Settings.Seed,
-                        (v) => Settings.Seed = (int)v,
-                        RandoModule.MAX_SEED_DIGITS,
-                        false,
-                        false);
-                }),
-
-                new TextMenu.Button(Dialog.Clean("MODOPTIONS_RANDOMIZER_MAPPICKER")).Pressed(() => {
-                    Audio.Play(SFX.ui_main_button_select);
-                    menu.SceneAs<Overworld>().Goto<OuiMapPicker>();
-                }),
-                new TextMenuExt.SubHeaderExt(Settings.LevelCount.ToString() + " " + Dialog.Clean("MODOPTIONS_RANDOMIZER_MAPPICKER_LEVELS")) {
-                    HeightExtra = -10f,
-                    Offset = new Vector2(30, -5),
-                },
-
-                new TextMenu.OnOff(Dialog.Clean("MODOPTIONS_RANDOMIZER_REPEATROOMS"), Settings.RepeatRooms).Change((val) => {
-                    Settings.RepeatRooms = val;
-                }),
-
-                new TextMenu.OnOff(Dialog.Clean("MODOPTIONS_RANDOMIZER_ENTERUNKNOWN"), Settings.EnterUnknown).Change((val) => {
-                    Settings.EnterUnknown = val;
-                }),
-
-                new TextMenu.Slider(Dialog.Clean("MODOPTIONS_RANDOMIZER_LOGIC"), (i) => {
-                    return Dialog.Clean("MODOPTIONS_RANDOMIZER_LOGIC_" + Enum.GetNames(typeof(LogicType))[i].ToUpperInvariant());
-                }, 0, (int)LogicType.Last - 1, (int)Settings.Algorithm).Change((i) => {
-                    Settings.Algorithm = (LogicType)i;
-                }),
-
-                new TextMenu.Slider(Dialog.Clean("MODOPTIONS_RANDOMIZER_LENGTH"), (i) => {
-                    return Dialog.Clean("MODOPTIONS_RANDOMIZER_LENGTH_" + Enum.GetNames(typeof(MapLength))[i].ToUpperInvariant());
-                }, 0, (int)MapLength.Last - 1, (int)Settings.Length).Change((i) => {
-                    Settings.Length = (MapLength)i;
-                }),
-
-                new TextMenu.Slider(Dialog.Clean("MODOPTIONS_RANDOMIZER_NUMDASHES"), (i) => {
-                    return Dialog.Clean("MODOPTIONS_RANDOMIZER_NUMDASHES_" + Enum.GetNames(typeof(NumDashes))[i].ToUpperInvariant());
-                }, 0, (int)NumDashes.Last - 1, (int)Settings.Dashes).Change((i) => {
-                    Settings.Dashes = (NumDashes)i;
-                }),
-
-                new TextMenu.Slider(Dialog.Clean("MODOPTIONS_RANDOMIZER_DIFFICULTY"), (i) => {
-                    return Dialog.Clean("MODOPTIONS_RANDOMIZER_DIFFICULTY_" + Enum.GetNames(typeof(Difficulty))[i].ToUpperInvariant());
-                }, 0, (int)Difficulty.Last - 1, (int)Settings.Difficulty).Change((i) => {
-                    Settings.Difficulty = (Difficulty)i;
-                }),
+                new TextMenu.Header(Dialog.Clean("MODOPTIONS_RANDOMIZER_HEADER"))
             };
 
-            var showHash = new TextMenuExt.EaseInSubHeaderExt("{hash}", false, menu) {
+            var seedbutton = new TextMenu.Button(Dialog.Clean("MODOPTIONS_RANDOMIZER_SEED") + ": " + Settings.Seed.ToString(RandoModule.MAX_SEED_DIGITS)); 
+            seedbutton.Pressed(() => {
+                Audio.Play(SFX.ui_main_savefile_rename_start);
+                menu.SceneAs<Overworld>().Goto<UI.OuiNumberEntry>().Init<OuiRandoSettings>(
+                    Settings.Seed,
+                    (v) => Settings.Seed = (int)v,
+                    RandoModule.MAX_SEED_DIGITS,
+                    false,
+                    false);
+            });
+            seedbutton.Visible = Settings.SeedType == SeedType.Custom;
+
+            var seedtypetoggle = new TextMenu.Slider(Dialog.Clean("MODOPTIONS_RANDOMIZER_SEEDTYPE"), (i) => {
+                return Dialog.Clean("MODOPTIONS_RANDOMIZER_SEEDTYPE_" + Enum.GetNames(typeof(SeedType))[i].ToUpperInvariant());
+            }, 0, (int)SeedType.Last - 1, (int)Settings.SeedType).Change((i) => {
+                Settings.SeedType = (SeedType)i;
+                seedbutton.Visible = Settings.SeedType == SeedType.Custom;
+                // just in case...
+                seedbutton.Label = Dialog.Clean("MODOPTIONS_RANDOMIZER_SEED") + ": " + Settings.Seed.ToString(RandoModule.MAX_SEED_DIGITS);
+            });
+
+            var mapbutton = new TextMenu.Button(Dialog.Clean("MODOPTIONS_RANDOMIZER_MAPPICKER")).Pressed(() => {
+                Audio.Play(SFX.ui_main_button_select);
+                menu.SceneAs<Overworld>().Goto<OuiMapPicker>();
+            });
+
+            var mapcountlbl = new TextMenuExt.SubHeaderExt(Settings.LevelCount.ToString() + " " + Dialog.Clean("MODOPTIONS_RANDOMIZER_MAPPICKER_LEVELS")) {
                 HeightExtra = -10f,
                 Offset = new Vector2(30, -5),
             };
 
-            this.startButton = new TextMenu.Button(Dialog.Clean("MODOPTIONS_RANDOMIZER_START"));
-            this.startButton.Pressed(() => {
+            var repeatroomstoggle = new TextMenu.OnOff(Dialog.Clean("MODOPTIONS_RANDOMIZER_REPEATROOMS"), Settings.RepeatRooms).Change((val) => {
+                Settings.RepeatRooms = val;
+            });
+
+            var enterunknowntoggle = new TextMenu.OnOff(Dialog.Clean("MODOPTIONS_RANDOMIZER_ENTERUNKNOWN"), Settings.EnterUnknown).Change((val) => {
+                Settings.EnterUnknown = val;
+            });
+
+            var logictoggle = new TextMenu.Slider(Dialog.Clean("MODOPTIONS_RANDOMIZER_LOGIC"), (i) => {
+                return Dialog.Clean("MODOPTIONS_RANDOMIZER_LOGIC_" + Enum.GetNames(typeof(LogicType))[i].ToUpperInvariant());
+            }, 0, (int)LogicType.Last - 1, (int)Settings.Algorithm).Change((i) => {
+                Settings.Algorithm = (LogicType)i;
+            });
+
+            var lengthtoggle = new TextMenu.Slider(Dialog.Clean("MODOPTIONS_RANDOMIZER_LENGTH"), (i) => {
+                return Dialog.Clean("MODOPTIONS_RANDOMIZER_LENGTH_" + Enum.GetNames(typeof(MapLength))[i].ToUpperInvariant());
+            }, 0, (int)MapLength.Last - 1, (int)Settings.Length).Change((i) => {
+                Settings.Length = (MapLength)i;
+            });
+
+            var numdashestoggle = new TextMenu.Slider(Dialog.Clean("MODOPTIONS_RANDOMIZER_NUMDASHES"), (i) => {
+                return Dialog.Clean("MODOPTIONS_RANDOMIZER_NUMDASHES_" + Enum.GetNames(typeof(NumDashes))[i].ToUpperInvariant());
+            }, 0, (int)NumDashes.Last - 1, (int)Settings.Dashes).Change((i) => {
+                Settings.Dashes = (NumDashes)i;
+            });
+
+            var difficultytoggle = new TextMenu.Slider(Dialog.Clean("MODOPTIONS_RANDOMIZER_DIFFICULTY"), (i) => {
+                return Dialog.Clean("MODOPTIONS_RANDOMIZER_DIFFICULTY_" + Enum.GetNames(typeof(Difficulty))[i].ToUpperInvariant());
+            }, 0, (int)Difficulty.Last - 1, (int)Settings.Difficulty).Change((i) => {
+                Settings.Difficulty = (Difficulty)i;
+            });
+
+            void syncModel() {
+                repeatroomstoggle.Index = Settings.RepeatRooms ? 1 : 0;
+                enterunknowntoggle.Index = Settings.EnterUnknown ? 1 : 0;
+                logictoggle.Index = (int)Settings.Algorithm;
+                lengthtoggle.Index = (int)Settings.Length;
+                numdashestoggle.Index = (int)Settings.Dashes;
+                difficultytoggle.Index = (int)Settings.Difficulty;
+                mapcountlbl.Title = Settings.LevelCount.ToString() + " " + Dialog.Clean("MODOPTIONS_RANDOMIZER_MAPPICKER_LEVELS");
+
+                var locked = Settings.Rules != Ruleset.Custom;
+                mapbutton.Disabled = locked;
+                repeatroomstoggle.Disabled = locked;
+                enterunknowntoggle.Disabled = locked;
+                logictoggle.Disabled = locked;
+                lengthtoggle.Disabled = locked;
+                numdashestoggle.Disabled = locked;
+                difficultytoggle.Disabled = locked;
+            }
+            syncModel();
+
+            var rulestoggle = new TextMenu.Slider(Dialog.Clean("MODOPTIONS_RANDOMIZER_RULES"), (i) => {
+                return Dialog.Clean("MODOPTIONS_RANDOMIZER_RULES_" + Enum.GetNames(typeof(Ruleset))[i].ToUpperInvariant());
+            }, 0, (int)Ruleset.Last - 1, (int)Settings.Rules).Change((i) => {
+                Settings.Rules = (Ruleset)i;
+                Settings.Enforce();
+                syncModel();
+            });
+
+            var hashtext = new TextMenuExt.EaseInSubHeaderExt("{hash}", false, menu) {
+                HeightExtra = -10f,
+                Offset = new Vector2(30, -5),
+            };
+
+            var startbutton = new TextMenu.Button(Dialog.Clean("MODOPTIONS_RANDOMIZER_START"));
+            startbutton.Pressed(() => {
                 if (this.entering) {
                     return;
                 }
 
                 if (this.builderThread == null) {
-                    this.startButton.Label = Dialog.Clean("MODOPTIONS_RANDOMIZER_CANCEL");
-                    showHash.Title = Dialog.Clean("MODOPTIONS_RANDOMIZER_GENERATING");
+                    startbutton.Label = Dialog.Clean("MODOPTIONS_RANDOMIZER_CANCEL");
+                    hashtext.Title = Dialog.Clean("MODOPTIONS_RANDOMIZER_GENERATING");
+                    hashtext.FadeVisible = true;
                     menu.DisableMovement = true;
 
                     this.builderThread = new Thread(() => {
+                        Settings.Enforce();
                         AreaKey newArea = RandoLogic.GenerateMap(Settings);
                         this.entering = true;
 
@@ -165,7 +207,7 @@ namespace Celeste.Mod.Randomizer {
                         SaveData.Instance.VariantMode = true;
                         SaveData.Instance.AssistMode = false;
 
-                        new FadeWipe(this.Scene, false, () => {
+                        var fade = new FadeWipe(this.Scene, false, () => {   // assign to variable to suppress compiler warning
                             LevelEnter.Go(new Session(newArea, null, null), true);
                             this.builderThread = null;
                             this.entering = false;
@@ -182,20 +224,34 @@ namespace Celeste.Mod.Randomizer {
                     this.builderThread.Abort();
                     this.builderThread = null;
 
-                    this.startButton.Label = Dialog.Clean("MODOPTIONS_RANDOMIZER_START");
-                    this.startButton.OnEnter();
+                    startbutton.Label = Dialog.Clean("MODOPTIONS_RANDOMIZER_START");
+                    startbutton.OnEnter();
                     menu.DisableMovement = false;
                 }
             });
-            menu.Add(this.startButton);
-            this.startButton.OnEnter += () => {
-                showHash.Title = Dialog.Clean("MODOPTIONS_RANDOMIZER_HASH") + " " + this.Settings.Hash;
-                showHash.FadeVisible = true;
+            startbutton.OnEnter += () => {
+                if (Settings.SeedType == SeedType.Custom) {
+                    hashtext.Title = Dialog.Clean("MODOPTIONS_RANDOMIZER_HASH") + " " + this.Settings.Hash;
+                    hashtext.FadeVisible = true;
+                }
             };
-            this.startButton.OnLeave += () => {
-                showHash.FadeVisible = false;
+            startbutton.OnLeave += () => {
+                hashtext.FadeVisible = false;
             };
-            menu.Add(showHash);
+
+            menu.Add(seedtypetoggle);
+            menu.Add(seedbutton);
+            menu.Add(rulestoggle);
+            menu.Add(mapbutton);
+            menu.Add(mapcountlbl);
+            menu.Add(repeatroomstoggle);
+            menu.Add(enterunknowntoggle);
+            menu.Add(logictoggle);
+            menu.Add(lengthtoggle);
+            menu.Add(numdashestoggle);
+            menu.Add(difficultytoggle);
+            menu.Add(startbutton);
+            menu.Add(hashtext);
 
             Scene.Add(menu);
         }
