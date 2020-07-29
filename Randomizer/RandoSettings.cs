@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 
 namespace Celeste.Mod.Randomizer {
-    // WHEN YOU ADD A NEW MEMBER TO ANY OF THESE INCREMENT THE HASH VERSION
     public enum LogicType {
         Pathway,
         Labyrinth,
@@ -32,8 +31,6 @@ namespace Celeste.Mod.Randomizer {
     }
 
     public class RandoSettings {
-        // WHEN YOU ADD A NEW FIELD HERE ADD IT TO THE HASH GENERATOR AND INCREMENT THE VERSION
-        private const uint VERSION = 0;
         public int Seed;
         public bool RepeatRooms;
         public bool EnterUnknown;
@@ -44,7 +41,9 @@ namespace Celeste.Mod.Randomizer {
         private HashSet<AreaKeyNotStupid> IncludedMaps = new HashSet<AreaKeyNotStupid>();
 
         private IEnumerable<uint> HashParts() {
-            yield return VERSION;
+            yield return (uint)RandoModule.Instance.Metadata.Version.Major;
+            yield return (uint)RandoModule.Instance.Metadata.Version.Minor;
+            yield return (uint)RandoModule.Instance.Metadata.Version.Build;
             yield return (uint)Seed;
             yield return RepeatRooms ? 1u : 0u;
             yield return EnterUnknown ? 1u : 0u;
