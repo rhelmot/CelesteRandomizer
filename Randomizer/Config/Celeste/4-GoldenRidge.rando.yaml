@@ -260,28 +260,32 @@ ASide:
       - Idx: 1
   - Room: "b-02"
     Holes:
-    - Side: Up
-      Idx: 0
-      Kind: inout
-    - Side: Right
-      Idx: 0
-      Kind: inout
-      ReqOut:
-        Dashes: one
     - Side: Left
-      Idx: 0
+      Idx: 1
       Kind: inout
+      ReqIn:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: hard
+    Collectables:
+    - Idx: 1
     Subrooms:
-    - Room: "Berry"
+    - Room: "upper"
       Holes:
-      - Side: Left
-        Idx: 1
+      - Side: Up
+        Idx: 0
         Kind: inout
-        ReqIn:
-          Or:
-          - Dashes: one
-          - Dashes: zero
-            Difficulty: hard
+      - Side: Right
+        Idx: 0
+        Kind: inout
+        ReqOut:
+          Dashes: one
+      - Side: Left
+        Idx: 0
+        Kind: inout
+      Collectables:
+      - Idx: 0
   - Room: "b-03"
     Holes:
     - Side: Right
