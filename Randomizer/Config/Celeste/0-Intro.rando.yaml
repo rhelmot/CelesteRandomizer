@@ -12,6 +12,8 @@ ASide:
     - Side: Up
       Idx: 1
       Kind: inout
+      ReqOut:
+        Dashes: one
     - Side: Right
       Idx: 0
       Kind: inout

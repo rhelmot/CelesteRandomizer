@@ -187,6 +187,8 @@ ASide:
     - Side: Right
       Idx: 0
       Kind: inout
+    Collectables:
+    - Idx: 0
     Subrooms:
     - Room: "elbow"
       Holes:

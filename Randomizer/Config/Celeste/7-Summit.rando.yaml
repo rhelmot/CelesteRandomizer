@@ -465,7 +465,7 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: inout
-      ReqOut:
+      ReqBoth:
         Dashes: one
     - Side: Up
       Idx: 1
@@ -502,6 +502,12 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: inout
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 40
+        Y: 168
   - Room: "c-06b"
     Holes:
     - Side: Up
@@ -1193,14 +1199,14 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: out
-    - Side: Left
-      Idx: 1
-      Kind: inout
       ReqOut:
         Or:
         - Dashes: two
         - Dashes: one
           Difficulty: expert  # maybe hard? there's one spike jump at the very end
+    - Side: Left
+      Idx: 1
+      Kind: inout
     - Side: Left
       Idx: 0
       Kind: None

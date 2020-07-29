@@ -392,6 +392,12 @@ ASide:
     - Side: Down
       Idx: 1
       Kind: in
+    Tweaks:
+    - Name: "spawn"
+      X: 528
+      Y: 608
+      Update:
+        Default: true
   - Room: "d-01"
     Holes:
     - Side: Right
@@ -448,6 +454,9 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: inout
+      ReqOut:
+        Dashes: two
+        Difficulty: hard  # needs a double jump to get enough height from the bottom
     - Side: Down
       Idx: 1
       Kind: in
@@ -1475,6 +1484,12 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+      ReqIn:
+        Dashes: one
+        Difficulty: hard
+    - Side: Down
+      Idx: 0
+      Kind: unknown
       ReqIn:
         Dashes: one
         Difficulty: hard

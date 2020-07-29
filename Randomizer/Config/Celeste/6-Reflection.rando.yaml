@@ -89,7 +89,7 @@ ASide:
     - Room: "cassette"
       Holes:
       - Side: Left
-        Idx: 0
+        Idx: 1
         Kind: inout
       InternalEdges:
       - To: "heart"
@@ -108,7 +108,7 @@ ASide:
     - Room: "heart"
       Holes:
       - Side: Left
-        Idx: 1
+        Idx: 0
         Kind: inout
     Tweaks:
     - ID: 429
@@ -257,6 +257,8 @@ ASide:
     - Side: Left
       Idx: 1
       Kind: in
+      ReqIn:
+        Dashes: one
   - Room: "12a"
     Holes:
     - Side: Right
