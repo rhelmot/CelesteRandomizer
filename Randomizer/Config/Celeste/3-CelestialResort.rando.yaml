@@ -774,14 +774,14 @@ ASide:
       Idx: 0
       Kind: in
     Subrooms:
-    - Room: "elbow"
+    - Room: "elbow"  # TODO require laundry to be put away
       Holes:
       - Side: Down
         Idx: 1
-        Kind: inout
+        Kind: none
       - Side: Right
         Idx: 0
-        Kind: inout
+        Kind: none
   - Room: "08-x"  # under-the-bridge berry room
     Holes:
     - Side: Up
