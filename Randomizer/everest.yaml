@@ -1,5 +1,5 @@
 ﻿- Name: Randomizer
-  Version: 0.1.4
+  Version: 0.2.0
   DLL: Randomizer.dll
   Dependencies:
     - Name: Everest
