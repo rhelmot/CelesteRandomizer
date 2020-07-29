@@ -1107,17 +1107,25 @@ ASide:
         Difficulty: hard
   - Room: "h-09"
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: out
-      ReqOut:
-        Dashes: one
     - Side: Left
       Idx: 0
       Kind: none
     - Side: Left
       Idx: 1
       Kind: inout
+    InternalEdges:
+    - To: "right"
+      ReqOut:
+        Dashes: one
+    Subrooms:
+    - Room: "right"
+      Holes:
+      - Side: Right
+        Idx: 0
+        Kind: inout
+      - Side: Up
+        Idx: 1
+        Kind: Unknown
   - Room: "h-10"
     Holes:
     - Side: Up
