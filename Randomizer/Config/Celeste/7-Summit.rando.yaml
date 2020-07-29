@@ -1129,6 +1129,8 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: inout
+      ReqOut:
+        Dashes: one
     - Side: Down
       Idx: 0
       Kind: inout

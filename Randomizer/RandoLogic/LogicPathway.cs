@@ -171,6 +171,9 @@ namespace Celeste.Mod.Randomizer {
                 if (!extendingMap) {
                     // just try to place a key
                     foreach (var spot in closure.UnlinkedCollectables()) {
+                        if (spot.Static.MustFly) {
+                            continue;
+                        }
                         this.AddReceipt(PlaceCollectableReceipt.Do(spot.Node, spot.Static, LinkedNode.LinkedCollectable.Key));
                         return true;
                     }

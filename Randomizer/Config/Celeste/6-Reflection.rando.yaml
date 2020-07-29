@@ -20,29 +20,29 @@ ASide:
       Kind: in
   - Room: "02"
     Holes:
-    - Side: Up
-      Idx: 0
-      Kind: inout
     - Side: Left
-      Idx: 0
+      Idx: 1
       Kind: inout
-    InternalEdges:
-    - Split: BottomToTop
       ReqOut:
-        Dashes: zero
-      ReqIn:
         Dashes: one
+    - Side: Down
+      Idx: 0
+      Kind: in
     Subrooms:
-    - Room: "lower"
+    - Room: "upper"
       Holes:
-      - Side: Left
-        Idx: 1
-        Kind: inout
-        ReqOut:
-          Dashes: one
-      - Side: Down
+      - Side: Up
         Idx: 0
-        Kind: in
+        Kind: inout
+      - Side: Left
+        Idx: 0
+        Kind: inout
+      InternalEdges:
+      - Split: BottomToTop
+        ReqOut:
+          Dashes: zero
+        ReqIn:
+          Dashes: one
   - Room: "03"
     Holes:
     - Side: Right

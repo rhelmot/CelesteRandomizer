@@ -79,6 +79,10 @@ ASide:
       - Side: Left
         Idx: 0
         Kind: inout
+      InternalEdges:
+      - Collectable: 0
+        ReqBoth:
+          Dashes: one
   - Room: "2"
     Holes:
     - Side: Up
@@ -301,7 +305,7 @@ ASide:
     Holes:
     - Side: Left
       Idx: 0
-      Kind: inout
+      Kind: None
     # TODO: Warp
   - Room: "d0"
     Holes:
@@ -587,6 +591,7 @@ ASide:
       Kind: inout
       ReqOut:
         Dashes: one
+        Difficulty: hard
     - Side: Up
       Idx: 1
       Kind: inout
@@ -595,6 +600,7 @@ ASide:
       Kind: inout
       ReqOut:
         Dashes: one
+        Difficulty: hard
     - Side: Down
       Idx: 0
       Kind: inout

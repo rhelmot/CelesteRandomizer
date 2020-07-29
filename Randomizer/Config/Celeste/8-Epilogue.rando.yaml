@@ -13,10 +13,13 @@ ASide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: inout
+      Kind: none
     End: true
   - Room: "secret"
     Holes:
     - Side: Left
+      Idx: 0
+      Kind: inout
+    - Side: Right
       Idx: 0
       Kind: inout

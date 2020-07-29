@@ -506,6 +506,8 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: out
+      ReqOut:
+        Dashes: one
     Subrooms:
     - Room: "elbow"
       Holes:
@@ -614,6 +616,9 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: inout
+    Collectables:
+    - Idx: 0
+      MustFly: true
     InternalEdges:
     - Split: TopToBottom
       ReqOut:
@@ -659,6 +664,8 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: out
+      ReqOut:
+        Dashes: one
     - Side: Up
       Idx: 1
       Kind: inout
@@ -755,7 +762,9 @@ ASide:
       Kind: in
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: out
+      ReqOut:
+        Dashes: one
   - Room: "11-a"  # pico-8 room
     Holes:
     - Side: Left
@@ -1098,7 +1107,7 @@ ASide:
     - Name: spawn
       Update:
         Add: true
-        X: 584
+        X: 800
         Y: 144
   - Room: "roof06b"
     Holes:
@@ -1425,6 +1434,8 @@ BSide:
     - Side: Up
       Idx: 0
       Kind: inout
+      ReqOut:
+        Dashes: one
     - Side: Up
       Idx: 1
       Kind: None
@@ -1515,6 +1526,9 @@ BSide:
       Idx: 0
       Kind: inout
       HighBound: 19
+    - Side: Down
+      Idx: 0
+      Kind: none
     InternalEdges:
     - Split: LeftToRight
       ReqBoth:

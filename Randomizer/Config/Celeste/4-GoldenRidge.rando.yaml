@@ -626,7 +626,7 @@ ASide:
         Dashes: one
     - Side: Left
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "d-03"
     Holes:
     - Side: Right

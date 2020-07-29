@@ -906,6 +906,15 @@ ASide:
       - Collectable: 3
         ReqBoth:
           Dashes: one
+    Tweaks:
+    - ID: 4
+      Name: "changeRespawnTrigger"
+      Update:
+        Remove: true
+    - ID: 2
+      Name: "changeRespawnTrigger"
+      Update:
+        Remove: true
   - Room: "d-05"
     Holes:
     - Side: Up
