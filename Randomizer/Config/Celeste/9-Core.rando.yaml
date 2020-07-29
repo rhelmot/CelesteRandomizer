@@ -864,6 +864,7 @@ BSide:
       Kind: inout
       ReqIn:
         Dashes: one
+        Difficulty: perfect
     - Side: Up
       Idx: 0
       Kind: None
