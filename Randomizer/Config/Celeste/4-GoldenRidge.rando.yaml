@@ -366,16 +366,18 @@ ASide:
     - Side: Right
       Idx: 0
       Kind: out
-  - Room: "b-sec"
+  - Room: "b-sec"  # TODO: mark the heart as requiring the dashes, not the entrances
     Holes:
     - Side: Right
       Idx: 0
       Kind: inout
-      ReqOut:
+      ReqBoth:
         Dashes: one
     - Side: Left
       Idx: 0
       Kind: inout
+      ReqIn:
+        Dashes: one
     End: true
   - Room: "b-secb"
     Holes:
