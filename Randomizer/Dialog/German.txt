@@ -1,0 +1,67 @@
+﻿# NOTES:
+# The # Symbol at the start of a line counts as a Comment. To include in dialog, use a \#
+# The . Symbol will cause a pause unless escaped with \. (ex: Mr. Oshiro has a pause, Mr\. Oshiro does not)
+# Newlines automatically create a Page Break, unless there is an {n} command on the previous line
+# Commands: Anything inside of curly braces {...} is a command and should not be translated.
+
+# Inline Text Commands:
+# {~}wavy text{/~}
+# {!}impact text{/!}
+# {>> x}changes speed at which characters are displayed{>>}
+# {# 000000}this text is black{#} (uses HEX color values)
+# {+MENU_BEGIN} inserts the dialog from the MENU_BEGIN value (in English, "CLIMB")
+# {n} creates a newline, without a page break
+# {0.5} creates a 0.5 second pause
+# {big}this text is large{/big}
+
+# Gameplay Control Commands (should never change)
+# {trigger x} this triggers an in-game event
+# {anchor} controls the visual position of the textbox in-game
+
+# Randomizer menus
+    MODOPTIONS_RANDOMIZER_TOPMENU=Zufallsgenerator
+    MODOPTIONS_RANDOMIZER_HEADER=Zufallsgenerator Optionen
+    MODOPTIONS_RANDOMIZER_SEEDTYPE=Seed Art
+    MODOPTIONS_RANDOMIZER_SEEDTYPE_RANDOM=Zufällig
+    MODOPTIONS_RANDOMIZER_SEEDTYPE_CUSTOM=Benutzerdefiniert
+    MODOPTIONS_RANDOMIZER_SEED=Benutzerdefinierter Seed
+    MODOPTIONS_RANDOMIZER_RULES=Regeln
+    MODOPTIONS_RANDOMIZER_RULES_CUSTOM=Benutzerdefiniert
+    MODOPTIONS_RANDOMIZER_RULES_A=Regelsatz A
+    MODOPTIONS_RANDOMIZER_RULES_B=Regelsatz B
+    MODOPTIONS_RANDOMIZER_RULES_C=Regelsatz C
+    MODOPTIONS_RANDOMIZER_RULES_D=Regelsatz D
+    MODOPTIONS_RANDOMIZER_MAPPICKER=Karten Auswählen
+    MODOPTIONS_RANDOMIZER_MAPPICKER_LEVELS=Räume verfügbar
+    MODOPTIONS_RANDOMIZER_MAPPICKER_HEADER=Karten für den Generator auswählen
+    MODOPTIONS_RANDOMIZER_REPEATROOMS=Räume wiederholen
+    MODOPTIONS_RANDOMIZER_ENTERUNKNOWN=Unnormale Durchgänge benutzen
+    MODOPTIONS_RANDOMIZER_LOGIC=Logik
+    MODOPTIONS_RANDOMIZER_LOGIC_PATHWAY=Pfad
+    MODOPTIONS_RANDOMIZER_LOGIC_LABYRINTH=Labyrinth
+    MODOPTIONS_RANDOMIZER_LENGTH=Länge
+    MODOPTIONS_RANDOMIZER_LENGTH_SHORT=Kurz
+    MODOPTIONS_RANDOMIZER_LENGTH_MEDIUM=Mittel
+    MODOPTIONS_RANDOMIZER_LENGTH_LONG=Lang
+    MODOPTIONS_RANDOMIZER_LENGTH_ENORMOUS=Enorm
+    MODOPTIONS_RANDOMIZER_NUMDASHES=Dash Anzahl
+    MODOPTIONS_RANDOMIZER_NUMDASHES_ZERO=Keine
+    MODOPTIONS_RANDOMIZER_NUMDASHES_ONE=1
+    MODOPTIONS_RANDOMIZER_NUMDASHES_TWO=2
+    MODOPTIONS_RANDOMIZER_DIFFICULTY=Schwierigkeit
+    MODOPTIONS_RANDOMIZER_DIFFICULTY_NORMAL=Normal
+    MODOPTIONS_RANDOMIZER_DIFFICULTY_HARD=Schwer
+    MODOPTIONS_RANDOMIZER_DIFFICULTY_EXPERT=Experte
+    MODOPTIONS_RANDOMIZER_DIFFICULTY_PERFECT=Perfekt
+    MODOPTIONS_RANDOMIZER_START=Starten!
+    MODOPTIONS_RANDOMIZER_HASH=Hash
+    MODOPTIONS_RANDOMIZER_CANCEL=Abbrechen
+    MODOPTIONS_RANDOMIZER_GENERATING=Generiere...
+    
+# Level menu
+    MENU_PAUSE_RESTARTRANDO=Randomizer Neu Starten
+    MENU_PAUSE_QUITRANDO=Randomizer Beenden
+    
+    MENU_QUITRANDO_TITLE=ZURÜCK ZUM HAUPTMENÜ?
+    MENU_QUITRANDO_CONFIRM=Ja
+    MENU_QUITRANDO_CANCEL=Abbrechen
