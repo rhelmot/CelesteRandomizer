@@ -98,6 +98,39 @@ namespace Celeste.Mod.Randomizer {
                     if (hole != null && hole.Side == ScreenDirection.Down) {
                         disableDown = false;
                     }
+
+                    // Block off holes connected to edges which should not be re-entered
+                    var hole2 = edge.OtherEdge(node).HoleTarget;
+                    if (hole != null && hole2 != null && hole2.Kind == HoleKind.Out) {
+                        var topbottom = hole.Side == ScreenDirection.Up || hole.Side == ScreenDirection.Down;
+                        var farside = hole.Side == ScreenDirection.Down || hole.Side == ScreenDirection.Right;
+
+                        Vector2 corner;
+                        switch (hole.Side) {
+                            case ScreenDirection.Up:
+                                corner = new Vector2(0, -8);
+                                break;
+                            case ScreenDirection.Left:
+                                corner = new Vector2(-8, 0);
+                                break;
+                            case ScreenDirection.Down:
+                                corner = new Vector2(0, this.Bounds.Height);
+                                break;
+                            case ScreenDirection.Right:
+                            default:
+                                corner = new Vector2(this.Bounds.Width, 0);
+                                break;
+                        }
+                        corner += hole.AlongDir.Unit() * hole.LowBound * 8;
+                        var e = new EntityData {
+                            ID = ++maxID,
+                            Name = "invisibleBarrier",
+                            Width = !topbottom ? 8 : hole.Size*8,
+                            Height = topbottom ? 8 : hole.Size*8,
+                            Position = corner,
+                        };
+                        result.Entities.Add(e);
+                    }
                 }
 
                 foreach (var kv in node.Collectables) {
