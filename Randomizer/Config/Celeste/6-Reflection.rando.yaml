@@ -110,6 +110,11 @@ ASide:
       - Side: Left
         Idx: 1
         Kind: inout
+    Tweaks:
+    - ID: 429
+      Name: "dashBlock"
+      Update:
+        Remove: true
   - Room: "04b"
     Holes:
     - Side: Right

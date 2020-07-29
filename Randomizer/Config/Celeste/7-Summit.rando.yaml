@@ -1266,7 +1266,7 @@ ASide:
       Idx: 0
       Kind: out
       ReqOut:
-        Dashes: one
+        Dashes: two
     - Side: Down
       Idx: 0
       Kind: inout
