@@ -316,6 +316,7 @@ namespace Celeste.Mod.Randomizer {
             this.SetMapBounds(map);
             this.SetForeground(map);
             this.SetBackground(map);
+            this.SetPoem();
             return map;
         }
 
@@ -428,6 +429,20 @@ namespace Celeste.Mod.Randomizer {
                     }
                 }
             }
+        }
+
+        private void SetPoem() {
+            string poem;
+            if (this.Random.Next(100) == 0) {
+                poem = Dialog.Clean($"RANDOHEART_FIXED_{Random.Next(int.Parse(Dialog.Clean("RANDOHEART_FIXED_COUNT")))}");
+            } else {
+                poem = Dialog.Clean($"RANDOHEART_ADJ_{Random.Next(int.Parse(Dialog.Clean("RANDOHEART_ADJ_COUNT")))}") + " " +
+                       Dialog.Clean($"RANDOHEART_NOUN_{Random.Next(int.Parse(Dialog.Clean("RANDOHEART_NOUN_COUNT")))}");
+            }
+            var key = this.Key.GetSID().DialogKeyify() + "_A";
+            AreaData.Get(this.Key).Mode[0].PoemID = key;
+            Dialog.Language.Dialog["POEM_" + key] = poem;
+            Dialog.Language.Cleaned["POEM_" + key] = poem;
         }
 
         private List<StaticEdge> AvailableNewEdges(Capabilities capsIn, Capabilities capsOut, Func<StaticEdge, bool> filter=null) {

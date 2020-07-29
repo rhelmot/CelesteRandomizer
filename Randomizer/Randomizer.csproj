@@ -107,6 +107,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
+    <None Include="Dialog\German.txt" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Config\Celeste\0-Intro.rando.yaml">
