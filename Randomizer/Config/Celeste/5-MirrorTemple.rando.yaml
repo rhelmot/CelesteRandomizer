@@ -292,6 +292,8 @@ ASide:
     - Side: Right
       Idx: 0
       Kind: out         # TODO: Can be inout if you can go out
+      ReqOut:
+        Dashes: one
     - Side: Left
       Idx: 0
       Kind: in

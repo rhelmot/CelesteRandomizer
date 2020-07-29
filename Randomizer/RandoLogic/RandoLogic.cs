@@ -20,7 +20,7 @@ namespace Celeste.Mod.Randomizer {
                 Name = $"{settings.Seed}_{settings.Hash}",
                 Mode = new ModeProperties[3] {
                     new ModeProperties {
-                        Inventory = settings.Dashes == NumDashes.Zero ? PlayerInventory.Prologue :
+                        Inventory = settings.Dashes == NumDashes.Zero ? new PlayerInventory(0, true, true, false) :
                                     settings.Dashes == NumDashes.One ? PlayerInventory.Default :
                                                                         PlayerInventory.CH6End,
                     }, null, null
