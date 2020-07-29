@@ -312,7 +312,7 @@ namespace Celeste.Mod.Randomizer {
             var map = new MapData(this.Key);
             map.Levels = new List<LevelData>();
 
-            this.Map.FillMap(map);
+            this.Map.FillMap(map, this.Random);
             this.SetMapBounds(map);
             this.SetForeground(map);
             this.SetBackground(map);

@@ -55,9 +55,9 @@ namespace Celeste.Mod.Randomizer {
             }
         }
 
-        public void FillMap(MapData map) {
+        public void FillMap(MapData map, Random random) {
             foreach (var room in this.Rooms) {
-                map.Levels.Add(room.Bake(this.nonce++));
+                map.Levels.Add(room.Bake(this.nonce++, random));
             }
         }
 
@@ -83,12 +83,64 @@ namespace Celeste.Mod.Randomizer {
             }
         }
 
-        public LevelData Bake(int? nonce) {
+        public LevelData Bake(int? nonce, Random random) {
             var result = this.Static.MakeLevelData(new Vector2(this.Bounds.Left, this.Bounds.Top), nonce);
+
+            bool ohgodwhat = random.Next(100) == 0; // :)
+            string pickCrystalColor() {
+                switch (random.Next(15)) {
+                    case 0:
+                    case 1:
+                    case 2:
+                        return "blue";
+                    case 3:
+                    case 4:
+                    case 5:
+                        return "red";
+                    case 6:
+                    case 7:
+                    case 8:
+                        return "purple";
+                    case 9:
+                        return "rainbow";
+                    default:
+                        return "dust";
+                }
+            }
+            string crystalcolor = pickCrystalColor();
+
+            string pickSpinnerColor() {
+                return random.Next(2) == 0 ? "dust" : "spike";
+            }
+            string spinnercolor = pickSpinnerColor();
 
             int maxID = 0;
             foreach (var e in result.Entities) {
                 maxID = Math.Max(maxID, e.ID);
+
+                switch (e.Name) {
+                    case "spinner":
+                        if (ohgodwhat) {
+                            crystalcolor = pickCrystalColor();
+                        }
+                        if (e.Values == null) e.Values = new Dictionary<string, object>();
+                        if (crystalcolor == "dust") {
+                            e.Values["dust"] = "true";
+                        } else {
+                            e.Values["color"] = crystalcolor;
+                        }
+                        break;
+                    case "trackSpinner":
+                    case "rotateSpinner":
+                        if (ohgodwhat) {
+                            spinnercolor = pickSpinnerColor();
+                        }
+                        if (e.Values == null) e.Values = new Dictionary<string, object>();
+                        if (spinnercolor == "dust") {
+                            e.Values["dust"] = "true";
+                        }
+                        break;
+                }
             }
 
             bool disableDown = true;
