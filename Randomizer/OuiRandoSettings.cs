@@ -84,6 +84,18 @@ namespace Celeste.Mod.Randomizer {
                 new TextMenu.Header(Dialog.Clean("MODOPTIONS_RANDOMIZER_HEADER"))
             };
 
+            var hashtext = new TextMenuExt.EaseInSubHeaderExt("{hash}", true, menu) {
+                HeightExtra = -10f,
+                Offset = new Vector2(30, -5),
+            };
+            void updateHashText() {
+                hashtext.Title = "v" + RandoModule.Instance.Metadata.VersionString;
+                if (Settings.SeedType == SeedType.Custom) {
+                    hashtext.Title += " #" + Settings.Hash.ToString();
+                }
+            }
+            updateHashText();
+
             var seedbutton = new TextMenu.Button(Dialog.Clean("MODOPTIONS_RANDOMIZER_SEED") + ": " + Settings.Seed.ToString(RandoModule.MAX_SEED_DIGITS)); 
             seedbutton.Pressed(() => {
                 Audio.Play(SFX.ui_main_savefile_rename_start);
@@ -103,6 +115,7 @@ namespace Celeste.Mod.Randomizer {
                 seedbutton.Visible = Settings.SeedType == SeedType.Custom;
                 // just in case...
                 seedbutton.Label = Dialog.Clean("MODOPTIONS_RANDOMIZER_SEED") + ": " + Settings.Seed.ToString(RandoModule.MAX_SEED_DIGITS);
+                updateHashText();
             });
 
             var mapbutton = new TextMenu.Button(Dialog.Clean("MODOPTIONS_RANDOMIZER_MAPPICKER")).Pressed(() => {
@@ -117,34 +130,40 @@ namespace Celeste.Mod.Randomizer {
 
             var repeatroomstoggle = new TextMenu.OnOff(Dialog.Clean("MODOPTIONS_RANDOMIZER_REPEATROOMS"), Settings.RepeatRooms).Change((val) => {
                 Settings.RepeatRooms = val;
+                updateHashText();
             });
 
             var enterunknowntoggle = new TextMenu.OnOff(Dialog.Clean("MODOPTIONS_RANDOMIZER_ENTERUNKNOWN"), Settings.EnterUnknown).Change((val) => {
                 Settings.EnterUnknown = val;
+                updateHashText();
             });
 
             var logictoggle = new TextMenu.Slider(Dialog.Clean("MODOPTIONS_RANDOMIZER_LOGIC"), (i) => {
                 return Dialog.Clean("MODOPTIONS_RANDOMIZER_LOGIC_" + Enum.GetNames(typeof(LogicType))[i].ToUpperInvariant());
             }, 0, (int)LogicType.Last - 1, (int)Settings.Algorithm).Change((i) => {
                 Settings.Algorithm = (LogicType)i;
+                updateHashText();
             });
 
             var lengthtoggle = new TextMenu.Slider(Dialog.Clean("MODOPTIONS_RANDOMIZER_LENGTH"), (i) => {
                 return Dialog.Clean("MODOPTIONS_RANDOMIZER_LENGTH_" + Enum.GetNames(typeof(MapLength))[i].ToUpperInvariant());
             }, 0, (int)MapLength.Last - 1, (int)Settings.Length).Change((i) => {
                 Settings.Length = (MapLength)i;
+                updateHashText();
             });
 
             var numdashestoggle = new TextMenu.Slider(Dialog.Clean("MODOPTIONS_RANDOMIZER_NUMDASHES"), (i) => {
                 return Dialog.Clean("MODOPTIONS_RANDOMIZER_NUMDASHES_" + Enum.GetNames(typeof(NumDashes))[i].ToUpperInvariant());
             }, 0, (int)NumDashes.Last - 1, (int)Settings.Dashes).Change((i) => {
                 Settings.Dashes = (NumDashes)i;
+                updateHashText();
             });
 
             var difficultytoggle = new TextMenu.Slider(Dialog.Clean("MODOPTIONS_RANDOMIZER_DIFFICULTY"), (i) => {
                 return Dialog.Clean("MODOPTIONS_RANDOMIZER_DIFFICULTY_" + Enum.GetNames(typeof(Difficulty))[i].ToUpperInvariant());
             }, 0, (int)Difficulty.Last - 1, (int)Settings.Difficulty).Change((i) => {
                 Settings.Difficulty = (Difficulty)i;
+                updateHashText();
             });
 
             void syncModel() {
@@ -173,12 +192,8 @@ namespace Celeste.Mod.Randomizer {
                 Settings.Rules = (Ruleset)i;
                 Settings.Enforce();
                 syncModel();
+                updateHashText();
             });
-
-            var hashtext = new TextMenuExt.EaseInSubHeaderExt("{hash}", false, menu) {
-                HeightExtra = -10f,
-                Offset = new Vector2(30, -5),
-            };
 
             var startbutton = new TextMenu.Button(Dialog.Clean("MODOPTIONS_RANDOMIZER_START"));
             startbutton.Pressed(() => {
@@ -188,8 +203,7 @@ namespace Celeste.Mod.Randomizer {
 
                 if (this.builderThread == null) {
                     startbutton.Label = Dialog.Clean("MODOPTIONS_RANDOMIZER_CANCEL");
-                    hashtext.Title = Dialog.Clean("MODOPTIONS_RANDOMIZER_GENERATING");
-                    hashtext.FadeVisible = true;
+                    hashtext.Title += " " + Dialog.Clean("MODOPTIONS_RANDOMIZER_GENERATING");
                     menu.DisableMovement = true;
 
                     this.builderThread = new Thread(() => {
@@ -225,19 +239,10 @@ namespace Celeste.Mod.Randomizer {
                     this.builderThread = null;
 
                     startbutton.Label = Dialog.Clean("MODOPTIONS_RANDOMIZER_START");
-                    startbutton.OnEnter();
+                    updateHashText();
                     menu.DisableMovement = false;
                 }
             });
-            startbutton.OnEnter += () => {
-                if (Settings.SeedType == SeedType.Custom) {
-                    hashtext.Title = Dialog.Clean("MODOPTIONS_RANDOMIZER_HASH") + " " + this.Settings.Hash;
-                    hashtext.FadeVisible = true;
-                }
-            };
-            startbutton.OnLeave += () => {
-                hashtext.FadeVisible = false;
-            };
 
             menu.Add(seedtypetoggle);
             menu.Add(seedbutton);
