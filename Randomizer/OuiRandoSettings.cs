@@ -96,6 +96,11 @@ namespace Celeste.Mod.Randomizer {
             }
             updateHashText();
 
+            var errortext = new TextMenuExt.EaseInSubHeaderExt("{error}", false, menu) {
+                HeightExtra = -10f,
+                Offset = new Vector2(30, -5),
+            };
+
             var seedbutton = new TextMenu.Button(Dialog.Clean("MODOPTIONS_RANDOMIZER_SEED") + ": " + Settings.Seed.ToString(RandoModule.MAX_SEED_DIGITS)); 
             seedbutton.Pressed(() => {
                 Audio.Play(SFX.ui_main_savefile_rename_start);
@@ -201,14 +206,38 @@ namespace Celeste.Mod.Randomizer {
                     return;
                 }
 
+                void reenableMenu() {
+                    this.builderThread = null;
+
+                    startbutton.Label = Dialog.Clean("MODOPTIONS_RANDOMIZER_START");
+                    updateHashText();
+                    menu.DisableMovement = false;
+                }
+
                 if (this.builderThread == null) {
+                    errortext.FadeVisible = false;
                     startbutton.Label = Dialog.Clean("MODOPTIONS_RANDOMIZER_CANCEL");
                     hashtext.Title += " " + Dialog.Clean("MODOPTIONS_RANDOMIZER_GENERATING");
                     menu.DisableMovement = true;
 
                     this.builderThread = new Thread(() => {
                         Settings.Enforce();
-                        AreaKey newArea = RandoLogic.GenerateMap(Settings);
+                        AreaKey newArea;
+                        try {
+                            newArea = RandoLogic.GenerateMap(Settings);
+                        } catch (ThreadAbortException) {
+                            return;
+                        } catch (Exception e) {
+                            if (e.Message == "Could not generate map") {
+                                errortext.Title = e.Message;
+                            } else {
+                                errortext.Title = "Encountered an error - Check log.txt for details";
+                                Logger.LogDetailed(e, "randomizer");
+                            }
+                            errortext.FadeVisible = true;
+                            reenableMenu();
+                            return;
+                        }
                         this.entering = true;
 
                         Audio.SetMusic((string)null, true, true);
@@ -236,11 +265,7 @@ namespace Celeste.Mod.Randomizer {
                     this.builderThread.Start();
                 } else {
                     this.builderThread.Abort();
-                    this.builderThread = null;
-
-                    startbutton.Label = Dialog.Clean("MODOPTIONS_RANDOMIZER_START");
-                    updateHashText();
-                    menu.DisableMovement = false;
+                    reenableMenu();
                 }
             });
 
@@ -257,6 +282,7 @@ namespace Celeste.Mod.Randomizer {
             menu.Add(difficultytoggle);
             menu.Add(startbutton);
             menu.Add(hashtext);
+            menu.Add(errortext);
 
             Scene.Add(menu);
         }
