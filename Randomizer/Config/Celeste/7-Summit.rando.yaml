@@ -1263,7 +1263,7 @@ ASide:
       Kind: none
     - Side: Left
       Idx: 1
-      Kind: inout
+      Kind: in
       ReqIn:
         Dashes: one
   - Room: "f-02b"

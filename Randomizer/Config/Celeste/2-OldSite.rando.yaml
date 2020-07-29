@@ -24,20 +24,20 @@ ASide:
         - Dashes: one
         - Dashes: zero
           Difficulty: hard
-  - Room: "s1" #questionable
+  - Room: "s1"  # TODO one day we will be able to categorize this room correctly
     Holes:
     - Side: Up
       Idx: 0
-      Kind: inout
+      Kind: none
     - Side: Down
       Idx: 0
-      Kind: out
-    InternalEdges:
-    - Split: TopToBottom
-      ReqOut:
-        Dashes: zero
-      ReqIn:
-        Dashes: one
+      Kind: none
+    #InternalEdges:
+    #- Split: TopToBottom
+    #  ReqOut:
+    #    Dashes: zero
+    #  ReqIn:
+    #    Dashes: one
   - Room: "s2"
     Holes:
     - Side: Down
@@ -97,6 +97,12 @@ ASide:
       - Side: Left
         Idx: 0
         Kind: inout
+    Tweaks:
+    - Name: "spawn"
+      X: 376
+      Y: 448
+      Update:
+        Default: true
   - Room: "3x"
     Holes:
     - Side: Up
@@ -775,6 +781,11 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: inout
+    Tweaks:
+    - ID: 1
+      Name: "invisibleBarrier"
+      Update:
+        Remove: true
   - Room: "08b"
     Holes:
     - Side: Up

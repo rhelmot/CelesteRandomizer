@@ -302,6 +302,12 @@ ASide:
     - Room: "Berry"
       Collectables:
       - Idx: 0
+    Tweaks:
+    - ID: 249
+      Name: "jumpThru"
+      Update:
+        X: 920
+        Width: 24
   - Room: "c-03"
     Holes:
     - Side: Up

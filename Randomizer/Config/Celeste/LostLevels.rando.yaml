@@ -1128,6 +1128,9 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: none
   - Room: "i-00"
     Holes:
     - Side: Right
