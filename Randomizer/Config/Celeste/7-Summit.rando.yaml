@@ -201,6 +201,10 @@ ASide:
       Kind: inout
       ReqOut:
         Dashes: two
+    InternalEdges:
+    - Collectable: 0
+      ReqBoth:
+        Dashes: one
   - Room: "b-02b"
     Holes:
     - Side: Right
@@ -470,7 +474,7 @@ ASide:
     - Side: Up
       Idx: 1
       Kind: inout
-      ReqOut:
+      ReqBoth:
         Dashes: one
     - Side: Right
       Idx: 0
