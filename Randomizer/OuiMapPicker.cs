@@ -70,6 +70,21 @@ namespace Celeste.Mod.Randomizer {
         private void ReloadMenu() {
             menu = new TextMenu {
                 new TextMenu.Header(Dialog.Clean("MODOPTIONS_RANDOMIZER_MAPPICKER_HEADER")),
+                new TextMenu.Button(Dialog.Clean("MODOPTIONS_RANDOMIZER_MAPPICKER_TOGGLEALL")).Pressed(() => {
+                    var items = menu.GetItems();
+                    if (!(items[2] is TextMenu.OnOff firstToggle)) {
+                        // ???
+                        return;
+                    }
+
+                    var newValue = 1 - firstToggle.Index;
+                    for (int i = 0; i < items.Count; i++) {
+                        if (items[i] is TextMenu.OnOff toggle) {
+                            toggle.Index = newValue;
+                            toggle.OnValueChange(toggle.Values[newValue].Item2);
+                        }
+                    }
+                }),
             };
 
             foreach (var key in RandoLogic.AvailableAreas) {
