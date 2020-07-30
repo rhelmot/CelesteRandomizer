@@ -390,10 +390,14 @@ namespace Celeste.Mod.Randomizer {
                     case "finalboss":
                     case "badelineoldsite":
                     case "darkchaser":
-                        if (entity.Values == null) {
-                            entity.Values = new Dictionary<string, object>();
-                        }
+                        if (entity.Values == null) entity.Values = new Dictionary<string, object>();
                         entity.Values["canChangeMusic"] = false;
+                        break;
+                    case "cloud":
+                        if (this.Area.Mode != AreaMode.Normal) {
+                            if (entity.Values == null) entity.Values = new Dictionary<string, object>();
+                            entity.Values["small"] = "true";
+                        }
                         break;
                 }
 
