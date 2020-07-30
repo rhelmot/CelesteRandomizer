@@ -291,6 +291,7 @@ namespace Celeste.Mod.Randomizer {
                         throw new Exception("Can only assign a collectable to one owner");
                     }
                     thing.ParentNode = node;
+                    thing.MustFly = col.MustFly;
                     node.Collectables.Add(thing);
                 } else if (col.X != null && col.Y != null) {
                     node.Collectables.Add(new StaticCollectable {
