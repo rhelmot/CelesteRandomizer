@@ -390,6 +390,7 @@ namespace Celeste.Mod.Randomizer {
                     case "finalboss":
                     case "badelineoldsite":
                     case "darkchaser":
+                        if (this.Name == "Celeste/2-OldSite/A/3") break;  // allow the cutscene badeline to change the music
                         if (entity.Values == null) entity.Values = new Dictionary<string, object>();
                         entity.Values["canChangeMusic"] = false;
                         break;
@@ -418,6 +419,26 @@ namespace Celeste.Mod.Randomizer {
                                 entity.Width = econfig.Update.Width.Value;
                             if (econfig.Update?.Height != null)
                                 entity.Height = econfig.Update.Height.Value;
+                            if (econfig.Update?.Nodes != null) {
+                                foreach (var nodeconfig in econfig.Update.Nodes) {
+                                    if (nodeconfig.Idx >= entity.Nodes.Length) {
+                                        var newnodes = new List<Vector2>(entity.Nodes);
+                                        newnodes.Add(new Vector2(nodeconfig.X.Value, nodeconfig.Y.Value));
+                                        entity.Nodes = newnodes.ToArray();
+                                    } else {
+                                        entity.Nodes[nodeconfig.Idx] = new Vector2(
+                                            nodeconfig.X ?? entity.Nodes[nodeconfig.Idx].X,
+                                            nodeconfig.Y ?? entity.Nodes[nodeconfig.Idx].Y
+                                        );
+                                    }
+                                }
+                            }
+                            if (econfig.Update?.Values != null) {
+                                if (entity.Values == null) entity.Values = new Dictionary<string, object>();
+                                foreach (var kv in econfig.Update.Values) {
+                                    entity.Values[kv.Key] = (object)kv.Value;
+                                }
+                            }
                         }
                         break;
                     }

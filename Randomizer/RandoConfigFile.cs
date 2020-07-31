@@ -188,5 +188,13 @@ namespace Celeste.Mod.Randomizer {
         public float? Y { get; set; }
         public int? Width { get; set; }
         public int? Height { get; set; }
+        public List<RandoConfigNode> Nodes { get; set; }
+        public Dictionary<string, string> Values { get; set; }
+    }
+
+    public class RandoConfigNode {
+        public int Idx { get; set; }
+        public float? X { get; set; }
+        public float? Y { get; set; }
     }
 }
