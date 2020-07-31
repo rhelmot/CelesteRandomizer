@@ -230,10 +230,13 @@ ASide:
       Idx: 0
       Kind: inout
   - Room: "s1"
+    End: true
     Holes:
     - Side: Right
       Idx: 0
       Kind: inout
+      ReqIn:
+        Dashes: one
   - Room: "6c"
     Holes:
     - Side: Up
@@ -530,6 +533,11 @@ ASide:
         Add: true
         X: 88
         Y: 80
+    - Name: "spawn"
+      X: 360
+      Y: 248
+      Update:
+        Default: true
     - Name: "spawn"
       X: 48
       Update:

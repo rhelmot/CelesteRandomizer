@@ -3,7 +3,7 @@ ASide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: inout
+      Kind: out
   - Room: "a-00"
     Holes:
     - Side: Right
@@ -1041,14 +1041,19 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
-    - Side: Left
-      Idx: 1
-      Kind: in
+    InternalEdges:
+    - To: "bottom"
       ReqIn:
         Or:
         - Dashes: two
         - Dashes: one
           Difficulty: hard
+    Subrooms:
+    - Room: "bottom"
+      Holes:
+      - Side: Left
+        Idx: 1
+        Kind: inout
   - Room: "e-04"
     Holes:
     - Side: Right
@@ -1085,6 +1090,24 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: None
+    - Side: Down
+      Idx: 1
+      Kind: None
+    - Side: Down
+      Idx: 2
+      Kind: None
+    - Side: Down
+      Idx: 3
+      Kind: None
+    - Side: Down
+      Idx: 4
+      Kind: None
+    - Side: Down
+      Idx: 5
+      Kind: None
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
@@ -1338,6 +1361,12 @@ ASide:
     - Side: Down
       Idx: 2
       Kind: in
+    Tweaks:
+    - Name: "spawn"     # remove spawn inside of locked door
+      X: 312
+      Y: 120
+      Update:
+        Remove: true
   - Room: "f-06" # TODO bubbles
     Holes:
     - Side: Up
@@ -1520,9 +1549,12 @@ ASide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: out         # TODO MOM HOLY FUCK THIS IS DOABLE WITH ONE DASH (expert) we just need to make the dash crystals at the end double-dashes
+      Kind: out
       ReqOut:
-        Dashes: two
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: perfect
     - Side: Down
       Idx: 0
       Kind: in
@@ -1547,6 +1579,42 @@ ASide:
     - Side: Right
       Idx: 2
       Kind: none
+    Tweaks:
+    - ID: 153
+      Name: "refill"
+      Update:
+        Values:
+          twoDash: true
+    - ID: 157
+      Name: "refill"
+      Update:
+        Values:
+          twoDash: true
+    - ID: 158
+      Name: "refill"
+      Update:
+        Values:
+          twoDash: true
+    - ID: 294
+      Name: "refill"
+      Update:
+        Values:
+          twoDash: true
+    - ID: 295
+      Name: "refill"
+      Update:
+        Values:
+          twoDash: true
+    - ID: 162
+      Name: "refill"
+      Update:
+        Values:
+          twoDash: true
+    - ID: 296
+      Name: "refill"
+      Update:
+        Values:
+          twoDash: true
   - Room: "g-01"
     Holes:
     - Side: Up
@@ -1575,9 +1643,9 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: inout
-    - Side: Down
       ReqIn:
         Dashes: two
+    - Side: Down
       Idx: 1
       Kind: None
     - Side: Right

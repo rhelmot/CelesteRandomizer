@@ -73,6 +73,12 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: inout
+    Tweaks:
+    - Name: "spawn"
+      X: 160
+      Y: 280
+      Update:
+        Default: true
     Subrooms:
     - Room: "berry"
       Holes:
@@ -103,6 +109,20 @@ ASide:
       Y: 448
       Update:
         Default: true
+    - Name: "darkChaserEnd"
+      Update:
+        Add: true
+        X: 136
+        Y: 224
+        Width: 24
+        Height: 128
+    - Name: "darkChaserEnd"
+      Update:
+        Add: true
+        X: 0
+        Y: 352
+        Width: 160
+        Height: 24
   - Room: "3x"
     Holes:
     - Side: Up
@@ -733,11 +753,11 @@ BSide:
     - Side: Up
       Idx: 0
       Kind: inout
+      ReqBoth:
+        Dashes: one
     - Side: Down
       Idx: 0
       Kind: in
-      ReqIn:
-        Dashes: one
   - Room: "05"
     Holes:
     - Side: Up

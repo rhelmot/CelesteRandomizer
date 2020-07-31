@@ -419,9 +419,9 @@ ASide:
       Idx: 0
       Kind: none
     InternalEdges:
-    - Collectable: 0
-      ReqBoth:
-        Dashes: one
+    - Collectable: 0  # TODO this is only doable when the electricity is off
+      #ReqBoth:
+      #  Dashes: one
   - Room: "d-03"
     Holes:
     - Side: Left
@@ -1482,13 +1482,14 @@ ASide:
       Idx: 0
       Kind: in
   - Room: "j-16"
+    End: true
     Holes:
     - Side: Up
       Idx: 0
       Kind: None
     - Side: Up
       Idx: 1
-      Kind: out
+      Kind: None  # no moon berry route :(
     - Side: Up
       Idx: 2
       Kind: None
@@ -1509,8 +1510,19 @@ ASide:
       Name: "eventTrigger"
       Update:
         Remove: true
-    - ID: 678           # remove final bird so you have to take the moon berry route
-      Name: "flingBird"
+    - ID: 434
+      Name: "badelineBoost"
+      Update:
+        Nodes:
+        - Idx: 3
+          Y: 1424
+    - Name: "blackGem"
+      Update:
+        Add: true
+        X: 5680
+        Y: 1592
+    - ID: 1713          # remove block so you can't do the moon berry route
+      Name: "floatySpaceBlock"
       Update:
         Remove: true
   - Room: "j-17"
@@ -1548,6 +1560,7 @@ ASide:
       Idx: 1
       Kind: inout
   - Room: "j-19"
+    End: true
     Holes:
     - Side: Left
       Idx: 0
@@ -1573,7 +1586,16 @@ ASide:
     - Side: Right
       Idx: 3
       Kind: None
-    #End: true          # TODO turn on end when we can add the cinematic rooms
+    Tweaks:
+    - ID: 621
+      Name: "badelineBoost"
+      Update:
+        Remove: true
+    - Name: "blackGem"
+      Update:
+        Add: true
+        X: 160
+        Y: 1296
   - Room: "end-cinematic"
     Holes:
   - Room: "end-golden"

@@ -145,6 +145,11 @@ ASide:
       Y: 120
       Update:
         Y: 160
+    - Name: "spawn"
+      X: 312
+      Y: 128
+      Update:
+        X: 280
   - Room: "02-b" # first key detour
     Holes:
     - Side: Right
@@ -856,6 +861,8 @@ ASide:
     - Side: Right
       Idx: 0
       Kind: in
+      ReqIn:
+        Dashes: one
     - Side: Down
       Idx: 1
       Kind: inout
@@ -889,15 +896,28 @@ ASide:
     - ID: 87
       Update:
         Remove: true
+    - Name: "spawn"
+      X: 240
+      Y: 168
+      Update:
+        Default: true
   - Room: "04-c"  # shaft offshoot 1
     Holes:
     - Side: Up
       Idx: 1
       Kind: inout
+      ReqOut:
+        Dashes: one
     - Side: Left
       Idx: 0
       Kind: inout
     InternalEdges:
+    - Collectable: 0
+      ReqBoth:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect  # wow
     - To: "exit"
       ReqBoth:
         Key: true
@@ -990,7 +1010,7 @@ ASide:
     - Name: spawn
       Update:
         Add: true
-        X: 400
+        X: 792
         Y: 160
   - Room: "roof01"
     Holes:
@@ -1570,6 +1590,8 @@ BSide:
     - Side: Up
       Idx: 0
       Kind: in
+      ReqIn:
+        Dashes: one
     End: true
 
 CSide:

@@ -360,6 +360,12 @@ ASide:
     - Side: Down
       Idx: 1
       Kind: out
+    Tweaks:
+    - Name: "spawn"
+      X: 32
+      Y: 160
+      Update:
+        Default: true
     Subrooms:
     - Room: "Berry"
       Collectables:
@@ -1321,11 +1327,7 @@ BSide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: inout
-      ReqOut:
-        Or:
-        - Dashes: one
-        - Key: true
+      Kind: in    # TODO bubble
     - Side: Right
       Idx: 0
       Kind: inout

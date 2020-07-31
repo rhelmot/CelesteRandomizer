@@ -63,7 +63,7 @@ ASide:
       Kind: inout
     InternalEdges:
     - To: "Berry"
-      ReqBoth:
+      ReqOut:
         Dashes: zero
     - To: "Right"
       ReqOut:
@@ -309,6 +309,11 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    Tweaks:
+    - ID: 23
+      Name: "booster"
+      Update:
+        Y: 160
     InternalEdges:
     - Split: RightToLeft
       ReqOut:
@@ -326,6 +331,11 @@ ASide:
         Kind: inout
       Collectables:
       - Idx: 0
+    Tweaks:
+    - ID: 0
+      Name: "changeRespawnTrigger"
+      Update:
+        Remove: true
   - Room: "b-05"
     Holes:
     - Side: Up
@@ -370,6 +380,12 @@ ASide:
     - Side: Right
       Idx: 0
       Kind: out
+    Tweaks:
+    - Name: "spawn"
+      X: 24
+      Y: 56
+      Update:
+        Default: true
   - Room: "b-sec"  # TODO: mark the heart as requiring the dashes, not the entrances
     Holes:
     - Side: Right

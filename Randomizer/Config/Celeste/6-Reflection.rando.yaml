@@ -259,6 +259,12 @@ ASide:
       Kind: in
       ReqIn:
         Dashes: one
+    Tweaks:
+    - Name: "spawn"
+      X: 40
+      Y: 72
+      Update:
+        Default: true
   - Room: "12a"
     Holes:
     - Side: Right
