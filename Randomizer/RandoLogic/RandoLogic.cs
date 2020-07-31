@@ -235,7 +235,7 @@ namespace Celeste.Mod.Randomizer {
         }
 
         private string PickCassetteAudio() {
-            switch (this.Random.Next(9)) {
+            switch (this.Random.Next(8)) {
                 case 0:
                     return "event:/music/cassette/01_forsaken_city";
                 case 1:
@@ -251,10 +251,8 @@ namespace Celeste.Mod.Randomizer {
                 case 6:
                     return "event:/music/cassette/07_summit";
                 case 7:
-                    return "event:/music/cassette/09_core";
-                case 8:
                 default:
-                    return "event:/new_content/music/lvl10/cassette_rooms";
+                    return "event:/music/cassette/09_core";
             }
         }
 
