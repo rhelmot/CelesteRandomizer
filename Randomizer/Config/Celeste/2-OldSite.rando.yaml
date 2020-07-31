@@ -43,6 +43,8 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: inout
+      ReqIn:
+        Dashes: one
     End: true
   - Room: "0"
     Holes:
