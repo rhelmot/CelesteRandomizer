@@ -37,10 +37,15 @@ namespace Celeste.Mod.Randomizer {
                 Modes = new Meta.MapMetaModeProperties[] {
                     new Meta.MapMetaModeProperties {
                         HeartIsEnd = true,
+                        //SeekerSlowdown = true,  // this doesn't do anything
                     },
                     null, null
                 }
             });
+            newArea.OnLevelBegin = (level) => {
+                level.Add(new SeekerEffectsController());
+            };
+
             newArea.SetSID($"randomizer/{newArea.Name}");
             if (lastarea.GetLevelSet() == "randomizer") {
                 AreaData.Areas[AreaData.Areas.Count - 1] = newArea;
