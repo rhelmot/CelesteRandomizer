@@ -11,8 +11,8 @@ namespace Celeste.Mod.Randomizer {
         private List<RandoConfigEdit> Tweaks;
         public Dictionary<string, StaticNode> Nodes;
 
-        private List<Hole> Holes;
-        private List<StaticCollectable> Collectables;
+        public List<Hole> Holes;
+        public List<StaticCollectable> Collectables;
 
         public StaticRoom(AreaKey Area, RandoConfigRoom config, LevelData Level, List<Hole> Holes) {
             this.Area = Area;
