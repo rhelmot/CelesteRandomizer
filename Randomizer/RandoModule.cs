@@ -31,6 +31,9 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.TextMenu.MoveSelection += DisableMenuMovement;
             On.Celeste.Cassette.CollectRoutine += NeverCollectCassettes;
             On.Celeste.AreaComplete.VersionNumberAndVariants += AreaCompleteDrawHash;
+            On.Celeste.AngryOshiro.Added += DontSpawnTwoOshiros;
+            On.Celeste.Player.Added += DontMoveOnWakeup;
+            On.Celeste.BadelineOldsite.Added += PlayBadelineCutscene;
             //On.Celeste.AutoSplitterInfo.Update += wtf;
         }
 
@@ -49,7 +52,33 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.TextMenu.MoveSelection -= DisableMenuMovement;
             On.Celeste.Cassette.CollectRoutine -= NeverCollectCassettes;
             On.Celeste.AreaComplete.VersionNumberAndVariants += AreaCompleteDrawHash;
+            On.Celeste.AngryOshiro.Added -= DontSpawnTwoOshiros;
+            On.Celeste.Player.Added -= DontMoveOnWakeup;
+            On.Celeste.BadelineOldsite.Added -= PlayBadelineCutscene;
             //On.Celeste.AutoSplitterInfo.Update -= wtf;
+        }
+
+        public void PlayBadelineCutscene(On.Celeste.BadelineOldsite.orig_Added orig, BadelineOldsite self, Scene scene) {
+            orig(self, scene);
+            var level = scene as Level;
+            if (!level.Session.GetFlag("evil_maddy_intro") && level.Session.Level.StartsWith("Celeste/2-OldSite/A/3")) {
+                foreach (var c in self.Components) {
+                    if (c is Coroutine) {
+                        self.Components.Remove(c);
+                        break;
+                    }
+                }
+
+                self.Hovering = false;
+                self.Visible = true;
+                self.Hair.Visible = false;
+                self.Sprite.Play("pretendDead", false, false);
+                if (level.Session.Area.Mode == AreaMode.Normal) {
+                    level.Session.Audio.Music.Event = null;
+                    level.Session.Audio.Apply(false);
+                }
+                scene.Add(new CS02_BadelineIntro(self));
+            }
         }
 
         public void wtf(On.Celeste.AutoSplitterInfo.orig_Update orig, AutoSplitterInfo self) {
@@ -204,6 +233,21 @@ namespace Celeste.Mod.Randomizer {
                 }
                 text += "\n#" + this.Settings.Hash.ToString();
                 ActiveFont.DrawOutline(text, new Vector2(1820f + 300f * (1f - Ease.CubeOut(ease)), 925f), new Vector2(0.5f, 0f), Vector2.One * 0.5f, Color.White, 2f, Color.Black);
+            }
+        }
+
+        public void DontSpawnTwoOshiros(On.Celeste.AngryOshiro.orig_Added orig, AngryOshiro self, Scene scene) {
+            orig(self, scene);
+            var level = scene as Level;
+            if (!level.Session.GetFlag("oshiro_resort_roof") && level.Session.Level.StartsWith("Celeste/3-CelestialResort/A/roof00")) {
+                self.RemoveSelf();
+            }
+        }
+
+        public void DontMoveOnWakeup(On.Celeste.Player.orig_Added orig, Player self, Scene scene) {
+            orig(self, scene);
+            if (this.InRandomizer) {
+                self.JustRespawned = true;
             }
         }
     }
