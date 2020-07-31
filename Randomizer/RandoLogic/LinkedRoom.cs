@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Monocle;
+using MonoMod.Utils;
 
 namespace Celeste.Mod.Randomizer {
     public class LinkedMap {
@@ -144,11 +145,15 @@ namespace Celeste.Mod.Randomizer {
             }
 
             bool disableDown = true;
+            bool disableUp = true;
             foreach (var node in this.Nodes.Values) {
                 foreach (var edge in node.Edges) {
                     var hole = edge.CorrespondingEdge(node).HoleTarget;
                     if (hole != null && hole.Side == ScreenDirection.Down) {
                         disableDown = false;
+                    }
+                    if (hole != null && hole.Side == ScreenDirection.Up) {
+                        disableUp = false;
                     }
 
                     // Block off holes connected to edges which should not be re-entered
@@ -212,6 +217,9 @@ namespace Celeste.Mod.Randomizer {
             }
 
             result.DisableDownTransition = disableDown;
+            if (disableUp) {
+                new DynData<LevelData>(result).Set("DisableUpTransition", true);
+            }
             return result;
         }
     }
