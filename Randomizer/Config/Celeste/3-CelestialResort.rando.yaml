@@ -276,6 +276,10 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - Collectable: 0
+      ReqBoth:
+        Dashes: one
   - Room: "05-a" # continuing main path
     Holes:
     - Side: Right
@@ -881,7 +885,7 @@ ASide:
         Dashes: one
         Difficulty: expert
       ReqIn:
-        Dashes: one
+        Dashes: two
         Difficulty: perfect
     Subrooms:
     - Room: "left"

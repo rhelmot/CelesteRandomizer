@@ -191,6 +191,9 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Up
+      Idx: 0
+      Kind: none
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
@@ -424,9 +427,18 @@ ASide:
       #  Dashes: one
   - Room: "d-03"
     Holes:
-    - Side: Left
+    - Side: Left  # TODO power source flag
       Idx: 0
       Kind: inout
+    - Side: Up
+      Idx: 0
+      Kind: none
+    - Side: Down
+      Idx: 0
+      Kind: none
+    - Side: Down
+      Idx: 1
+      Kind: none
     InternalEdges:
     - Collectable: 0
       ReqBoth:
@@ -689,14 +701,11 @@ ASide:
       Kind: inout
   - Room: "f-00"
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
     InternalEdges:
-    - Split: LeftToRight
+    - To: "right"
       ReqOut:
         Or:
         - Dashes: two
@@ -704,6 +713,22 @@ ASide:
           Difficulty: hard
       ReqIn:
         Dashes: one
+    Subrooms:
+    - Room: "right"
+      Holes:
+      - Side: Right
+        Idx: 0
+        Kind: inout
+      - Side: Up
+        Idx: 1
+        Kind: Unknown
+        ReqIn:
+          Dashes: one
+      - Side: Down
+        Idx: 1
+        Kind: Unknown
+        ReqIn:
+          Dashes: one
   - Room: "f-01"
     Holes:
     - Side: Right

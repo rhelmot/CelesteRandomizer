@@ -7,6 +7,12 @@ ASide:
     - Side: Right
       Idx: 0
       Kind: inout
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 23
+        Y: 224
   - Room: "s0"
     Holes:
     - Side: Up
@@ -32,6 +38,12 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: none
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 96
+        Y: 40
     #InternalEdges:
     #- Split: TopToBottom
     #  ReqOut:
@@ -64,6 +76,11 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    Tweaks:
+    - ID: 32
+      Name: "lightbeam"
+      Update:
+        Remove: true
   - Room: "1"
     Holes:
     - Side: Right
@@ -81,6 +98,10 @@ ASide:
       Y: 280
       Update:
         Default: true
+    - ID: 50
+      Name: "lightbeam"
+      Update:
+        Remove: true
     Subrooms:
     - Room: "berry"
       Holes:
@@ -95,7 +116,7 @@ ASide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: in
+      Kind: inout
     - Side: Right
       Idx: 0
       Kind: inout
@@ -125,6 +146,10 @@ ASide:
         Y: 352
         Width: 160
         Height: 24
+    - ID: 3
+      Name: "invisibleBarrier"
+      Update:
+        Remove: true
   - Room: "3x"
     Holes:
     - Side: Up
@@ -156,11 +181,29 @@ ASide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
     InternalEdges:
     - Split: BottomToTop
       ReqBoth:
         Dashes: one
+    - Collectable: 0
+      ReqBoth:
+        Dashes: one
+    Tweaks:
+    - Name: "spawn"
+      X: 296
+      Y: 168
+      Update:
+        X: 288
+    - ID: 0
+      Name: "jumpThru"
+      Update:
+        Width: 24
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 24
+        Y: 48
   - Room: "5"
     Holes:
     - Side: Up
@@ -205,12 +248,9 @@ ASide:
     - Side: Up
       Idx: 1
       Kind: none
-    - Side: Right
-      Idx: 0
-      Kind: out
     - Side: Down
       Idx: 1
-      Kind: in
+      Kind: inout
     - Side: Left
       Idx: 0
       Kind: None
@@ -221,36 +261,77 @@ ASide:
     - Split: BottomToTop
       ReqBoth:
         Dashes: one
+    Subrooms:
+    - Room: "exit"
+      Holes:
+      - Side: Right
+        Idx: 0
+        Kind: inout
+    Tweaks:
+    - ID: 32
+      Name: "jumpThru"
+      Update:
+        Width: 32
+    - ID: 0
+      Name: "jumpThru"
+      Update:
+        Width: 16
+    - Name: "spawn"
+      X: 368
+      Y: 304
+      Update:
+        X: 360
   - Room: "9"
     Holes:
     - Side: Up
       Idx: 0
       Kind: in
     - Side: Up
-      Idx: 1
-      Kind: inout
-      ReqOut:
-        Dashes: one
-    - Side: Up
       Idx: 2
       Kind: none
     - Side: Left
       Idx: 0
       Kind: inout
-      ReqOut:
+    InternalEdges:
+    - To: "acrossTheDreamBlock"
+      ReqBoth:
         Dashes: one
-    - Side: Down
-      Idx: 1
-      Kind: out
-      ReqOut:
-        Dashes: one
+    Subrooms:
+    - Room: "acrossTheDreamBlock"
+      Holes:
+      - Side: Up
+        Idx: 1
+        Kind: inout
+        ReqOut:
+          Dashes: one
+      - Side: Down
+        Idx: 1
+        Kind: out
+        ReqOut:
+          Or:
+          - Dashes: one
+          - Dashes: zero
+            Difficulty: hard
     Tweaks:
     - Name: "spawn"
       Update:
         Add: true
-        X: 208
+        X: 200
         Y: 24
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 472
+        Y: 264
     - ID: 33
+      Update:
+        Remove: true
+    - ID: 34
+      Name: "invisibleBarrier"
+      Update:
+        Remove: true
+    - ID: 38
+      Name: "lightbeam"
       Update:
         Remove: true
   - Room: "9b"
@@ -263,10 +344,25 @@ ASide:
       Kind: inout
     - Side: Down
       Idx: 2
-      Kind: in
+      Kind: inout
     - Side: Down
       Idx: 3
       Kind: none
+    Tweaks:
+    - ID: 0
+      Name: "jumpThru"
+      Update:
+        Width: 16
+    - Name: "spawn"
+      X: 424
+      Y: 312
+      Update:
+        X: 416
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 248
+        Y: 272
   - Room: "10"
     Holes:
     - Side: Up
@@ -277,6 +373,16 @@ ASide:
       Kind: out
       ReqOut:
         Dashes: one
+    Tweaks:
+    - ID: 97
+      Name: "lightbeam"
+      Update:
+        Remove: true
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 128
+        Y: 944
   - Room: "11"
     Holes:
     - Side: Right
@@ -358,6 +464,9 @@ ASide:
     - To: "middle_right"
       ReqBoth:
         Dashes: one
+    - Collectable: 0
+      ReqBoth:
+        Dashes: one
     Subrooms:
     - Room: "lower"
       Holes:
@@ -400,15 +509,33 @@ ASide:
         Dashes: one
   - Room: "d2"
     Holes:
-    - Side: Up
-      Idx: 0
-      Kind: in
     - Side: Right
       Idx: 0
       Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - To: "berry1"
+      ReqIn:
+        Dashes: zero
+    Subrooms:
+    - Room: "berry1"
+      Holes:
+      - Side: Up
+        Idx: 0
+        Kind: inout
+      Collectables:
+      - Idx: 0
+    Tweaks:
+    - ID: 30
+      Name: "exitBlock"
+      Update:
+        Remove: true
+    - ID: 29
+      Name: "invisibleBarrier"
+      Update:
+        Remove: true
   - Room: "d3"
     Holes:
     - Side: Left
@@ -492,10 +619,16 @@ ASide:
       Holes:
       - Side: Right
         Idx: 0
-        Kind: out
+        Kind: inout
       - Side: Right
         Idx: 1
         Kind: inout
+    Tweaks:
+    - ID: 16
+      Name: "jumpThru"
+      Update:
+        X: 280
+        Width: 24
   - Room: "d9"
     Holes:
     - Side: Up
@@ -512,6 +645,23 @@ ASide:
     - Side: Right
       Idx: 0
       Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: in
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 264
+        Y: 56
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 32
+        Y: 320
   - Room: "end_1"
     Holes:
     - Side: Up
@@ -529,6 +679,17 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 80
+        Y: 104
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 352
+        Y: 88
   - Room: "end_2"
     Holes:
     - Side: Right
@@ -549,6 +710,12 @@ ASide:
       - Side: Right
         Idx: 0
         Kind: inout
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 8
+        Y: 88
   - Room: "end_3"
     Holes:
     - Side: Right
@@ -578,6 +745,10 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - Collectable: 0
+      ReqBoth:
+        Dashes: one
   - Room: "end_3cb"
     Holes:
     - Side: Up
@@ -607,11 +778,17 @@ ASide:
       Idx: 0
       Kind: inout
   - Room: "end_6"
+    End: true
     Holes:
     - Side: Left
       Idx: 0
       Kind: inout
-    End: true
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 304
+        Y: 152
   - Room: "end_s0"
     Holes:
     - Side: Up
@@ -659,6 +836,12 @@ BSide:
     - Side: Down
       Idx: 0
       Kind: in
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 32
+        Y: 160
   - Room: "00"
     Holes:
     - Side: Right
@@ -685,6 +868,12 @@ BSide:
     - Side: Right
       Idx: 0
       Kind: None
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 264
+        Y: 16
   - Room: "01b"
     Holes:
     - Side: Up
@@ -710,12 +899,42 @@ BSide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: out
-      ReqOut:
-        Dashes: one
+      Kind: inout
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
+    InternalEdges:
+    - Split: BottomToTop
+      ReqOut:
+        Dashes: one
+      ReqIn:
+        Dashes: two
+    Tweaks:
+    - Name: "dreamBlock"
+      ID: 7
+      Update:
+        Y: 16
+        Height: 88
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 606
+        Y: 16
+    - ID: 0
+      Name: "jumpThru"
+      Update:
+        X: 24
+        Width: 24
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 576
+        Y: 8
+        Width: 48
+        Height: 16
+        Values:
+          cameraX: -1
+          cameraY: 0
   - Room: "02"
     Holes:
     - Side: Up
@@ -740,6 +959,16 @@ BSide:
         Add: true
         X: 880
         Y: 24
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 848
+        Y: 8
+        Width: 48
+        Height: 16
+        Values:
+          cameraX: -1
+          cameraY: 0
   - Room: "03"
     Holes:
     - Side: Up
@@ -750,7 +979,7 @@ BSide:
       Kind: in
       ReqIn:
         Dashes: one
-  - Room: "04"
+  - Room: "04"  # TODO when we can edit fg tiles, remove the leftmost spikes and blocks under it
     Holes:
     - Side: Up
       Idx: 0
@@ -760,6 +989,12 @@ BSide:
     - Side: Down
       Idx: 0
       Kind: in
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 40
+        Y: 24
   - Room: "05"
     Holes:
     - Side: Up
@@ -880,6 +1115,12 @@ BSide:
       Kind: inout
       ReqIn:
         Dashes: one
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 248
+        Y: 448
     End: true
 
 CSide:
@@ -905,7 +1146,16 @@ CSide:
         Difficulty: hard
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
+    Tweaks:
+    - ID: 10
+      Name: "exitBlock"
+      Update:
+        Remove: true
+    - ID: 9
+      Name: "invisibleBarrier"
+      Update:
+        Remove: true
   - Room: "02"
     Holes:
     - Side: Left

@@ -7,6 +7,12 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: none
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 264
+        Y: 56
   - Room: "2"
     Holes:
     - Side: Up
@@ -70,6 +76,11 @@ ASide:
       Update:
         Width: 24
         X: 32
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 184
+        Y: 24
   - Room: "3b"
     Holes:
     - Side: Up
@@ -83,6 +94,11 @@ ASide:
       Update:
         X: 40
         Width: 24
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 192
+        Y: 40
   - Room: "5"
     Holes:
     - Side: Up
@@ -103,6 +119,14 @@ ASide:
     - ID: 0             # shorten jumpthru
       Update:
         Width: 16
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 192
+        Y: 40
+    - ID: 49
+      Update:
+        Remove: true
   - Room: "5a"
     Holes:
     - Side: Left
@@ -161,7 +185,7 @@ ASide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: in
+      Kind: inout
     - Side: Right
       Idx: 0
       Kind: inout
@@ -177,6 +201,11 @@ ASide:
     - Side: Up
       Idx: 4
       Kind: None
+    Tweaks:
+    - ID: 5
+      Name: "crumbleBlock"
+      Update:
+        Remove: true
   - Room: "7zb"
     Holes:
     - Side: Down
@@ -273,6 +302,11 @@ ASide:
       X: 64
       Update:
         X: 72
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 192
+        Y: 24
   - Room: "7z"
     Holes:
     - Side: Up
@@ -283,6 +317,12 @@ ASide:
     - Side: Right
       Idx: 0
       Kind: inout
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 232
+        Y: 64
   - Room: "8z"
     Holes:
     - Side: Right
@@ -793,12 +833,33 @@ BSide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: out
-      ReqOut:
-        Dashes: one
+      Kind: inout
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
+    InternalEdges:
+    - Split: LeftToRight
+      ReqOut:
+        Dashes: one
+      ReqIn:
+        Dashes: two
+    Tweaks:
+    - Name: "spawn"
+      X: 24
+      Y: 168
+      Update:
+        X: 32
+        Y: 168
+    - ID: 1
+      Name: "jumpThru"
+      Update:
+        X: 24
+        Width: 16
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 256
+        Y: 32
   - Room: "05b"
     Holes:
     - Side: Up
@@ -882,17 +943,49 @@ BSide:
         Dashes: one
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
+    Tweaks:
+    - ID: 0
+      Name: "jumpThru"
+      Update:
+        Width: 16
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 288
+        Y: 24
   - Room: "08b"
     Holes:
     - Side: Up
       Idx: 0
-      Kind: out
-      ReqOut:
-        Dashes: one
+      Kind: inout
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
+    InternalEdges:
+    - Split: LeftToRight
+      ReqOut:
+        Dashes: one
+      ReqIn:
+        Dashes: two
+        Difficulty: perfect
+    Tweaks:
+    - ID: 0
+      Name: "jumpThru"
+      Update:
+        X: 24
+        Width: 16
+    - Name: "spawn"
+      X: 24
+      Y: 168
+      Update:
+        X: 32
+        Y: 168
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 408
+        Y: 24
   - Room: "09"
     Holes:
     - Side: Right
