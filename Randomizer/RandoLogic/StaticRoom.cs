@@ -539,6 +539,13 @@ namespace Celeste.Mod.Randomizer {
                             Level = result,
                         };
 
+                        if (econfig.Update.Values != null) {
+                            entity.Values = new Dictionary<string, object>();
+                            foreach (var kv in econfig.Update.Values) {
+                                entity.Values.Add(kv.Key, (object)kv.Value);
+                            }
+                        }
+
                         if (econfig.Name.ToLower().EndsWith("trigger")) {
                             result.Triggers.Add(entity);
                         } else {

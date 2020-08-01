@@ -253,7 +253,7 @@ ASide:
       Kind: inout
     - Side: Left
       Idx: 0
-      Kind: None
+      Kind: inout
     - Side: Down
       Idx: 0
       Kind: None
