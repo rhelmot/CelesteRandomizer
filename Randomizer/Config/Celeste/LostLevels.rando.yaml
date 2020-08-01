@@ -746,11 +746,11 @@ ASide:
           Difficulty: hard
       ReqIn:
         Dashes: one
-  - Room: "f-02"
+  - Room: "f-02"  # TODO this room crashes because of something related to spritesets
     Holes:
     - Side: Right
       Idx: 0
-      Kind: inout
+      Kind: None
       ReqOut:
         Or:
         - Dashes: two
@@ -758,7 +758,7 @@ ASide:
           Difficulty: hard
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: None
   - Room: "f-03"
     Holes:
     - Side: Right
@@ -1271,11 +1271,11 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
-  - Room: "j-00"
+  - Room: "j-00"  # TODO this room crashes on the cutscene because of bad spritesets or something
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
+      Kind: none
       ReqOut:
         Or:
         - Dashes: two
@@ -1283,7 +1283,7 @@ ASide:
           Difficulty: hard
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: none
   - Room: "j-00b"
     Holes:
     - Side: Right
