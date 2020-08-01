@@ -447,7 +447,10 @@ ASide:
     InternalEdges:
     - Split: TopToBottom
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect
       ReqIn:
         Dashes: two
         Difficulty: expert
@@ -1672,8 +1675,10 @@ CSide:
       Idx: 0
       Kind: inout
       ReqIn:
-        Dashes: one
-        Difficulty: hard
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: hard
     - Side: Down
       Idx: 0
       Kind: None

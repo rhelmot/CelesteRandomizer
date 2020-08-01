@@ -1430,14 +1430,25 @@ BSide:
     - Side: Up
       Idx: 0
       Kind: out
+      ReqOut:
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: hard
     - Side: Down
       Idx: 0
       Kind: out
+      ReqOut:
+        Dashes: one
     - Side: Down
       Idx: 1
       Kind: in
-      ReqIn:
-        Dashes: one
+    Tweaks:
+    - Name: "spawn"
+      X: 544
+      Y: 136
+      Update:
+        Default: true
   - Room: "b-09"
     Holes:
     - Side: Down
@@ -1588,5 +1599,8 @@ CSide:
       Idx: 0
       Kind: inout
       ReqIn:
-        Dashes: one
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: hard
     End: true

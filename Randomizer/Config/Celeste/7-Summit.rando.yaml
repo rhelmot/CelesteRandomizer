@@ -1521,17 +1521,24 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: out
+      ReqOut:
+        Dashes: two
     - Side: Left
       Idx: 1
       Kind: inout
-      ReqIn:
-        Dashes: two
     - Side: Left
       Idx: 0
       Kind: none
     - Side: Right
       Idx: 0
       Kind: none
+    InternalEdges:
+    - Collectable: 0
+      ReqBoth:
+        Dashes: two
+    - Collectable: 1
+      ReqBoth:
+        Dashes: two
   - Room: "g-00"
     Holes:
     - Side: Up

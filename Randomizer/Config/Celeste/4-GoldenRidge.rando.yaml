@@ -1043,5 +1043,8 @@ CSide:
       Idx: 0
       Kind: inout
       ReqIn:
-        Dashes: one
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: hard
     End: true

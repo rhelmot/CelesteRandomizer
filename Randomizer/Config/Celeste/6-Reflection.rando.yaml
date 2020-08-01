@@ -1077,5 +1077,8 @@ CSide:
       Idx: 0
       Kind: in
       ReqIn:
-        Dashes: one
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: hard
     End: true

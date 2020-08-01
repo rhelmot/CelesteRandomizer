@@ -858,7 +858,7 @@ BSide:
     - Name: "spawn"
       Update:
         Add: true
-        X: 256
+        X: 356
         Y: 32
   - Room: "05b"
     Holes:
@@ -1192,8 +1192,10 @@ CSide:
       Idx: 0
       Kind: inout
       ReqIn:
-        Dashes: one
-        Difficulty: hard
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: hard
     - Side: Up
       Idx: 0
       Kind: None

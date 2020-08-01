@@ -281,6 +281,11 @@ ASide:
       Y: 304
       Update:
         X: 360
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 384
+        Y: 96
   - Room: "9"
     Holes:
     - Side: Up
@@ -383,6 +388,10 @@ ASide:
         Add: true
         X: 128
         Y: 944
+    - ID: 87
+      Name: "invisibleBarrier"
+      Update:
+        Remove: true
   - Room: "11"
     Holes:
     - Side: Right
