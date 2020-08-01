@@ -25,7 +25,7 @@ namespace Celeste.Mod.Randomizer {
         public override void Load() {
             Everest.Events.MainMenu.OnCreateButtons += CreateMainMenuButton;
             Everest.Events.Level.OnCreatePauseMenuButtons += ModifyLevelMenu;
-            Everest.Events.Level.OnTransitionTo += ResetCoreMode;
+            Everest.Events.Level.OnTransitionTo += OnTransition;
             On.Celeste.OverworldLoader.ctor += EnterToRandoMenu;
             On.Celeste.Overworld.ctor += HideMaddy;
             On.Celeste.MapData.Load += DontLoadRandoMaps;
@@ -47,7 +47,7 @@ namespace Celeste.Mod.Randomizer {
         public override void Unload() {
             Everest.Events.MainMenu.OnCreateButtons -= CreateMainMenuButton;
             Everest.Events.Level.OnCreatePauseMenuButtons -= ModifyLevelMenu;
-            Everest.Events.Level.OnTransitionTo -= ResetCoreMode;
+            Everest.Events.Level.OnTransitionTo -= OnTransition;
             On.Celeste.OverworldLoader.ctor -= EnterToRandoMenu;
             On.Celeste.Overworld.ctor -= HideMaddy;
             On.Celeste.MapData.Load -= DontLoadRandoMaps;
@@ -147,10 +147,20 @@ namespace Celeste.Mod.Randomizer {
             }
         }
 
-        public void ResetCoreMode(Level level, LevelData next, Vector2 direction) {
+        public void OnTransition(Level level, LevelData next, Vector2 direction) {
             if (this.InRandomizer) {
                 level.CoreMode = Session.CoreModes.None;
                 level.Session.CoreMode = Session.CoreModes.None;
+
+                var toRemove = new System.Collections.Generic.List<string>();
+                foreach (var flag in level.Session.Flags) {
+                    if (flag.StartsWith("summit_checkpoint_")) {
+                        toRemove.Add(flag);
+                    }
+                }
+                foreach (var flag in toRemove) {
+                    level.Session.Flags.Remove(flag);
+                }
             }
         }
 
