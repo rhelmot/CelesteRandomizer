@@ -253,7 +253,9 @@ namespace Celeste.Mod.Randomizer {
                         SaveData.Instance.SummitGems = new bool[6];
 
                         var fade = new FadeWipe(this.Scene, false, () => {   // assign to variable to suppress compiler warning
-                            LevelEnter.Go(new Session(newArea, null, null), true);
+                            var session = new Session(newArea, null, null);
+                            session.FirstLevel = false;
+                            LevelEnter.Go(session, true);
                             this.builderThread = null;
                             this.entering = false;
                         });
