@@ -32,6 +32,7 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.AngryOshiro.Added += DontSpawnTwoOshiros;
             On.Celeste.Player.Added += DontMoveOnWakeup;
             On.Celeste.BadelineOldsite.Added += PlayBadelineCutscene;
+            On.Celeste.Textbox.ctor_string_Language_Func1Array += RandomizeTextboxText;
             IL.Celeste.Level.EnforceBounds += DisableUpTransition;
             //On.Celeste.AutoSplitterInfo.Update += wtf;
         }
@@ -54,6 +55,7 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.AngryOshiro.Added -= DontSpawnTwoOshiros;
             On.Celeste.Player.Added -= DontMoveOnWakeup;
             On.Celeste.BadelineOldsite.Added -= PlayBadelineCutscene;
+            On.Celeste.Textbox.ctor_string_Language_Func1Array -= RandomizeTextboxText;
             IL.Celeste.Level.EnforceBounds -= DisableUpTransition;
             //On.Celeste.AutoSplitterInfo.Update -= wtf;
         }
@@ -235,6 +237,14 @@ namespace Celeste.Mod.Randomizer {
             orig(self, scene);
             if (this.InRandomizer) {
                 self.JustRespawned = true;
+            }
+        }
+
+        void RandomizeTextboxText(On.Celeste.Textbox.orig_ctor_string_Language_Func1Array orig, Textbox self, string dialog, Language language, Func<IEnumerator>[] events) {
+            if (InRandomizer && RandoLogic.RandomDialogMappings.ContainsKey(dialog.ToLower())) {
+                orig(self, RandoLogic.RandomDialogMappings[dialog.ToLower()], language, events);
+            } else {
+                orig(self, dialog, language, events);
             }
         }
 
