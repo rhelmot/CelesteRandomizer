@@ -47,7 +47,7 @@ namespace Celeste.Mod.Randomizer {
             };
 
             newArea.SetSID($"randomizer/{newArea.Name}");
-            if (lastarea.GetLevelSet() == "randomizer") {
+            if (lastarea.GetSID().StartsWith("randomizer/")) {
                 AreaData.Areas[AreaData.Areas.Count - 1] = newArea;
             } else {
                 AreaData.Areas.Add(newArea);
