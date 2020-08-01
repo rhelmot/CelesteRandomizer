@@ -56,13 +56,18 @@ ASide:
     - Side: Left
       Idx: 2
       Kind: none
-    - Room: "s3"
+    InternalEdges:
+    - Collectable: 0
+      ReqBoth:
+        Dashes: one
+  - Room: "s3"
     Holes:
     - Side: Right
       Idx: 1
       Kind: inout
       ReqBoth:
         Key: true
+        KeyholeID: 16
     - Side: Left
       Idx: 0
       Kind: inout
@@ -122,6 +127,7 @@ ASide:
         Kind: inout
         ReqBoth:
           Key: true
+          KeyholeID: 9
       InternalEdges:
       - To: "main"
         ReqOut:
@@ -276,6 +282,10 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - Collectable: 0
+      ReqBoth:
+        Dashes: one
   - Room: "05-a" # continuing main path
     Holes:
     - Side: Right
@@ -315,6 +325,7 @@ ASide:
     - To: "right"
       ReqBoth:
         Key: true
+        KeyholeID: 11
     Subrooms:
     - Room: "right"
       Holes:
@@ -485,6 +496,7 @@ ASide:
     - To: "exit"
       ReqBoth:
         Key: true
+        KeyholeID: 2
     - To: "key"  # TODO: all three buttons
     Subrooms:
     - Room: "exit"
@@ -881,7 +893,7 @@ ASide:
         Dashes: one
         Difficulty: expert
       ReqIn:
-        Dashes: one
+        Dashes: two
         Difficulty: perfect
     Subrooms:
     - Room: "left"
@@ -921,6 +933,7 @@ ASide:
     - To: "exit"
       ReqBoth:
         Key: true
+        KeyholeID: 17
     Subrooms:
     - Room: "exit"
       Holes:

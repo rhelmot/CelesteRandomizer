@@ -169,6 +169,7 @@ namespace Celeste.Mod.Randomizer {
         public Difficulty Difficulty { get; set; }
         public NumDashes? Dashes { get; set; }
         public bool Key;
+        public int? KeyholeID;
     }
 
     public class RandoConfigEdit {

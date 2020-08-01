@@ -11,8 +11,8 @@ namespace Celeste.Mod.Randomizer {
         private List<RandoConfigEdit> Tweaks;
         public Dictionary<string, StaticNode> Nodes;
 
-        private List<Hole> Holes;
-        private List<StaticCollectable> Collectables;
+        public List<Hole> Holes;
+        public List<StaticCollectable> Collectables;
 
         public StaticRoom(AreaKey Area, RandoConfigRoom config, LevelData Level, List<Hole> Holes) {
             this.Area = Area;
@@ -350,7 +350,10 @@ namespace Celeste.Mod.Randomizer {
             conjunction.Add(new SkillRequirement(config.Difficulty));
 
             if (config.Key) {
-                conjunction.Add(new KeyRequirement());
+                if (config.KeyholeID == null) {
+                    throw new Exception("Config error: Key: true without KeyholeID");
+                }
+                conjunction.Add(new KeyRequirement(config.KeyholeID.Value));
             }
 
             if (conjunction.Count == 0) {
@@ -538,6 +541,13 @@ namespace Celeste.Mod.Randomizer {
                             ID = ++maxID,
                             Level = result,
                         };
+
+                        if (econfig.Update.Values != null) {
+                            entity.Values = new Dictionary<string, object>();
+                            foreach (var kv in econfig.Update.Values) {
+                                entity.Values.Add(kv.Key, (object)kv.Value);
+                            }
+                        }
 
                         if (econfig.Name.ToLower().EndsWith("trigger")) {
                             result.Triggers.Add(entity);

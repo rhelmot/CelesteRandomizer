@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Monocle;
+using MonoMod.Utils;
 
 namespace Celeste.Mod.Randomizer {
     public class LinkedMap {
@@ -71,12 +72,12 @@ namespace Celeste.Mod.Randomizer {
     public class LinkedRoom {
         public Rectangle Bounds;
         public StaticRoom Static;
-        public Dictionary<string, LinkedNode> Nodes;
+        public Dictionary<string, LinkedNode> Nodes = new Dictionary<string, LinkedNode>();
+        public HashSet<int> UsedKeyholes = new HashSet<int>();
 
         public LinkedRoom(StaticRoom Room, Vector2 Position) {
             this.Static = Room;
             this.Bounds = new Rectangle((int)Position.X, (int)Position.Y, Room.Level.Bounds.Width, Room.Level.Bounds.Height);
-            this.Nodes = new Dictionary<string, LinkedNode>();
             foreach (var staticnode in Room.Nodes.Values) {
                 var node = new LinkedNode() { Static = staticnode, Room = this };
                 this.Nodes.Add(staticnode.Name, node);
@@ -115,6 +116,7 @@ namespace Celeste.Mod.Randomizer {
             string spinnercolor = pickSpinnerColor();
 
             int maxID = 0;
+            var toRemove = new List<EntityData>();
             foreach (var e in result.Entities) {
                 maxID = Math.Max(maxID, e.ID);
 
@@ -140,49 +142,74 @@ namespace Celeste.Mod.Randomizer {
                             e.Values["dust"] = "true";
                         }
                         break;
+                    case "lockBlock":
+                        if (!this.UsedKeyholes.Contains(e.ID)) {
+                            toRemove.Add(e);
+                        }
+                        break;
                 }
+            }
+            foreach (var e in toRemove) {
+                result.Entities.Remove(e);
+            }
+
+            void blockHole(Hole hole) {
+                var topbottom = hole.Side == ScreenDirection.Up || hole.Side == ScreenDirection.Down;
+                var farside = hole.Side == ScreenDirection.Down || hole.Side == ScreenDirection.Right;
+
+                Vector2 corner;
+                switch (hole.Side) {
+                    case ScreenDirection.Up:
+                        corner = new Vector2(0, -8);
+                        break;
+                    case ScreenDirection.Left:
+                        corner = new Vector2(-8, 0);
+                        break;
+                    case ScreenDirection.Down:
+                        corner = new Vector2(0, this.Bounds.Height);
+                        break;
+                    case ScreenDirection.Right:
+                    default:
+                        corner = new Vector2(this.Bounds.Width, 0);
+                        break;
+                }
+                corner += hole.AlongDir.Unit() * hole.LowBound * 8;
+                var e = new EntityData {
+                    ID = ++maxID,
+                    Name = "invisibleBarrier",
+                    Width = !topbottom ? 8 : hole.Size * 8,
+                    Height = topbottom ? 8 : hole.Size * 8,
+                    Position = corner,
+                    Level = result,
+                };
+                result.Entities.Add(e);
             }
 
             bool disableDown = true;
+            bool disableUp = true;
+            var unusedHorizontalHoles = new HashSet<Hole>();
+            foreach (var hole in this.Static.Holes) {
+                if (hole.Side == ScreenDirection.Left || hole.Side == ScreenDirection.Right) {
+                    unusedHorizontalHoles.Add(hole);
+                }
+            }
             foreach (var node in this.Nodes.Values) {
                 foreach (var edge in node.Edges) {
                     var hole = edge.CorrespondingEdge(node).HoleTarget;
                     if (hole != null && hole.Side == ScreenDirection.Down) {
                         disableDown = false;
                     }
+                    if (hole != null && hole.Side == ScreenDirection.Up) {
+                        disableUp = false;
+                    }
+                    if (hole != null && (hole.Side == ScreenDirection.Left || hole.Side == ScreenDirection.Right)) {
+                        unusedHorizontalHoles.Remove(hole);
+                    }
 
                     // Block off holes connected to edges which should not be re-entered
                     var hole2 = edge.OtherEdge(node).HoleTarget;
                     if (hole != null && hole2 != null && hole2.Kind == HoleKind.Out) {
-                        var topbottom = hole.Side == ScreenDirection.Up || hole.Side == ScreenDirection.Down;
-                        var farside = hole.Side == ScreenDirection.Down || hole.Side == ScreenDirection.Right;
-
-                        Vector2 corner;
-                        switch (hole.Side) {
-                            case ScreenDirection.Up:
-                                corner = new Vector2(0, -8);
-                                break;
-                            case ScreenDirection.Left:
-                                corner = new Vector2(-8, 0);
-                                break;
-                            case ScreenDirection.Down:
-                                corner = new Vector2(0, this.Bounds.Height);
-                                break;
-                            case ScreenDirection.Right:
-                            default:
-                                corner = new Vector2(this.Bounds.Width, 0);
-                                break;
-                        }
-                        corner += hole.AlongDir.Unit() * hole.LowBound * 8;
-                        var e = new EntityData {
-                            ID = ++maxID,
-                            Name = "invisibleBarrier",
-                            Width = !topbottom ? 8 : hole.Size*8,
-                            Height = topbottom ? 8 : hole.Size*8,
-                            Position = corner,
-                            Level = result,
-                        };
-                        result.Entities.Add(e);
+                        blockHole(hole);
                     }
                 }
 
@@ -212,6 +239,12 @@ namespace Celeste.Mod.Randomizer {
             }
 
             result.DisableDownTransition = disableDown;
+            if (disableUp) {
+                new DynData<LevelData>(result).Set("DisableUpTransition", true);
+            }
+            foreach (var hole in unusedHorizontalHoles) {
+                blockHole(hole);
+            }
             return result;
         }
     }

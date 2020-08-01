@@ -545,14 +545,6 @@ ASide:
         Dashes: one
   - Room: "c-07"
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
-      ReqBoth:
-        Or:
-        - Dashes: two
-        - Dashes: one
-          Difficulty: hard
     - Side: Left
       Idx: 0
       Kind: inout
@@ -562,6 +554,19 @@ ASide:
     - Side: Down
       Idx: 1
       Kind: in
+    InternalEdges:
+    - To: "right"
+      ReqBoth:
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: hard
+    Subrooms:
+    - Room: "right"
+      Holes:
+      - Side: Right
+        Idx: 0
+        Kind: inout
   - Room: "c-07b"
     Holes:
     - Side: Right
@@ -750,12 +755,12 @@ ASide:
     Holes:
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: out
       ReqIn:
         Dashes: two
     - Side: Down
       Idx: 1
-      Kind: out
+      Kind: in
   - Room: "d-04"
     Holes:
     - Side: Right
@@ -1349,6 +1354,7 @@ ASide:
       Kind: out
       ReqOut:
         Key: true
+        KeyholeID: 700
     - Side: Left
       Idx: 0
       Kind: inout

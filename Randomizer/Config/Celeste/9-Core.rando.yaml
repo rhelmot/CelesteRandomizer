@@ -598,6 +598,12 @@ BSide:
     - Split: LeftToRight
       ReqBoth:
         Dashes: two
+    Tweaks:
+    - Name: "spawn"
+      X: 96
+      Y: 144
+      Update:
+        Default: true
   - Room: "a-01"
     Holes:
     - Side: Right

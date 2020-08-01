@@ -59,7 +59,7 @@ namespace Celeste.Mod.Randomizer {
 
         public override void Update() {
             if (menu != null && menu.Focused &&
-                Selected && Input.MenuCancel.Pressed) {
+                Selected && (Input.MenuCancel.Pressed || Input.Pause.Pressed)) {
                 Audio.Play(SFX.ui_main_button_back);
                 Overworld.Goto<OuiRandoSettings>();
             }

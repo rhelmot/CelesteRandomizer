@@ -3,6 +3,8 @@ using Microsoft.Xna.Framework;
 using Monocle;
 using System;
 using System.Collections;
+using MonoMod.Cil;
+using MonoMod.Utils;
 
 namespace Celeste.Mod.Randomizer {
     public class RandoModule : EverestModule {
@@ -23,7 +25,7 @@ namespace Celeste.Mod.Randomizer {
         public override void Load() {
             Everest.Events.MainMenu.OnCreateButtons += CreateMainMenuButton;
             Everest.Events.Level.OnCreatePauseMenuButtons += ModifyLevelMenu;
-            Everest.Events.Level.OnTransitionTo += ResetCoreMode;
+            Everest.Events.Level.OnTransitionTo += OnTransition;
             On.Celeste.OverworldLoader.ctor += EnterToRandoMenu;
             On.Celeste.Overworld.ctor += HideMaddy;
             On.Celeste.MapData.Load += DontLoadRandoMaps;
@@ -34,8 +36,9 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.AngryOshiro.Added += DontSpawnTwoOshiros;
             On.Celeste.Player.Added += DontMoveOnWakeup;
             On.Celeste.BadelineOldsite.Added += PlayBadelineCutscene;
-            //On.Celeste.AutoSplitterInfo.Update += wtf;
             On.Celeste.Textbox.ctor_string_Language_Func1Array += RandomizeTextboxText;
+            IL.Celeste.Level.EnforceBounds += DisableUpTransition;
+            //On.Celeste.AutoSplitterInfo.Update += wtf;
         }
 
         public override void LoadContent(bool firstLoad) {
@@ -45,7 +48,7 @@ namespace Celeste.Mod.Randomizer {
         public override void Unload() {
             Everest.Events.MainMenu.OnCreateButtons -= CreateMainMenuButton;
             Everest.Events.Level.OnCreatePauseMenuButtons -= ModifyLevelMenu;
-            Everest.Events.Level.OnTransitionTo -= ResetCoreMode;
+            Everest.Events.Level.OnTransitionTo -= OnTransition;
             On.Celeste.OverworldLoader.ctor -= EnterToRandoMenu;
             On.Celeste.Overworld.ctor -= HideMaddy;
             On.Celeste.MapData.Load -= DontLoadRandoMaps;
@@ -56,31 +59,9 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.AngryOshiro.Added -= DontSpawnTwoOshiros;
             On.Celeste.Player.Added -= DontMoveOnWakeup;
             On.Celeste.BadelineOldsite.Added -= PlayBadelineCutscene;
-            //On.Celeste.AutoSplitterInfo.Update -= wtf;
             On.Celeste.Textbox.ctor_string_Language_Func1Array -= RandomizeTextboxText;
-        }
-
-        public void PlayBadelineCutscene(On.Celeste.BadelineOldsite.orig_Added orig, BadelineOldsite self, Scene scene) {
-            orig(self, scene);
-            var level = scene as Level;
-            if (!level.Session.GetFlag("evil_maddy_intro") && level.Session.Level.StartsWith("Celeste/2-OldSite/A/3")) {
-                foreach (var c in self.Components) {
-                    if (c is Coroutine) {
-                        self.Components.Remove(c);
-                        break;
-                    }
-                }
-
-                self.Hovering = false;
-                self.Visible = true;
-                self.Hair.Visible = false;
-                self.Sprite.Play("pretendDead", false, false);
-                if (level.Session.Area.Mode == AreaMode.Normal) {
-                    level.Session.Audio.Music.Event = null;
-                    level.Session.Audio.Apply(false);
-                }
-                scene.Add(new CS02_BadelineIntro(self));
-            }
+            IL.Celeste.Level.EnforceBounds -= DisableUpTransition;
+            //On.Celeste.AutoSplitterInfo.Update -= wtf;
         }
 
         public void wtf(On.Celeste.AutoSplitterInfo.orig_Update orig, AutoSplitterInfo self) {
@@ -168,10 +149,20 @@ namespace Celeste.Mod.Randomizer {
             }
         }
 
-        public void ResetCoreMode(Level level, LevelData next, Vector2 direction) {
+        public void OnTransition(Level level, LevelData next, Vector2 direction) {
             if (this.InRandomizer) {
                 level.CoreMode = Session.CoreModes.None;
                 level.Session.CoreMode = Session.CoreModes.None;
+
+                var toRemove = new System.Collections.Generic.List<string>();
+                foreach (var flag in level.Session.Flags) {
+                    if (flag.StartsWith("summit_checkpoint_")) {
+                        toRemove.Add(flag);
+                    }
+                }
+                foreach (var flag in toRemove) {
+                    level.Session.Flags.Remove(flag);
+                }
             }
         }
 
@@ -261,6 +252,48 @@ namespace Celeste.Mod.Randomizer {
             }
         }
 
+        public void PlayBadelineCutscene(On.Celeste.BadelineOldsite.orig_Added orig, BadelineOldsite self, Scene scene) {
+            orig(self, scene);
+            var level = scene as Level;
+            if (!level.Session.GetFlag("evil_maddy_intro") && level.Session.Level.StartsWith("Celeste/2-OldSite/A/3")) {
+                foreach (var c in self.Components) {
+                    if (c is Coroutine) {
+                        self.Components.Remove(c);
+                        break;
+                    }
+                }
+
+                self.Hovering = false;
+                self.Visible = true;
+                self.Hair.Visible = false;
+                self.Sprite.Play("pretendDead", false, false);
+                if (level.Session.Area.Mode == AreaMode.Normal) {
+                    level.Session.Audio.Music.Event = null;
+                    level.Session.Audio.Apply(false);
+                }
+                scene.Add(new CS02_BadelineIntro(self));
+            }
+        }
+
+        public void DisableUpTransition(ILContext il) {
+            ILCursor cursor = new ILCursor(il);
+            cursor.TryGotoNext(MoveType.After, instr => instr.MatchCallvirt<MapData>("CanTransitionTo"));
+            cursor.TryGotoNext(MoveType.After, instr => instr.MatchCallvirt<MapData>("CanTransitionTo"));
+            cursor.TryGotoNext(MoveType.After, instr => instr.MatchCallvirt<MapData>("CanTransitionTo"));
+            cursor.Emit(Mono.Cecil.Cil.OpCodes.Ldarg_0);
+            cursor.EmitDelegate<Func<Level, bool>>((level) => {
+                if (!this.InRandomizer) {
+                    return true;
+                }
+                var currentRoom = level.Session.LevelData;
+                var extra = new DynData<LevelData>(currentRoom);
+                if (extra.Get<bool?>("DisableUpTransition") ?? false) {
+                    return false;
+                }
+                return true;
+            });
+            cursor.Emit(Mono.Cecil.Cil.OpCodes.And);
+        }
     }
 
     public class DisablableTextMenu : TextMenu {

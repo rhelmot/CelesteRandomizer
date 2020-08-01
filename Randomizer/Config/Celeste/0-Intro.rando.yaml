@@ -4,6 +4,12 @@ ASide:
     - Side: Right
       Idx: 0
       Kind: inout
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 16
+        Y: 152
   - Room: "0"
     Holes:
     - Side: Up

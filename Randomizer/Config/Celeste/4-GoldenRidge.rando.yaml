@@ -130,9 +130,11 @@ ASide:
         Dashes: zero
       ReqIn:
         Or:
+        - Dashes: two
         - Dashes: one
-        - Dashes: zero
           Difficulty: hard
+        - Dashes: zero
+          Difficulty: expert
     - To: "Berry"
       ReqOut:
         Dashes: one
@@ -215,6 +217,8 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: inout
+      ReqOut:
+        Dashes: one
     - Side: Right
       Idx: 0
       Kind: out
@@ -263,13 +267,13 @@ ASide:
     - Side: Left
       Idx: 1
       Kind: inout
-      ReqIn:
+    InternalEdges:
+    - Collectable: 1
+      ReqBoth:
         Or:
         - Dashes: one
         - Dashes: zero
           Difficulty: hard
-    Collectables:
-    - Idx: 1
     Subrooms:
     - Room: "upper"
       Holes:
