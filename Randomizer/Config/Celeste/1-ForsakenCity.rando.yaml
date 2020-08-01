@@ -122,8 +122,8 @@ ASide:
     - Name: "spawn"
       Update:
         Add: true
-        X: 192
-        Y: 40
+        X: 296
+        Y: 24
     - ID: 49
       Update:
         Remove: true
