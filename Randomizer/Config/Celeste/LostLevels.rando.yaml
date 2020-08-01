@@ -401,6 +401,11 @@ ASide:
       Y: 608
       Update:
         Default: true
+    - ID: 276
+      Name: "jumpThru"
+      Update:
+        X: 80
+        Width: 32
   - Room: "d-01"
     Holes:
     - Side: Right
