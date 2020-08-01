@@ -35,6 +35,7 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.Player.Added += DontMoveOnWakeup;
             On.Celeste.BadelineOldsite.Added += PlayBadelineCutscene;
             //On.Celeste.AutoSplitterInfo.Update += wtf;
+            On.Celeste.Textbox.ctor_string_Language_Func1Array += RandomizeTextboxText;
         }
 
         public override void LoadContent(bool firstLoad) {
@@ -56,6 +57,7 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.Player.Added -= DontMoveOnWakeup;
             On.Celeste.BadelineOldsite.Added -= PlayBadelineCutscene;
             //On.Celeste.AutoSplitterInfo.Update -= wtf;
+            On.Celeste.Textbox.ctor_string_Language_Func1Array -= RandomizeTextboxText;
         }
 
         public void PlayBadelineCutscene(On.Celeste.BadelineOldsite.orig_Added orig, BadelineOldsite self, Scene scene) {
@@ -250,6 +252,15 @@ namespace Celeste.Mod.Randomizer {
                 self.JustRespawned = true;
             }
         }
+
+        void RandomizeTextboxText(On.Celeste.Textbox.orig_ctor_string_Language_Func1Array orig, Textbox self, string dialog, Language language, Func<IEnumerator>[] events) {
+            if (InRandomizer && RandoLogic.RandomDialogMappings.ContainsKey(dialog.ToLower())) {
+                orig(self, RandoLogic.RandomDialogMappings[dialog.ToLower()], language, events);
+            } else {
+                orig(self, dialog, language, events);
+            }
+        }
+
     }
 
     public class DisablableTextMenu : TextMenu {
