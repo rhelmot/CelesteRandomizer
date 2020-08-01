@@ -507,6 +507,12 @@ ASide:
         Dashes: zero
       ReqIn:
         Dashes: one
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 672
+        Y: 200
   - Room: "b-02"
     Holes:
     - Side: Up
@@ -835,6 +841,12 @@ BSide:
         Dashes: zero
       ReqIn:
         Dashes: one
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 544
+        Y: 200
   - Room: "b-01"
     Holes:
     - Side: Up

@@ -983,10 +983,20 @@ BSide:
         Dashes: one
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
+      ReqOut:
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: expert
     - Side: Up
       Idx: 0
       Kind: none
+    Tweaks:
+    - ID: 2
+      Name: "exitBlock"
+      Update:
+        Remove: true
   - Room: "d-03"
     Holes:
     - Side: Right

@@ -320,13 +320,14 @@ ASide:
     - To: "TopExit"
       ReqOut:
         Dashes: two
+        Difficulty: hard
     - To: "Right"
       ReqOut:
         Or:
         - Dashes: two
           Difficulty: hard
         - Dashes: one
-          Difficulty: expert
+          Difficulty: perfect
       ReqIn:
         Dashes: two
         Difficulty: expert
@@ -354,6 +355,11 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: out
+      ReqOut:
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: expert
     - Side: Down
       Idx: 1
       Kind: in

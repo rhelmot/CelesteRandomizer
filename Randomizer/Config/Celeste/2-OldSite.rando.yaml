@@ -297,6 +297,9 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 2
+      Kind: none
     InternalEdges:
     - To: "acrossTheDreamBlock"
       ReqBoth:
@@ -671,6 +674,10 @@ ASide:
         Add: true
         X: 32
         Y: 320
+    - ID: 0
+      Name: "goldenBerryCollectTrigger"
+      Update:
+        Remove: true
   - Room: "end_1"
     Holes:
     - Side: Up
