@@ -56,7 +56,11 @@ ASide:
     - Side: Left
       Idx: 2
       Kind: none
-    - Room: "s3"
+    InternalEdges:
+    - Collectable: 0
+      ReqBoth:
+        Dashes: one
+  - Room: "s3"
     Holes:
     - Side: Right
       Idx: 1
