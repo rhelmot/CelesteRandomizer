@@ -48,19 +48,28 @@ namespace Celeste.Mod.Randomizer {
 
     public class RandoSettings {
         public SeedType SeedType;
-        public int Seed;
+        public string Seed = "achene";
         public Ruleset Rules;
         public bool RepeatRooms;
         public bool EnterUnknown;
         public LogicType Algorithm;
         public MapLength Length;
-        public NumDashes Dashes;
+        public NumDashes Dashes = NumDashes.One;
         public Difficulty Difficulty;
         private HashSet<AreaKeyNotStupid> IncludedMaps = new HashSet<AreaKeyNotStupid>();
 
         public void Enforce() {
             if (this.SeedType == SeedType.Random) {
-                this.Seed = new Random().Next((int)Math.Pow(10, RandoModule.MAX_SEED_DIGITS));
+                this.Seed = "";
+                var r = new Random();
+                for (int i = 0; i < 6; i++) {
+                    var val = r.Next(36);
+                    if (val < 10) {
+                        this.Seed += ((char)('0' + val)).ToString();
+                    } else {
+                        this.Seed += ((char)('a' + val - 10)).ToString();
+                    }
+                }
             }
             switch (this.Rules) {
                 case Ruleset.A:
@@ -114,7 +123,7 @@ namespace Celeste.Mod.Randomizer {
             yield return (uint)RandoModule.Instance.Metadata.Version.Major;
             yield return (uint)RandoModule.Instance.Metadata.Version.Minor;
             yield return (uint)RandoModule.Instance.Metadata.Version.Build;
-            yield return (uint)Seed;
+            yield return this.IntSeed;
             yield return RepeatRooms ? 1u : 0u;
             yield return EnterUnknown ? 1u : 0u;
             yield return (uint)Algorithm;
@@ -155,6 +164,17 @@ namespace Celeste.Mod.Randomizer {
                     h = ((h << 5) + h) + i;
                 }
                 return h.ToString();
+            }
+        }
+
+        public uint IntSeed {
+            get {
+                // djb2 impl
+                uint h = 5381;
+                foreach (var i in this.Seed) {
+                    h = ((h << 5) + h) + i;
+                }
+                return h;
             }
         }
 

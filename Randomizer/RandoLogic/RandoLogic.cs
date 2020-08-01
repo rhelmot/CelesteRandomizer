@@ -78,7 +78,7 @@ namespace Celeste.Mod.Randomizer {
         private Stack<RandoTask> CompletedTasks = new Stack<RandoTask>();
 
         private RandoLogic(RandoSettings settings, AreaKey key) {
-            this.Random = new Random(settings.Seed);
+            this.Random = new Random((int)settings.IntSeed);
             this.Settings = settings;
             this.RemainingRooms = new List<StaticRoom>();
             foreach (var room in RandoLogic.AllRooms) {

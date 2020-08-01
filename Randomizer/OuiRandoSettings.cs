@@ -101,15 +101,14 @@ namespace Celeste.Mod.Randomizer {
                 Offset = new Vector2(30, -5),
             };
 
-            var seedbutton = new TextMenu.Button(Dialog.Clean("MODOPTIONS_RANDOMIZER_SEED") + ": " + Settings.Seed.ToString(RandoModule.MAX_SEED_DIGITS)); 
+            var seedbutton = new TextMenu.Button(Dialog.Clean("MODOPTIONS_RANDOMIZER_SEED") + ": " + Settings.Seed); 
             seedbutton.Pressed(() => {
                 Audio.Play(SFX.ui_main_savefile_rename_start);
-                menu.SceneAs<Overworld>().Goto<UI.OuiNumberEntry>().Init<OuiRandoSettings>(
+                menu.SceneAs<Overworld>().Goto<UI.OuiTextEntry>().Init<OuiRandoSettings>(
                     Settings.Seed,
-                    (v) => Settings.Seed = (int)v,
-                    RandoModule.MAX_SEED_DIGITS,
-                    false,
-                    false);
+                    (v) => Settings.Seed = v,
+                    RandoModule.MAX_SEED_CHARS
+                );
             });
             seedbutton.Visible = Settings.SeedType == SeedType.Custom;
 
@@ -119,7 +118,7 @@ namespace Celeste.Mod.Randomizer {
                 Settings.SeedType = (SeedType)i;
                 seedbutton.Visible = Settings.SeedType == SeedType.Custom;
                 // just in case...
-                seedbutton.Label = Dialog.Clean("MODOPTIONS_RANDOMIZER_SEED") + ": " + Settings.Seed.ToString(RandoModule.MAX_SEED_DIGITS);
+                seedbutton.Label = Dialog.Clean("MODOPTIONS_RANDOMIZER_SEED") + ": " + Settings.Seed;
                 updateHashText();
             });
 

@@ -11,15 +11,11 @@ namespace Celeste.Mod.Randomizer {
         public static RandoModule Instance;
 
         public RandoSettings Settings;
-        public const int MAX_SEED_DIGITS = 6;
+        public const int MAX_SEED_CHARS = 20;
 
         public RandoModule() {
             Instance = this;
-
-            Settings = new RandoSettings {
-                Seed = 0,
-                Dashes = NumDashes.One,
-            };
+            Settings = new RandoSettings();
         }
 
         public override void Load() {
@@ -218,7 +214,7 @@ namespace Celeste.Mod.Randomizer {
             orig(version, ease, alpha);
 
             if (this.InRandomizer) {
-                var text = this.Settings.Seed.ToString(RandoModule.MAX_SEED_DIGITS);
+                var text = this.Settings.Seed;
                 if (this.Settings.Rules != Ruleset.Custom) {
                     text += " " + this.Settings.Rules.ToString();
                 }
