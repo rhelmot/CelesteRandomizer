@@ -52,6 +52,7 @@ namespace Celeste.Mod.Randomizer {
         public Ruleset Rules;
         public bool RepeatRooms;
         public bool EnterUnknown;
+        public bool SpawnGolden;
         public LogicType Algorithm;
         public MapLength Length;
         public NumDashes Dashes = NumDashes.One;

@@ -132,16 +132,6 @@ namespace Celeste.Mod.Randomizer {
                 Offset = new Vector2(30, -5),
             };
 
-            var repeatroomstoggle = new TextMenu.OnOff(Dialog.Clean("MODOPTIONS_RANDOMIZER_REPEATROOMS"), Settings.RepeatRooms).Change((val) => {
-                Settings.RepeatRooms = val;
-                updateHashText();
-            });
-
-            var enterunknowntoggle = new TextMenu.OnOff(Dialog.Clean("MODOPTIONS_RANDOMIZER_ENTERUNKNOWN"), Settings.EnterUnknown).Change((val) => {
-                Settings.EnterUnknown = val;
-                updateHashText();
-            });
-
             var logictoggle = new TextMenu.Slider(Dialog.Clean("MODOPTIONS_RANDOMIZER_LOGIC"), (i) => {
                 return Dialog.Clean("MODOPTIONS_RANDOMIZER_LOGIC_" + Enum.GetNames(typeof(LogicType))[i].ToUpperInvariant());
             }, 0, (int)LogicType.Last - 1, (int)Settings.Algorithm).Change((i) => {
@@ -168,6 +158,35 @@ namespace Celeste.Mod.Randomizer {
             }, 0, (int)Difficulty.Last - 1, (int)Settings.Difficulty).Change((i) => {
                 Settings.Difficulty = (Difficulty)i;
                 updateHashText();
+            });
+
+            var repeatroomstoggle = new TextMenu.OnOff(Dialog.Clean("MODOPTIONS_RANDOMIZER_REPEATROOMS"), Settings.RepeatRooms).Change((val) => {
+                Settings.RepeatRooms = val;
+                updateHashText();
+            });
+
+            var enterunknowntoggle = new TextMenu.OnOff(Dialog.Clean("MODOPTIONS_RANDOMIZER_ENTERUNKNOWN"), Settings.EnterUnknown).Change((val) => {
+                Settings.EnterUnknown = val;
+                updateHashText();
+            });
+
+            var goldentoggle = new TextMenu.OnOff(Dialog.Clean("MODOPTIONS_RANDOMIZER_GOLDENBERRY"), Settings.SpawnGolden).Change((val) => {
+                Settings.SpawnGolden = val;
+            });
+
+            var moreoptions = false;
+            repeatroomstoggle.Visible = false;
+            enterunknowntoggle.Visible = false;
+            goldentoggle.Visible = false;
+
+            var moreoptionsbtn = new TextMenu.Button(Dialog.Clean("MODOPTIONS_RANDOMIZER_MOREOPTIONS"));
+            moreoptionsbtn.Pressed(() => {
+                moreoptions = !moreoptions;
+                moreoptionsbtn.Label = moreoptions ? Dialog.Clean("MODOPTIONS_RANDOMIZER_FEWEROPTIONS") : Dialog.Clean("MODOPTIONS_RANDOMIZER_MOREOPTIONS");
+
+                repeatroomstoggle.Visible = moreoptions;
+                enterunknowntoggle.Visible = moreoptions;
+                goldentoggle.Visible = moreoptions;
             });
 
             void syncModel() {
@@ -250,6 +269,8 @@ namespace Celeste.Mod.Randomizer {
                         SaveData.Instance.AssistMode = false;
                         // clear summit gems, just in case!
                         SaveData.Instance.SummitGems = new bool[6];
+                        // mark as completed to spawn golden berry
+                        SaveData.Instance.Areas[newArea.ID].Modes[0].Completed = true;
 
                         var fade = new FadeWipe(this.Scene, false, () => {   // assign to variable to suppress compiler warning
                             var session = new Session(newArea, null, null);
@@ -277,12 +298,14 @@ namespace Celeste.Mod.Randomizer {
             menu.Add(rulestoggle);
             menu.Add(mapbutton);
             menu.Add(mapcountlbl);
-            menu.Add(repeatroomstoggle);
-            menu.Add(enterunknowntoggle);
             menu.Add(logictoggle);
             menu.Add(lengthtoggle);
             menu.Add(numdashestoggle);
             menu.Add(difficultytoggle);
+            menu.Add(moreoptionsbtn);
+            menu.Add(repeatroomstoggle);
+            menu.Add(enterunknowntoggle);
+            menu.Add(goldentoggle);
             menu.Add(startbutton);
             menu.Add(hashtext);
             menu.Add(errortext);

@@ -320,6 +320,21 @@ namespace Celeste.Mod.Randomizer {
             this.SetForeground(map);
             this.SetBackground(map);
             this.SetPoem();
+
+            if (Settings.SpawnGolden) {
+                var lvl = map.GetAt(Vector2.Zero);
+                var maxid = 0;
+                foreach (var e in lvl.Entities) {
+                    maxid = Math.Max(maxid, e.ID);
+                }
+                lvl.Entities.Add(new EntityData {
+                    Level = lvl,
+                    Name = "goldenBerry",
+                    Position = lvl.Spawns[0],
+                    ID = ++maxid,
+                });
+            }
+
             return map;
         }
 
