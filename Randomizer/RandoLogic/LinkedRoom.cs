@@ -72,12 +72,12 @@ namespace Celeste.Mod.Randomizer {
     public class LinkedRoom {
         public Rectangle Bounds;
         public StaticRoom Static;
-        public Dictionary<string, LinkedNode> Nodes;
+        public Dictionary<string, LinkedNode> Nodes = new Dictionary<string, LinkedNode>();
+        public HashSet<int> UsedKeyholes = new HashSet<int>();
 
         public LinkedRoom(StaticRoom Room, Vector2 Position) {
             this.Static = Room;
             this.Bounds = new Rectangle((int)Position.X, (int)Position.Y, Room.Level.Bounds.Width, Room.Level.Bounds.Height);
-            this.Nodes = new Dictionary<string, LinkedNode>();
             foreach (var staticnode in Room.Nodes.Values) {
                 var node = new LinkedNode() { Static = staticnode, Room = this };
                 this.Nodes.Add(staticnode.Name, node);
@@ -116,6 +116,7 @@ namespace Celeste.Mod.Randomizer {
             string spinnercolor = pickSpinnerColor();
 
             int maxID = 0;
+            var toRemove = new List<EntityData>();
             foreach (var e in result.Entities) {
                 maxID = Math.Max(maxID, e.ID);
 
@@ -141,7 +142,15 @@ namespace Celeste.Mod.Randomizer {
                             e.Values["dust"] = "true";
                         }
                         break;
+                    case "lockBlock":
+                        if (!this.UsedKeyholes.Contains(e.ID)) {
+                            toRemove.Add(e);
+                        }
+                        break;
                 }
+            }
+            foreach (var e in toRemove) {
+                result.Entities.Remove(e);
             }
 
             void blockHole(Hole hole) {

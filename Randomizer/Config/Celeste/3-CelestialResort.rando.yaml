@@ -63,6 +63,7 @@ ASide:
       Kind: inout
       ReqBoth:
         Key: true
+        KeyholeID: 16
     - Side: Left
       Idx: 0
       Kind: inout
@@ -122,6 +123,7 @@ ASide:
         Kind: inout
         ReqBoth:
           Key: true
+          KeyholeID: 9
       InternalEdges:
       - To: "main"
         ReqOut:
@@ -319,6 +321,7 @@ ASide:
     - To: "right"
       ReqBoth:
         Key: true
+        KeyholeID: 11
     Subrooms:
     - Room: "right"
       Holes:
@@ -489,6 +492,7 @@ ASide:
     - To: "exit"
       ReqBoth:
         Key: true
+        KeyholeID: 2
     - To: "key"  # TODO: all three buttons
     Subrooms:
     - Room: "exit"
@@ -925,6 +929,7 @@ ASide:
     - To: "exit"
       ReqBoth:
         Key: true
+        KeyholeID: 17
     Subrooms:
     - Room: "exit"
       Holes:

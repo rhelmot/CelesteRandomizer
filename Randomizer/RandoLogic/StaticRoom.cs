@@ -350,7 +350,10 @@ namespace Celeste.Mod.Randomizer {
             conjunction.Add(new SkillRequirement(config.Difficulty));
 
             if (config.Key) {
-                conjunction.Add(new KeyRequirement());
+                if (config.KeyholeID == null) {
+                    throw new Exception("Config error: Key: true without KeyholeID");
+                }
+                conjunction.Add(new KeyRequirement(config.KeyholeID.Value));
             }
 
             if (conjunction.Count == 0) {

@@ -71,9 +71,9 @@ namespace Celeste.Mod.Randomizer {
                 var reqNeeded = LinkedNodeSet.TraversalRequires(this.Node, this.Logic.Caps.WithoutKey(), true, picked);
                 if (reqNeeded is Possible) {
                     // nothing needed
-                } else if (reqNeeded is KeyRequirement) {
+                } else if (reqNeeded is KeyRequirement keyReq) {
                     Logger.Log("randomizer", $"Need to place a key from {Node.Room.Static.Name}:{Node.Static.Name} to get out of {picked.Static.HoleTarget}");
-                    this.AddNextTask(new TaskPathwayPlaceKey(this.Logic, this.Node));
+                    this.AddNextTask(new TaskPathwayPlaceKey(this.Logic, this.Node, keyReq.KeyholeID));
                 } else {
                     throw new Exception("why does this happen? this should not happen");
                 }
@@ -132,12 +132,16 @@ namespace Celeste.Mod.Randomizer {
         private class TaskPathwayPlaceKey : RandoTask {
             private LinkedNode Node;
             private int Tries;
+            private int KeyholeID;
+            private LinkedNode OriginalNode;
             private bool InternalOnly;
 
-            public TaskPathwayPlaceKey(RandoLogic logic, LinkedNode node, bool internalOnly=false, int tries=0) : base(logic) {
+            public TaskPathwayPlaceKey(RandoLogic logic, LinkedNode node, int keyholeID, LinkedNode originalNode=null, bool internalOnly=false, int tries=0) : base(logic) {
                 // TODO: advance forward through any obligatory edges
                 this.Node = node;
                 this.InternalOnly = internalOnly;
+                this.KeyholeID = keyholeID;
+                this.OriginalNode = originalNode ?? node;
                 this.Tries = tries;
             }
 
@@ -175,6 +179,7 @@ namespace Celeste.Mod.Randomizer {
                             continue;
                         }
                         this.AddReceipt(PlaceCollectableReceipt.Do(spot.Node, spot.Static, LinkedNode.LinkedCollectable.Key));
+                        this.OriginalNode.Room.UsedKeyholes.Add(this.KeyholeID);
                         return true;
                     }
                 }
@@ -190,13 +195,18 @@ namespace Celeste.Mod.Randomizer {
                             continue;
                         }
                         this.AddReceipt(mapped);
-                        this.AddNextTask(new TaskPathwayPlaceKey(this.Logic, mapped.EntryNode, true, this.Tries));
+                        this.AddNextTask(new TaskPathwayPlaceKey(this.Logic, mapped.EntryNode, this.KeyholeID, this.OriginalNode, true, this.Tries));
                         return true;
                     }
                 }
 
                 // try again
                 return this.Next();
+            }
+
+            public override void Undo() {
+                base.Undo();
+                this.OriginalNode.Room.UsedKeyholes.Remove(this.KeyholeID);
             }
         }
     }

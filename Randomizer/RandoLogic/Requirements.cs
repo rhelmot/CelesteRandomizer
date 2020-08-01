@@ -473,6 +473,11 @@ namespace Celeste.Mod.Randomizer {
     }
 
     public class KeyRequirement : Requirement {
+        public readonly int KeyholeID;
+        public KeyRequirement(int keyholeID) {
+            this.KeyholeID = keyholeID;
+        }
+
         public override bool Able(Capabilities state) {
             return state.HasKey;
         }

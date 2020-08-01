@@ -31,7 +31,7 @@ namespace Celeste.Mod.Randomizer {
                 this.Receipts.Add(r);
             }
 
-            public void Undo() {
+            public virtual void Undo() {
                 while (this.FrontCount > 0) {
                     this.Logic.Tasks.RemoveFromFront();
                     this.FrontCount--;

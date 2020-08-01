@@ -16,6 +16,11 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    Tweaks:
+    - ID: 1
+      Name: "npc"
+      Update:
+        Remove: true
   - Room: "a-00d"
     Holes:
     - Side: Right
@@ -288,6 +293,7 @@ ASide:
     - Split: LeftToRight
       ReqBoth:
         Key: true
+        KeyholeID: 1
   - Room: "b-00"
     Holes:
     - Side: Up
@@ -630,6 +636,7 @@ ASide:
       Kind: out
       ReqOut:
         Key: true
+        KeyholeID: 2
     - Side: Left
       Idx: 0
       Kind: inout
@@ -659,6 +666,7 @@ ASide:
       ReqOut:
         Dashes: one
         Key: true
+        KeyholeID: 3
     - Side: Left
       Idx: 0
       Kind: in
@@ -786,6 +794,11 @@ ASide:
       Kind: inout
       ReqOut:
         Dashes: two
+      ReqIn:
+        Or:
+        - Dashes: two
+        - Difficulty: hard
+          Dashes: one
     - Side: Left
       Idx: 0
       Kind: inout
@@ -1076,6 +1089,7 @@ ASide:
     - Collectable: 0
       ReqBoth:
         Key: true
+        KeyholeID: 531
   - Room: "d-19b"
     Holes:
     - Side: Right
@@ -1307,6 +1321,7 @@ BSide:
       Kind: out
       ReqOut:
         Key: true
+        KeyholeID: 145
     - Side: Down
       Idx: 0
       Kind: in
