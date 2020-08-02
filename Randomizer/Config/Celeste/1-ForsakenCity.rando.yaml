@@ -474,7 +474,7 @@ ASide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
         Dashes: one
     - Side: Up
@@ -486,6 +486,12 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: inout
+    Tweaks:
+    - Name: "jumpThru"
+      ID: 14
+      Update:
+        X: 152
+        Width: 16
   - Room: "10z"
     Holes:
     - Side: Right

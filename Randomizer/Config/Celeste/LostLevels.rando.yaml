@@ -371,7 +371,7 @@ ASide:
       Idx: 0
       Kind: out
       ReqOut:
-        Dashes: two
+        Dashes: one
     - Side: Up
       Idx: 1
       Kind: out

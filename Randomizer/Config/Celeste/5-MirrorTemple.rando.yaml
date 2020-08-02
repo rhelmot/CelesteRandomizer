@@ -1531,7 +1531,7 @@ BSide:
           Difficulty: perfect
         - Dashes: two
           Difficulty: expert
-    Subroom:
+    Subrooms:
     - Room: "up"
       Holes:
       - Side: Up
@@ -1761,14 +1761,14 @@ BSide:
         Values:
           cameraX: -1
           cameraY: 0
-      - Name: "templeGate"
-        ID: 168
-        Update:
-          Remove: true
-      - Name: "templeGate"
-        ID: 155
-        Update:
-          Remove: true
+    - Name: "templeGate"
+      ID: 168
+      Update:
+        Remove: true
+    - Name: "templeGate"
+      ID: 155
+      Update:
+        Remove: true
   - Room: "d-00"
     Holes:
     - Side: Right

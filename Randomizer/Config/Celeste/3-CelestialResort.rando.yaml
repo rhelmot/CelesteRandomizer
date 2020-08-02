@@ -106,6 +106,10 @@ ASide:
       Name: "invisibleBarrier"
       Update:
         Remove: true
+    - ID: 3
+      Name: "oshirodoor"
+      Update:
+        Remove: true
   - Room: "00-a"
     Holes:
     - Side: Right
@@ -442,17 +446,17 @@ ASide:
         Kind: inout
         ReqOut:
           Dashes: one
-      Tweaks:
-      - ID: 0
-        Name: "jumpThru"
-        Update:
-          X: 40
-          Width: 16
-      - Name: "spawn"
-        X: 32
-        Y: 160
-        Update:
-          X: 48
+    Tweaks:
+    - ID: 0
+      Name: "jumpThru"
+      Update:
+        X: 40
+        Width: 16
+    - Name: "spawn"
+      X: 32
+      Y: 160
+      Update:
+        X: 48
   - Room: "05-c"  # key loop 2 secret
     Holes:
     - Side: Right
@@ -563,7 +567,7 @@ ASide:
       Update:
         X: 344
         Width: 24
-    - ID: 32
+    - ID: 23
       Name: "exitBlock"
       Update:
         Remove: true
@@ -1864,11 +1868,3 @@ CSide:
     - Side: Down
       Idx: 2
       Kind: None
-    Tweaks:
-    - Name: "oshiroTrigger"
-      Update:
-        Add: true
-        X: 984
-        Y: 0
-        Width: 64
-        Height: 184

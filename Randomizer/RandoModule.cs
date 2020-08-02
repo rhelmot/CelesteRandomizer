@@ -79,8 +79,12 @@ namespace Celeste.Mod.Randomizer {
                 if (SaveData.Instance.CurrentSession.Area == null) {
                     return false;
                 }
-                AreaData area = AreaData.Get(SaveData.Instance.CurrentSession.Area);
-                return area.GetSID().StartsWith("randomizer/");
+                try {
+                    AreaData area = AreaData.Get(SaveData.Instance.CurrentSession.Area);
+                    return area.GetSID().StartsWith("randomizer/");
+                } catch (NullReferenceException) {
+                    return false; // I have no idea why this happens but it happens sometimes
+                }
             }
         }
 
