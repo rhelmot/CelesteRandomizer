@@ -1739,8 +1739,11 @@ BSide:
       Kind: none
     InternalEdges:
     - Split: LeftToRight
-      ReqBoth:
+      ReqOut:
         Dashes: one
+      ReqIn:
+        Dashes: one
+        Difficulty: hard
     Tweaks:
     - ID: 183             # remove invisible barrier
       Update:
