@@ -93,10 +93,19 @@ ASide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
+      Kind: inout
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
+    Tweaks:
+    - ID: 10
+      Name: "exitBlock"
+      Update:
+        Remove: true
+    - ID: 12
+      Name: "invisibleBarrier"
+      Update:
+        Remove: true
   - Room: "00-a"
     Holes:
     - Side: Right
@@ -217,6 +226,12 @@ ASide:
       - Side: Left
         Idx: 1
         Kind: inout
+    Tweaks:
+    - ID: 79
+      Name: "dashBlock"
+      Update:
+        Y: -8
+        Height: 32
   - Room: "00-c" # third secret
     Holes:
     - Side: Right
@@ -243,6 +258,16 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    Tweaks:
+    - ID: 61
+      Name: "fakeWall"
+      Update:
+        Remove: true
+    - Name: "spawn"
+      X: 8
+      Y: 80
+      Update:
+        Default: true
   - Room: "03-a"  # continuing main path
     Holes:
     - Side: Left
@@ -334,34 +359,30 @@ ASide:
         Kind: inout
   - Room: "07-b" # key loop start/end
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: in
     - Side: Left
       Idx: 0
       Kind: inout
     - Side: Down
       Idx: 0
       Kind: inout
-    InternalEdges:
-    - To: "key"
-      ReqIn:
-        Dashes: zero
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    Collectables:
+    - Idx: 1
     Subrooms:
     - Room: "berry"
       Holes:
       - Side: Up
         Idx: 0
-        Kind: None
+        Kind: inout
       Collectables:
       - Idx: 0
-    - Room: "key"
-      Holes:
-      - Side: Right
-        Idx: 0
-        Kind: in
-      Collectables:
-      - Idx: 1
+    Tweaks:
+    - Name: "jumpThru"
+      ID: 3
+      Update:
+        Width: 16
   - Room: "06-b" # key loop 1
     Holes:
     - Side: Up
@@ -403,7 +424,7 @@ ASide:
         Dashes: one
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
     InternalEdges:
     - To: "right"
       ReqOut:
@@ -421,6 +442,17 @@ ASide:
         Kind: inout
         ReqOut:
           Dashes: one
+      Tweaks:
+      - ID: 0
+        Name: "jumpThru"
+        Update:
+          X: 40
+          Width: 16
+      - Name: "spawn"
+        X: 32
+        Y: 160
+        Update:
+          X: 48
   - Room: "05-c"  # key loop 2 secret
     Holes:
     - Side: Right
@@ -473,7 +505,7 @@ ASide:
     Holes:
     - Side: Up
       Idx: 1
-      Kind: in
+      Kind: inout
     - Side: Up
       Idx: 2
       Kind: inout
@@ -491,7 +523,7 @@ ASide:
       Kind: None #TODO clean any -> in
     - Side: Down
       Idx: 1
-      Kind: in
+      Kind: inout
     - Side: Down
       Idx: 2
       Kind: out
@@ -520,11 +552,25 @@ ASide:
     - ID: 38
       Update:
         Remove: true
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 32
+        Y: 56
+    - Name: "jumpThru"
+      ID: 353
+      Update:
+        X: 344
+        Width: 24
+    - ID: 32
+      Name: "exitBlock"
+      Update:
+        Remove: true
   - Room: "10-x" # chest 1/end
     Holes:
     - Side: Down
       Idx: 0
-      Kind: in   # TODO shorten jumpthru
+      Kind: inout
     - Side: Up
       Idx: 0
       Kind: out
@@ -539,14 +585,30 @@ ASide:
       - Side: Right
         Idx: 0
         Kind: inout
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 64
+        Y: 96
+    - ID: 0
+      Name: "jumpThru"
+      Update:
+        X: 280
+        Width: 24
   - Room: "11-x" # chest 2
     Holes:
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
     - Side: Down
       Idx: 0
       Kind: out
+    Tweaks:
+    - ID: 29
+      Name: "exitBlock"
+      Update:
+        Remove: true
   - Room: "11-y"  # chest 3
     Holes:
     - Side: Up
@@ -585,6 +647,12 @@ ASide:
         Dashes: one
       ReqIn:
         Dashes: zero
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 296
+        Y: 56
   - Room: "10-y" # chest 6
     Holes:
     - Side: Up
@@ -592,12 +660,22 @@ ASide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
+    Tweaks:
+    - ID: 0
+      Name: "jumpThru"
+      Update:
+        Width: 24
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 296
+        Y: 24
   - Room: "11-b"  # towels 1
     Holes:
     - Side: Up
       Idx: 0
-      Kind: in
+      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
@@ -619,6 +697,11 @@ ASide:
       - Side: Right
         Idx: 1
         Kind: None
+    Tweaks:
+    - ID: 59
+      Name: "exitBlock"
+      Update:
+        Remove: true
   - Room: "12-b"  # towels 2
     Holes:
     - Side: Right
@@ -691,14 +774,20 @@ ASide:
     - Side: Up
       Idx: 1
       Kind: inout
-      ReqOut:
-        Or:
-        - Dashes: one
-        - Dashes: zero
-          Difficulty: hard
     - Side: Right
       Idx: 0
-      Kind: in
+      Kind: inout
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 32
+        Y: 120
+    - ID: 7
+      Name: "exitBlock"
+      Update:
+        Remove: true
+
   - Room: "10-c"  # books 1
     Holes:
     - Side: Right
@@ -716,6 +805,12 @@ ASide:
       - Side: Down
         Idx: 0
         Kind: inout
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 24
+        Y: 152
   - Room: "11-c"  # books 2, heart
     Holes:
     - Side: Right
@@ -787,6 +882,12 @@ ASide:
       Kind: out
       ReqOut:
         Dashes: one
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 72
+        Y: 120
   - Room: "11-a"  # pico-8 room
     Holes:
     - Side: Left
@@ -794,7 +895,7 @@ ASide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
     Subrooms:
     - Room: "elbow"  # TODO require laundry to be put away
       Holes:
@@ -804,6 +905,16 @@ ASide:
       - Side: Right
         Idx: 0
         Kind: none
+    Tweaks:
+    - Name: "jumpThru"
+      ID: 34
+      Update:
+        X: 344
+        Width: 24
+    - Name: "exitBlock"
+      ID: 2
+      Update:
+        Remove: true
   - Room: "08-x"  # under-the-bridge berry room
     Holes:
     - Side: Up
@@ -844,6 +955,16 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: None
+    Tweaks:
+    - ID: 41
+      Name: "exitBlock"
+      Update:
+        Remove: true
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 8
+        Y: 32
   - Room: "06-d"  # shaft 3
     Holes:
     - Side: Right
@@ -873,11 +994,6 @@ ASide:
         Remove: true
   - Room: "04-d"  # shaft 4 - demodash room
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: in
-      ReqIn:
-        Dashes: one
     - Side: Down
       Idx: 1
       Kind: inout
@@ -898,6 +1014,9 @@ ASide:
       ReqIn:
         Dashes: two
         Difficulty: perfect
+    - To: "right"
+      ReqBoth:
+        Dashes: one
     Subrooms:
     - Room: "left"
       Holes:
@@ -905,6 +1024,11 @@ ASide:
         Idx: 0
         Kind: inout
       - Side: Down
+        Idx: 0
+        Kind: inout
+    - Room: "right"
+      Holes:
+      - Side: Right
         Idx: 0
         Kind: inout
     Tweaks:
@@ -916,6 +1040,19 @@ ASide:
       Y: 168
       Update:
         Default: true
+    - ID: 1
+      Name: "exitBlock"
+      Update:
+        Remove: true
+    - Name: "spawn"
+      X: 360
+      Y: 56
+      Update:
+        X: 352
+    - ID: 25
+      Name: "jumpThru"
+      Update:
+        Width: 32
   - Room: "04-c"  # shaft offshoot 1
     Holes:
     - Side: Up
@@ -992,13 +1129,28 @@ ASide:
       Kind: inout
     InternalEdges:
     - Split: RightToLeft
-      ReqBoth:
+      ReqOut:
         Dashes: one
+      ReqIn:
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: hard
     Tweaks:
     - ID: 1
       Name: "exitBlock"
       Update:
         Remove: true
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 336
+        Y: 8
+        Width: 16
+        Height: 120
+        Values:
+          cameraX: 0
+          cameraY: 0
   - Room: "00-d"  # presidential suite
     Holes:
     - Side: Up
@@ -1008,7 +1160,16 @@ ASide:
         Dashes: one
     - Side: Right
       Idx: 0
-      Kind: in
+      Kind: inout
+    Tweaks:
+    - Name: "exitBlock"
+      ID: 9
+      Update:
+        Remove: true
+    - Name: "invisibleBarrier"
+      ID: 10
+      Update:
+        Remove: true
   - Room: "roof00"
     Holes:
     - Side: Right
@@ -1479,7 +1640,16 @@ BSide:
       Kind: None
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
+    Tweaks:
+    - ID: 40
+      Name: "invisibleBarrier"
+      Update:
+        Remove: true
+    - ID: 39
+      Name: "exitBlock"
+      Update:
+        Remove: true
   - Room: "17"
     Holes:
     - Side: Left
@@ -1670,6 +1840,7 @@ CSide:
       Update:
         X: 48
   - Room: "02"
+    End: true
     Holes:
     - Side: Left
       Idx: 0
@@ -1688,4 +1859,11 @@ CSide:
     - Side: Down
       Idx: 2
       Kind: None
-    End: true
+    Tweaks:
+    - Name: "oshiroTrigger"
+      Update:
+        Add: true
+        X: 984
+        Y: 0
+        Width: 64
+        Height: 184
