@@ -252,14 +252,33 @@ ASide:
       Kind: out
       ReqOut:
         Dashes: one
-    # TODO: these are not only in a subroom but require the switch from the main room
-    # the randomizer can almost certainly not generate a pattern in which this is possible
-    - Side: Up
-      Idx: 0
-      Kind: none #inaccessible
-    - Side: Left
-      Idx: 2
-      Kind: none #inaccessible
+    Subrooms:
+    - Room: "elbow"
+      Holes:
+      - Side: Up
+        Idx: 0
+        Kind: inout
+      - Side: Left
+        Idx: 2
+        Kind: inout
+      InternalEdges:
+      - Split: BottomToTop
+        ReqOut:
+          Or:
+          - Dashes: two
+          - Dashes: one
+            Difficulty: hard
+        ReqIn:
+          Dashes: zero
+      Tweaks:
+      - Name: "templeGate"
+        ID: 289
+        Update:
+          Remove: true
+      - Name: "dashSwitchV"
+        ID: 288
+        Update:
+          Remove: true
   - Room: "a-14"
     Holes:
     - Side: Down
@@ -308,7 +327,12 @@ ASide:
         Dashes: one
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
+    Tweaks:
+    - Name: "templeGate"
+      ID: 0
+      Update:
+        Remove: true
   - Room: "b-18"
     Holes:
     - Side: Down
@@ -348,13 +372,18 @@ ASide:
         Dashes: one
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
     - Side: Down
       Idx: 0
       Kind: inout
     - Side: Down
       Idx: 1
       Kind: in
+    Tweaks:
+    - Name: "templeGate"
+      ID: 0
+      Update:
+        Remove: true
   - Room: "b-20"
     Holes:
     - Side: Left
@@ -455,10 +484,15 @@ ASide:
       Kind: inout
     - Side: Left
       Idx: 1
-      Kind: in
+      Kind: inout
     - Side: Down
       Idx: 0
       Kind: inout
+    Tweaks:
+    - Name: "templeGate"
+      ID: 6
+      Update:
+        Remove: true
   - Room: "b-03"
     Holes:
     - Side: Right
@@ -649,10 +683,19 @@ ASide:
         Dashes: one
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
     - Side: Left
       Idx: 1
-      Kind: in
+      Kind: inout
+    Tweaks:
+    - Name: "templeGate"
+      ID: 99
+      Update:
+        Remove: true
+    - Name: "exitBlock"
+      ID: 30
+      Update:
+        Remove: true
   - Room: "b-14"
     Holes:
     - Side: Up
@@ -662,14 +705,24 @@ ASide:
         Dashes: one
     - Side: Right
       Idx: 0
-      Kind: out
+      Kind: out  # TODO this could theoretically be inout
       ReqOut:
         Dashes: one
         Key: true
         KeyholeID: 3
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 128
+        Y: 64
+    - Name: "templeGate"
+      ID: 19
+      Update:
+        Remove: true
   - Room: "b-15"
     Holes:
     - Side: Left
@@ -711,11 +764,18 @@ ASide:
     - Side: Right
       Idx: 0
       Kind: inout
-      ReqOut:
-        Dashes: one
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
+    InternalEdges:
+    - Split: LeftToRight
+      ReqBoth:
+        Dashes: one
+    Tweaks:
+    - Name: "templeGate"
+      ID: 32
+      Update:
+        Remove: true
   - Room: "c-08b"
     Holes:
     - Side: Right
@@ -733,7 +793,16 @@ ASide:
       Kind: inout
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
+    Tweaks:
+    - Name: "templeGate"
+      ID: 117
+      Update:
+        Remove: true
+    - Name: "templeGate"
+      ID: 116
+      Update:
+        Remove: true
   - Room: "c-10"
     Holes:
     - Side: Right
@@ -765,7 +834,12 @@ ASide:
       Kind: inout
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
+    Tweaks:
+    - Name: "templeGate"
+      ID: 126
+      Update:
+        Remove: true
   - Room: "c-09"
     Holes:
     - Side: Right
@@ -782,6 +856,12 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 200
+        Y: 16
   - Room: "d-00"
     Holes:
     - Side: Up
@@ -856,7 +936,12 @@ ASide:
       Kind: inout
     - Side: Left
       Idx: 0
-      Kind: out
+      Kind: inout
+    Tweaks:
+    - Name: "jumpThru"
+      ID: 310
+      Update:
+        Width: 16
   - Room: "d-03"
     Holes:
     - Side: Up
@@ -975,26 +1060,79 @@ ASide:
     Holes:
     - Side: Up
       Idx: 1
-      Kind: out
-      ReqOut:
-        Dashes: one
+      Kind: inout
     - Side: Right
       Idx: 0
-      Kind: in
+      Kind: inout
+    InternalEdges:
+    - Split: BottomToTop
+      ReqOut:
+        Dashes: one
+      ReqIn:
+        Dashes: zero
     Subrooms:
     - Room: "side"
       Holes:
       - Side: Up
         Idx: 0
-        Kind: out
+        Kind: inout
+      - Side: Down
+        Idx: 0
+        Kind: inout
+      InternalEdges:
+      - Split: BottomToTop
         ReqOut:
           Or:
           - Dashes: one
           - Dashes: zero
             Difficulty: hard
-      - Side: Down
-        Idx: 0
-        Kind: in
+        ReqIn:
+          Or:
+          - Dashes: one
+          - Dashes: zero
+            Difficulty: expert
+    Tweaks:
+    - Name: "jumpThru"
+      ID: 291
+      Update:
+        Width: 24
+    - Name: "spawn"
+      Y: 320
+      Update:
+        X: 72
+    - Name: "jumpThru"
+      ID: 305
+      Update:
+        Width: 24
+    - Name: "exitBlock"
+      ID: 379
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 0
+      Update:
+        Y: 296
+        Height: 40
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 8
+        Y: 8
+        Width: 104
+        Height: 32
+        Values:
+          cameraX: -2
+          cameraY: 1
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 144
+        Y: 8
+        Width: 48
+        Height: 40
+        Values:
+          cameraX: 0
+          cameraY: 1.5
   - Room: "d-07"
     Holes:
     - Side: Up
@@ -1028,6 +1166,12 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 312
+        Y: 24
   - Room: "d-13"
     Holes:
     - Side: Up
@@ -1090,6 +1234,12 @@ ASide:
       ReqBoth:
         Key: true
         KeyholeID: 531
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 72
+        Y: 24
   - Room: "d-19b"
     Holes:
     - Side: Right
@@ -1097,7 +1247,7 @@ ASide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
     Subrooms:
     - Room: "passage"
       Holes:
@@ -1107,6 +1257,31 @@ ASide:
       - Side: Down
         Idx: 1
         Kind: inout
+    Tweaks:
+    - Name: "jumpThru"
+      ID: 301
+      Update:
+        Width: 48
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 88
+        Y: 16
+        Width: 16
+        Height: 48
+        Values:
+          cameraX: 0
+          cameraY: 1
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 104
+        Y: 16
+        Width: 16
+        Height: 48
+        Values:
+          cameraX: 0
+          cameraY: 0
   - Room: "d-20"
     Holes:
     - Side: Right
@@ -1324,20 +1499,55 @@ BSide:
         KeyholeID: 145
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
+    Tweaks:
+    - Name: "jumpThru"
+      ID: 143
+      Update:
+        X: 160
+        Width: 16
+    - Name: "spawn"
+      Y: 160
+      Update:
+        X: 168
   - Room: "b-01"
     Holes:
-    - Side: Up
-      Idx: 0
-      Kind: out
-      ReqOut:
-        Dashes: one
-    - Side: Right
-      Idx: 0
-      Kind: none
     - Side: Left
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - To: "up"
+      ReqOut:
+        Dashes: one
+    - To: "right"
+      ReqOut:
+        Or:
+        - Dashes: one
+          Difficulty: perfect
+        - Dashes: two
+          Difficulty: expert
+    Subroom:
+    - Room: "up"
+      Holes:
+      - Side: Up
+        Idx: 0
+        Kind: inout
+      InternalEdges:
+      - To: "right"
+        ReqOut:
+          Dashes: two
+          Difficulty: perfect
+    - Room: "right"
+      Holes:
+      - Side: Right
+        Idx: 0
+        Kind: inout
+    Tweaks:
+    - Name: "spawn"  # noooooo don't patch bubsdrop you're so sexy hahahahaha
+      Update:
+        Add: true
+        X: 592
+        Y: 24
   - Room: "b-02"
     Holes:
     - Side: Up
@@ -1425,6 +1635,22 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: inout
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 128
+        Y: 24
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 96
+        Y: 8
+        Width: 48
+        Height: 16
+        Values:
+          cameraX: 0
+          cameraY: 1
   - Room: "b-08"
     Holes:
     - Side: Up
@@ -1488,22 +1714,56 @@ BSide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
-      ReqOut:
-        Dashes: one
+      Kind: inout
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
+    InternalEdges:
+    - Split: LeftToRight
+      ReqOut:
+        Dashes: one
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 640
+        Y: 144
   - Room: "c-04"
     Holes:
     - Side: Up
       Idx: 0
       Kind: inout
-      ReqOut:
-        Dashes: one
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
+    InternalEdges:
+    - Split: LeftToRight
+      ReqBoth:
+        Dashes: one
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 512
+        Y: 64
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 496
+        Y: 8
+        Width: 56
+        Height: 56
+        Values:
+          cameraX: -1
+          cameraY: 0
+      - Name: "templeGate"
+        ID: 168
+        Update:
+          Remove: true
+      - Name: "templeGate"
+        ID: 155
+        Update:
+          Remove: true
   - Room: "d-00"
     Holes:
     - Side: Right
