@@ -388,6 +388,7 @@ namespace Celeste.Mod.Randomizer {
                     case "checkpoint":
                     case "strawberry":
                     case "key":
+                    case "lightbeam":
                         removals.Add(entity);
                         return;
                     case "finalboss":
