@@ -447,12 +447,16 @@ ASide:
     - Side: Up
       Idx: 1
       Kind: inout
-  - Room: "13"
+  - Room: "13"  # TODO: Warp
     Holes:
     - Side: Left
       Idx: 0
       Kind: None
-    # TODO: Warp
+    Tweaks:
+    - Name: "goldenBerryCollectTrigger"
+      ID: 1
+      Update:
+        Remove: true
   - Room: "d0"
     Holes:
     - Side: Up

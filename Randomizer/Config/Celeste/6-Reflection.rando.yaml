@@ -729,6 +729,11 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+    Tweaks:
+    - ID: 5
+      Name: "goldenBerryCollectTrigger"
+      Update:
+        Remove: true
   - Room: "after-00"
     Holes:
     - Side: Up

@@ -633,6 +633,9 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Up
+      Idx: 1
+      Kind: None
   - Room: "e-05b"
     Holes:
     - Side: Right
