@@ -531,7 +531,7 @@ ASide:
       Kind: inout
     - Side: Down
       Idx: 2
-      Kind: out
+      Kind: inout
     InternalEdges:
     - To: "exit"
       ReqBoth:
@@ -568,6 +568,10 @@ ASide:
         X: 344
         Width: 24
     - ID: 23
+      Name: "exitBlock"
+      Update:
+        Remove: true
+    - ID: 32
       Name: "exitBlock"
       Update:
         Remove: true

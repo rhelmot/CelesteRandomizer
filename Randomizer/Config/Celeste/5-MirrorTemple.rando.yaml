@@ -272,15 +272,15 @@ ASide:
             Difficulty: hard
         ReqIn:
           Dashes: zero
-      Tweaks:
-      - Name: "templeGate"
-        ID: 289
-        Update:
-          Remove: true
-      - Name: "dashSwitchV"
-        ID: 288
-        Update:
-          Remove: true
+    Tweaks:
+    - Name: "templeGate"
+      ID: 289
+      Update:
+        Remove: true
+    - Name: "dashSwitchV"
+      ID: 288
+      Update:
+        Remove: true
   - Room: "a-14"
     Holes:
     - Side: Down
@@ -332,7 +332,7 @@ ASide:
       Kind: inout
     Tweaks:
     - Name: "templeGate"
-      ID: 0
+      ID: 1
       Update:
         Remove: true
   - Room: "b-18"
@@ -387,6 +387,22 @@ ASide:
       ID: 0
       Update:
         Remove: true
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 32
+        Y: 24
+    - Name: "respawnTargetTrigger"
+      Update:
+        Add: true
+        X: 104
+        Y: 8
+        Width: 32
+        Height: 8
+        Nodes:
+        - Idx: 0
+          X: 208
+          Y: 112
   - Room: "b-20"
     Holes:
     - Side: Left

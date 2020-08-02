@@ -166,6 +166,10 @@ namespace Celeste.Mod.Randomizer {
         }
 
         private void ProcessSubroom(StaticNode node, RandoConfigRoom config) {
+            if (node.Name != "main" && config.Tweaks != null) {
+                throw new Exception("Config error: you have a subroom with tweaks in it");
+            }
+
             foreach (RandoConfigHole holeConfig in config.Holes ?? new List<RandoConfigHole>()) {
                 Hole matchedHole = null;
                 int remainingMatches = holeConfig.Idx;
@@ -391,6 +395,7 @@ namespace Celeste.Mod.Randomizer {
                     case "strawberry":
                     case "key":
                     case "lightbeam":
+                    case "detachfollowerstrigger":
                         removals.Add(entity);
                         return;
                     case "finalboss":
@@ -549,6 +554,14 @@ namespace Celeste.Mod.Randomizer {
                             entity.Values = new Dictionary<string, object>();
                             foreach (var kv in econfig.Update.Values) {
                                 entity.Values.Add(kv.Key, (object)kv.Value);
+                            }
+                        }
+
+                        if (econfig.Update.Nodes != null) {
+                            // not the safest code but if you fuck this up you deserve a crash
+                            entity.Nodes = new Vector2[econfig.Update.Nodes.Count];
+                            foreach (var node in econfig.Update.Nodes) {
+                                entity.Nodes[node.Idx] = new Vector2(node.X.Value, node.Y.Value);
                             }
                         }
 

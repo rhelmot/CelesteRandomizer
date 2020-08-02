@@ -139,20 +139,29 @@ ASide:
       Kind: inout
   - Room: "6"
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
-      ReqBoth:           # traversing the room dashless requires a corner boost or something?
-        Or:
-        - Dashes: one
-        - Dashes: zero
-          Difficulty: expert
     - Side: Left
       Idx: 0
       Kind: inout
     - Side: Down
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - To: "right"
+      ReqBoth:           # traversing the room dashless requires a corner boost or something?
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: expert
+    Subrooms:
+    - Room: "right"
+      Holes:
+      - Side: Right
+        Idx: 0
+        Kind: inout
+      InternalEdges:
+      - Collectable: 0
+        ReqBoth:
+          Dashes: one
     Tweaks:
     - ID: 0
       Update:
