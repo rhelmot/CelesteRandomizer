@@ -351,6 +351,7 @@ ASide:
           Dashes: two
           Difficulty: hard
   - Room: "c-03b"
+    Hub: true
     Holes:
     - Side: Down
       Idx: 0

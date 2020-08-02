@@ -345,6 +345,7 @@ ASide:
         - Dashes: zero
           Difficulty: hard
   - Room: "8"
+    Hub: true
     Holes:
     - Side: Left
       Idx: 0
@@ -524,6 +525,7 @@ ASide:
         X: 56
         Y: 96
   - Room: "11"
+    Hub: true
     Holes:
     - Side: Down
       Idx: 2

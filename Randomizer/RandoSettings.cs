@@ -46,6 +46,13 @@ namespace Celeste.Mod.Randomizer {
         Last
     }
 
+    public enum ShineLights {
+        On,
+        Hubs,
+        Off,
+        Last
+    }
+
     public class RandoSettings {
         public SeedType SeedType;
         public string Seed = "achene";
@@ -57,6 +64,7 @@ namespace Celeste.Mod.Randomizer {
         public MapLength Length;
         public NumDashes Dashes = NumDashes.One;
         public Difficulty Difficulty;
+        public ShineLights Lights = ShineLights.Hubs;
         private HashSet<AreaKeyNotStupid> IncludedMaps = new HashSet<AreaKeyNotStupid>();
 
         public void Enforce() {
@@ -81,6 +89,7 @@ namespace Celeste.Mod.Randomizer {
                     this.Length = MapLength.Short;
                     this.Dashes = NumDashes.One;
                     this.Difficulty = Difficulty.Normal;
+                    this.Lights = ShineLights.Hubs;
                     break;
                 case Ruleset.B:
                     this.SetNormalMaps();
@@ -90,6 +99,7 @@ namespace Celeste.Mod.Randomizer {
                     this.Length = MapLength.Medium;
                     this.Dashes = NumDashes.Two;
                     this.Difficulty = Difficulty.Normal;
+                    this.Lights = ShineLights.Hubs;
                     break;
                 case Ruleset.C:
                     this.SetNormalMaps();
@@ -99,6 +109,7 @@ namespace Celeste.Mod.Randomizer {
                     this.Length = MapLength.Medium;
                     this.Dashes = NumDashes.One;
                     this.Difficulty = Difficulty.Expert;
+                    this.Lights = ShineLights.Hubs;
                     break;
                 case Ruleset.D:
                     this.SetNormalMaps();
@@ -108,6 +119,7 @@ namespace Celeste.Mod.Randomizer {
                     this.Length = MapLength.Long;
                     this.Dashes = NumDashes.Two;
                     this.Difficulty = Difficulty.Expert;
+                    this.Lights = ShineLights.Hubs;
                     break;
             }
         }
@@ -131,6 +143,7 @@ namespace Celeste.Mod.Randomizer {
             yield return (uint)Length;
             yield return (uint)Dashes;
             yield return (uint)Difficulty;
+            yield return (uint)Lights;
 
             var sortedMaps = new List<AreaKeyNotStupid>(IncludedMaps);
             sortedMaps.Sort((AreaKeyNotStupid x, AreaKeyNotStupid y) => {

@@ -185,6 +185,43 @@ namespace Celeste.Mod.Randomizer {
                 result.Entities.Add(e);
             }
 
+            void beamHole(Hole hole) {
+                Vector2 center;
+                int rotation;
+                switch (hole.Side) {
+                    case ScreenDirection.Up:
+                        center = new Vector2(0, -8);
+                        rotation = 0;
+                        break;
+                    case ScreenDirection.Left:
+                        center = new Vector2(-8, 0);
+                        rotation = 270;
+                        break;
+                    case ScreenDirection.Down:
+                        center = new Vector2(0, this.Bounds.Height);
+                        rotation = 180;
+                        break;
+                    case ScreenDirection.Right:
+                    default:
+                        center = new Vector2(this.Bounds.Width, 0);
+                        rotation = 90;
+                        break;
+                }
+                center += hole.AlongDir.Unit() * (hole.LowBound * 8 + hole.Size * 4);
+                var e = new EntityData {
+                    ID = ++maxID,
+                    Name = "lightbeam",
+                    Width = hole.Size * 8,
+                    Height = 24,
+                    Position = center,
+                    Level = result,
+                    Values = new Dictionary<string, object> {
+                        {"rotation", (object)rotation},
+                    }
+                };
+                result.Entities.Add(e);
+            }
+
             bool disableDown = true;
             bool disableUp = true;
             var unusedHorizontalHoles = new HashSet<Hole>();
@@ -210,6 +247,14 @@ namespace Celeste.Mod.Randomizer {
                     var hole2 = edge.OtherEdge(node).HoleTarget;
                     if (hole != null && hole2 != null && hole2.Kind == HoleKind.Out) {
                         blockHole(hole);
+                    }
+                    // Add beams
+                    var shine = RandoModule.Instance.Settings.Lights;
+                    if ((shine == ShineLights.On || (shine == ShineLights.Hubs && this.Static.Hub)) &&
+                        hole != null && hole2 != null &&
+                        (hole.Kind == HoleKind.Out || hole.Kind == HoleKind.InOut) &&
+                        (hole2.Kind == HoleKind.In || hole2.Kind == HoleKind.Unknown || hole2.Kind == HoleKind.InOut)) {
+                        beamHole(hole);
                     }
                 }
 

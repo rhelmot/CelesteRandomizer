@@ -102,6 +102,7 @@ namespace Celeste.Mod.Randomizer {
         public List<RandoConfigRoom> Subrooms { get; set; }
         public List<RandoConfigInternalEdge> InternalEdges { get; set; }
         public bool End { get; set; }
+        public bool Hub { get; set; }
         public List<RandoConfigEdit> Tweaks { get; set; }
     }
 

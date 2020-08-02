@@ -502,6 +502,7 @@ ASide:
       Update:
         Remove: true
   - Room: "09-b"  # huge mess
+    Hub: true
     Holes:
     - Side: Up
       Idx: 1
@@ -993,6 +994,7 @@ ASide:
       Update:
         Remove: true
   - Room: "04-d"  # shaft 4 - demodash room
+    Hub: true
     Holes:
     - Side: Down
       Idx: 1

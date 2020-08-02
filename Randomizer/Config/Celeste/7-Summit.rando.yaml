@@ -831,6 +831,7 @@ ASide:
       Idx: 3
       Kind: none
   - Room: "d-06"
+    Hub: true
     Holes:
     - Side: Left
       Idx: 0
@@ -1335,6 +1336,7 @@ ASide:
       ReqBoth:
         Dashes: one
   - Room: "f-05" # TODO bubbles
+    Hub: true
     Holes:
     - Side: Up
       Idx: 0

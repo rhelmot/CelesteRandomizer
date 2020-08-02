@@ -8,6 +8,7 @@ namespace Celeste.Mod.Randomizer {
         public LevelData Level;
         public readonly string Name;
         public readonly bool End;
+        public readonly bool Hub;
         private List<RandoConfigEdit> Tweaks;
         public Dictionary<string, StaticNode> Nodes;
 
@@ -21,6 +22,7 @@ namespace Celeste.Mod.Randomizer {
 
             this.Name = AreaData.Get(Area).GetSID() + "/" + (Area.Mode == AreaMode.Normal ? "A" : Area.Mode == AreaMode.BSide ? "B" : "C") + "/" + Level.Name;
             this.End = config.End;
+            this.Hub = config.Hub;
             this.Tweaks = config.Tweaks ?? new List<RandoConfigEdit>();
 
             this.Collectables = new List<StaticCollectable>();

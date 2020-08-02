@@ -219,6 +219,7 @@ ASide:
       Idx: 0
       Kind: inout
   - Room: "b-00"
+    Hub: true
     Holes:
     - Side: Up
       Idx: 0

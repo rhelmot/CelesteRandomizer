@@ -365,6 +365,7 @@ ASide:
       Idx: 1
       Kind: none
   - Room: "d-00"
+    Hub: true
     Holes:
     - Side: Up
       Idx: 0

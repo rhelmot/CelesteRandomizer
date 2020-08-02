@@ -46,6 +46,7 @@ ASide:
       Idx: 0
       Kind: inout
   - Room: "a-01"
+    Hub: true
     Holes:
     - Side: Up
       Idx: 0
@@ -122,6 +123,7 @@ ASide:
       ReqBoth:
         Dashes: one
   - Room: "a-05"
+    Hub: true
     Holes:
     - Side: Up
       Idx: 0
@@ -345,6 +347,7 @@ ASide:
       ReqIn:
         Dashes: one
   - Room: "b-01"
+    Hub: true
     Holes:
     - Side: Up
       Idx: 0
@@ -461,6 +464,7 @@ ASide:
       ReqBoth:
         Dashes: one
   - Room: "b-02"
+    Hub: true
     Holes:
     - Side: Up
       Idx: 0
@@ -891,6 +895,7 @@ ASide:
       Idx: 0
       Kind: in
   - Room: "d-01"
+    Hub: true
     Holes:
     - Side: Up
       Idx: 0
