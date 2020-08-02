@@ -183,6 +183,12 @@ ASide:
     - Side: Left
       Idx: 1
       Kind: inout
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 368
+        Y: 24
   - Room: "a-10"
     Holes:
     - Side: Right
@@ -217,11 +223,9 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: inout
-      ReqOut:
-        Dashes: one
     - Side: Right
       Idx: 0
-      Kind: out
+      Kind: inout
     - Side: Right
       Idx: 1
       Kind: inout
@@ -236,11 +240,47 @@ ASide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
     Tweaks:
-    - ID: 4     # change respawn trigger in top right
+    - ID: 57
+      Name: "ridgeGate"
       Update:
         Remove: true
+    - ID: 58
+      Name: "ridgeGate"
+      Update:
+        Remove: true
+    - ID: 59
+      Name: "ridgeGate"
+      Update:
+        Remove: true
+    - ID: 60
+      Name: "ridgeGate"
+      Update:
+        Remove: true
+    - ID: 61
+      Name: "ridgeGate"
+      Update:
+        Remove: true
+    - ID: 20
+      Name: "jumpThru"
+      Update:
+        X: 248
+        Width: 40
+    - ID: 0
+      Name: "jumpThru"
+      Update:
+        X: 160
+        Width: 16
+    - Name: "spawn"
+      X: 160
+      Y: 464
+      Update:
+        X: 168
+    - ID: 72
+      Name: "flutterbird"  # marlin i love you but what the fuck
+      Update:
+        X: 256
   - Room: "b-01"
     Holes:
     - Side: Left
@@ -305,6 +345,12 @@ ASide:
         - Dashes: one
         - Dashes: zero
           Difficulty: hard
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 16
+        Y: 48
   - Room: "b-04"
     Holes:
     - Side: Right
@@ -353,10 +399,33 @@ ASide:
       Holes:
       - Side: Down
         Idx: 0
-        Kind: out
+        Kind: inout
       - Side: Down
         Idx: 1
-        Kind: in
+        Kind: inout
+      InternalEdges:
+      - Split: RightToLeft
+        ReqOut:
+          Dashes: zero
+        ReqIn:
+          Dashes: two
+          Difficulty: expert
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 32
+        Y: 160
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 816
+        Y: 24
+    - Name: "jumpThru"
+      ID: 2
+      Update:
+        X: 576
+        Width: 24
   - Room: "b-06"
     Holes:
     - Side: Right
@@ -379,17 +448,24 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: inout
-      ReqIn:
-        Dashes: one
     - Side: Right
       Idx: 0
-      Kind: out
+      Kind: inout
+    InternalEdges:
+    - Split: LeftToRight
+      ReqBoth:
+        Dashes: one
     Tweaks:
     - Name: "spawn"
       X: 24
       Y: 56
       Update:
         Default: true
+    - ID: 3
+      Name: "jumpThru"
+      Update:
+        X: 360
+        Width: 16
   - Room: "b-sec"  # TODO: mark the heart as requiring the dashes, not the entrances
     Holes:
     - Side: Right
@@ -412,7 +488,7 @@ ASide:
     - Collectable: 0
       ReqBoth:
         Dashes: one
-  - Room: "b-08b"  # TODO: add platform/spawn at top
+  - Room: "b-08b"
     Holes:
     - Side: Up
       Idx: 0
@@ -420,14 +496,44 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: inout
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 280
+        Y: 24
   - Room: "b-08"
     Holes:
     - Side: Up
       Idx: 0
-      Kind: out
+      Kind: inout
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
+    InternalEdges:
+    - Split: LeftToRight
+      ReqOut:
+        Dashes: zero
+      ReqIn:
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: perfect
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 704
+        Y: 24
+    - Name: "jumpThru"
+      ID: 13
+      Update:
+        Width: 24
+    - Name: "jumpThru"
+      ID: 1
+      Update:
+        X: 24
+        Width: 24
   - Room: "c-00"
     Holes:
     - Side: Left
@@ -437,7 +543,7 @@ ASide:
         Dashes: one
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
     InternalEdges:
     - To: "Right"
       ReqBoth:
@@ -454,6 +560,22 @@ ASide:
     - Room: "Berry"
       Collectables:
       - Idx: 0
+    Tweaks:
+    - Name: "jumpThru"
+      ID: 0
+      Update:
+        X: 56
+        Width: 16
+    - Name: "spawn"
+      X: 56
+      Y: 224
+      Update:
+        X: 64
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 16
+        Y: 40
   - Room: "c-01"
     Holes:
     - Side: Right
@@ -463,7 +585,7 @@ ASide:
     - Collectable: 0
       ReqBoth:
         Dashes: one
-  - Room: "c-02"  # TODO: add platform/spawn at top
+  - Room: "c-02"
     Holes:
     - Side: Up
       Idx: 1
@@ -477,16 +599,33 @@ ASide:
         Dashes: one
       ReqIn:
         Dashes: zero
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 296
+        Y: 24
   - Room: "c-04"
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
-      ReqOut:
-        Dashes: one
+      Kind: inout
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
+    InternalEdges:
+    - Split: LeftToRight
+      ReqOut:
+        Dashes: one
+      ReqIn:
+        Dashes: two
+        Difficulty: perfect
+    Tweaks:
+    - ID: 0
+      Name: "jumpThru"
+      Update:
+        X: 16
+        Width: 24
   - Room: "c-05"
     Holes:
     - Side: Up
@@ -506,11 +645,11 @@ ASide:
     - Room: "Berry"
       Collectables:
       - Idx: 0
-  - Room: "c-06"  # TODO: shorten platform and add spawn at top
+  - Room: "c-06"
     Holes:
     - Side: Up
       Idx: 0
-      Kind: out
+      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
@@ -526,6 +665,17 @@ ASide:
       - Side: Down
         Idx: 0
         Kind: inout
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 280
+        Y: 32
+    - Name: "jumpThru"
+      ID: 46
+      Update:
+        X: 264
+        Width: 24
   - Room: "c-06b"
     Holes:
     - Side: Right
@@ -539,20 +689,41 @@ ASide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: out
-      ReqOut:
-        Dashes: one
+      Kind: inout
     - Side: Down
       Idx: 0
-      Kind: in
-  - Room: "c-07"  # TODO: shorten entrance jumpthru
+      Kind: inout
+    InternalEdges:
+    - Split: BottomToTop
+      ReqOut:
+        Dashes: one
+      ReqIn:
+        Dashes: two
+        Difficulty: hard
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 768
+        Y: 24
+    - Name: "spawn"
+      X: 72
+      Y: 160
+      Update:
+        X: 80
+    - Name: "jumpThru"
+      ID: 0
+      Update:
+        X: 72
+        Width: 16
+  - Room: "c-07"
     Holes:
     - Side: Right
       Idx: 0
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
@@ -562,6 +733,12 @@ ASide:
         - Dashes: two
         - Dashes: one
           Difficulty: hard
+    Tweaks:
+    - Name: "jumpThru"
+      ID: 0
+      Update:
+        X: 24
+        Width: 24
   - Room: "c-08"
     Holes:
     - Side: Up
@@ -583,6 +760,17 @@ ASide:
     - Collectable: 0
       ReqBoth:
         Dashes: one
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 312
+        Y: 456
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 304
+        Y: 16
   - Room: "c-10"
     Holes:
     - Side: Up
@@ -599,8 +787,8 @@ ASide:
     - Name: spawn
       Update:
         Add: true
-        X: 24
-        Y: 24
+        X: 32
+        Y: 16
   - Room: "d-00"
     Holes:
     - Side: Right
@@ -867,9 +1055,33 @@ BSide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
+    InternalEdges:
+    - Split: BottomToTop
+      ReqOut:
+        Dashes: one
       ReqIn:
         Dashes: one
+        Difficulty: hard
+    Tweaks:
+    - Name: "spawn"
+      Y: 40
+      Update:
+        X: 128
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 104
+        Y: 8
+        Width: 40
+        Height: 48
+        Values:
+          cameraX: 0
+          cameraY: 1.5
+    - Name: "jumpThru"
+      ID: 42
+      Update:
+        Width: 16
   - Room: "b-03"
     Holes:
     - Side: Up
@@ -879,15 +1091,26 @@ BSide:
         Dashes: one
     - Side: Down
       Idx: 0
-      Kind: in
-  - Room: "b-04"  # TODO: shorten jumpthru
+      Kind: inout
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 392
+        Y: 40
+    - Name: "jumpThru"
+      ID: 0
+      Update:
+        X: 24
+        Width: 16
+  - Room: "b-04"
     Holes:
     - Side: Right
       Idx: 0
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
@@ -897,6 +1120,17 @@ BSide:
         - Dashes: two
         - Dashes: one
           Difficulty: hard
+    Tweaks:
+    - ID: 0
+      Name: "jumpThru"
+      Update:
+        X: 24
+        Width: 16
+    - Name: "spawn"
+      X: 24
+      Y: 168
+      Update:
+        X: 32
   - Room: "c-00"
     Holes:
     - Side: Right
@@ -924,6 +1158,17 @@ BSide:
         - Dashes: two
         - Dashes: one
           Difficulty: hard
+    Tweaks:
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 672
+        Y: 88
+        Width: 40
+        Height: 32
+        Values:
+          cameraX: -1
+          cameraY: 0
   - Room: "c-02"
     Holes:
     - Side: Right
@@ -938,24 +1183,62 @@ BSide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: out
+      Kind: inout
     - Side: Left
       Idx: 0
-      Kind: in
-  - Room: "c-04"  # TODO: shorten jumpthru
+      Kind: inout
+    InternalEdges:
+    - Split: BottomToTop
+      ReqOut:
+        Dashes: zero
+      ReqIn:
+        Dashes: one
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 160
+        Y: 24
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 120
+        Y: 8
+        Width: 56
+        Height: 32
+        Values:
+          cameraX: 0
+          cameraY: 1.5
+  - Room: "c-04"
     Holes:
     - Side: Right
       Idx: 0
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
         Dashes: one
       ReqIn:
         Dashes: two
+    Tweaks:
+    - Name: "jumpThru"
+      ID: 382
+      Update:
+        X: 40
+        Width: 32
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 608
+        Y: 0
+        Width: 24
+        Height: 128
+        Values:
+          cameraX: -1
+          cameraY: 0
   - Room: "d-00"
     Holes:
     - Side: Right
@@ -964,6 +1247,17 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: inout
+    Tweaks:
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 864
+        Y: 0
+        Width: 24
+        Height: 112
+        Values:
+          cameraX: -1
+          cameraY: 0
   - Room: "d-01"
     Holes:
     - Side: Right
@@ -979,24 +1273,37 @@ BSide:
     - Side: Right
       Idx: 0
       Kind: inout
-      ReqOut:
-        Dashes: one
     - Side: Left
       Idx: 0
       Kind: inout
       ReqOut:
+    - Side: Up
+      Idx: 0
+      Kind: none
+    InternalEdges:
+    - Split: LeftToRight
+      ReqOut:
+        Dashes: one
+      ReqIn:
         Or:
         - Dashes: two
         - Dashes: one
           Difficulty: expert
-    - Side: Up
-      Idx: 0
-      Kind: none
     Tweaks:
     - ID: 2
       Name: "exitBlock"
       Update:
         Remove: true
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 680
+        Y: 0
+        Width: 24
+        Height: 56
+        Values:
+          cameraX: -1
+          cameraY: 0
   - Room: "d-03"
     Holes:
     - Side: Right
@@ -1047,6 +1354,17 @@ CSide:
       ReqIn:
         Dashes: one
         Difficulty: hard
+    Tweaks:
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 272
+        Y: 80
+        Width: 32
+        Height: 40
+        Values:
+          cameraX: 0
+          cameraY: 1.5
   - Room: "02"
     Holes:
     - Side: Left
