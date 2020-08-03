@@ -396,6 +396,8 @@ namespace Celeste.Mod.Randomizer {
                     case "key":
                     case "lightbeam":
                     case "detachfollowerstrigger":
+                    case "lightfadetrigger":
+                    case "bloomfadetrigger":
                         removals.Add(entity);
                         return;
                     case "finalboss":

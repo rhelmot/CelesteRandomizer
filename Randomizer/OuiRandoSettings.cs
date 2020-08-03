@@ -177,6 +177,13 @@ namespace Celeste.Mod.Randomizer {
                 updateHashText();
             });
 
+            var darktoggle = new TextMenu.Slider(Dialog.Clean("MODOPTIONS_RANDOMIZER_DARK"), (i) => {
+                return Dialog.Clean("MODOPTIONS_RANDOMIZER_DARK_" + Enum.GetNames(typeof(Darkness))[i].ToUpperInvariant());
+            }, 0, (int)Darkness.Last - 1, (int)Settings.Darkness).Change((i) => {
+                Settings.Darkness = (Darkness)i;
+                updateHashText();
+            });
+
             var goldentoggle = new TextMenu.OnOff(Dialog.Clean("MODOPTIONS_RANDOMIZER_GOLDENBERRY"), Settings.SpawnGolden).Change((val) => {
                 Settings.SpawnGolden = val;
             });
@@ -186,6 +193,7 @@ namespace Celeste.Mod.Randomizer {
             enterunknowntoggle.Visible = false;
             goldentoggle.Visible = false;
             shinetoggle.Visible = false;
+            darktoggle.Visible = false;
 
             var moreoptionsbtn = new TextMenu.Button(Dialog.Clean("MODOPTIONS_RANDOMIZER_MOREOPTIONS"));
             moreoptionsbtn.Pressed(() => {
@@ -196,6 +204,7 @@ namespace Celeste.Mod.Randomizer {
                 enterunknowntoggle.Visible = moreoptions;
                 goldentoggle.Visible = moreoptions;
                 shinetoggle.Visible = moreoptions;
+                darktoggle.Visible = moreoptions;
             });
 
             void syncModel() {
@@ -206,6 +215,7 @@ namespace Celeste.Mod.Randomizer {
                 numdashestoggle.Index = (int)Settings.Dashes;
                 difficultytoggle.Index = (int)Settings.Difficulty;
                 shinetoggle.Index = (int)Settings.Lights;
+                darktoggle.Index = (int)Settings.Darkness;
                 mapcountlbl.Title = Settings.LevelCount.ToString() + " " + Dialog.Clean("MODOPTIONS_RANDOMIZER_MAPPICKER_LEVELS");
 
                 var locked = Settings.Rules != Ruleset.Custom;
@@ -217,6 +227,7 @@ namespace Celeste.Mod.Randomizer {
                 numdashestoggle.Disabled = locked;
                 difficultytoggle.Disabled = locked;
                 shinetoggle.Disabled = locked;
+                darktoggle.Disabled = locked;
             }
             syncModel();
 
@@ -317,6 +328,7 @@ namespace Celeste.Mod.Randomizer {
             menu.Add(repeatroomstoggle);
             menu.Add(enterunknowntoggle);
             menu.Add(shinetoggle);
+            menu.Add(darktoggle);
             menu.Add(goldentoggle);
             menu.Add(startbutton);
             menu.Add(hashtext);

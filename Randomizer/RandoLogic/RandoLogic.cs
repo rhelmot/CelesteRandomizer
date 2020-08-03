@@ -348,20 +348,8 @@ namespace Celeste.Mod.Randomizer {
             this.SetForeground(map);
             this.SetBackground(map);
             this.SetPoem();
-
-            if (Settings.SpawnGolden) {
-                var lvl = map.GetAt(Vector2.Zero);
-                var maxid = 0;
-                foreach (var e in lvl.Entities) {
-                    maxid = Math.Max(maxid, e.ID);
-                }
-                lvl.Entities.Add(new EntityData {
-                    Level = lvl,
-                    Name = "goldenBerry",
-                    Position = lvl.Spawns[0],
-                    ID = ++maxid,
-                });
-            }
+            this.SpawnGolden(map);
+            this.SetDarkness(map);
 
             return map;
         }
@@ -489,6 +477,31 @@ namespace Celeste.Mod.Randomizer {
             AreaData.Get(this.Key).Mode[0].PoemID = key;
             Dialog.Language.Dialog["POEM_" + key] = poem;
             Dialog.Language.Cleaned["POEM_" + key] = poem;
+        }
+
+        private void SpawnGolden(MapData map) {
+            if (Settings.SpawnGolden) {
+                var lvl = map.GetAt(Vector2.Zero);
+                var maxid = 0;
+                foreach (var e in lvl.Entities) {
+                    maxid = Math.Max(maxid, e.ID);
+                }
+                lvl.Entities.Add(new EntityData {
+                    Level = lvl,
+                    Name = "goldenBerry",
+                    Position = lvl.Spawns[0],
+                    ID = ++maxid,
+                });
+            }
+        }
+        private void SetDarkness(MapData map) {
+            if (Settings.Darkness == Darkness.Vanilla) {
+                return;
+            }
+            var dark = Settings.Darkness == Darkness.Always;
+            foreach (var room in map.Levels) {
+                room.Dark = dark;
+            }
         }
 
         private void RandomizeDialog() {
