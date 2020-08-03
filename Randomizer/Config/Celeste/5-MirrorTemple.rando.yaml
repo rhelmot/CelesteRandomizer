@@ -1118,6 +1118,7 @@ ASide:
       Update:
         Width: 24
     - Name: "spawn"
+      X: 80
       Y: 320
       Update:
         X: 72

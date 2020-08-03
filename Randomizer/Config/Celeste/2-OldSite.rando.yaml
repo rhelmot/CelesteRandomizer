@@ -343,7 +343,6 @@ ASide:
       Update:
         Remove: true
   - Room: "9b"
-    Hub: true
     Holes:
     - Side: Down
       Idx: 0

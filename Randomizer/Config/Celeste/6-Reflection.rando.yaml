@@ -781,7 +781,7 @@ ASide:
       Kind: inout
     - Side: Up
       Idx: 0
-      Kind: In
+      Kind: None
   - Room: "b-00c"
     Holes:
     - Side: Right
