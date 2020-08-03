@@ -124,7 +124,7 @@ namespace Celeste.Mod.Randomizer {
         }
 
         private string PickMusicAudio() {
-            switch (this.Random.Next(53)) {
+            switch (this.Random.Next(52)) {
                 case 0:
                 case 1:
                 case 2: // ;)
@@ -200,28 +200,26 @@ namespace Celeste.Mod.Randomizer {
                 case 40:
                     return SFX.music_rmx_09_core;
                 case 41:
-                    return SFX.music_farewell_part01;
-                case 42:
                     return SFX.music_farewell_part02;
-                case 43:
+                case 42:
                     return SFX.music_farewell_part03;
-                case 44:
+                case 43:
                     return SFX.music_farewell_final_run;
-                case 45:
+                case 44:
                     return SFX.music_farewell_golden_room;
-                case 46:
+                case 45:
                     return SFX.music_farewell_granny;
-                case 47:
+                case 46:
                     return SFX.music_reflection_fight_finish;
-                case 48:
+                case 47:
                     return SFX.music_reflection_secretroom;
-                case 49:
+                case 48:
                     return SFX.music_reflection_fall;
-                case 50:
+                case 49:
                     return SFX.music_credits;
-                case 51:
+                case 50:
                     return SFX.music_farewell_cassette;
-                case 52:
+                case 51:
                     return SFX.music_farewell_end_cinematic;
             }
         }
