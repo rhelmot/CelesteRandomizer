@@ -285,7 +285,7 @@ namespace Celeste.Mod.Randomizer {
 
                         var fade = new FadeWipe(this.Scene, false, () => {   // assign to variable to suppress compiler warning
                             var session = new Session(newArea, null, null);
-                            session.FirstLevel = false;
+                            //session.FirstLevel = false;   // setting this value here prevents the wakeup animation. set it in a hook.
                             LevelEnter.Go(session, true);
                             this.builderThread = null;
                             this.entering = false;

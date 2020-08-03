@@ -33,6 +33,7 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.Player.Added += DontMoveOnWakeup;
             On.Celeste.BadelineOldsite.Added += PlayBadelineCutscene;
             On.Celeste.Textbox.ctor_string_Language_Func1Array += RandomizeTextboxText;
+            On.Celeste.Level.LoadLevel += DontRestartTimer;
             IL.Celeste.Level.EnforceBounds += DisableUpTransition;
             IL.Celeste.Level.EnforceBounds += DontBlockOnTheo;
             IL.Celeste.TheoCrystal.Update += BeGracefulOnTransitions;
@@ -58,10 +59,18 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.Player.Added -= DontMoveOnWakeup;
             On.Celeste.BadelineOldsite.Added -= PlayBadelineCutscene;
             On.Celeste.Textbox.ctor_string_Language_Func1Array -= RandomizeTextboxText;
+            On.Celeste.Level.LoadLevel -= DontRestartTimer;
             IL.Celeste.Level.EnforceBounds -= DisableUpTransition;
             IL.Celeste.Level.EnforceBounds -= DontBlockOnTheo;
             IL.Celeste.TheoCrystal.Update -= BeGracefulOnTransitions;
             //On.Celeste.AutoSplitterInfo.Update -= wtf;
+        }
+
+        public void DontRestartTimer(On.Celeste.Level.orig_LoadLevel orig, Level self, Player.IntroTypes playerIntro, bool fromLoader) {
+            if (fromLoader && this.InRandomizer) {
+                self.Session.FirstLevel = false;
+            }
+            orig(self, playerIntro, fromLoader);
         }
 
         public void wtf(On.Celeste.AutoSplitterInfo.orig_Update orig, AutoSplitterInfo self) {
