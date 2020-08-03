@@ -409,6 +409,10 @@ ASide:
       Update:
         X: 80
         Width: 32
+    - ID: 8
+      Name: "changeRespawnTrigger"
+      Update:
+        Remove: true
   - Room: "d-01"
     Holes:
     - Side: Right
