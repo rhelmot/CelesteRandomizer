@@ -182,7 +182,7 @@ ASide:
       - Side: Up
         Idx: 1
         Kind: inout
-    - Room: "b-05"  # TODO: Add fire/ice toggle in second version of room
+  - Room: "b-05"  # TODO: Add fire/ice toggle in second version of room
     Holes:
     - Side: Down
       Idx: 0
@@ -879,8 +879,10 @@ BSide:
       Idx: 0
       Kind: inout
       ReqIn:
-        Dashes: one
-        Difficulty: perfect
+        Or:
+        - Dashes: one
+          Difficulty: perfect
+        - Dashes: two
     - Side: Up
       Idx: 0
       Kind: None

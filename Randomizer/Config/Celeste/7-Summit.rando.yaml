@@ -1076,14 +1076,11 @@ ASide:
       Kind: inout
   - Room: "e-05"
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
     InternalEdges:
-    - Split: LeftToRight
+    - To: "right"
       ReqBoth:
         Dashes: one
     - Collectable: 0
@@ -1092,6 +1089,17 @@ ASide:
         - Dashes: two
         - Dashes: one
           Difficulty: hard
+    Subrooms:
+    - Room: "right"
+      Holes:
+      - Side: Right
+        Idx: 0
+        Kind: inout
+      - Side: Up
+        Idx: 1
+        Kind: unknown
+        ReqIn:
+          Dashes: one
   - Room: "e-06"
     Holes:
     - Side: Right
@@ -1211,8 +1219,9 @@ ASide:
         Dashes: two
       InternalEdges:
       - Collectable: 0
-        ReqBoth:
-          Dashes: two
+        # disabled as it may make some golden berries impossible
+        #ReqBoth:
+        #  Dashes: two
   - Room: "e-10b"
     Holes:
     - Side: Right

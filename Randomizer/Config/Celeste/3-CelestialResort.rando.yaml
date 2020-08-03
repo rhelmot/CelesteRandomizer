@@ -796,7 +796,6 @@ ASide:
       Name: "exitBlock"
       Update:
         Remove: true
-
   - Room: "10-c"  # books 1
     Holes:
     - Side: Right
@@ -1655,12 +1654,15 @@ BSide:
       Kind: inout
       ReqOut:
         Dashes: one
-    - Side: Up
-      Idx: 1
-      Kind: None
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Up
+      Idx: 1
+      Kind: None
+    - Side: Right
+      Idx: 0
+      Kind: None
     Tweaks:
     - ID: 40
       Name: "invisibleBarrier"

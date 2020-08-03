@@ -401,7 +401,7 @@ ASide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: inout
+      Kind: in
     - Side: Up
       Idx: 1
       Kind: inout
@@ -431,17 +431,30 @@ ASide:
         Y: 32
   - Room: "9"
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
     - Side: Down
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - To: "right"
       ReqOut:
+        Dashes: zero
+      ReqIn:
         Or:
         - Dashes: one
         - Dashes: zero
           Difficulty: expert
+    - Collectable: 0
+      ReqBoth:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: hard
+    Subrooms:
+    - Room: "right"
+      Holes:
+      - Side: Right
+        Idx: 0
+        Kind: inout
     Tweaks:
     - ID: 0
       Update:

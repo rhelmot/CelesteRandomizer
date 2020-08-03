@@ -877,6 +877,9 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: None  # TODO when we can edit the tilemap this can become an unknown hole
   - Room: "g-00"
     Holes:
     - Side: Up

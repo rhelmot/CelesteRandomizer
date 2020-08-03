@@ -497,6 +497,15 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - Split: BottomToTop
+      ReqOut:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: hard
+      ReqIn:
+        Dashes: one
     Tweaks:
     - Name: "spawn"
       Update:
@@ -582,6 +591,9 @@ ASide:
     - Side: Right
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: none
     InternalEdges:
     - Collectable: 0
       ReqBoth:
@@ -1218,6 +1230,9 @@ BSide:
     - Side: Down
       Idx: 0
       Kind: inout
+    - Side: Up
+      Idx: 0
+      Kind: None
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
