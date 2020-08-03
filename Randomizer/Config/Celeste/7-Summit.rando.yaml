@@ -2262,4 +2262,18 @@ CSide:
       ReqIn:
         Dashes: two
         Difficulty: hard
+    - Side: Down
+      Idx: 1
+      Kind: unknown
+      ReqIn:
+        Dashes: two
+        Difficulty: hard
+    - Side: Down
+      Idx: 2
+      Kind: unknown
+      ReqIn:
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: hard
     End: true
