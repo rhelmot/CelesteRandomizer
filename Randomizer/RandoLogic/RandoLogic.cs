@@ -124,81 +124,105 @@ namespace Celeste.Mod.Randomizer {
         }
 
         private string PickMusicAudio() {
-            switch (this.Random.Next(41)) {
+            switch (this.Random.Next(53)) {
                 case 0:
                 case 1:
                 case 2: // ;)
                 default:
-                    return "event:/music/lvl1/main";
+                    return SFX.music_city;
                 case 3:
-                    return "event:/music/lvl0/intro";
                 case 4:
-                    return "event:/music/lvl2/beginning";
+                    return SFX.music_prologue_beginning;
                 case 5:
-                    return "event:/music/remix/02_old_site";
+                    return SFX.music_oldsite_beginning;
                 case 6:
                 case 7:
-                    return "event:/music/lvl2/mirror";
+                    return SFX.music_oldsite_awake;
                 case 8:
-                    return "event:/music/lvl2/chase";
+                    return SFX.music_oldsite_chase;
                 case 9:
-                    return "event:/music/lvl2/evil_madeline";
+                    return SFX.music_oldsite_evil_maddy;
                 case 10:
                 case 11:
-                    return "event:/music/lvl3/intro";
+                    return SFX.music_resort_intro;
                 case 12:
-                    return "event:/music/lvl3/explore";
+                    return SFX.music_resort_explore;
                 case 13:
                 case 14:
-                    return "event:/music/lvl3/clean";
+                    return SFX.music_resort_clean;
                 case 15:
-                    return "event:/music/lvl3/oshiro_chase";
+                    return SFX.music_resort_oshiro_chase;
                 case 16:
+                    return SFX.music_resort_oshiro_theme;
                 case 17:
-                    return "event:/music/lvl4/main";
                 case 18:
-                    return "event:/music/lvl4/heavy_winds";
+                    return SFX.music_cliffside_main;
                 case 19:
+                    return SFX.music_cliffside_heavywinds;
                 case 20:
-                    return "event:/music/lvl5/normal";
                 case 21:
-                    return "event:/music/lvl5/middle_temple";
+                    return SFX.music_temple_normal;
                 case 22:
-                    return "event:/music/lvl5/mirror";
+                    return SFX.music_temple_middle;
                 case 23:
+                    return SFX.music_temple_mirror;
                 case 24:
-                    return "event:/music/lvl6/main";
                 case 25:
-                    return "event:/music/lvl6/starjump";
+                    return SFX.music_reflection_main;
                 case 26:
+                    return SFX.music_reflection_starjump;
                 case 27:
-                    return "event:/music/lvl6/badeline_fight";
+                    return SFX.music_reflection_fight;
                 case 28:
-                    return "event:/music/lvl6/badeline_glitch";
+                    return SFX.music_reflection_fight_glitch;
                 case 29:
-                    return "event:/music/lvl6/madeline_and_theo";
+                    return SFX.music_reflection_maddietheo;
                 case 30:
-                    return "event:/music/lvl7/main";
+                    return SFX.music_summit_main;
                 case 31:
-                    return "event:/music/lvl7/final_ascent";
+                    return SFX.music_summit_finalascent;
                 case 32:
-                    return "event:/music/lvl8/main";
+                    return SFX.music_core_main;
                 case 33:
-                    return "event:/music/remix/01_forsaken_city";
+                    return SFX.music_rmx_01_forsaken_city;
                 case 34:
-                    return "event:/music/remix/02_old_site";
+                    return SFX.music_rmx_02_old_site;
                 case 35:
-                    return "event:/music/remix/03_resort";
+                    return SFX.music_rmx_03_resort;
                 case 36:
-                    return "event:/music/remix/04_cliffside";
+                    return SFX.music_rmx_04_cliffside;
                 case 37:
-                    return "event:/music/remix/05_mirror_temple";
+                    return SFX.music_rmx_05_mirror_temple;
                 case 38:
-                    return "event:/music/remix/06_reflection";
+                    return SFX.music_rmx_06_reflection;
                 case 39:
-                    return "event:/music/remix/07_summit";
+                    return SFX.music_rmx_07_summit;
                 case 40:
-                    return "event:/music/remix/09_core";
+                    return SFX.music_rmx_09_core;
+                case 41:
+                    return SFX.music_farewell_part01;
+                case 42:
+                    return SFX.music_farewell_part02;
+                case 43:
+                    return SFX.music_farewell_part03;
+                case 44:
+                    return SFX.music_farewell_final_run;
+                case 45:
+                    return SFX.music_farewell_golden_room;
+                case 46:
+                    return SFX.music_farewell_granny;
+                case 47:
+                    return SFX.music_reflection_fight_finish;
+                case 48:
+                    return SFX.music_reflection_secretroom;
+                case 49:
+                    return SFX.music_reflection_fall;
+                case 50:
+                    return SFX.music_credits;
+                case 51:
+                    return SFX.music_farewell_cassette;
+                case 52:
+                    return SFX.music_farewell_end_cinematic;
             }
         }
 
@@ -246,22 +270,22 @@ namespace Celeste.Mod.Randomizer {
         private string PickCassetteAudio() {
             switch (this.Random.Next(8)) {
                 case 0:
-                    return "event:/music/cassette/01_forsaken_city";
+                    return SFX.cas_01_forsaken_city;
                 case 1:
-                    return "event:/music/cassette/02_old_site";
+                    return SFX.cas_02_old_site;
                 case 2:
-                    return "event:/music/cassette/03_resort";
+                    return SFX.cas_03_resort;
                 case 3:
-                    return "event:/music/cassette/04_cliffside";
+                    return SFX.cas_04_cliffside;
                 case 4:
-                    return "event:/music/cassette/05_mirror_temple";
+                    return SFX.cas_05_mirror_temple;
                 case 5:
-                    return "event:/music/cassette/06_reflection";
+                    return SFX.cas_06_reflection;
                 case 6:
-                    return "event:/music/cassette/07_summit";
+                    return SFX.cas_07_summit;
                 case 7:
                 default:
-                    return "event:/music/cassette/09_core";
+                    return SFX.cas_08_core;
             }
         }
 
