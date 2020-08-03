@@ -32,7 +32,7 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.AngryOshiro.Added += DontSpawnTwoOshiros;
             On.Celeste.Player.Added += DontMoveOnWakeup;
             On.Celeste.BadelineOldsite.Added += PlayBadelineCutscene;
-            On.Celeste.Textbox.ctor_string_Language_Func1Array += RandomizeTextboxText;
+            //On.Celeste.Textbox.ctor_string_Language_Func1Array += RandomizeTextboxText;
             On.Celeste.Level.LoadLevel += DontRestartTimer;
             IL.Celeste.Level.EnforceBounds += DisableUpTransition;
             IL.Celeste.Level.EnforceBounds += DontBlockOnTheo;
@@ -58,7 +58,7 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.AngryOshiro.Added -= DontSpawnTwoOshiros;
             On.Celeste.Player.Added -= DontMoveOnWakeup;
             On.Celeste.BadelineOldsite.Added -= PlayBadelineCutscene;
-            On.Celeste.Textbox.ctor_string_Language_Func1Array -= RandomizeTextboxText;
+            //On.Celeste.Textbox.ctor_string_Language_Func1Array -= RandomizeTextboxText;
             On.Celeste.Level.LoadLevel -= DontRestartTimer;
             IL.Celeste.Level.EnforceBounds -= DisableUpTransition;
             IL.Celeste.Level.EnforceBounds -= DontBlockOnTheo;
