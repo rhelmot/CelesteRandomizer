@@ -34,6 +34,8 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.BadelineOldsite.Added += PlayBadelineCutscene;
             On.Celeste.Textbox.ctor_string_Language_Func1Array += RandomizeTextboxText;
             IL.Celeste.Level.EnforceBounds += DisableUpTransition;
+            IL.Celeste.Level.EnforceBounds += DontBlockOnTheo;
+            IL.Celeste.TheoCrystal.Update += BeGracefulOnTransitions;
             //On.Celeste.AutoSplitterInfo.Update += wtf;
         }
 
@@ -57,6 +59,8 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.BadelineOldsite.Added -= PlayBadelineCutscene;
             On.Celeste.Textbox.ctor_string_Language_Func1Array -= RandomizeTextboxText;
             IL.Celeste.Level.EnforceBounds -= DisableUpTransition;
+            IL.Celeste.Level.EnforceBounds -= DontBlockOnTheo;
+            IL.Celeste.TheoCrystal.Update -= BeGracefulOnTransitions;
             //On.Celeste.AutoSplitterInfo.Update -= wtf;
         }
 
@@ -293,6 +297,36 @@ namespace Celeste.Mod.Randomizer {
                 return true;
             });
             cursor.Emit(Mono.Cecil.Cil.OpCodes.And);
+        }
+
+        public void DontBlockOnTheo(ILContext il) {
+            ILCursor cursor = new ILCursor(il);
+            cursor.TryGotoNext(MoveType.After, instr => instr.MatchCallvirt<Monocle.Tracker>("GetEntity"));
+            /*cursor.Emit(Mono.Cecil.Cil.OpCodes.Ldarg_1);
+            cursor.Emit(Mono.Cecil.Cil.OpCodes.Ldarg_0);
+            cursor.EmitDelegate<Func<Level, Player, TheoCrystal, TheoCrystal>>((level, player, theo) => {
+                if (this.InRandomizer && theo != null && player.Holding == null) {
+                    level.Remove(theo);
+                    return null;
+                }
+                return theo;
+            });*/
+            cursor.EmitDelegate<Func<TheoCrystal, TheoCrystal>>((theo) => {
+                return this.InRandomizer ? null : theo;
+            });
+        }
+
+        public void BeGracefulOnTransitions(ILContext il) {
+            ILCursor cursor = new ILCursor(il);
+            while (cursor.TryGotoNext(MoveType.Before, instr => instr.MatchCallvirt<Level>("get_Bounds"))) {
+                cursor.Remove();
+                cursor.EmitDelegate<Func<Level, Rectangle>>((level) => {
+                    if (level.Transitioning && this.InRandomizer) {
+                        return level.Session.MapData.Bounds;
+                    }
+                    return level.Bounds;
+                });
+            }
         }
     }
 
