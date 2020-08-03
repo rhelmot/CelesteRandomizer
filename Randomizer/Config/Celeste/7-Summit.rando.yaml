@@ -930,10 +930,14 @@ ASide:
       Idx: 1
       Kind: in
     InternalEdges:
-    - Collectable: 0
-      MustFly: true
+    - To: "berry"
       ReqBoth:
         Dashes: two
+    Subrooms:
+    - Room: "berry"
+      Collectables:
+      - Idx: 0
+        MustFly: true
   - Room: "d-11"
     Holes:
     - Side: Up
