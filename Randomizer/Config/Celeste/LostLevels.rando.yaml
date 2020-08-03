@@ -388,6 +388,8 @@ ASide:
     - Side: Right
       Idx: 1
       Kind: inout
+      ReqIn:
+        Dashes: two
     - Side: Left
       Idx: 0
       Kind: out

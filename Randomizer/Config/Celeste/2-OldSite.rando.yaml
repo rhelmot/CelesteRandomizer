@@ -811,6 +811,7 @@ ASide:
         X: 304
         Y: 152
   - Room: "end_s0"
+    Hub: true
     Holes:
     - Side: Up
       Idx: 0
