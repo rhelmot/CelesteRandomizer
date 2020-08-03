@@ -165,10 +165,17 @@ namespace Celeste.Mod.Randomizer {
                 updateHashText();
             });
 
+            var enterunknowntext = new TextMenuExt.EaseInSubHeaderExt(Dialog.Clean("MODOPTIONS_RANDOMIZER_ENTERUNKNOWN_EXPLAIN"), false, menu) {
+                HeightExtra = 17f,
+                Offset = new Vector2(30, -5),
+            };
+
             var enterunknowntoggle = new TextMenu.OnOff(Dialog.Clean("MODOPTIONS_RANDOMIZER_ENTERUNKNOWN"), Settings.EnterUnknown).Change((val) => {
                 Settings.EnterUnknown = val;
                 updateHashText();
             });
+            enterunknowntoggle.OnEnter += () => { enterunknowntext.FadeVisible = true; };
+            enterunknowntoggle.OnLeave += () => { enterunknowntext.FadeVisible = false; };
 
             var shinetoggle = new TextMenu.Slider(Dialog.Clean("MODOPTIONS_RANDOMIZER_SHINE"), (i) => {
                 return Dialog.Clean("MODOPTIONS_RANDOMIZER_SHINE_" + Enum.GetNames(typeof(ShineLights))[i].ToUpperInvariant());
@@ -327,6 +334,7 @@ namespace Celeste.Mod.Randomizer {
             menu.Add(moreoptionsbtn);
             menu.Add(repeatroomstoggle);
             menu.Add(enterunknowntoggle);
+            menu.Add(enterunknowntext);
             menu.Add(shinetoggle);
             menu.Add(darktoggle);
             menu.Add(goldentoggle);
