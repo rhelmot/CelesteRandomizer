@@ -573,6 +573,36 @@ namespace Celeste.Mod.Randomizer {
                     }
                 }
             }
+
+            // place invisible barriers at the side of each top hole
+            foreach (var hole in this.Holes) {
+                if (hole.Side == ScreenDirection.Up) {
+                    if (!hole.LowOpen) {
+                        var coord = (hole.LowBound - 1) * 8;
+                        var e = new EntityData {
+                            Name = "invisibleBarrier",
+                            Position = new Vector2(coord, -80),
+                            Width = 8,
+                            Height = 80,
+                            Level = result,
+                            ID = ++maxID,
+                        };
+                        result.Entities.Add(e);
+                    }
+                    if (!hole.HighOpen) {
+                        var coord = (hole.HighBound + 1) * 8;
+                        var e = new EntityData {
+                            Name = "invisibleBarrier",
+                            Position = new Vector2(coord, -80),
+                            Width = 8,
+                            Height = 80,
+                            Level = result,
+                            ID = ++maxID,
+                        };
+                        result.Entities.Add(e);
+                    }
+                }
+            }
             return result;
         }
 
