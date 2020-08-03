@@ -1180,6 +1180,16 @@ ASide:
       ID: 10
       Update:
         Remove: true
+    - Name: "dashBlock"
+      Update:
+        Add: true
+        X: 120
+        Y: 24
+        Width: 24
+        Height: 32
+        Values:
+          tiletype: 9
+          blendin: true
   - Room: "roof00"
     Holes:
     - Side: Right
