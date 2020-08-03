@@ -91,26 +91,26 @@ namespace Celeste.Mod.Randomizer {
 
                         var pos = edge.HoleTarget.LowCoord(this.Level.Bounds);
                         var dist = (pos - lowPos).Length();
-                        if (dist < bestDist) {
+                        if (!uhole.LowOpen && dist < bestDist) {
                             bestDist = dist;
                             bestNode = node;
                         }
 
                         dist = (pos - highPos).Length();
-                        if (dist < bestDist) {
+                        if (!uhole.HighOpen && dist < bestDist) {
                             bestDist = dist;
                             bestNode = node;
                         }
 
                         pos = edge.HoleTarget.HighCoord(this.Level.Bounds);
                         dist = (pos - lowPos).Length();
-                        if (dist < bestDist) {
+                        if (!uhole.LowOpen && dist < bestDist) {
                             bestDist = dist;
                             bestNode = node;
                         }
 
                         dist = (pos - highPos).Length();
-                        if (dist < bestDist) {
+                        if (!uhole.HighOpen && dist < bestDist) {
                             bestDist = dist;
                             bestNode = node;
                         }
