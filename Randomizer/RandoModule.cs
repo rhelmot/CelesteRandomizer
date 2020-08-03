@@ -3,8 +3,10 @@ using Microsoft.Xna.Framework;
 using Monocle;
 using System;
 using System.Collections;
+using System.Linq;
 using MonoMod.Cil;
 using MonoMod.Utils;
+using System.Collections.Generic;
 
 namespace Celeste.Mod.Randomizer {
     public class RandoModule : EverestModule {
@@ -259,7 +261,30 @@ namespace Celeste.Mod.Randomizer {
 
         void RandomizeTextboxText(On.Celeste.Textbox.orig_ctor_string_Language_Func1Array orig, Textbox self, string dialog, Language language, Func<IEnumerator>[] events) {
             if (InRandomizer && RandoLogic.RandomDialogMappings.ContainsKey(dialog.ToLower())) {
+                DynData<Textbox> selfData = new DynData<Textbox>(self);
+                FancyText.Text origText = FancyText.Parse(Dialog.Get(dialog, language), (int)selfData.Get<float>("maxLineWidth"), selfData.Get<int>("linesPerPage"), 0f, null, language);
+                var origTriggers = new List<FancyText.Trigger>(origText.Nodes.OfType<FancyText.Trigger>());
                 orig(self, RandoLogic.RandomDialogMappings[dialog.ToLower()], language, events);
+
+                // Replace triggers from randomized text with triggers from original text
+                int origIndex = 0;
+                for (int i = 0; i < self.Nodes.Count; i++) {
+                    if (self.Nodes[i] is FancyText.Trigger trigger) {
+                        if (origIndex < origTriggers.Count) {
+                            trigger.Index = origTriggers[origIndex].Index;
+                            trigger.Label = origTriggers[origIndex].Label;
+                            trigger.Silent = origTriggers[origIndex].Silent;
+                            origIndex++;
+                        } else {
+                            // This effectively disables the trigger if we've run out of original triggers
+                            trigger.Index = -1;
+                        }
+                    }
+                }
+                // Add the remaining original triggers on to the end
+                if (origIndex < origTriggers.Count) {
+                    self.Nodes.AddRange(origTriggers.GetRange(origIndex, origTriggers.Count - origIndex));
+                }
             } else {
                 orig(self, dialog, language, events);
             }
