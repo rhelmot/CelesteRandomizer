@@ -203,6 +203,8 @@ namespace Celeste.Mod.Randomizer {
         }
 
         private string PickAmbienceAudio() {
+            return "event:/env/amb/04_main"; // only way to get wind effects?
+            /*
             switch (this.Random.Next(16)) {
                 default:
                 case 0:
@@ -237,8 +239,8 @@ namespace Celeste.Mod.Randomizer {
                     return "event:/env/amb/09_main";
                 case 15:
                     return "event:/env/amb/worldmap";
-
             }
+            */           
         }
 
         private string PickCassetteAudio() {
