@@ -166,6 +166,7 @@ namespace Celeste.Mod.Randomizer {
 
         public void OnTransition(Level level, LevelData next, Vector2 direction) {
             if (this.InRandomizer) {
+                // set core mode
                 var extraData = new DynData<LevelData>(next);
                 var coreModes = extraData.Get<RandoConfigCoreMode>("coreModes");
                 Session.CoreModes newMode;
@@ -183,6 +184,7 @@ namespace Celeste.Mod.Randomizer {
                 level.CoreMode = newMode;
                 level.Session.CoreMode = newMode;
 
+                // clear summit flags
                 var toRemove = new System.Collections.Generic.List<string>();
                 foreach (var flag in level.Session.Flags) {
                     if (flag.StartsWith("summit_checkpoint_")) {
@@ -192,6 +194,9 @@ namespace Celeste.Mod.Randomizer {
                 foreach (var flag in toRemove) {
                     level.Session.Flags.Remove(flag);
                 }
+
+                // reset camera (should hopefully fix badeline issues)
+                level.CameraUpwardMaxY = level.Camera.Y + 1000f;
             }
         }
 
