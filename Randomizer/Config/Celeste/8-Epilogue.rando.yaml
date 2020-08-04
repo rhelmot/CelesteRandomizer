@@ -7,14 +7,29 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 952
+        Y: 128
   - Room: "inside"
     Holes:
-  - Room: "outside"
+  - Room: "outside"  # TODO add warp to inside
+    End: true
     Holes:
     - Side: Right
       Idx: 0
       Kind: none
-    End: true
+    - Side: Left
+      Idx: 0
+      Kind: none
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 16
+        Y: 160
   - Room: "secret"
     Holes:
     - Side: Left
@@ -23,3 +38,9 @@ ASide:
     - Side: Right
       Idx: 0
       Kind: inout
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 280
+        Y: 112
