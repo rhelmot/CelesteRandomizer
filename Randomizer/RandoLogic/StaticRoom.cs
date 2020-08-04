@@ -216,7 +216,7 @@ namespace Celeste.Mod.Randomizer {
                     toNode = this.Nodes[edge.To];
                 } else if (edge.Split != null) {
                     if (node.Edges.Count != 2) {
-                        throw new Exception($"Cannot split: must have exactly two edges ({this.Name} {node.Name})");
+                        throw new Exception($"[{this.Name}.{node.Name}] Cannot split: must have exactly two edges");
                     }
 
                     toNode = new StaticNode() {
@@ -224,7 +224,7 @@ namespace Celeste.Mod.Randomizer {
                         ParentRoom = node.ParentRoom
                     };
                     if (node.ParentRoom.Nodes.ContainsKey(toNode.Name)) {
-                        throw new Exception("You may only autosplit a room once");
+                        throw new Exception($"[{this.Name}.{node.Name}] You may only autosplit a room once");
                     }
                     node.ParentRoom.Nodes[toNode.Name] = toNode;
 
@@ -261,18 +261,18 @@ namespace Celeste.Mod.Randomizer {
                         ParentRoom = node.ParentRoom
                     };
                     if (node.ParentRoom.Nodes.ContainsKey(toNode.Name)) {
-                        throw new Exception("You may only autosplit a room once");
+                        throw new Exception($"[{this.Name}.{node.Name}] You may only autosplit a room once");
                     }
                     node.ParentRoom.Nodes[toNode.Name] = toNode;
 
                     var thing = this.Collectables[edge.Collectable.Value];
                     if (thing.ParentNode != null) {
-                        throw new Exception("Can only assign a collectable to one owner");
+                        throw new Exception($"[{this.Name}.{node.Name}] Can only assign a collectable to one owner");
                     }
                     thing.ParentNode = toNode;
                     toNode.Collectables.Add(thing); 
                 } else {
-                    throw new Exception("Internal edge must have either To or Split or Collectable");
+                    throw new Exception($"[{this.Name}.{node.Name}] Internal edge must have either To or Split or Collectable");
                 }
 
                 var reqIn = this.ProcessReqs(edge.ReqIn, null, false);
@@ -294,7 +294,7 @@ namespace Celeste.Mod.Randomizer {
                 if (col.Idx != null) {
                     var thing = this.Collectables[col.Idx.Value];
                     if (thing.ParentNode != null) {
-                        throw new Exception("Can only assign a collectable to one owner");
+                        throw new Exception($"[{this.Name}.{node.Name}] Can only assign a collectable to one owner");
                     }
                     thing.ParentNode = node;
                     thing.MustFly = col.MustFly;
@@ -306,7 +306,7 @@ namespace Celeste.Mod.Randomizer {
                         MustFly = col.MustFly
                     });
                 } else {
-                    throw new Exception("Collectable must specify Idx or X/Y");
+                    throw new Exception($"[{this.Name}.{node.Name}] Collectable must specify Idx or X/Y");
                 }
             }
         }
