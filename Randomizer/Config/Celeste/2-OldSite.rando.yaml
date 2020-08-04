@@ -996,11 +996,11 @@ BSide:
     - Side: Up
       Idx: 0
       Kind: out
+      ReqOut:
+        Dashes: one
     - Side: Down
       Idx: 0
       Kind: in
-      ReqIn:
-        Dashes: one
   - Room: "04"  # TODO when we can edit fg tiles, remove the leftmost spikes and blocks under it
     Holes:
     - Side: Up

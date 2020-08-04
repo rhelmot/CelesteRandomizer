@@ -686,7 +686,7 @@ BSide:
     InternalEdges:
     - Split: LeftToRight
       ReqBoth:
-        Dashes: two
+        Dashes: one
     Tweaks:
     - Name: "spawn"
       X: 96
@@ -704,7 +704,10 @@ BSide:
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
-        Dashes: two
+        Or:
+        - Dashes: two
+        - Dashes: zero
+          Difficulty: expert
   - Room: "a-02"
     Holes:
     - Side: Up
@@ -723,8 +726,10 @@ BSide:
       Kind: inout
     InternalEdges:
     - Split: LeftToRight
-      ReqBoth:
+      ReqOut:
         Dashes: one
+      ReqIn:
+        Dashes: zero
     Tweaks:
     - Name: "coreModeToggle"
       Update:
@@ -741,21 +746,22 @@ BSide:
         X: 32
         Width: 24
   - Room: "a-04"
+    Core:
+      All: cold
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
-      ReqOut:
-        Dashes: two
+      Kind: inout
     - Side: Left
       Idx: 0
-      Kind: in
-    Tweaks:
-    - Name: "coreModeToggle"
-      Update:
-        Add: true
-        X: 32
-        Y: 40
+      Kind: inout
+    InternalEdges:
+    - Split: LeftToRight
+      ReqOut:
+        Dashes: two
+      ReqIn:
+        Dashes: two
+        Difficulty: expert
   - Room: "a-05"
     Holes:
     - Side: Up
@@ -786,12 +792,17 @@ BSide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
-      ReqOut:
-        Dashes: one
+      Kind: inout
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
+    InternalEdges:
+    - Split: LeftToRight
+      ReqOut:
+        Dashes: one
+      ReqIn:
+        Dashes: two
+        Difficulty: expert
   - Room: "b-02"
     Holes:
     - Side: Right

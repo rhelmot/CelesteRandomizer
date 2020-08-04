@@ -425,7 +425,10 @@ ASide:
       Idx: 0
       Kind: inout
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: expert
     - Side: Down
       Idx: 0
       Kind: inout
