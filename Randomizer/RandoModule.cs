@@ -166,8 +166,22 @@ namespace Celeste.Mod.Randomizer {
 
         public void OnTransition(Level level, LevelData next, Vector2 direction) {
             if (this.InRandomizer) {
-                level.CoreMode = Session.CoreModes.None;
-                level.Session.CoreMode = Session.CoreModes.None;
+                var extraData = new DynData<LevelData>(next);
+                var coreModes = extraData.Get<RandoConfigCoreMode>("coreModes");
+                Session.CoreModes newMode;
+                if (coreModes == null) {
+                    newMode = Session.CoreModes.None;
+                } else if (direction.X > 0) {
+                    newMode = coreModes.Left;
+                } else if (direction.X < 0) {
+                    newMode = coreModes.Right;
+                } else if (direction.Y > 0) {
+                    newMode = coreModes.Down;
+                } else {
+                    newMode = coreModes.Up;
+                }
+                level.CoreMode = newMode;
+                level.Session.CoreMode = newMode;
 
                 var toRemove = new System.Collections.Generic.List<string>();
                 foreach (var flag in level.Session.Flags) {

@@ -104,6 +104,7 @@ namespace Celeste.Mod.Randomizer {
         public bool End { get; set; }
         public bool Hub { get; set; }
         public List<RandoConfigEdit> Tweaks { get; set; }
+        public RandoConfigCoreMode Core { get; set; }
     }
 
     public class RandoConfigHole {
@@ -198,5 +199,30 @@ namespace Celeste.Mod.Randomizer {
         public int Idx { get; set; }
         public float? X { get; set; }
         public float? Y { get; set; }
+    }
+
+    public class RandoConfigCoreMode {
+        private Session.CoreModes? left, right, up, down;
+        public Session.CoreModes All = Session.CoreModes.None;
+
+        public Session.CoreModes Left {
+            get { return left ?? All; }
+            set { left = value; }
+        }
+
+        public Session.CoreModes Right {
+            get { return right ?? All; }
+            set { right = value; }
+        }
+
+        public Session.CoreModes Up {
+            get { return up ?? All; }
+            set { up = value; }
+        }
+
+        public Session.CoreModes Down {
+            get { return down ?? All; }
+            set { down = value; }
+        }
     }
 }

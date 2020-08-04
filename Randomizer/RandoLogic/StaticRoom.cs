@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using MonoMod.Utils;
 
 namespace Celeste.Mod.Randomizer {
     public class StaticRoom {
@@ -10,6 +11,7 @@ namespace Celeste.Mod.Randomizer {
         public readonly bool End;
         public readonly bool Hub;
         private List<RandoConfigEdit> Tweaks;
+        private RandoConfigCoreMode CoreModes;
         public Dictionary<string, StaticNode> Nodes;
 
         public List<Hole> Holes;
@@ -24,6 +26,7 @@ namespace Celeste.Mod.Randomizer {
             this.End = config.End;
             this.Hub = config.Hub;
             this.Tweaks = config.Tweaks ?? new List<RandoConfigEdit>();
+            this.CoreModes = config.Core;
 
             this.Collectables = new List<StaticCollectable>();
             foreach (var entity in Level.Entities) {
@@ -377,6 +380,11 @@ namespace Celeste.Mod.Randomizer {
             result.Music = "";
             result.DisableDownTransition = false;
             result.HasCheckpoint = false;
+
+            if (this.CoreModes != null) {
+                var newData = new DynData<LevelData>(result);
+                newData.Set("coreModes", this.CoreModes);
+            }
 
             if (this.Tweaks == null) {
                 this.Tweaks = new List<RandoConfigEdit>();

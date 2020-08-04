@@ -38,6 +38,8 @@ ASide:
       Idx: 0
       Kind: None
   - Room: "a-00"
+    Core:
+      All: hot
     Holes:
     - Side: Right
       Idx: 0
@@ -55,6 +57,8 @@ ASide:
       ReqIn:
         Dashes: one
   - Room: "a-01"
+    Core:
+      All: hot
     Holes:
     - Side: Right
       Idx: 0
@@ -67,6 +71,8 @@ ASide:
       ReqBoth:
         Dashes: one
   - Room: "a-02"
+    Core:
+      All: hot
     Holes:
     - Side: Up
       Idx: 0
@@ -84,6 +90,8 @@ ASide:
       ReqIn:
         Dashes: one
   - Room: "a-03"
+    Core:
+      All: hot
     Holes:
     - Side: Up
       Idx: 0
@@ -109,6 +117,8 @@ ASide:
       Idx: 1
       Kind: None
   - Room: "b-00"
+    Core:
+      All: hot
     Holes:
     - Side: Up
       Idx: 0
@@ -126,6 +136,8 @@ ASide:
       Idx: 0
       Kind: in
   - Room: "b-01"
+    Core:
+      All: hot
     Holes:
     - Side: Right
       Idx: 0
@@ -134,6 +146,8 @@ ASide:
       Idx: 0
       Kind: inout
   - Room: "b-02"
+    Core:
+      All: hot
     Holes:
     - Side: Right
       Idx: 0
@@ -146,6 +160,8 @@ ASide:
       ReqBoth:
         Dashes: one
   - Room: "b-03"
+    Core:
+      All: hot
     Holes:
     - Side: Right
       Idx: 0
@@ -163,10 +179,13 @@ ASide:
           Difficulty: expert
         - Dashes: one
   - Room: "b-04"
+    Core:
+      All: hot
+      Up: cold
     Holes:
     - Side: Up
       Idx: 0
-      Kind: inout
+      Kind: in
     - Side: Left
       Idx: 0
       Kind: inout
@@ -182,7 +201,14 @@ ASide:
       - Side: Up
         Idx: 1
         Kind: inout
-  - Room: "b-05"  # TODO: Add fire/ice toggle in second version of room
+    Tweaks:
+    - Name: "invisibleBarrier"
+      ID: 154
+      Update:
+        Remove: true
+  - Room: "b-05"
+    Core:
+      All: cold
     Holes:
     - Side: Down
       Idx: 0
@@ -194,6 +220,8 @@ ASide:
         Dashes: two
         Difficulty: hard
   - Room: "b-06"  # TODO: Add fire/ice toggle in second version of room
+    Core:
+      All: none  # this is more fun as the barely-possible collectable in none-mode
     Holes:
     - Side: Right
       Idx: 0
@@ -204,6 +232,8 @@ ASide:
         Difficulty: expert
         Dashes: two
   - Room: "b-07b"
+    Core:
+      All: hot
     Holes:
     - Side: Up
       Idx: 0
@@ -214,6 +244,9 @@ ASide:
       ReqIn:
         Dashes: one
   - Room: "b-07"
+    Core:
+      Down: hot
+      Up: cold
     Holes:
     - Side: Up
       Idx: 0
@@ -224,6 +257,8 @@ ASide:
       ReqIn:
         Dashes: one
   - Room: "c-00"
+    Core:
+      All: none   # this room is more fun in none mode
     Holes:
     - Side: Down
       Idx: 0
@@ -262,6 +297,8 @@ ASide:
       Update:
         X: 98
   - Room: "c-00b"
+    Core:
+      All: cold
     Holes:
     - Side: Down
       Idx: 0
@@ -271,6 +308,9 @@ ASide:
       ReqBoth:
         Dashes: zero
   - Room: "c-01"
+    Core:
+      Left: hot
+      Right: cold
     Holes:
     - Side: Right
       Idx: 0
@@ -283,6 +323,8 @@ ASide:
       ReqBoth:
         Dashes: two
   - Room: "c-02"
+    Core:
+      All: cold
     Holes:
     - Side: Left
       Idx: 0
@@ -312,6 +354,8 @@ ASide:
         X: 920
         Width: 24
   - Room: "c-03"
+    Core:
+      All: none   # this room is more fun as fire + bumper chaos
     Holes:
     - Side: Up
       Idx: 0
@@ -355,6 +399,8 @@ ASide:
           Difficulty: hard
   - Room: "c-03b"
     Hub: true
+    Core:
+      All: none
     Holes:
     - Side: Down
       Idx: 0
@@ -371,6 +417,8 @@ ASide:
       Idx: 2
       Kind: inout
   - Room: "c-04"
+    Core:
+      All: hot
     Holes:
     - Side: Right
       Idx: 0
@@ -383,6 +431,8 @@ ASide:
       ReqBoth:
         Dashes: one
   - Room: "d-00"
+    Core:
+      All: hot
     Holes:
     - Side: Up
       Idx: 0
@@ -393,6 +443,8 @@ ASide:
       Idx: 0
       Kind: in
   - Room: "d-01"
+    Core:
+      All: hot
     Holes:
     - Side: Up
       Idx: 0
@@ -410,6 +462,8 @@ ASide:
       Idx: 0
       Kind: None
   - Room: "d-02"
+    Core:
+      All: hot
     Holes:
     - Side: Up
       Idx: 0
@@ -420,6 +474,9 @@ ASide:
       Idx: 0
       Kind: in
   - Room: "d-03"
+    Core:
+      Down: cold
+      Up: hot
     Holes:
     - Side: Up
       Idx: 0
@@ -428,6 +485,8 @@ ASide:
       Idx: 0
       Kind: in
   - Room: "d-04"
+    Core:
+      All: hot
     Holes:
     - Side: Up
       Idx: 0
@@ -438,6 +497,8 @@ ASide:
       Idx: 0
       Kind: in
   - Room: "d-05"
+    Core:
+      All: hot
     Holes:
     - Side: Up
       Idx: 0
@@ -448,6 +509,8 @@ ASide:
       Idx: 0
       Kind: in
   - Room: "d-06"
+    Core:
+      All: hot
     Holes:
     - Side: Up
       Idx: 0
@@ -462,6 +525,8 @@ ASide:
       ReqBoth:
         Dashes: one
   - Room: "d-07"
+    Core:
+      All: hot
     Holes:
     - Side: Up
       Idx: 0
@@ -472,6 +537,8 @@ ASide:
       Idx: 0
       Kind: in
   - Room: "d-08"
+    Core:
+      All: hot
     Holes:
     - Side: Right
       Idx: 0
@@ -485,6 +552,9 @@ ASide:
       Idx: 0
       Kind: in
   - Room: "d-09"
+    Core:
+      All: hot
+      Right: cold
     Holes:
     - Side: Right
       Idx: 0
@@ -504,6 +574,9 @@ ASide:
         Dashes: two
         Difficulty: expert  # mom holy fuck
   - Room: "d-10"
+    Core:
+      Left: cold
+      Right: hot
     Holes:
     - Side: Right
       Idx: 0
@@ -523,6 +596,8 @@ ASide:
         X: 64
         Y: 104
   - Room: "d-10b"
+    Core:
+      All: hot
     Holes:
     - Side: Right
       Idx: 0
@@ -541,6 +616,8 @@ ASide:
         Dashes: two
         Difficulty: expert # corner kick
   - Room: "d-10c"
+    Core:
+      All: hot
     Holes:
     - Side: Right
       Idx: 0
@@ -551,6 +628,8 @@ ASide:
       Idx: 0
       Kind: in
   - Room: "d-11"
+    Core:
+      All: hot
     Holes:
     - Side: Right
       Idx: 0
