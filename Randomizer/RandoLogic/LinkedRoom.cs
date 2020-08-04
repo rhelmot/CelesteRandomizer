@@ -222,12 +222,43 @@ namespace Celeste.Mod.Randomizer {
                 result.Entities.Add(e);
             }
 
+            void gateTopHole(Hole hole) {
+                if (!hole.LowOpen) {
+                    var coord = (hole.LowBound - 1) * 8;
+                    var e = new EntityData {
+                        Name = "invisibleBarrier",
+                        Position = new Vector2(coord, -80),
+                        Width = 8,
+                        Height = 80,
+                        Level = result,
+                        ID = ++maxID,
+                    };
+                    result.Entities.Add(e);
+                }
+                if (!hole.HighOpen) {
+                    var coord = (hole.HighBound + 1) * 8;
+                    var e = new EntityData {
+                        Name = "invisibleBarrier",
+                        Position = new Vector2(coord, -80),
+                        Width = 8,
+                        Height = 80,
+                        Level = result,
+                        ID = ++maxID,
+                    };
+                    result.Entities.Add(e);
+                }
+            }
+
             bool disableDown = true;
             bool disableUp = true;
             var unusedHorizontalHoles = new HashSet<Hole>();
+            var unusedTopHoles = new HashSet<Hole>();
             foreach (var hole in this.Static.Holes) {
                 if (hole.Side == ScreenDirection.Left || hole.Side == ScreenDirection.Right) {
                     unusedHorizontalHoles.Add(hole);
+                }
+                if (hole.Side == ScreenDirection.Up) {
+                    unusedTopHoles.Add(hole);
                 }
             }
             foreach (var node in this.Nodes.Values) {
@@ -241,6 +272,9 @@ namespace Celeste.Mod.Randomizer {
                     }
                     if (hole != null && (hole.Side == ScreenDirection.Left || hole.Side == ScreenDirection.Right)) {
                         unusedHorizontalHoles.Remove(hole);
+                    }
+                    if (hole != null && hole.Side == ScreenDirection.Up) {
+                        unusedTopHoles.Remove(hole);
                     }
 
                     // Block off holes connected to edges which should not be re-entered
@@ -289,6 +323,9 @@ namespace Celeste.Mod.Randomizer {
             }
             foreach (var hole in unusedHorizontalHoles) {
                 blockHole(hole);
+            }
+            foreach (var hole in unusedTopHoles) {
+                gateTopHole(hole);
             }
             return result;
         }
