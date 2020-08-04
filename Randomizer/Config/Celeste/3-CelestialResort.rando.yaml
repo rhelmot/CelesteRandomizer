@@ -1800,13 +1800,13 @@ BSide:
       Update:
         Remove: true
   - Room: "end"
+    End: true
     Holes:
     - Side: Up
       Idx: 0
       Kind: in
       ReqIn:
         Dashes: one
-    End: true
 
 CSide:
   - Room: "00"

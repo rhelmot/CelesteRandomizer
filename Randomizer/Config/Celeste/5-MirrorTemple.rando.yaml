@@ -671,7 +671,7 @@ ASide:
         Kind: inout
       Collectables:
       - Idx: 0
-  - Room: "b-22"
+  - Room: "b-22"  # TODO cassette
     Holes:
     - Side: Left
       Idx: 0
@@ -744,13 +744,13 @@ ASide:
       Update:
         Remove: true
   - Room: "b-15"
+    End: true
     Holes:
     - Side: Left
       Idx: 0
       Kind: inout
       ReqIn:
         Dashes: one
-    End: true
   - Room: "b-16"  # TODO: warp
     Holes:
     - Side: Down
@@ -882,7 +882,7 @@ ASide:
         Add: true
         X: 200
         Y: 16
-  - Room: "d-00"
+  - Room: "d-00"  # TODO properly do this room up with subrooms
     Holes:
     - Side: Up
       Idx: 0
@@ -1606,7 +1606,7 @@ BSide:
         Kind: in
       Collectables:
       - Idx: 1
-  - Room: "b-03"
+  - Room: "b-03"  # TODO maybe you can do this room backwards?
     Holes:
     - Side: Up
       Idx: 0
@@ -1833,13 +1833,13 @@ BSide:
       Idx: 0
       Kind: in
   - Room: "d-05"
+    End: true
     Holes:
     - Side: Left
       Idx: 0
       Kind: in
       ReqIn:
         Dashes: one
-    End: true
 
 CSide:
   - Room: "00"
@@ -1876,6 +1876,7 @@ CSide:
       ReqIn:
         Dashes: two
   - Room: "02"
+    End: true
     Holes:
     - Side: Left
       Idx: 0
@@ -1885,4 +1886,3 @@ CSide:
         - Dashes: two
         - Dashes: one
           Difficulty: hard
-    End: true

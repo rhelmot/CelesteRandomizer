@@ -45,14 +45,14 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: inout
-    - Side: Down
-      Idx: 0
-      Kind: inout
-      ReqIn:          # traversing upward dashless requires a double jump
+      ReqOut:          # traversing upward dashless requires a double jump
         Or:
         - Dashes: one
         - Dashes: zero
           Difficulty: hard
+    - Side: Down
+      Idx: 0
+      Kind: inout
     Tweaks:
     - ID: 0             # shorten jumpthru
       Update:
@@ -243,11 +243,15 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
-      ReqIn:                    # coffee shop jump
+    InternalEdges:
+    - Split: LeftToRight
+      ReqOut:                    # coffee shop jump
         Or:
         - Dashes: one
         - Dashes: zero
           Difficulty: expert
+      ReqIn:
+        Dashes: zero
   - Room: "6b"
     Holes:
     - Side: Right
@@ -415,14 +419,18 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: inout
+    InternalEdges:
+    - Split: LeftToRight
+      ReqOut:
+        Dashes: zero
       ReqIn:
         Or:
         - Difficulty: hard
           Dashes: zero
         - Dashes: one
-    - Side: Left
-      Idx: 0
-      Kind: inout
     Tweaks:
     - Name: "spawn"
       Update:
@@ -1217,6 +1225,7 @@ CSide:
         - Dashes: two
           Difficulty: normal
   - Room: "02"
+    End: true
     Holes:
     - Side: Left
       Idx: 0
@@ -1283,4 +1292,3 @@ CSide:
     - Side: Down
       Idx: 6
       Kind: None
-    End: true

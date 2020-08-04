@@ -842,7 +842,7 @@ BSide:
       ReqOut:
         Dashes: two
       ReqIn:
-        Dashes: two
+        Dashes: one
         Difficulty: expert
   - Room: "b-05"
     Holes:
@@ -964,6 +964,7 @@ BSide:
         - Dashes: one
           Difficulty: hard
   - Room: "space"
+    End: true
     Holes:
     - Side: Left
       Idx: 0
@@ -979,7 +980,6 @@ BSide:
     - Side: Down
       Idx: 0
       Kind: None
-    End: true
 
 CSide:
   - Room: "intro"  # TODO: hearts
@@ -1017,6 +1017,7 @@ CSide:
         Dashes: two
         Difficulty: hard
   - Room: "02"
+    End: true
     Holes:
     - Side: Left
       Idx: 0
@@ -1024,4 +1025,3 @@ CSide:
       ReqIn:
         Dashes: two
         Difficulty: hard
-    End: true

@@ -463,6 +463,7 @@ ASide:
         X: 360
         Width: 16
   - Room: "b-sec"  # TODO: mark the heart as requiring the dashes, not the entrances
+    End: true
     Holes:
     - Side: Right
       Idx: 0
@@ -474,7 +475,6 @@ ASide:
       Kind: inout
       ReqIn:
         Dashes: one
-    End: true
   - Room: "b-secb"
     Holes:
     - Side: Left
@@ -1330,13 +1330,13 @@ BSide:
       Idx: 0
       Kind: in
   - Room: "end"
+    End: true
     Holes:
     - Side: Left
       Idx: 0
       Kind: inout
       ReqIn:
         Dashes: one
-    End: true
 
 CSide:
   - Room: "00"
@@ -1381,6 +1381,7 @@ CSide:
           cameraX: 0
           cameraY: 1.5
   - Room: "02"
+    End: true
     Holes:
     - Side: Left
       Idx: 0
@@ -1390,4 +1391,3 @@ CSide:
         - Dashes: two
         - Dashes: one
           Difficulty: hard
-    End: true

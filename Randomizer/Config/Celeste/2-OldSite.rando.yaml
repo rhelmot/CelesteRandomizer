@@ -51,13 +51,23 @@ ASide:
     #  ReqIn:
     #    Dashes: one
   - Room: "s2"
+    End: true
     Holes:
     - Side: Down
       Idx: 0
       Kind: inout
       ReqIn:
         Dashes: one
-    End: true
+    - Side: Up
+      Idx: 0
+      Kind: Unknown
+      ReqIn:
+        Dashes: one
+    - Side: Left
+      Idx: 0
+      Kind: Unknown
+      ReqIn:
+        Dashes: one
   - Room: "0"
     Holes:
     - Side: Up
@@ -1121,6 +1131,7 @@ BSide:
       Idx: 0
       Kind: in
   - Room: "end"
+    End: true
     Holes:
     - Side: Down
       Idx: 0
@@ -1143,7 +1154,6 @@ BSide:
         Add: true
         X: 248
         Y: 448
-    End: true
 
 CSide:
   - Room: "00"
@@ -1179,6 +1189,7 @@ CSide:
       Update:
         Remove: true
   - Room: "02"
+    End: true
     Holes:
     - Side: Left
       Idx: 0
@@ -1186,4 +1197,3 @@ CSide:
       ReqIn:
         Dashes: one
         Difficulty: hard
-    End: true

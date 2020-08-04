@@ -324,26 +324,37 @@ ASide:
     - Side: Right
       Idx: 0
       Kind: inout
-    - Side: Left
-      Idx: 1
-      Kind: inout
-      ReqIn:
-        Dashes: one
     - Side: Up
       Idx: 0
       Kind: in
-    - Side: Left
-      Idx: 0
-      Kind: inout
+    InternalEdges:
+    - Collectable: 0
+      ReqBoth:
+        Dashes: one
+    - To: "bottom"
+      ReqOut:
+        Dashes: zero
+      ReqIn:
+        Dashes: one
+    - To: "topleft"
       ReqOut:
         Or:
         - Dashes: two
         - Dashes: one
           Difficulty: hard
-    InternalEdges:
-    - Collectable: 0
-      ReqBoth:
-        Dashes: one
+      ReqIn:
+        Dashes: zero
+    Subrooms:
+    - Room: "bottom"
+      Holes:
+      - Side: Left
+        Idx: 1
+        Kind: inout
+    - Room: "topleft"
+      Holes:
+      - Side: Left
+        Idx: 0
+        Kind: inout
     Tweaks:
     - Name: "cameraTargetTrigger"
       ID: 2
@@ -389,6 +400,11 @@ ASide:
         Values:
           cameraX: 0
           cameraY: 0
+    - Name: "spawn"
+      X: 184
+      Y: 48
+      Update:
+        Default: true
   - Room: "b-02b"
     Holes:
     - Side: Right
@@ -1353,7 +1369,7 @@ ASide:
         Add: true
         X: 832
         Y: 168
-  - Room: "d-05b"
+  - Room: "d-05b"  # TODO gem
     Holes:
     - Side: Left
       Idx: 0
@@ -2736,6 +2752,7 @@ ASide:
       Idx: 0
       Kind: inout
   - Room: "g-03"
+    End: true
     Holes:
     - Side: Down
       Idx: 0
@@ -2757,7 +2774,6 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: None
-    End: true
   - Room: "credits-city"
     Holes:
   - Room: "credits-clouds"
@@ -3515,13 +3531,13 @@ BSide:
       ReqOut:
         Dashes: two
   - Room: "g-03"
+    End: true
     Holes:
     - Side: Down
       Idx: 0
       Kind: in
       ReqIn:
         Dashes: two
-    End: true
 
 CSide:
   - Room: "01"
@@ -3548,6 +3564,7 @@ CSide:
       Idx: 0
       Kind: in
   - Room: "03"
+    End: true
     Holes:
     - Side: Down
       Idx: 0
@@ -3569,4 +3586,3 @@ CSide:
         - Dashes: two
         - Dashes: one
           Difficulty: hard
-    End: true

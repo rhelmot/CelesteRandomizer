@@ -1142,20 +1142,25 @@ ASide:
       Kind: in
   - Room: "h-08"
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
-    - Side: Right
-      Idx: 1
-      Kind: out
-      ReqOut:
-        Dashes: one
     - Side: Left
       Idx: 0
-      Kind: in
-      ReqIn:
+      Kind: inout
+    InternalEdges:
+    - To: "right"
+      ReqOut:
         Dashes: one
         Difficulty: hard
+    Subrooms:
+    - Room: "right"
+      Holes:
+      - Side: Right
+        Idx: 0
+        Kind: inout
+      - Side: Right
+        Idx: 1
+        Kind: out
+        ReqOut:
+          Dashes: one
   - Room: "h-09"
     Holes:
     - Side: Left
