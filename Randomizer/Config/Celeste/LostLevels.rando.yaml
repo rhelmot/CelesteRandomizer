@@ -677,12 +677,14 @@ ASide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
-      ReqOut:
-        Dashes: one
+      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - Split: LeftToRight
+      ReqOut:
+        Dashes: one
   - Room: "e-07"
     Holes:
     - Side: Right
@@ -965,6 +967,12 @@ ASide:
         Dashes: zero
       ReqIn:
         Dashes: one
+    Tweaks:
+    - Name: "spawn"
+      X: 104
+      Y: 56
+      Update:
+        Default: true
   - Room: "g-06"
     Holes:
     - Side: Right

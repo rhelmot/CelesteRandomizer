@@ -360,11 +360,6 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
-    Tweaks:
-    - ID: 23
-      Name: "booster"
-      Update:
-        Y: 160
     InternalEdges:
     - Split: RightToLeft
       ReqOut:
@@ -1144,6 +1139,10 @@ BSide:
       Y: 168
       Update:
         X: 32
+    - ID: 23
+      Name: "booster"
+      Update:
+        Y: 160
   - Room: "c-00"
     Holes:
     - Side: Right

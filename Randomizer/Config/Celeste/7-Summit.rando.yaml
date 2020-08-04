@@ -1220,6 +1220,15 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 1
+      Kind: None
+    - Side: Down
+      Idx: 2
+      Kind: None
+    - Side: Down
+      Idx: 4
+      Kind: None
     InternalEdges:
     - To: "right"
       ReqOut:
