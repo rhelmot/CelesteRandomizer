@@ -975,7 +975,7 @@ ASide:
         X: 80
         Width: 16
     - Name: "jumpThru"
-      ID: 315
+      ID: 225
       Update:
         X: 304
         Width: 16
@@ -1500,7 +1500,7 @@ ASide:
       Holes:
       - Side: Up
         Idx: 2
-        Kind: inout
+        Kind: out
       InternalEdges:
       - To: "right"
         ReqBoth:
@@ -2281,7 +2281,7 @@ ASide:
       - Side: Left
         Idx: 0
         Kind: inout
-        ReqOut:
+        ReqBoth:
           Dashes: two
           Difficulty: expert
       InternalEdges:
