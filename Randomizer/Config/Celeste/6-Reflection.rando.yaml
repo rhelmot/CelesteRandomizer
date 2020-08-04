@@ -1222,7 +1222,7 @@ BSide:
       ReqIn:
         Or:
         - Dashes: one
-          Difficulty: expert
+          Difficulty: perfect
         - Dashes: two
           Difficulty: normal
     Tweaks:
