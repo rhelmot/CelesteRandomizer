@@ -175,7 +175,7 @@ namespace Celeste.Mod.Randomizer {
                     newMode = coreModes.Left;
                 } else if (direction.X < 0) {
                     newMode = coreModes.Right;
-                } else if (direction.Y > 0) {
+                } else if (direction.Y < 0) {
                     newMode = coreModes.Down;
                 } else {
                     newMode = coreModes.Up;
