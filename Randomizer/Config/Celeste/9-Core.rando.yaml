@@ -929,6 +929,8 @@ BSide:
       Update:
         X: 176
   - Room: "c-06"
+    Core:
+      All: cold
     Holes:
     - Side: Right
       Idx: 0
@@ -939,9 +941,15 @@ BSide:
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: hard
       ReqIn:
-        Dashes: two
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: hard
   - Room: "c-08"
     Holes:
     - Side: Right
