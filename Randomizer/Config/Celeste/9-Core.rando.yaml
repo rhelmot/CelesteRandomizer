@@ -185,7 +185,7 @@ ASide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: in
+      Kind: none  # TODO place a fire trigger so this can be a real in hole
     - Side: Left
       Idx: 0
       Kind: inout

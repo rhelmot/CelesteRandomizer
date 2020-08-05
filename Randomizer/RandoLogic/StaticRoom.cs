@@ -13,6 +13,7 @@ namespace Celeste.Mod.Randomizer {
         private List<RandoConfigEdit> Tweaks;
         private RandoConfigCoreMode CoreModes;
         public Dictionary<string, StaticNode> Nodes;
+        public List<RandoConfigRectangle> ExtraSpace;
 
         public List<Hole> Holes;
         public List<StaticCollectable> Collectables;
@@ -27,6 +28,7 @@ namespace Celeste.Mod.Randomizer {
             this.Hub = config.Hub;
             this.Tweaks = config.Tweaks ?? new List<RandoConfigEdit>();
             this.CoreModes = config.Core;
+            this.ExtraSpace = config.ExtraSpace ?? new List<RandoConfigRectangle>();
 
             this.Collectables = new List<StaticCollectable>();
             foreach (var entity in Level.Entities) {

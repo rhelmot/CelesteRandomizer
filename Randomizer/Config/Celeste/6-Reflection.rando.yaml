@@ -1257,6 +1257,19 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: in
+    ExtraSpace:
+    - X: 240
+      Y: 120
+      Width: 24
+      Height: 120
+    - X: 472
+      Y: 120
+      Width: 24
+      Height: 120
+    - X: 1088
+      Y: 136
+      Width: 40
+      Height: 80
   - Room: "b-00"
     Holes:
     - Side: Left

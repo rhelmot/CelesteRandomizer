@@ -11,8 +11,15 @@ namespace Celeste.Mod.Randomizer {
         private int nonce;
 
         public bool AreaFree(Rectangle rect) {
-            if (this.CachedHit != null && CachedHit.Bounds.Intersects(rect)) {
-                return false;
+            if (this.CachedHit != null) {
+                if (CachedHit.Bounds.Intersects(rect)) {
+                    return false;
+                }
+                foreach (var r in CachedHit.ExtraBounds) {
+                    if (r.Intersects(rect)) {
+                        return false;
+                    }
+                }
             }
 
             foreach (var room in this.Rooms) {
@@ -20,8 +27,26 @@ namespace Celeste.Mod.Randomizer {
                     this.CachedHit = room;
                     return false;
                 }
+                foreach (var r in room.ExtraBounds) {
+                    if (r.Intersects(rect)) {
+                        this.CachedHit = room;
+                        return false;
+                    }
+                }
             }
 
+            return true;
+        }
+
+        public bool AreaFree(LinkedRoom room) {
+            if (!this.AreaFree(room.Bounds)) {
+                return false;
+            }
+            foreach (var r in room.ExtraBounds) {
+                if (!this.AreaFree(r)) {
+                    return false;
+                }
+            }
             return true;
         }
 
@@ -71,6 +96,7 @@ namespace Celeste.Mod.Randomizer {
 
     public class LinkedRoom {
         public Rectangle Bounds;
+        public List<Rectangle> ExtraBounds;
         public StaticRoom Static;
         public Dictionary<string, LinkedNode> Nodes = new Dictionary<string, LinkedNode>();
         public HashSet<int> UsedKeyholes = new HashSet<int>();
@@ -78,6 +104,10 @@ namespace Celeste.Mod.Randomizer {
         public LinkedRoom(StaticRoom Room, Vector2 Position) {
             this.Static = Room;
             this.Bounds = new Rectangle((int)Position.X, (int)Position.Y, Room.Level.Bounds.Width, Room.Level.Bounds.Height);
+            this.ExtraBounds = new List<Rectangle>();
+            foreach (var r in Room.ExtraSpace) {
+                this.ExtraBounds.Add(new Rectangle((int)Position.X + r.X, (int)Position.Y + r.Y, r.Width, r.Height));
+            }
             foreach (var staticnode in Room.Nodes.Values) {
                 var node = new LinkedNode() { Static = staticnode, Room = this };
                 this.Nodes.Add(staticnode.Name, node);

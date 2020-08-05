@@ -808,6 +808,11 @@ ASide:
         Values:
           cameraX: -1
           cameraY: 0
+    ExtraSpace:
+    - X: 432
+      Y: -40
+      Width: 88
+      Height: 40
   - Room: "c-03b"
     Holes:
     - Side: Right

@@ -149,6 +149,11 @@ ASide:
     - Room: "Berry"
       Collectables:
       - Idx: 0
+    ExtraSpace:
+    - X: 256
+      Y: -48
+      Width: 48
+      Height: 48
   - Room: "a-07"
     Holes:
     - Side: Left
@@ -724,6 +729,11 @@ ASide:
       Update:
         X: 72
         Width: 16
+    ExtraSpace:
+    - X: 272
+      Y: 128
+      Width: 24
+      Height: 96
   - Room: "c-07"
     Holes:
     - Side: Right

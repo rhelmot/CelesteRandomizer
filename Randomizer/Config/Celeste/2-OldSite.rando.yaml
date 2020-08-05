@@ -1090,6 +1090,11 @@ BSide:
       Update:
         Y: 16
         Height: 104
+    ExtraSpace:
+    - X: 24
+      Y: -32
+      Width: 288
+      Height: 32
   - Room: "08"
     Holes:
     - Side: Up

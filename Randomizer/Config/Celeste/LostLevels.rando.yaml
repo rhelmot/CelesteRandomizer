@@ -103,6 +103,11 @@ ASide:
         - Dashes: two
         - Dashes: one
           Difficulty: hard
+    ExtraSpace:
+    - X: 368
+      Y: 168
+      Width: 16
+      Height: 112
   - Room: "a-05"
     Holes:
     - Side: Right
@@ -845,6 +850,11 @@ ASide:
     - Side: up
       Idx: 2
       Kind: none
+    ExtraSpace:
+    - X: 608
+      Y: 136
+      Width: 16
+      Height: 100
   - Room: "f-07"
     Holes:
     - Side: Right
