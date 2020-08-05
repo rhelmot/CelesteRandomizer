@@ -2651,6 +2651,9 @@ ASide:
     - Collectable: 1
       ReqBoth:
         Dashes: two
+    - Collectable: 2
+      ReqBoth:
+        Dashes: two
   - Room: "g-00"
     Holes:
     - Side: Up
