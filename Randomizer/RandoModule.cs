@@ -36,10 +36,10 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.BadelineOldsite.Added += PlayBadelineCutscene;
             On.Celeste.Textbox.ctor_string_Language_Func1Array += RandomizeTextboxText;
             On.Celeste.Level.LoadLevel += DontRestartTimer;
+            On.Celeste.AutoSplitterInfo.Update += MainThreadHook;
             IL.Celeste.Level.EnforceBounds += DisableUpTransition;
             IL.Celeste.Level.EnforceBounds += DontBlockOnTheo;
             IL.Celeste.TheoCrystal.Update += BeGracefulOnTransitions;
-            //On.Celeste.AutoSplitterInfo.Update += wtf;
         }
 
         public override void LoadContent(bool firstLoad) {
@@ -62,10 +62,10 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.BadelineOldsite.Added -= PlayBadelineCutscene;
             On.Celeste.Textbox.ctor_string_Language_Func1Array -= RandomizeTextboxText;
             On.Celeste.Level.LoadLevel -= DontRestartTimer;
+            On.Celeste.AutoSplitterInfo.Update -= MainThreadHook;
             IL.Celeste.Level.EnforceBounds -= DisableUpTransition;
             IL.Celeste.Level.EnforceBounds -= DontBlockOnTheo;
             IL.Celeste.TheoCrystal.Update -= BeGracefulOnTransitions;
-            //On.Celeste.AutoSplitterInfo.Update -= wtf;
         }
 
         public void DontRestartTimer(On.Celeste.Level.orig_LoadLevel orig, Level self, Player.IntroTypes playerIntro, bool fromLoader) {
@@ -73,10 +73,6 @@ namespace Celeste.Mod.Randomizer {
                 self.Session.FirstLevel = false;
             }
             orig(self, playerIntro, fromLoader);
-        }
-
-        public void wtf(On.Celeste.AutoSplitterInfo.orig_Update orig, AutoSplitterInfo self) {
-            orig(self);
         }
 
         public override void CreateModMenuSection(TextMenu menu, bool inGame, EventInstance snapshot) {
@@ -329,6 +325,16 @@ namespace Celeste.Mod.Randomizer {
                     level.Session.Audio.Apply(false);
                 }
                 scene.Add(new CS02_BadelineIntro(self));
+            }
+        }
+
+        public static AreaData AreaHandoff;
+        public void MainThreadHook(On.Celeste.AutoSplitterInfo.orig_Update orig, AutoSplitterInfo self) {
+            orig(self);
+
+            if (AreaHandoff != null) {
+                AreaData.Areas.Add(AreaHandoff);
+                AreaHandoff = null;
             }
         }
 

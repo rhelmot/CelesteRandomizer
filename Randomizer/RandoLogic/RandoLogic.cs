@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Monocle;
@@ -50,7 +51,11 @@ namespace Celeste.Mod.Randomizer {
             if (lastarea.GetSID().StartsWith("randomizer/")) {
                 AreaData.Areas[AreaData.Areas.Count - 1] = newArea;
             } else {
-                AreaData.Areas.Add(newArea);
+                // avert race condition
+                RandoModule.AreaHandoff = newArea;
+                while (RandoModule.AreaHandoff != null) {
+                    Thread.Sleep(10);
+                }
             }
 
             var key = new AreaKey(newArea.ID);
