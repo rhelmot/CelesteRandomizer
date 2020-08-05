@@ -80,8 +80,6 @@ namespace Celeste.Mod.Randomizer {
         private LinkedMap Map;
         private RandoSettings Settings;
         private Capabilities Caps;
-        private Deque<RandoTask> Tasks = new Deque<RandoTask>();
-        private Stack<RandoTask> CompletedTasks = new Stack<RandoTask>();
         public static Dictionary<string, string> RandomDialogMappings = new Dictionary<string, string>();
 
         private RandoLogic(RandoSettings settings, AreaKey key) {
@@ -316,36 +314,17 @@ namespace Celeste.Mod.Randomizer {
 
         private MapData MakeMap() {
             this.Map = new LinkedMap();
-
             switch (this.Settings.Algorithm) {
                 case LogicType.Labyrinth:
-                default:
-                    this.Tasks.AddToFront(new TaskLabyrinthStart(this));
+                    this.GenerateLabyrinth();
                     break;
                 case LogicType.Pathway:
-                    this.Tasks.AddToFront(new TaskPathwayStart(this));
+                    this.GeneratePathway();
                     break;
-            }
-
-            while (this.Tasks.Count != 0) {
-                var nextTask = this.Tasks.RemoveFromFront();
-
-                while (!nextTask.Next()) {
-                    if (this.CompletedTasks.Count == 0) {
-                        throw new Exception("Could not generate map");
-                    }
-
-                    this.Tasks.AddToFront(nextTask);
-                    nextTask = this.CompletedTasks.Pop();
-                    nextTask.Undo();
-                }
-
-                this.CompletedTasks.Push(nextTask);
             }
 
             var map = new MapData(this.Key);
             map.Levels = new List<LevelData>();
-
             this.Map.FillMap(map, this.Random);
             this.SetMapBounds(map);
             this.SetForeground(map);

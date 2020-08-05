@@ -4,6 +4,28 @@ using Monocle;
 
 namespace Celeste.Mod.Randomizer {
     public partial class RandoLogic {
+        private Deque<RandoTask> Tasks = new Deque<RandoTask>();
+        private Stack<RandoTask> CompletedTasks = new Stack<RandoTask>();
+
+        private void GeneratePathway() {
+            this.Tasks.AddToFront(new TaskPathwayStart(this));
+
+            while (this.Tasks.Count != 0) {
+                var nextTask = this.Tasks.RemoveFromFront();
+
+                while (!nextTask.Next()) {
+                    if (this.CompletedTasks.Count == 0) {
+                        throw new Exception("Could not generate map");
+                    }
+
+                    this.Tasks.AddToFront(nextTask);
+                    nextTask = this.CompletedTasks.Pop();
+                    nextTask.Undo();
+                }
+
+                this.CompletedTasks.Push(nextTask);
+            }
+        }
         private class TaskPathwayStart : RandoTask {
             private HashSet<StaticRoom> TriedRooms = new HashSet<StaticRoom>();
 

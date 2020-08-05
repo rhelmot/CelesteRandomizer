@@ -114,7 +114,7 @@ namespace Celeste.Mod.Randomizer {
             }
         }
 
-        public LevelData Bake(int? nonce, Random random) {
+        public virtual LevelData Bake(int? nonce, Random random) {
             var result = this.Static.MakeLevelData(new Vector2(this.Bounds.Left, this.Bounds.Top), nonce);
 
             bool ohgodwhat = random.Next(100) == 0; // :)
