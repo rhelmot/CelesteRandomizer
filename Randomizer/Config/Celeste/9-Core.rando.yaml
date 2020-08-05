@@ -1019,7 +1019,7 @@ CSide:
     - Split: LeftToRight
       ReqBoth:
         Difficulty: hard
-        Dashes: two
+        Dashes: one
   - Room: "01"
     Holes:
     - Side: Right
