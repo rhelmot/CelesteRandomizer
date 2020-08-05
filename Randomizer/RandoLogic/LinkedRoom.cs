@@ -119,7 +119,8 @@ namespace Celeste.Mod.Randomizer {
 
             bool ohgodwhat = random.Next(100) == 0; // :)
             string pickCrystalColor() {
-                switch (random.Next(15)) {
+                tryagain:
+                switch (random.Next(14)) {
                     case 0:
                     case 1:
                     case 2:
@@ -135,13 +136,17 @@ namespace Celeste.Mod.Randomizer {
                     case 9:
                         return "rainbow";
                     default:
+                        // dust bunnies can't be shattered, lmao
+                        if (this.Static.Name == "Celeste/LostLevels/A/h-10") {
+                            goto tryagain;
+                        }
                         return "dust";
                 }
             }
             string crystalcolor = pickCrystalColor();
 
             string pickSpinnerColor() {
-                return random.Next(2) == 0 ? "dust" : "spike";
+                return new string[] { "dust", "spike", "star" }[random.Next(3)];
             }
             string spinnercolor = pickSpinnerColor();
 
@@ -170,6 +175,8 @@ namespace Celeste.Mod.Randomizer {
                         if (e.Values == null) e.Values = new Dictionary<string, object>();
                         if (spinnercolor == "dust") {
                             e.Values["dust"] = "true";
+                        } else if (crystalcolor == "star") {
+                            e.Values["star"] = "true";
                         }
                         break;
                     case "lockBlock":
