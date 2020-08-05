@@ -11,22 +11,31 @@ ASide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: inout
+      Kind: out
+      Launch: 117
+      ReqOut:
+        Dashes: one
   - Room: "intro-02-launch"
     Holes:
     - Side: Up
       Idx: 0
-      Kind: inout
+      Kind: out
+      Launch: 19
       ReqOut:
         Dashes: two
     - Side: Down
       Idx: 0
-      Kind: inout
-  - Room: "intro-03-space"  # TODO down entrance
+      Kind: in
+      Launch: 19
+  - Room: "intro-03-space"
     Holes:
     - Side: Right
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: in
+      Launch: 68
   - Room: "a-00"
     Holes:
     - Side: Right
@@ -1196,7 +1205,8 @@ ASide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: None # TODO: fix hole
+      Kind: out
+      Launch: 333
       ReqOut:
         Dashes: one
     - Side: Left
@@ -1218,6 +1228,7 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: in
+      Launch: 66
   - Room: "i-00b"
     Holes:
     - Side: Right

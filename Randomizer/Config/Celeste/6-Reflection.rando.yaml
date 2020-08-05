@@ -1090,6 +1090,7 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: inout
+      Launch: 19
       ReqOut:
         Dashes: one
     - Side: Down

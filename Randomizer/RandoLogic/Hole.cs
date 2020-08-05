@@ -31,6 +31,7 @@ namespace Celeste.Mod.Randomizer {
         public int LowBound;
         public int HighBound;
         public bool HighOpen;
+        public int? Launch;
 
         public bool LowOpen {
             get {
@@ -139,7 +140,17 @@ namespace Celeste.Mod.Randomizer {
 
             if (this.Side == ScreenDirection.Up && other.Side == ScreenDirection.Down) {
                 // Vertical transitions
-                if (this.BothOpen || other.BothOpen) {
+                if (this.Launch != null) {
+                    if (other.Launch != null) {
+                        return this.Launch.Value - other.Launch.Value;
+                    } else if (other.Closed) {
+                        return this.Launch.Value - (other.LowBound + other.HighBound) / 2;
+                    } else if (other.HighOpen) {
+                        return this.Launch.Value - (other.LowBound + 2);
+                    } else if (other.LowOpen) {
+                        return this.Launch.Value - (other.HighBound - 2);
+                    }
+                } else if (this.BothOpen || other.BothOpen) {
                     // if either is open on both ends, they must line up perfectly
                     if (this.BothOpen && other.BothOpen && this.Size == other.Size) {
                         return 0;

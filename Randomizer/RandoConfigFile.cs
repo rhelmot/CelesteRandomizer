@@ -133,6 +133,7 @@ namespace Celeste.Mod.Randomizer {
             }
         }
         public HoleKind Kind { get; set; }
+        public int? Launch;
     }
 
     public class RandoConfigCollectable {

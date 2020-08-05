@@ -4,6 +4,7 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: out
+      Launch: 19
   - Room: "a-00"
     Holes:
     - Side: Right
@@ -248,6 +249,7 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: out
+      Launch: 19
       ReqOut:
         Dashes: two
     - Side: Left
@@ -662,6 +664,7 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: out
+      Launch: 19
       ReqOut:
         Dashes: one
     - Side: Left
@@ -1053,6 +1056,7 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: out
+      Launch: 19
       ReqOut:
         Dashes: one
     - Side: Left
@@ -1587,6 +1591,7 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: out
+      Launch: 19
       ReqOut:
         Or:
         - Dashes: two
@@ -2166,6 +2171,7 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: out
+      Launch: 19
       ReqOut:
         Or:
         - Dashes: two
@@ -2626,6 +2632,7 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: out
+      Launch: 19
       ReqOut:
         Dashes: two
     - Side: Left
@@ -2649,6 +2656,7 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: inout
+      Launch: 34
       ReqOut:
         Or:
         - Dashes: two
@@ -2668,6 +2676,7 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: out
+      Launch: 39
       ReqOut:
         Or:
         - Dashes: two
@@ -2738,6 +2747,7 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: out
+      Launch: 163
       ReqOut:
         Dashes: two
     - Side: Down
@@ -2805,7 +2815,8 @@ BSide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: none
+      Kind: out
+      Launch: 19
   - Room: "a-00"
     Holes:
     - Side: Right
@@ -2841,6 +2852,7 @@ BSide:
     - Side: Up
       Idx: 0
       Kind: out
+      Launch: 19
       ReqOut:
         Dashes: two
     - Side: Left
@@ -3115,6 +3127,7 @@ BSide:
     - Side: Up
       Idx: 0
       Kind: out
+      Launch: 19
       ReqOut:
         Dashes: two
     - Side: Left
@@ -3173,6 +3186,7 @@ BSide:
     - Side: Up
       Idx: 0
       Kind: out
+      Launch: 19
       ReqOut:
         Dashes: two
     - Side: Left
@@ -3254,6 +3268,7 @@ BSide:
     - Side: Up
       Idx: 0
       Kind: out
+      Launch: 19
       ReqOut:
         Dashes: two
     - Side: Left
@@ -3375,6 +3390,7 @@ BSide:
     - Side: Up
       Idx: 0
       Kind: out
+      Launch: 19
       ReqOut:
         Dashes: two
     - Side: Left
@@ -3494,6 +3510,7 @@ BSide:
     - Side: Up
       Idx: 0
       Kind: out
+      Launch: 19
       ReqOut:
         Dashes: two
     - Side: Left
@@ -3510,6 +3527,7 @@ BSide:
     - Side: Up
       Idx: 0
       Kind: out
+      Launch: 19
       ReqOut:
         Dashes: two
     - Side: Down
@@ -3520,6 +3538,7 @@ BSide:
     - Side: Up
       Idx: 0
       Kind: out
+      Launch: 30
       ReqOut:
         Dashes: two
     - Side: Down
@@ -3532,7 +3551,11 @@ BSide:
       Kind: in
     - Side: Down
       Idx: 1
-      Kind: none # TODO: up out
+      Kind: none
+    - Side: Up
+      Idx: 0
+      Kind: out
+      Launch: 209
       ReqOut:
         Dashes: two
   - Room: "g-03"
@@ -3541,6 +3564,7 @@ BSide:
     - Side: Down
       Idx: 0
       Kind: in
+      Launch: 87
       ReqIn:
         Dashes: two
 
@@ -3553,6 +3577,7 @@ CSide:
     - Side: Up
       Idx: 0
       Kind: out
+      Launch: 85
       ReqOut:
         Dashes: two
         Difficulty: hard
@@ -3564,6 +3589,7 @@ CSide:
     - Side: Up
       Idx: 0
       Kind: out
+      Launch: 85
       ReqOut:
         Dashes: two
     - Side: Down

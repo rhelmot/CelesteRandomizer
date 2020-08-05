@@ -531,6 +531,7 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: out
+      Launch: 19
       ReqOut:
         Dashes: two
     - Side: Down
@@ -895,6 +896,7 @@ BSide:
     - Side: Up
       Idx: 0
       Kind: out
+      Launch: 19
       ReqOut:
         Dashes: one
     - Side: Down

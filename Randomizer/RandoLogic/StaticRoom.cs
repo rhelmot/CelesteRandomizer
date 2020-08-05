@@ -195,6 +195,7 @@ namespace Celeste.Mod.Randomizer {
 
                 //Logger.Log("randomizer", $"Matching {roomConfig.Room} {holeConfig.Side} {holeConfig.Idx} to {matchedHole}");
                 matchedHole.Kind = holeConfig.Kind;
+                matchedHole.Launch = holeConfig.Launch;
                 if (holeConfig.LowBound != null) {
                     matchedHole.LowBound = (int)holeConfig.LowBound;
                 }
