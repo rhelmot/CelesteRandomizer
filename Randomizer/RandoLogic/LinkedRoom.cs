@@ -215,16 +215,24 @@ namespace Celeste.Mod.Randomizer {
                 result.Entities.Add(e);
             }
 
+            void partiallyBlockHole(Hole hole, Hole hole2) {
+                int diff = hole.Compatible(hole2);
+                var newHighBound = diff + hole2.LowBound - 1;
+                var newHole = new Hole(hole.Side, hole.LowBound, newHighBound, false);
+                //Logger.Log("DEBUG", $"{result.Name}: special-blocking {newHole}");
+                blockHole(newHole);
+            }
+
             void beamHole(Hole hole) {
                 Vector2 center;
                 int rotation;
                 switch (hole.Side) {
                     case ScreenDirection.Up:
-                        center = new Vector2(0, -8);
+                        center = new Vector2(0, 0);
                         rotation = 0;
                         break;
                     case ScreenDirection.Left:
-                        center = new Vector2(-8, 0);
+                        center = new Vector2(0, 0);
                         rotation = 270;
                         break;
                     case ScreenDirection.Down:
@@ -294,6 +302,7 @@ namespace Celeste.Mod.Randomizer {
             foreach (var node in this.Nodes.Values) {
                 foreach (var edge in node.Edges) {
                     var hole = edge.CorrespondingEdge(node).HoleTarget;
+                    var hole2 = edge.OtherEdge(node).HoleTarget;
                     if (hole != null && hole.Side == ScreenDirection.Down) {
                         disableDown = false;
                     }
@@ -308,9 +317,12 @@ namespace Celeste.Mod.Randomizer {
                     }
 
                     // Block off holes connected to edges which should not be re-entered
-                    var hole2 = edge.OtherEdge(node).HoleTarget;
                     if (hole != null && hole2 != null && hole2.Kind == HoleKind.Out) {
                         blockHole(hole);
+                    }
+                    // Block off pieces of holes which are partially unused
+                    if (hole != null && hole2 != null && hole.Size > hole2.Size) {
+                        partiallyBlockHole(hole, hole2);
                     }
                     // Add beams
                     var shine = RandoModule.Instance.Settings.Lights;
