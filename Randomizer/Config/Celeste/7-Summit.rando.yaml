@@ -2658,7 +2658,7 @@ ASide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: inout
+      Kind: out
       Launch: 34
       ReqOut:
         Or:
