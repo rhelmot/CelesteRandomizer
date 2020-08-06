@@ -106,6 +106,7 @@ namespace Celeste.Mod.Randomizer {
         public List<RandoConfigEdit> Tweaks { get; set; }
         public RandoConfigCoreMode Core { get; set; }
         public List<RandoConfigRectangle> ExtraSpace { get; set; }
+        public float? Worth;
     }
 
     public class RandoConfigRectangle {

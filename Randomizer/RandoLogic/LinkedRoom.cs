@@ -9,6 +9,7 @@ namespace Celeste.Mod.Randomizer {
         private List<LinkedRoom> Rooms = new List<LinkedRoom>();
         private LinkedRoom CachedHit;
         private int nonce;
+        public float Worth { get; private set; }
 
         public bool AreaFree(Rectangle rect) {
             if (this.CachedHit != null) {
@@ -72,10 +73,12 @@ namespace Celeste.Mod.Randomizer {
 
         public void AddRoom(LinkedRoom room) {
             this.Rooms.Add(room);
+            this.Worth += room.Static.Worth;
         }
 
         public void RemoveRoom(LinkedRoom room) {
             this.Rooms.Remove(room);
+            this.Worth -= room.Static.Worth;
             if (room == this.CachedHit) {
                 this.CachedHit = null;
             }
