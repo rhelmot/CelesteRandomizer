@@ -467,8 +467,8 @@ ASide:
       Kind: none
     InternalEdges:
     - Collectable: 0
-      ReqBoth:
-        Dashes: one
+      #ReqBoth:
+      #  Dashes: one
   - Room: "d-04"
     Holes:
     - Side: Left
