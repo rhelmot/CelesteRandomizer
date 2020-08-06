@@ -14,6 +14,7 @@ namespace Celeste.Mod.Randomizer {
         B,
         C,
         D,
+        E,
         Last
     }
 
@@ -47,9 +48,9 @@ namespace Celeste.Mod.Randomizer {
     }
 
     public enum ShineLights {
-        On,
-        Hubs,
         Off,
+        Hubs,
+        On,
         Last
     }
 
@@ -132,6 +133,17 @@ namespace Celeste.Mod.Randomizer {
                     this.Difficulty = Difficulty.Expert;
                     this.Lights = ShineLights.Hubs;
                     this.Darkness = Darkness.Vanilla;
+                    break;
+                case Ruleset.E:
+                    this.SetNormalMaps();
+                    this.RepeatRooms = false;
+                    this.EnterUnknown = false;
+                    this.Algorithm = LogicType.Labyrinth;
+                    this.Length = MapLength.Medium;
+                    this.Dashes = NumDashes.One;
+                    this.Difficulty = Difficulty.Normal;
+                    this.Lights = ShineLights.Hubs;
+                    this.Darkness = Darkness.Never;
                     break;
             }
         }
