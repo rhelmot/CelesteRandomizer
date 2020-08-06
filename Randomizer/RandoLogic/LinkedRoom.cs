@@ -184,7 +184,7 @@ namespace Celeste.Mod.Randomizer {
                         if (e.Values == null) e.Values = new Dictionary<string, object>();
                         if (spinnercolor == "dust") {
                             e.Values["dust"] = "true";
-                        } else if (crystalcolor == "star") {
+                        } else if (spinnercolor == "star") {
                             e.Values["star"] = "true";
                         }
                         break;
