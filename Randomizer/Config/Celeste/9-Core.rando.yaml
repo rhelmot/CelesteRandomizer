@@ -687,7 +687,10 @@ BSide:
     InternalEdges:
     - Split: LeftToRight
       ReqBoth:
-        Dashes: one
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: hard
     Tweaks:
     - Name: "spawn"
       X: 96

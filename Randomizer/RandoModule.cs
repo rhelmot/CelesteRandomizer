@@ -40,6 +40,8 @@ namespace Celeste.Mod.Randomizer {
             IL.Celeste.Level.EnforceBounds += DisableUpTransition;
             IL.Celeste.Level.EnforceBounds += DontBlockOnTheo;
             IL.Celeste.TheoCrystal.Update += BeGracefulOnTransitions;
+            IL.Celeste.SummitGem.OnPlayer += DashlessAccessability;
+            IL.Celeste.HeartGem.OnPlayer += DashlessAccessability;
         }
 
         public override void LoadContent(bool firstLoad) {
@@ -66,6 +68,8 @@ namespace Celeste.Mod.Randomizer {
             IL.Celeste.Level.EnforceBounds -= DisableUpTransition;
             IL.Celeste.Level.EnforceBounds -= DontBlockOnTheo;
             IL.Celeste.TheoCrystal.Update -= BeGracefulOnTransitions;
+            IL.Celeste.SummitGem.OnPlayer -= DashlessAccessability;
+            IL.Celeste.HeartGem.OnPlayer -= DashlessAccessability;
         }
 
         public void DontRestartTimer(On.Celeste.Level.orig_LoadLevel orig, Level self, Player.IntroTypes playerIntro, bool fromLoader) {
@@ -386,6 +390,17 @@ namespace Celeste.Mod.Randomizer {
                     return level.Bounds;
                 });
             }
+        }
+
+        public void DashlessAccessability(ILContext il) {
+            ILCursor cursor = new ILCursor(il);
+            cursor.TryGotoNext(MoveType.After, instr => instr.MatchCallvirt<Player>("get_DashAttacking"));
+            cursor.EmitDelegate<Func<bool, bool>>((dobreak) => {
+                if (this.InRandomizer && this.Settings.Dashes == NumDashes.Zero) {
+                    return true;
+                }
+                return dobreak;
+            });
         }
     }
 

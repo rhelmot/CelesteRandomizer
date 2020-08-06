@@ -92,6 +92,12 @@ namespace Celeste.Mod.Randomizer {
                 return this.Rooms.Count;
             }
         }
+
+        public void Clear() {
+            this.Rooms.Clear();
+            this.CachedHit = null;
+            this.nonce = 0;
+        }
     }
 
     public class LinkedRoom {
@@ -351,6 +357,14 @@ namespace Celeste.Mod.Randomizer {
                         case LinkedNode.LinkedCollectable.WingedStrawberry:
                             name = "strawberry";
                             break;
+                        case LinkedNode.LinkedCollectable.Gem1:
+                        case LinkedNode.LinkedCollectable.Gem2:
+                        case LinkedNode.LinkedCollectable.Gem3:
+                        case LinkedNode.LinkedCollectable.Gem4:
+                        case LinkedNode.LinkedCollectable.Gem5:
+                        case LinkedNode.LinkedCollectable.Gem6:
+                            name = "summitgem";
+                            break;
                     }
 
                     var e = new EntityData {
@@ -358,9 +372,13 @@ namespace Celeste.Mod.Randomizer {
                         Name = name,
                         Level = result,
                         Position = kv.Key.Position,
+                        Values = new Dictionary<string, object>(),
                     };
                     if (kv.Value == LinkedNode.LinkedCollectable.WingedStrawberry) {
                         e.Values["winged"] = "true";
+                    }
+                    if (kv.Value >= LinkedNode.LinkedCollectable.Gem1 && kv.Value <= LinkedNode.LinkedCollectable.Gem6) {
+                        e.Values["gem"] = (kv.Value - LinkedNode.LinkedCollectable.Gem1).ToString();
                     }
                     result.Entities.Add(e);
                 }
@@ -400,7 +418,13 @@ namespace Celeste.Mod.Randomizer {
         public enum LinkedCollectable {
             Strawberry,
             WingedStrawberry,
-            Key
+            Key,
+            Gem1,
+            Gem2,
+            Gem3,
+            Gem4,
+            Gem5,
+            Gem6,
         }
 
         public IEnumerable<LinkedNode> Successors(Capabilities capsForward, Capabilities capsReverse, bool onlyInternal = false) {

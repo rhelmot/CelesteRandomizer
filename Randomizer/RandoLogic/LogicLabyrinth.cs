@@ -1,20 +1,116 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Monocle;
 
 namespace Celeste.Mod.Randomizer {
     public partial class RandoLogic {
 
-        private static readonly int[] LabyrinthMinimums = { 30, 50, 80, 120 };
-        private static readonly int[] LabyrinthMaximums = { 50, 80, 120, 200 };
+        private static readonly int[] LabyrinthMinimums = { 15, 25, 50, 70 };
+        private static readonly int[] LabyrinthMaximums = { 20, 40, 65, 90 };
+
+        private List<UnlinkedEdge> PossibleContinuations = new List<UnlinkedEdge>();
+        private List<UnlinkedCollectable> PossibleCollectables = new List<UnlinkedCollectable>();
+        private List<UnlinkedCollectable> PriorityCollectables = new List<UnlinkedCollectable>();
+        int StartingGemCount;
 
         private void GenerateLabyrinth() {
+            this.Caps = this.Caps.WithoutKey();
+            this.StartingGemCount = this.Settings.Length == MapLength.Short ? 3 : 0;
+
+            void retry() {
+                this.PossibleCollectables.Clear();
+                this.PriorityCollectables.Clear();
+                this.PossibleContinuations.Clear();
+                this.ResetRooms();
+                this.Map.Clear();
+            }
+            tryagain:
+
             foreach (var room in this.RemainingRooms) {
                 if (room.Name == "Celeste/6-Reflection/A/b-00") {
-                    this.Map.AddRoom(new LabyrinthStartRoom(room));
+                    var lroom = new LabyrinthStartRoom(room);
+                    this.Map.AddRoom(lroom);
                     this.RemainingRooms.Remove(room);
+                    this.PossibleContinuations.AddRange(LinkedNodeSet.Closure(lroom.Nodes["main"], this.Caps, this.Caps, true).UnlinkedEdges());
                     break;
                 }
+            }
+
+            while (this.PossibleContinuations.Count != 0) {
+                //Logger.Log("DEBUG", $"status: rooms={this.Map.Count} queue={this.PossibleContinuations.Count}");
+                int idx = this.Random.Next(this.PossibleContinuations.Count);
+                var startEdge = this.PossibleContinuations[idx];
+                this.PossibleContinuations.RemoveAt(idx);
+
+                foreach (var toEdge in this.AvailableNewEdges(this.Caps, this.Caps, (edge) => !edge.FromNode.ParentRoom.End)) {
+                    var result = ConnectAndMapReceipt.Do(this, startEdge, toEdge);
+                    if (result != null) {
+                        var closure = LinkedNodeSet.Closure(result.EntryNode, this.Caps, this.Caps, true);
+                        var ue = closure.UnlinkedEdges();
+                        var uc = closure.UnlinkedCollectables();
+                        if (ue.Count == 0 && uc.Count == 0) {
+                            result.Undo();
+                            continue;
+                        } else if (ue.Count == 0) {
+                            this.PriorityCollectables.AddRange(uc);
+                        } else {
+                            this.PossibleContinuations.AddRange(ue);
+                            this.PossibleCollectables.AddRange(uc);
+                        }
+                        break;
+                    }
+                }
+
+                if (this.Map.Count >= LabyrinthMaximums[(int)this.Settings.Length]) {
+                    break;
+                }
+            }
+
+            if (this.Map.Count < LabyrinthMinimums[(int)this.Settings.Length]) {
+                //Logger.Log("DEBUG", "retrying - too short");
+                retry();
+                goto tryagain;
+            }
+
+            if (this.PossibleCollectables.Count + this.PriorityCollectables.Count < (6 - this.StartingGemCount)) {
+                //Logger.Log("DEBUG", "retrying - not enough spots");
+                retry();
+                goto tryagain;
+            }
+
+            for (var gem = LinkedNode.LinkedCollectable.Gem1 + this.StartingGemCount; gem <= LinkedNode.LinkedCollectable.Gem6; gem++) {
+                var collection = this.PriorityCollectables.Count != 0 ? this.PriorityCollectables : this.PossibleCollectables;
+                if (collection.Count == 0) {  // just in case
+                    retry();
+                    goto tryagain;
+                }
+                var idx = this.Random.Next(collection.Count);
+                var spot = collection[idx];
+                collection.RemoveAt(idx);
+
+                if (spot.Static.MustFly) {
+                    spot.Node.Collectables[spot.Static] = LinkedNode.LinkedCollectable.WingedStrawberry;
+                    gem--;
+                } else {
+                    spot.Node.Collectables[spot.Static] = gem;
+                }
+            }
+
+            while (this.PriorityCollectables.Count != 0) {
+                var spot = this.PriorityCollectables[this.PriorityCollectables.Count - 1];
+                this.PriorityCollectables.RemoveAt(this.PriorityCollectables.Count - 1);
+
+                spot.Node.Collectables[spot.Static] = spot.Static.MustFly ? LinkedNode.LinkedCollectable.WingedStrawberry : LinkedNode.LinkedCollectable.Strawberry;
+            }
+
+            var targetCount = this.PossibleCollectables.Count / 3 * 2;
+            this.PossibleCollectables.Shuffle(this.Random);
+            while (this.PossibleCollectables.Count > targetCount) {
+                var spot = this.PossibleCollectables[this.PossibleCollectables.Count - 1];
+                this.PossibleCollectables.RemoveAt(this.PossibleCollectables.Count - 1);
+
+                spot.Node.Collectables[spot.Static] = spot.Static.MustFly ? LinkedNode.LinkedCollectable.WingedStrawberry : LinkedNode.LinkedCollectable.Strawberry;
             }
         }
 
@@ -33,6 +129,8 @@ namespace Celeste.Mod.Randomizer {
                     }
                 }
                 result.Entities.Remove(granny);
+
+                result.Spawns.Insert(0, new Vector2(336, 144));
 
                 result.Entities.Add(new EntityData {
                     Name = "summitGemManager",
@@ -85,137 +183,6 @@ namespace Celeste.Mod.Randomizer {
                 }
 
                 return result;
-            }
-        }
-
-        private class TaskLabyrinthStart : RandoTask {
-            private HashSet<StaticRoom> TriedRooms = new HashSet<StaticRoom>();
-
-            public TaskLabyrinthStart(RandoLogic logic) : base(logic) {
-            }
-
-            private IEnumerable<StaticRoom> AvailableRooms() {
-                foreach (var room in Logic.RemainingRooms) {
-                    if (room.End) {
-                        continue;
-                    }
-                    if (TriedRooms.Contains(room)) {
-                        continue;
-                    }
-                    yield return room;
-                }
-            }
-
-            private StartRoomReceipt WorkingPossibility() {
-                var available = new List<StaticRoom>(AvailableRooms());
-
-                if (available.Count == 0) {
-                    return null;
-                }
-
-                var picked = available[this.Logic.Random.Next(available.Count)];
-                return StartRoomReceipt.Do(this.Logic, picked);
-            }
-
-            public override bool Next() {
-                var receipt = this.WorkingPossibility();
-                if (receipt == null) {
-                    return false;
-                }
-
-                this.TriedRooms.Add(receipt.NewRoom.Static);
-                this.AddReceipt(receipt);
-
-                this.AddLastTask(new TaskLabyrinthFinish(this.Logic));
-
-                var closure = LinkedNodeSet.Closure(receipt.NewRoom.Nodes["main"], this.Logic.Caps.WithoutKey(), this.Logic.Caps.WithoutKey(), true);
-                var node = receipt.NewRoom.Nodes["main"];
-                foreach (var edge in closure.UnlinkedEdges()) {
-                    this.AddNextTask(new TaskLabyrinthContinue(this.Logic, edge));
-                }
-                return true;
-            }
-        }
-
-        private class TaskLabyrinthContinue : RandoTask {
-            private UnlinkedEdge Edge;
-            private int Goodwill;
-
-            private HashSet<StaticEdge> TriedEdges = new HashSet<StaticEdge>();
-
-            public TaskLabyrinthContinue(RandoLogic logic, UnlinkedEdge edge, int goodwill=5) : base(logic) {
-                this.Edge = edge;
-                this.Goodwill = goodwill;
-            }
-
-            private ConnectAndMapReceipt WorkingPossibility() {
-                var possibilities = this.Logic.AvailableNewEdges(this.Logic.Caps.WithoutKey(), this.Logic.Caps.WithoutKey(), (StaticEdge edge) => !edge.FromNode.ParentRoom.End && !this.TriedEdges.Contains(edge));
-
-                foreach (var edge in possibilities) {
-                    var result = ConnectAndMapReceipt.Do(this.Logic, this.Edge, edge);
-                    if (result != null) {
-                        return result;
-                    }
-                }
-
-                return null;
-            }
-
-            public override bool Next() {
-
-                int minCount = LabyrinthMinimums[(int)this.Logic.Settings.Length];
-                int maxCount = LabyrinthMaximums[(int)this.Logic.Settings.Length];
-                double progress = (double)(Logic.Map.Count - minCount) / (double)(maxCount - minCount);
-                Logger.Log("randomizer", $"Progress: {progress}");
-                if (progress > Logic.Random.NextDouble()) {
-                    Logger.Log("randomizer", "No need to proceed");
-                    this.Goodwill = 0; // if we need to backtrack go past this
-                    return true;
-                }
-
-                if (this.Goodwill <= 0) {
-                    Logger.Log("randomizer", "Failure: ran out of goodwill");
-                    return false;
-                }
-
-                var receipt = this.WorkingPossibility();
-                if (receipt == null) {
-                    Logger.Log("randomizer", "No working possibilities");
-                    this.Goodwill = 0; // if we need to backtrack go past this
-                    return true; // never fail!
-                }
-
-                this.AddReceipt(receipt);
-                this.TriedEdges.Add(receipt.Edge.CorrespondingEdge(this.Edge.Node));
-                var targetNode = receipt.Edge.OtherNode(this.Edge.Node);
-                var closure = LinkedNodeSet.Closure(targetNode, this.Logic.Caps.WithoutKey(), this.Logic.Caps.WithoutKey(), true);
-
-                var any = false;
-                foreach (var newedge in closure.UnlinkedEdges()) {
-                    any = true;
-                    this.AddNextTask(new TaskLabyrinthContinue(this.Logic, newedge, Math.Min(5, this.Goodwill + 1)));
-                }
-                if (!any) {
-                    this.Goodwill = 0;
-                } else {
-                    this.Goodwill--;
-                }
-                return true;
-            }
-        }
-
-        private class TaskLabyrinthFinish : RandoTask {
-
-            public TaskLabyrinthFinish(RandoLogic logic) : base(logic) {
-            }
-
-            public override bool Next() {
-                int minCount = LabyrinthMinimums[(int)this.Logic.Settings.Length];
-                if (Logic.Map.Count < minCount) {
-                    Logger.Log("randomizer", "Failure: map is too short");
-                    return false;
-                }
-                return true;
             }
         }
     }

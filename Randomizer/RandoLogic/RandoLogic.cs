@@ -75,24 +75,27 @@ namespace Celeste.Mod.Randomizer {
         }
 
         private Random Random;
-        private List<StaticRoom> RemainingRooms;
+        private List<StaticRoom> RemainingRooms = new List<StaticRoom>();
         private AreaKey Key;
         private LinkedMap Map;
         private RandoSettings Settings;
         private Capabilities Caps;
         public static Dictionary<string, string> RandomDialogMappings = new Dictionary<string, string>();
 
-        private RandoLogic(RandoSettings settings, AreaKey key) {
-            this.Random = new Random((int)settings.IntSeed);
-            this.Settings = settings;
-            this.RemainingRooms = new List<StaticRoom>();
+        private void ResetRooms() {
+            this.RemainingRooms.Clear();
             foreach (var room in RandoLogic.AllRooms) {
-                if (settings.MapIncluded(room.Area)) {
+                if (this.Settings.MapIncluded(room.Area)) {
                     this.RemainingRooms.Add(room);
                 }
             }
-            this.Key = key;
+        }
 
+        private RandoLogic(RandoSettings settings, AreaKey key) {
+            this.Random = new Random((int)settings.IntSeed);
+            this.Settings = settings;
+            this.Key = key;
+            this.ResetRooms();
             this.Caps = new Capabilities {
                 Dashes = settings.Dashes,
                 PlayerSkill = settings.Difficulty,

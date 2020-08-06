@@ -71,6 +71,15 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - Split: BottomToTop
+      ReqOut:
+        Dashes: zero
+      ReqIn:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect  # ceiling pop?
     Tweaks:
     - ID: 0             # shorten jumpthru
       Update:

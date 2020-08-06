@@ -296,8 +296,13 @@ namespace Celeste.Mod.Randomizer {
                         // turn on variants mode
                         SaveData.Instance.VariantMode = true;
                         SaveData.Instance.AssistMode = false;
-                        // clear summit gems, just in case!
+                        // set summit gems
                         SaveData.Instance.SummitGems = new bool[6];
+                        if (Settings.Length == MapLength.Short) {
+                            SaveData.Instance.SummitGems[0] = true;
+                            SaveData.Instance.SummitGems[1] = true;
+                            SaveData.Instance.SummitGems[2] = true;
+                        }
                         // mark as completed to spawn golden berry
                         SaveData.Instance.Areas[newArea.ID].Modes[0].Completed = true;
 
