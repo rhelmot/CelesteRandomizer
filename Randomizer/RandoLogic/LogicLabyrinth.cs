@@ -27,7 +27,7 @@ namespace Celeste.Mod.Randomizer {
             }
             tryagain:
 
-            foreach (var room in this.RemainingRooms) {
+            foreach (var room in RandoLogic.AllRooms) {
                 if (room.Name == "Celeste/6-Reflection/A/b-00") {
                     var lroom = new LabyrinthStartRoom(room);
                     this.Map.AddRoom(lroom);
