@@ -293,8 +293,8 @@ namespace Celeste.Mod.Randomizer {
 
                         // use the debug file
                         SaveData.InitializeDebugMode();
-                        // turn on variants mode
-                        SaveData.Instance.VariantMode = true;
+                        // turn off variants mode
+                        SaveData.Instance.VariantMode = false;
                         SaveData.Instance.AssistMode = false;
                         // mark as completed to spawn golden berry
                         SaveData.Instance.Areas[newArea.ID].Modes[0].Completed = true;
