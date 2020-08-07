@@ -68,6 +68,36 @@ namespace Celeste.Mod.Randomizer {
                 }
             }
 
+            while (this.PossibleContinuations.Count != 0) {
+                var startEdge = this.PossibleContinuations[this.PossibleContinuations.Count - 1];
+                this.PossibleContinuations.RemoveAt(this.PossibleContinuations.Count - 1);
+
+                var closure = LinkedNodeSet.Closure(startEdge.Node, this.Caps, this.Caps, true);
+                var uc = closure.UnlinkedCollectables();
+                if (uc.Count == 0) {
+                    var edgeCount = 0;
+                    foreach (var node in startEdge.Node.Room.Nodes.Values) {
+                        edgeCount += node.Edges.Count;
+                    }
+                    if (edgeCount <= 1) {
+                        foreach (var node in startEdge.Node.Room.Nodes.Values) {
+                            foreach (var edge in node.Edges) {
+                                var otherNode = edge.OtherNode(node);
+                                var otherEdge = edge.OtherEdge(node);
+                                otherNode.Edges.Remove(edge);
+                                this.PossibleContinuations.Add(new UnlinkedEdge() { Static = otherEdge, Node = otherNode });
+                            }
+                        }
+                        this.Map.RemoveRoom(startEdge.Node.Room);
+                    }
+                } else {
+                    this.PriorityCollectables.AddRange(uc);
+                    foreach (var c in uc) {
+                        this.PossibleCollectables.Remove(c);
+                    }
+                }
+            }
+
             if (this.Map.Count < LabyrinthMinimums[(int)this.Settings.Length]) {
                 //Logger.Log("DEBUG", "retrying - too short");
                 retry();
@@ -95,6 +125,16 @@ namespace Celeste.Mod.Randomizer {
                     gem--;
                 } else {
                     spot.Node.Collectables[spot.Static] = gem;
+                    //Logger.Log("DEBUG", $"Adding gem to {spot.Node.Room.Static.Name}");
+
+                    if (collection == this.PriorityCollectables) {
+                        for (int i = 0; i < collection.Count; i++) {
+                            if (collection[i].Node.Room == spot.Node.Room) {
+                                collection.RemoveAt(i);
+                                i--;
+                            }
+                        }
+                    }
                 }
             }
 

@@ -546,6 +546,13 @@ namespace Celeste.Mod.Randomizer {
     public class UnlinkedCollectable {
         public StaticCollectable Static;
         public LinkedNode Node;
+
+        public override bool Equals(object obj) {
+            if (!(obj is UnlinkedCollectable col)) {
+                return false;
+            }
+            return this.Static == col.Static && this.Node == col.Node;
+        }
     }
 
     public class LinkedNodeSet {
