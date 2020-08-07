@@ -43,7 +43,8 @@ namespace Celeste.Mod.Randomizer {
                 var startEdge = this.PossibleContinuations[idx];
                 this.PossibleContinuations.RemoveAt(idx);
 
-                foreach (var toEdge in this.AvailableNewEdges(this.Caps, this.Caps, (edge) => !edge.FromNode.ParentRoom.End)) {
+                foreach (var toEdge in this.AvailableNewEdges(this.Caps, this.Caps,
+                        (edge) => !edge.FromNode.ParentRoom.End && edge.FromNode.ParentRoom.Name != "Celeste/7-Summit/A/g-00b")) {
                     var result = ConnectAndMapReceipt.Do(this, startEdge, toEdge);
                     if (result != null) {
                         var closure = LinkedNodeSet.Closure(result.EntryNode, this.Caps, this.Caps, true);

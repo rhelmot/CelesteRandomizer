@@ -412,6 +412,7 @@ namespace Celeste.Mod.Randomizer {
                     case "lightfadetrigger":
                     case "bloomfadetrigger":
                     case "summitgem":
+                    case "picoconsole":
                         removals.Add(entity);
                         return;
                     case "finalboss":

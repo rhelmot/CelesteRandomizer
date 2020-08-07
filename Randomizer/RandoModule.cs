@@ -14,6 +14,7 @@ namespace Celeste.Mod.Randomizer {
 
         public RandoSettings Settings;
         public const int MAX_SEED_CHARS = 20;
+        public bool SeedCleanRandom;
 
         public RandoModule() {
             Instance = this;
@@ -24,6 +25,7 @@ namespace Celeste.Mod.Randomizer {
             Everest.Events.MainMenu.OnCreateButtons += CreateMainMenuButton;
             Everest.Events.Level.OnCreatePauseMenuButtons += ModifyLevelMenu;
             Everest.Events.Level.OnTransitionTo += OnTransition;
+            Everest.Events.Level.OnLoadLevel += OnLoadLevel;
             On.Celeste.OverworldLoader.ctor += EnterToRandoMenu;
             On.Celeste.Overworld.ctor += HideMaddy;
             On.Celeste.MapData.Load += DontLoadRandoMaps;
@@ -37,11 +39,18 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.Textbox.ctor_string_Language_Func1Array += RandomizeTextboxText;
             On.Celeste.Level.LoadLevel += DontRestartTimer;
             On.Celeste.AutoSplitterInfo.Update += MainThreadHook;
+            On.Celeste.LevelLoader.ctor += MarkSeedUnclean;
+            On.Celeste.LevelExit.ctor += MarkSeedUnclean2;
             IL.Celeste.Level.EnforceBounds += DisableUpTransition;
             IL.Celeste.Level.EnforceBounds += DontBlockOnTheo;
             IL.Celeste.TheoCrystal.Update += BeGracefulOnTransitions;
+            IL.Celeste.SummitGem.OnPlayer += GemRefillsDashes;
             IL.Celeste.SummitGem.OnPlayer += DashlessAccessability;
             IL.Celeste.HeartGem.OnPlayer += DashlessAccessability;
+            IL.Celeste.CS10_Gravestone.OnEnd += DontGiveTwoDashes;
+            IL.Celeste.CS10_Gravestone.BadelineRejoin += DontGiveTwoDashes;
+            IL.Celeste.CS07_Ascend.OnEnd += DontGiveTwoDashes;
+            IL.Celeste.CS07_Ascend.Cutscene += DontGiveTwoDashes;
         }
 
         public override void LoadContent(bool firstLoad) {
@@ -52,6 +61,7 @@ namespace Celeste.Mod.Randomizer {
             Everest.Events.MainMenu.OnCreateButtons -= CreateMainMenuButton;
             Everest.Events.Level.OnCreatePauseMenuButtons -= ModifyLevelMenu;
             Everest.Events.Level.OnTransitionTo -= OnTransition;
+            Everest.Events.Level.OnLoadLevel -= OnLoadLevel;
             On.Celeste.OverworldLoader.ctor -= EnterToRandoMenu;
             On.Celeste.Overworld.ctor -= HideMaddy;
             On.Celeste.MapData.Load -= DontLoadRandoMaps;
@@ -65,11 +75,18 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.Textbox.ctor_string_Language_Func1Array -= RandomizeTextboxText;
             On.Celeste.Level.LoadLevel -= DontRestartTimer;
             On.Celeste.AutoSplitterInfo.Update -= MainThreadHook;
+            On.Celeste.LevelLoader.ctor -= MarkSeedUnclean;
+            On.Celeste.LevelExit.ctor -= MarkSeedUnclean2;
             IL.Celeste.Level.EnforceBounds -= DisableUpTransition;
             IL.Celeste.Level.EnforceBounds -= DontBlockOnTheo;
             IL.Celeste.TheoCrystal.Update -= BeGracefulOnTransitions;
+            IL.Celeste.SummitGem.OnPlayer -= GemRefillsDashes;
             IL.Celeste.SummitGem.OnPlayer -= DashlessAccessability;
             IL.Celeste.HeartGem.OnPlayer -= DashlessAccessability;
+            IL.Celeste.CS10_Gravestone.OnEnd -= DontGiveTwoDashes;
+            IL.Celeste.CS10_Gravestone.BadelineRejoin -= DontGiveTwoDashes;
+            IL.Celeste.CS07_Ascend.OnEnd -= DontGiveTwoDashes;
+            IL.Celeste.CS07_Ascend.Cutscene -= DontGiveTwoDashes;
         }
 
         public void DontRestartTimer(On.Celeste.Level.orig_LoadLevel orig, Level self, Player.IntroTypes playerIntro, bool fromLoader) {
@@ -200,6 +217,18 @@ namespace Celeste.Mod.Randomizer {
             }
         }
 
+        public void OnLoadLevel(Level level, Player.IntroTypes playerIntro, bool isFromLoader) {
+            if (this.InRandomizer) {
+                // set summit gems
+                SaveData.Instance.SummitGems = new bool[6];
+                if (Settings.Length == MapLength.Short) {
+                    SaveData.Instance.SummitGems[0] = true;
+                    SaveData.Instance.SummitGems[1] = true;
+                    SaveData.Instance.SummitGems[2] = true;
+                }
+            }
+        }
+
         public void EnterToRandoMenu(On.Celeste.OverworldLoader.orig_ctor orig, OverworldLoader self, Overworld.StartMode startMode, HiresSnow snow) {
             if ((startMode == Overworld.StartMode.MainMenu || startMode == Overworld.StartMode.AreaComplete) && this.InRandomizer) {
                 startMode = (Overworld.StartMode)55;
@@ -254,12 +283,15 @@ namespace Celeste.Mod.Randomizer {
             orig(version, ease, alpha);
 
             if (this.InRandomizer) {
-                var text = this.Settings.Seed;
+                var text = "rando v" + this.Metadata.VersionString + "\n" + this.Settings.Seed;
                 if (this.Settings.Rules != Ruleset.Custom) {
                     text += " " + this.Settings.Rules.ToString();
+                    if (this.SeedCleanRandom) {
+                        text += "!";
+                    }
                 }
                 text += "\n#" + this.Settings.Hash.ToString();
-                ActiveFont.DrawOutline(text, new Vector2(1820f + 300f * (1f - Ease.CubeOut(ease)), 925f), new Vector2(0.5f, 0f), Vector2.One * 0.5f, Color.White, 2f, Color.Black);
+                ActiveFont.DrawOutline(text, new Vector2(1820f + 300f * (1f - Ease.CubeOut(ease)), 894f), new Vector2(0.5f, 0f), Vector2.One * 0.5f, Color.White, 2f, Color.Black);
             }
         }
 
@@ -342,6 +374,20 @@ namespace Celeste.Mod.Randomizer {
             }
         }
 
+        public void MarkSeedUnclean(On.Celeste.LevelLoader.orig_ctor orig, LevelLoader self, Session session, Vector2? at) {
+            orig(self, session, at);
+            if (!session.StartedFromBeginning) {
+                this.SeedCleanRandom = false;
+            }
+        }
+
+        public void MarkSeedUnclean2(On.Celeste.LevelExit.orig_ctor orig, LevelExit self, LevelExit.Mode mode, Session session, HiresSnow snow) {
+            orig(self, mode, session, snow);
+            if (mode != LevelExit.Mode.Completed) {
+                this.SeedCleanRandom = false;
+            }
+        }
+
         public void DisableUpTransition(ILContext il) {
             ILCursor cursor = new ILCursor(il);
             cursor.TryGotoNext(MoveType.After, instr => instr.MatchCallvirt<MapData>("CanTransitionTo"));
@@ -401,6 +447,27 @@ namespace Celeste.Mod.Randomizer {
                 }
                 return dobreak;
             });
+        }
+
+        public void GemRefillsDashes(ILContext il) {
+            ILCursor cursor = new ILCursor(il);
+            cursor.TryGotoNext(MoveType.After, instr => instr.MatchCallvirt<Monocle.Entity>("Add"));
+            cursor.Emit(Mono.Cecil.Cil.OpCodes.Ldarg_1);
+            cursor.EmitDelegate<Action<Player>>((player) => {
+                player.RefillDash();
+            });
+        }
+
+        public void DontGiveTwoDashes(ILContext il) {
+            ILCursor cursor = new ILCursor(il);
+            while (cursor.TryGotoNext(MoveType.After, instr => instr.MatchLdcI4(2))) {
+                cursor.EmitDelegate<Func<int, int>>((dashes) => {
+                    if (this.InRandomizer) {
+                        return (Engine.Scene as Level).Session.Inventory.Dashes;
+                    }
+                    return dashes;
+                });
+            }
         }
     }
 

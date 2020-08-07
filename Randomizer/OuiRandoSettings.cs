@@ -296,19 +296,18 @@ namespace Celeste.Mod.Randomizer {
                         // turn on variants mode
                         SaveData.Instance.VariantMode = true;
                         SaveData.Instance.AssistMode = false;
-                        // set summit gems
-                        SaveData.Instance.SummitGems = new bool[6];
-                        if (Settings.Length == MapLength.Short) {
-                            SaveData.Instance.SummitGems[0] = true;
-                            SaveData.Instance.SummitGems[1] = true;
-                            SaveData.Instance.SummitGems[2] = true;
-                        }
                         // mark as completed to spawn golden berry
                         SaveData.Instance.Areas[newArea.ID].Modes[0].Completed = true;
+                        // mark heart as not collected
+                        SaveData.Instance.Areas[newArea.ID].Modes[0].HeartGem = false;
+                        // mark clean
+                        RandoModule.Instance.SeedCleanRandom = Settings.SeedType == SeedType.Random;
 
                         var fade = new FadeWipe(this.Scene, false, () => {   // assign to variable to suppress compiler warning
-                            var session = new Session(newArea, null, null);
-                            //session.FirstLevel = false;   // setting this value here prevents the wakeup animation. set it in a hook.
+                            var session = new Session(newArea, null, null) {
+                                FirstLevel = true,
+                                StartedFromBeginning = true,
+                            };
                             LevelEnter.Go(session, true);
                             this.builderThread = null;
                             this.entering = false;
