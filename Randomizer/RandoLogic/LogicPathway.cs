@@ -7,9 +7,9 @@ namespace Celeste.Mod.Randomizer {
         private Deque<RandoTask> Tasks = new Deque<RandoTask>();
         private Stack<RandoTask> CompletedTasks = new Stack<RandoTask>();
 
-        private static readonly float[] PathwayMinimums = { 20, 40, 60, 90 };
-        private static readonly float[] PathwayRanges = { 7, 15, 15, 40 };
-        private static readonly float[] PathwayMaxRoom = { 5, 20, 10000, 10000 };
+        private static readonly float[] PathwayMinimums = { 40, 80, 120, 180 };
+        private static readonly float[] PathwayRanges = { 15, 30, 40, 80 };
+        private static readonly float[] PathwayMaxRoom = { 6, 20, 10000, 10000 };
 
         private void GeneratePathway() {
             this.Tasks.AddToFront(new TaskPathwayStart(this));
