@@ -267,6 +267,8 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: None
+    Collectables:
+    - Idx: 0
     InternalEdges:
     - To: "exit"
       ReqBoth:
@@ -546,6 +548,9 @@ ASide:
     - To: "berry1"
       ReqIn:
         Dashes: zero
+    - Collectable: 1
+      ReqBoth:
+        Dashes: one
     Subrooms:
     - Room: "berry1"
       Holes:

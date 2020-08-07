@@ -520,6 +520,8 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: inout
+    Collectables:
+    - Idx: 0
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
@@ -947,21 +949,32 @@ ASide:
     - Side: up
       Idx: 1
       Kind: none
-  - Room: "d-09"        # TODO: Berry
+  - Room: "d-09"
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
     InternalEdges:
-    - Split: LeftToRight
+    - To: "right"
       ReqOut:
         Dashes: one
       ReqIn:
         Dashes: two
+    Subrooms:
+    - Room: "right"
+      Holes:
+      - Side: Right
+        Idx: 0
+        Kind: inout
+      InternalEdges:
+      - Collectable: 0
+        ReqBoth:
+          Or:
+          - Dashes: one
+            Difficulty: hard
+          - Dashes: two
   - Room: "d-10"
+    End: true
     Holes:
     - Side: Left
       Idx: 1
@@ -972,7 +985,6 @@ ASide:
     - Side: Right
       Idx: 0
       Kind: none
-    End: true
 
 BSide:
   - Room: "a-00"

@@ -598,16 +598,20 @@ ASide:
       - Side: Down
         Idx: 0
         Kind: inout
-      - Side: Down
-        Idx: 1
-        Kind: inout
+      InternalEdges:
+      - To: "secretRight"
+        ReqOut:
+          Dashes: one
         ReqIn:
           Or:
           - Dashes: one
           - Dashes: zero
             Difficulty: expert
-        ReqOut:
-          Dashes: one
+    - Room: "secretRight"
+      Holes:
+      - Side: Down
+        Idx: 1
+        Kind: inout
     Tweaks:
     - ID: 11
       Update:

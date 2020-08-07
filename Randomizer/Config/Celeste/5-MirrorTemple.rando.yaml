@@ -540,6 +540,8 @@ ASide:
       - Side: Right
         Idx: 0
         Kind: inout
+        ReqIn:
+          Dashes: one
       Collectables:
       - Idx: 0
   - Room: "b-05"

@@ -449,6 +449,8 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: out
+      ReqOut:
+        Dashes: one
     - Side: Down
       Idx: 0
       Kind: in
