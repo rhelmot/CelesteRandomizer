@@ -13,6 +13,16 @@ ASide:
         Add: true
         X: 23
         Y: 224
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 0
+        Y: 8
+        Width: 312
+        Height: 24
+        Values:
+          cameraX: 0.0
+          cameraY: 1.0
   - Room: "s0"
     Holes:
     - Side: Up
@@ -69,6 +79,7 @@ ASide:
       ReqIn:
         Dashes: one
   - Room: "0"
+    Hub: true
     Holes:
     - Side: Up
       Idx: 0
@@ -87,10 +98,26 @@ ASide:
       Idx: 0
       Kind: inout
     Tweaks:
-    - ID: 32
-      Name: "lightbeam"
+    - Name: "cameraOffsetTrigger"
       Update:
-        Remove: true
+        Add: true
+        X: 104
+        Y: 8
+        Width: 40
+        Height: 24
+        Values:
+          cameraX: 0.0
+          cameraY: 0.8
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 168
+        Y: 144
+        Width: 56
+        Height: 16
+        Values:
+          cameraX: 0.0
+          cameraY: 0.0
   - Room: "1"
     Holes:
     - Side: Right
@@ -160,6 +187,16 @@ ASide:
       Name: "invisibleBarrier"
       Update:
         Remove: true
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 352
+        Y: 288
+        Width: 24
+        Height: 168
+        Values:
+          cameraX: -0.5
+          cameraY: -1.0
   - Room: "3x"
     Holes:
     - Side: Up
@@ -184,6 +221,12 @@ ASide:
     - Split: BottomToTop
       ReqBoth:
         Dashes: one
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 328
+        Y: 72
   - Room: "4"
     Holes:
     - Side: Up
@@ -226,6 +269,12 @@ ASide:
     - Split: BottomToTop
       ReqBoth:
         Dashes: one
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 296
+        Y: 24
   - Room: "6"
     Holes:
     - Side: Up
@@ -238,6 +287,12 @@ ASide:
     - Split: BottomToTop
       ReqBoth:
         Dashes: one
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 32
+        Y: 40
   - Room: "7"
     Holes:
     - Side: Up
@@ -298,7 +353,28 @@ ASide:
         Add: true
         X: 384
         Y: 96
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 360
+        Y: 56
+        Width: 24
+        Height: 48
+        Values:
+          cameraX: -0.5
+          cameraY: 0.5
+    - Name: "cameraOffsetTrigger"
+      ID: 1
+      Update:
+        Values:
+          cameraY: -0.5
+    - Name: "cameraOffsetTrigger"
+      ID: 2
+      Update:
+        Values:
+          cameraY: -0.5
   - Room: "9"
+    Hub: true
     Holes:
     - Side: Up
       Idx: 0
@@ -350,10 +426,16 @@ ASide:
       Name: "invisibleBarrier"
       Update:
         Remove: true
-    - ID: 38
-      Name: "lightbeam"
+    - Name: "cameraOffsetTrigger"
       Update:
-        Remove: true
+        Add: true
+        X: 184
+        Y: 8
+        Width: 40
+        Height: 24
+        Values:
+          cameraX: 0.0
+          cameraY: 1.0
   - Room: "9b"
     Holes:
     - Side: Down
@@ -415,6 +497,17 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    Tweaks:
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 400
+        Y: 0
+        Width: 24
+        Height: 160
+        Values:
+          cameraX: -0.8
+          cameraY: 0.0
   - Room: "12b"
     Holes:
     - Side: Up
@@ -438,6 +531,37 @@ ASide:
     - Side: Down
       Idx: 1
       Kind: in
+    Tweaks:
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 560
+        Y: 0
+        Width: 24
+        Height: 160
+        Values:
+          cameraX: -1.0
+          cameraY: 0.0
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 376
+        Y: 0
+        Width: 40
+        Height: 32
+        Values:
+          cameraX: -0.4
+          cameraY: 0.0
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 376
+        Y: 152
+        Width: 72
+        Height: 32
+        Values:
+          cameraX: -0.4
+          cameraY: 0.0
   - Room: "12c"
     Holes:
     - Side: Down
@@ -455,6 +579,17 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    Tweaks:
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 432
+        Y: 0
+        Width: 24
+        Height: 168
+        Values:
+          cameraX: -0.8
+          cameraY: 0.0
   - Room: "12d"
     Holes:
     - Side: Up
@@ -544,6 +679,17 @@ ASide:
       Kind: inout
       ReqOut:
         Dashes: one
+    Tweaks:
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 296
+        Y: 32
+        Width: 16
+        Height: 64
+        Values:
+          cameraX: 0.0
+          cameraY: 1.0
   - Room: "d2"
     Holes:
     - Side: Right
@@ -576,6 +722,26 @@ ASide:
       Name: "invisibleBarrier"
       Update:
         Remove: true
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 8
+        Y: 72
+        Width: 16
+        Height: 88
+        Values:
+          cameraX: 0.5
+          cameraY: 0.0
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 112
+        Y: 8
+        Width: 56
+        Height: 24
+        Values:
+          cameraX: 0.5
+          cameraY: 0.0
   - Room: "d3"
     Holes:
     - Side: Left
@@ -706,7 +872,18 @@ ASide:
       Name: "goldenBerryCollectTrigger"
       Update:
         Remove: true
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 0
+        Y: 8
+        Width: 320
+        Height: 48
+        Values:
+          cameraX: 0.0
+          cameraY: 1.0
   - Room: "end_1"
+    Hub: true
     Holes:
     - Side: Up
       Idx: 0
@@ -734,6 +911,16 @@ ASide:
         Add: true
         X: 352
         Y: 88
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 64
+        Y: 56
+        Width: 296
+        Height: 56
+        Values:
+          cameraX: 0.0
+          cameraY: 0.8
   - Room: "end_2"
     Holes:
     - Side: Right
@@ -771,6 +958,17 @@ ASide:
     - Side: Left
       Idx: 1
       Kind: inout
+    Tweaks:
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 352
+        Y: 160
+        Width: 24
+        Height: 160
+        Values:
+          cameraX: -0.5
+          cameraY: -0.3
   - Room: "end_3b"
     Holes:
     - Side: Up
@@ -784,6 +982,27 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    Tweaks:
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 560
+        Y: 0
+        Width: 24
+        Height: 160
+        Values:
+          cameraX: -1.0
+          cameraY: 0.0
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 384
+        Y: 8
+        Width: 32
+        Height: 16
+        Values:
+          cameraX: -0.5
+          cameraY: 0.0
   - Room: "end_3c"
     Holes:
     - Side: Down
@@ -813,6 +1032,17 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    Tweaks:
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 400
+        Y: 0
+        Width: 24
+        Height: 160
+        Values:
+          cameraX: -0.8
+          cameraY: 0.0
   - Room: "end_5"
     Holes:
     - Side: Right
@@ -821,6 +1051,17 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    Tweaks:
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 432
+        Y: 0
+        Width: 24
+        Height: 168
+        Values:
+          cameraX: -0.8
+          cameraY: 0.0
   - Room: "end_6"
     End: true
     Holes:
@@ -857,6 +1098,27 @@ ASide:
     - Side: Down
       Idx: 1
       Kind: inout
+    Tweaks:
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 0
+        Y: 0
+        Width: 688
+        Height: 64
+        Values:
+          cameraX: 0.0
+          cameraY: 1.0
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 104
+        Y: 312
+        Width: 432
+        Height: 48
+        Values:
+          cameraX: 0.0
+          cameraY: -0.3
   - Room: "end_s1"
     Holes:
     - Side: Down
@@ -897,6 +1159,17 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: inout
+    Tweaks:
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 352
+        Y: 72
+        Width: 16
+        Height: 40
+        Values:
+          cameraX: -1.0
+          cameraY: 0.0
   - Room: "01"
     Holes:
     - Side: Up
@@ -933,13 +1206,30 @@ BSide:
         Dashes: one
     Tweaks:
     - ID: 0
+      Name: "jumpThru"
       Update:
-        Width: 16
+        X: 32
+        Width: 24
     - Name: "spawn"
       Update:
         Add: true
         X: 456
         Y: 32
+    - Name: "spawn"
+      X: 24
+      Y: 160
+      Update:
+        X: 32
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 424
+        Y: 8
+        Width: 48
+        Height: 24
+        Values:
+          cameraX: -1.0
+          cameraY: 0.0
   - Room: "02b"
     Holes:
     - Side: Up
@@ -1024,6 +1314,12 @@ BSide:
     - Side: Down
       Idx: 0
       Kind: in
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 296
+        Y: 24
   - Room: "04"  # TODO when we can edit fg tiles, remove the leftmost spikes and blocks under it
     Holes:
     - Side: Up
@@ -1073,6 +1369,12 @@ BSide:
     - Side: Down
       Idx: 0
       Kind: in
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 328
+        Y: 184
   - Room: "07"
     Holes:
     - Side: Up
@@ -1088,6 +1390,11 @@ BSide:
       Name: "invisibleBarrier"
       Update:
         Remove: true
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 88
+        Y: 24
   - Room: "08b"
     Holes:
     - Side: Up
@@ -1103,6 +1410,11 @@ BSide:
       Update:
         Y: 16
         Height: 104
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 360
+        Y: 16
     ExtraSpace:
     - X: 24
       Y: -32
@@ -1118,6 +1430,12 @@ BSide:
     - Side: Down
       Idx: 0
       Kind: in
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 296
+        Y: 16
   - Room: "09"
     Holes:
     - Side: Right
@@ -1138,6 +1456,12 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: inout
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 296
+        Y: 24
   - Room: "11"
     Holes:
     - Side: Up
@@ -1148,6 +1472,12 @@ BSide:
     - Side: Down
       Idx: 0
       Kind: in
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 296
+        Y: 24
   - Room: "end"
     End: true
     Holes:

@@ -26,6 +26,17 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    Tweaks:
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 416
+        Y: 0
+        Width: 24
+        Height: 96
+        Values:
+          cameraX: -1
+          cameraY: 0
   - Room: "0b"
     Holes:
     - Side: Down
@@ -42,6 +53,17 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    Tweaks:
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 432
+        Y: 0
+        Width: 24
+        Height: 96
+        Values:
+          cameraX: -1
+          cameraY: 0
   - Room: "2"
     Holes:
     - Side: Right

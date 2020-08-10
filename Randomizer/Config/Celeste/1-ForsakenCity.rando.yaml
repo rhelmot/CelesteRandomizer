@@ -109,6 +109,7 @@ ASide:
         X: 192
         Y: 40
   - Room: "5"
+    Hub: true
     Holes:
     - Side: Up
       Idx: 0
@@ -136,6 +137,36 @@ ASide:
     - ID: 49
       Update:
         Remove: true
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 272
+        Y: 8
+        Width: 40
+        Height: 24
+        Values:
+          cameraX: 0
+          cameraY: 0.8
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 40
+        Y: 216
+        Width: 272
+        Height: 16
+        Values:
+          cameraX: 0
+          cameraY: 0
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 112
+        Y: 40
+        Width: 24
+        Height: 96
+        Values:
+          cameraX: 0
+          cameraY: 0
   - Room: "5a"
     Holes:
     - Side: Left
@@ -244,6 +275,17 @@ ASide:
     - Side: Down
       Idx: 4
       Kind: None
+    Tweaks:
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 8
+        Y: 24
+        Width: 48
+        Height: 152
+        Values:
+          cameraX: 1
+          cameraY: 1
   - Room: "6a"
     Holes:
     - Side: Right
@@ -272,6 +314,47 @@ ASide:
     - Side: Left
       Idx: 1
       Kind: inout
+    Tweaks:
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 296
+        Y: 0
+        Width: 16
+        Height: 88
+        Values:
+          cameraX: 1
+          cameraY: 0.8
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 8
+        Y: 24
+        Width: 16
+        Height: 56
+        Values:
+          cameraX: 0
+          cameraY: 1
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 112
+        Y: 64
+        Width: 80
+        Height: 56
+        Values:
+          cameraX: 0
+          cameraY: 0
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 80
+        Y: 216
+        Width: 168
+        Height: 24
+        Values:
+          cameraX: 0
+          cameraY: 0
   - Room: "s0"
     Holes:
     - Side: Right
@@ -329,6 +412,16 @@ ASide:
         Add: true
         X: 192
         Y: 24
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 168
+        Y: 8
+        Width: 40
+        Height: 16
+        Values:
+          cameraX: 0
+          cameraY: 1
   - Room: "7z"
     Holes:
     - Side: Up
@@ -345,6 +438,16 @@ ASide:
         Add: true
         X: 232
         Y: 64
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 144
+        Y: 8
+        Width: 48
+        Height: 16
+        Values:
+          cameraX: 0
+          cameraY: 1
   - Room: "8z"
     Holes:
     - Side: Right
@@ -353,6 +456,17 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: inout
+    Tweaks:
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 296
+        Y: 8
+        Width: 16
+        Height: 30
+        Values:
+          cameraX: 0
+          cameraY: 1
   - Room: "8zb"
     Holes:
     - Side: Right
@@ -510,6 +624,7 @@ ASide:
       Idx: 0
       Kind: inout
   - Room: "10"
+    Hub: true
     Holes:
     - Side: Up
       Idx: 0
@@ -531,6 +646,36 @@ ASide:
       Update:
         X: 152
         Width: 16
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 32
+        Y: 8
+        Width: 40
+        Height: 48
+        Values:
+          cameraX: 0
+          cameraY: 0.8
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 216
+        Y: 8
+        Width: 40
+        Height: 24
+        Values:
+          cameraX: 0
+          cameraY: 1
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 112
+        Y: 168
+        Width: 168
+        Height: 32
+        Values:
+          cameraX: 0
+          cameraY: 0
   - Room: "10z"
     Holes:
     - Side: Right
@@ -637,6 +782,16 @@ ASide:
       X: 368
       Update:
         X: 360
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 72
+        Y: 8
+        Width: 40
+        Height: 72
+        Values:
+          cameraX: 1
+          cameraY: 0.6
   - Room: "11z"
     Holes:
     - Side: Right
@@ -678,6 +833,16 @@ ASide:
       Y: 216
       Update:
         X: 40
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 384
+        Y: 104
+        Width: 24
+        Height: 96
+        Values:
+          cameraX: -1
+          cameraY: 0
   - Room: "12z"
     Holes:
     - Side: Right
@@ -702,6 +867,16 @@ ASide:
         Add: true
         X: 80
         Y: 32
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 56
+        Y: 8
+        Width: 40
+        Height: 24
+        Values:
+          cameraX: 0
+          cameraY: 1
   - Room: "end"
     Holes:
     - Side: Down
@@ -807,6 +982,16 @@ BSide:
         X: 296
         Y: 40
         Width: 16
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 272
+        Y: 16
+        Width: 48
+        Height: 32
+        Values:
+          cameraX: -1.0
+          cameraY: 0.0
   - Room: "02b"
     Holes:
     - Side: Up
@@ -840,6 +1025,16 @@ BSide:
       Update:
         X: 24
         Width: 24
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 336
+        Y: 8
+        Width: 48
+        Height: 24
+        Values:
+          cameraX: -1.0
+          cameraY: 0.0
   - Room: "03"
     Holes:
     - Side: Right
@@ -862,6 +1057,16 @@ BSide:
       Y: 264
       Update:
         X: 32
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 416
+        Y: 120
+        Width: 16
+        Height: 48
+        Values:
+          cameraX: -1.0
+          cameraY: 0.4
   - Room: "04"
     Holes:
     - Side: Up
@@ -880,6 +1085,16 @@ BSide:
         Add: true
         X: 288
         Y: 64
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 280
+        Y: 16
+        Width: 64
+        Height: 48
+        Values:
+          cameraX: -1.0
+          cameraY: 0.8
   - Room: "05"
     Holes:
     - Side: Up
@@ -911,6 +1126,16 @@ BSide:
         Add: true
         X: 356
         Y: 32
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 336
+        Y: 8
+        Width: 56
+        Height: 24
+        Values:
+          cameraX: -1.0
+          cameraY: 0.0
   - Room: "05b"
     Holes:
     - Side: Up
@@ -946,6 +1171,16 @@ BSide:
         X: 344
         Y: 32
         Width: 16
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 328
+        Y: 8
+        Width: 40
+        Height: 24
+        Values:
+          cameraX: -1.0
+          cameraY: 0.0
   - Room: "06"
     Holes:
     - Side: Right
@@ -965,6 +1200,16 @@ BSide:
     - ID: 0
       Update:
         Width: 16
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 320
+        Y: 104
+        Width: 16
+        Height: 48
+        Values:
+          cameraX: -1.0
+          cameraY: 0.0
   - Room: "07"
     Holes:
     - Side: Up
@@ -985,6 +1230,16 @@ BSide:
         Add: true
         X: 88
         Y: 32
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 56
+        Y: 8
+        Width: 56
+        Height: 24
+        Values:
+          cameraX: 0.0
+          cameraY: 1.2
   - Room: "08"
     Holes:
     - Side: Up
@@ -1037,6 +1292,16 @@ BSide:
         Add: true
         X: 408
         Y: 24
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 384
+        Y: 8
+        Width: 40
+        Height: 24
+        Values:
+          cameraX: -1.0
+          cameraY: 0.0
   - Room: "09"
     Holes:
     - Side: Right
@@ -1066,6 +1331,16 @@ BSide:
       Update:
         X: 24
         Width: 16
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 288
+        Y: 8
+        Width: 24
+        Height: 40
+        Values:
+          cameraX: 0.0
+          cameraY: 1.2
   - Room: "10"
     Holes:
     - Side: Right
@@ -1094,6 +1369,16 @@ BSide:
         Add: true
         X: 120
         Y: 24
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 96
+        Y: 8
+        Width: 48
+        Height: 24
+        Values:
+          cameraX: 0.0
+          cameraY: 1.2
   - Room: "end"
     Holes:
     - Side: Down
@@ -1221,6 +1506,17 @@ CSide:
           Difficulty: hard
         - Dashes: one
           Difficulty: perfect
+    Tweaks:
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 664
+        Y: 0
+        Width: 16
+        Height: 112
+        Values:
+          cameraX: -0.8
+          cameraY: 0.0
   - Room: "01"
     Holes:
     - Side: Right
