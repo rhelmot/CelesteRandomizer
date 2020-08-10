@@ -139,6 +139,9 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: none
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
@@ -153,6 +156,9 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: none
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
@@ -169,6 +175,9 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: none
   - Room: "b-03"
     Holes:
     - Side: Right
@@ -177,6 +186,9 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: none
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
@@ -197,6 +209,9 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: none
   - Room: "b-05"
     Holes:
     - Side: Right
