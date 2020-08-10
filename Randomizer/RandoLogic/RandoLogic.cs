@@ -327,6 +327,7 @@ namespace Celeste.Mod.Randomizer {
             }
 
             var map = new MapData(this.Key);
+            typeof(MapData).GetField("DashlessGoldenberries").SetValue(map, new List<EntityData>());
             map.Levels = new List<LevelData>();
             this.Map.FillMap(map, this.Random);
             this.SetMapBounds(map);
