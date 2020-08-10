@@ -415,8 +415,8 @@ ASide:
     Tweaks:
     - ID: 183
       Update:
-        X: 72
-        Width: 32
+        X: 88
+        Width: 16
     - Name: "spawn"
       X: 88
       Y: 160
@@ -831,7 +831,7 @@ ASide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: outin
+      Kind: inout
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
@@ -1074,6 +1074,7 @@ BSide:
         - Dashes: zero
           Difficulty: expert
       ReqIn:
+        Or:
         - Dashes: one
           Difficulty: perfect
         - Dashes: two

@@ -9,7 +9,7 @@ namespace Celeste.Mod.Randomizer {
 
         private static readonly float[] PathwayMinimums = { 40, 80, 120, 180 };
         private static readonly float[] PathwayRanges = { 15, 30, 40, 80 };
-        private static readonly float[] PathwayMaxRoom = { 6, 20, 10000, 10000 };
+        private static readonly float[] PathwayMaxRoom = { 6, 15, 10000, 10000 };
 
         private void GeneratePathway() {
             this.Tasks.AddToFront(new TaskPathwayStart(this));
@@ -128,7 +128,7 @@ namespace Celeste.Mod.Randomizer {
                 var possibilities = this.Logic.AvailableNewEdges(caps, null, (StaticEdge e) => 
                     !this.TriedRooms.Contains(e.FromNode.ParentRoom) && 
                     this.IsEnd == e.FromNode.ParentRoom.End && 
-                    e.FromNode.ParentRoom.Worth <= PathwayMaxRoom[(int)Logic.Settings.Length]);
+                    e.FromNode.ParentRoom.Worth <= PathwayMaxRoom[(int)Logic.Settings.Length + (this.IsEnd ? 1 : 0)]);
 
                 foreach (var edge in possibilities) {
                     var result = ConnectAndMapReceipt.Do(this.Logic, this.Edge, edge);
