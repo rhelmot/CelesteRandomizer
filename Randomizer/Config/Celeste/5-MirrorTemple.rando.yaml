@@ -1741,7 +1741,7 @@ BSide:
       Kind: inout
     - Side: Left
       Idx: 0
-      Kind: inout
+      Kind: in
     InternalEdges:
     - Split: LeftToRight
       ReqOut:

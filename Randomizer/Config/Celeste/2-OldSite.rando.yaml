@@ -443,6 +443,10 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - Collectable: 0
+      ReqBoth:
+        Dashes: one
   - Room: "12"
     Holes:
     - Side: Right
@@ -459,6 +463,10 @@ ASide:
     - Side: Up
       Idx: 1
       Kind: inout
+    InternalEdges:
+    - Collectable: 0
+      ReqBoth:
+        Dashes: one
   - Room: "13"  # TODO: Warp
     Holes:
     - Side: Left

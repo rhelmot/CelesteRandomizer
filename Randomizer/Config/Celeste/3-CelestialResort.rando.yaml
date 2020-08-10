@@ -122,6 +122,9 @@ ASide:
     - Split: LeftToRight
       ReqBoth:
         Dashes: one
+    - Collectable: 0
+      ReqBoth:
+        Dashes: one
   - Room: "02-a"
     Holes:
     - Side: Left
@@ -1275,6 +1278,13 @@ ASide:
       Idx: 0
       Kind: inout
       HighBound: 19
+    InternalEdges:
+    - Collectable: 0
+      ReqBoth:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect
     Tweaks:
     - ID: 2             # remove invisible barrier
       Update:
@@ -1887,3 +1897,52 @@ CSide:
     - Side: Down
       Idx: 2
       Kind: None
+    - Side: Down
+      Idx: 3
+      Kind: Unknown
+      ReqIn:
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: hard
+      ReqIn:
+    - Side: Down
+      Idx: 4
+      Kind: Unknown
+      ReqIn:
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: hard
+    - Side: Down
+      Idx: 5
+      Kind: Unknown
+      ReqIn:
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: hard
+    - Side: Down
+      Idx: 6
+      Kind: Unknown
+      ReqIn:
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: hard
+    - Side: Down
+      Idx: 7
+      Kind: Unknown
+      ReqIn:
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: hard
+    - Side: Down
+      Idx: 8
+      Kind: Unknown
+      ReqIn:
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: hard

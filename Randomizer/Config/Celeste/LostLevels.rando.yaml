@@ -535,6 +535,7 @@ ASide:
     - Side: Down
       Idx: 1
       Kind: in
+      Launch: -1
     - Side: Down
       Idx: 2
       Kind: none
@@ -548,6 +549,7 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: in
+      Launch: -1
   - Room: "e-00b"
     Holes:
     - Side: Up
@@ -590,6 +592,7 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: in
+      Launch: -1
     - Side: Down
       Idx: 1
       Kind: None

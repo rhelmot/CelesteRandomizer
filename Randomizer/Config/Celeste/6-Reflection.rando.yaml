@@ -224,22 +224,26 @@ ASide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
-      ReqOut:
-        Dashes: one
+      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - Split: LeftToRight
+      ReqOut:
+        Dashes: one
   - Room: "06"
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
-      ReqOut:
-        Dashes: one
+      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - Split: LeftToRight
+      ReqOut:
+        Dashes: one
   - Room: "07"
     Holes:
     - Side: Right

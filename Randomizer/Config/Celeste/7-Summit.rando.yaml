@@ -906,28 +906,42 @@ ASide:
           cameraY: 1
   - Room: "c-06b"
     Holes:
-    - Side: Up
-      Idx: 0
-      Kind: out
-      ReqOut:
-        Or:
-        - Dashes: two
-        - Dashes: one
-          Difficulty: hard
-    - Side: Right
-      Idx: 0
-      Kind: inout  # TODO techincally not correct. you can go from this hole to the top in one dash on normal difficulty
-      ReqOut:
-        Or:
-        - Dashes: two
-        - Dashes: one
-          Difficulty: hard
-    - Side: Left
-      Idx: 0
-      Kind: in
     - Side: Down
       Idx: 0
       Kind: in
+    InternalEdges:
+    - To: "middle"
+      ReqOut:
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: hard
+    Subrooms:
+    - Room: "berry"
+      Holes:
+      - Side: Left
+        Idx: 0
+        Kind: inout
+      Collectables:
+      - Idx: 0
+      InternalEdges:
+      - To: "main"
+        ReqOut:
+          Dashes: zero
+    - Room: "middle"
+      Holes:
+      - Side: Right
+        Idx: 0
+        Kind: inout
+      InternalEdges:
+      - To: "top"
+        ReqOut:
+          Dashes: one
+    - Room: "top"
+      Holes:
+      - Side: Up
+        Idx: 0
+        Kind: inout
     Tweaks:
     - Name: "spawn"
       Update:
@@ -1157,6 +1171,7 @@ ASide:
       - Side: Down
         Idx: 1
         Kind: in
+        Launch: -1
   - Room: "d-01c"
     Holes:
     - Side: Up
