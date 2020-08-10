@@ -74,11 +74,17 @@ namespace Celeste.Mod.Randomizer {
         public void AddRoom(LinkedRoom room) {
             this.Rooms.Add(room);
             this.Worth += room.Static.Worth;
+            if (room.IsBacktrack) {
+                this.Worth += room.Static.Worth;
+            }
         }
 
         public void RemoveRoom(LinkedRoom room) {
             this.Rooms.Remove(room);
             this.Worth -= room.Static.Worth;
+            if (room.IsBacktrack) {
+                this.Worth -= room.Static.Worth;
+            }
             if (room == this.CachedHit) {
                 this.CachedHit = null;
             }
@@ -109,6 +115,7 @@ namespace Celeste.Mod.Randomizer {
         public StaticRoom Static;
         public Dictionary<string, LinkedNode> Nodes = new Dictionary<string, LinkedNode>();
         public HashSet<int> UsedKeyholes = new HashSet<int>();
+        public bool IsBacktrack;
 
         public LinkedRoom(StaticRoom Room, Vector2 Position) {
             this.Static = Room;

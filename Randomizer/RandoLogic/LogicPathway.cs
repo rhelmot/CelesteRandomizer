@@ -219,7 +219,7 @@ namespace Celeste.Mod.Randomizer {
                         continue;
                     }
                     foreach (var toEdge in this.Logic.AvailableNewEdges(caps, caps, (StaticEdge e) => !e.FromNode.ParentRoom.End)) {
-                        var mapped = ConnectAndMapReceipt.Do(this.Logic, outEdge, toEdge);
+                        var mapped = ConnectAndMapReceipt.Do(this.Logic, outEdge, toEdge, isBacktrack: true);
                         if (mapped == null) {
                             continue;
                         }
