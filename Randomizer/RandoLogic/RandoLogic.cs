@@ -66,8 +66,8 @@ namespace Celeste.Mod.Randomizer {
             newArea.CompleteScreenName = r.PickCompleteScreen();
             newArea.CassetteSong = r.PickCassetteAudio();
             newArea.Mode[0].AudioState = new AudioState(r.PickMusicAudio(), r.PickAmbienceAudio());
-            newArea.Mode[0].MapData = r.MakeMap();
             r.RandomizeDialog();
+            newArea.Mode[0].MapData = r.MakeMap();
 
             Logger.Log("randomizer", $"new area {newArea.GetSID()}");
 

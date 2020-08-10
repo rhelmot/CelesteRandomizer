@@ -51,6 +51,7 @@ namespace Celeste.Mod.Randomizer {
             IL.Celeste.CS10_Gravestone.BadelineRejoin += DontGiveTwoDashes;
             IL.Celeste.CS07_Ascend.OnEnd += DontGiveTwoDashes;
             IL.Celeste.CS07_Ascend.Cutscene += DontGiveTwoDashes;
+            IL.Celeste.AngryOshiro.ChaseUpdate += MoveOutOfTheWay;
         }
 
         public override void LoadContent(bool firstLoad) {
@@ -87,6 +88,7 @@ namespace Celeste.Mod.Randomizer {
             IL.Celeste.CS10_Gravestone.BadelineRejoin -= DontGiveTwoDashes;
             IL.Celeste.CS07_Ascend.OnEnd -= DontGiveTwoDashes;
             IL.Celeste.CS07_Ascend.Cutscene -= DontGiveTwoDashes;
+            IL.Celeste.AngryOshiro.ChaseUpdate -= MoveOutOfTheWay;
         }
 
         public void DontRestartTimer(On.Celeste.Level.orig_LoadLevel orig, Level self, Player.IntroTypes playerIntro, bool fromLoader) {
@@ -365,12 +367,50 @@ namespace Celeste.Mod.Randomizer {
         }
 
         public static AreaData AreaHandoff;
+        public static AreaKey? StartMe;
+        private bool Entering;
         public void MainThreadHook(On.Celeste.AutoSplitterInfo.orig_Update orig, AutoSplitterInfo self) {
             orig(self);
 
             if (AreaHandoff != null) {
                 AreaData.Areas.Add(AreaHandoff);
+                var key = new AreaKey(AreaData.Areas.Count - 1); // does this trigger some extra behavior
                 AreaHandoff = null;
+            }
+            if (StartMe != null && !Entering) {
+                var newArea = StartMe.Value;
+                Audio.SetMusic((string)null, true, true);
+                Audio.SetAmbience((string)null, true);
+                Audio.Play("event:/ui/main/savefile_begin");
+
+                // use the debug file
+                SaveData.InitializeDebugMode();
+                // turn off variants mode
+                SaveData.Instance.VariantMode = false;
+                SaveData.Instance.AssistMode = false;
+                // mark as completed to spawn golden berry
+                SaveData.Instance.Areas[newArea.ID].Modes[0].Completed = true;
+                // mark heart as not collected
+                SaveData.Instance.Areas[newArea.ID].Modes[0].HeartGem = false;
+                // mark clean
+                this.SeedCleanRandom = Settings.SeedType == SeedType.Random;
+                Entering = true;
+
+                var fade = new FadeWipe(Engine.Scene, false, () => {   // assign to variable to suppress compiler warning
+                    var session = new Session(newArea, null, null) {
+                        FirstLevel = true,
+                        StartedFromBeginning = true,
+                    };
+                    LevelEnter.Go(session, true);
+                    StartMe = null;
+                    Entering = false;
+                });
+
+                /*foreach (AreaData area in AreaData.Areas) {
+                    Logger.Log("randomizer", $"Skeleton for {area.GetSID()}");
+                    RandoConfigFile.YamlSkeleton(area);
+
+                }*/
             }
         }
 
@@ -468,6 +508,21 @@ namespace Celeste.Mod.Randomizer {
                     return dashes;
                 });
             }
+        }
+
+        public void MoveOutOfTheWay(ILContext il) {
+            ILCursor cursor = new ILCursor(il);
+            cursor.TryGotoNext(MoveType.After, instr => instr.MatchCallvirt<AngryOshiro>("get_TargetY"));
+            cursor.EmitDelegate<Func<float, float>>((targety) => {
+                if (this.InRandomizer) {
+                    var level = Engine.Scene as Level;
+                    var player = level.Tracker.GetEntity<Player>();
+                    if (player.Facing == Facings.Left && player.X < level.Bounds.X + 70) {
+                        return targety - 50;
+                    }
+                }
+                return targety;
+            });
         }
     }
 

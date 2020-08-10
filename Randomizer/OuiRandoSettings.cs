@@ -286,38 +286,12 @@ namespace Celeste.Mod.Randomizer {
                             return;
                         }
                         this.entering = true;
-
-                        Audio.SetMusic((string)null, true, true);
-                        Audio.SetAmbience((string)null, true);
-                        Audio.Play("event:/ui/main/savefile_begin");
-
-                        // use the debug file
-                        SaveData.InitializeDebugMode();
-                        // turn off variants mode
-                        SaveData.Instance.VariantMode = false;
-                        SaveData.Instance.AssistMode = false;
-                        // mark as completed to spawn golden berry
-                        SaveData.Instance.Areas[newArea.ID].Modes[0].Completed = true;
-                        // mark heart as not collected
-                        SaveData.Instance.Areas[newArea.ID].Modes[0].HeartGem = false;
-                        // mark clean
-                        RandoModule.Instance.SeedCleanRandom = Settings.SeedType == SeedType.Random;
-
-                        var fade = new FadeWipe(this.Scene, false, () => {   // assign to variable to suppress compiler warning
-                            var session = new Session(newArea, null, null) {
-                                FirstLevel = true,
-                                StartedFromBeginning = true,
-                            };
-                            LevelEnter.Go(session, true);
-                            this.builderThread = null;
-                            this.entering = false;
-                        });
-
-                        /*foreach (AreaData area in AreaData.Areas) {
-                            Logger.Log("randomizer", $"Skeleton for {area.GetSID()}");
-                            RandoConfigFile.YamlSkeleton(area);
-
-                        }*/
+                        RandoModule.StartMe = newArea;
+                        while (RandoModule.StartMe != null) {
+                            Thread.Sleep(10);
+                        }
+                        this.builderThread = null;
+                        this.entering = false;
                     });
                     this.builderThread.Start();
                 } else {

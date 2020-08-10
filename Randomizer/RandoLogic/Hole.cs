@@ -142,6 +142,9 @@ namespace Celeste.Mod.Randomizer {
                 // Vertical transitions
                 if (this.Launch != null) {
                     if (other.Launch != null) {
+                        if (other.Launch == -1) {
+                            return INCOMPATIBLE;
+                        }
                         return this.Launch.Value - other.Launch.Value;
                     } else if (other.Closed) {
                         return this.Launch.Value - (other.LowBound + other.HighBound) / 2;
