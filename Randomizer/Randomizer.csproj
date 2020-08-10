@@ -76,6 +76,10 @@
       <HintPath>..\packages\MonoMod.Utils.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Celeste.Mod.mm">
+      <HintPath>..\packages\Celeste.Mod.mm.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="RandoModule.cs" />
@@ -98,13 +102,6 @@
     <Compile Include="RandoLogic\Receipt.cs" />
     <Compile Include="PriorityQueue.cs" />
     <Compile Include="RandoLogic\Requirements.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Everest\Celeste.Mod.mm\Celeste.Mod.mm.csproj">
-      <Project>{d5d0239d-ff95-4897-9484-1898ab7e82f5}</Project>
-      <Name>Celeste.Mod.mm</Name>
-      <Private>False</Private>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="everest.yaml">
