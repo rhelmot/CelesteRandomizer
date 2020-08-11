@@ -214,7 +214,7 @@ ASide:
         Or:
         - Dashes: two
         - Dashes: one
-          Difficulty: hard
+          Difficulty: expert
     - Collectable: 1
       ReqBoth:
         Dashes: two
