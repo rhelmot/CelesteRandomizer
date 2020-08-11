@@ -96,6 +96,14 @@ namespace Celeste.Mod.Randomizer {
                 self.Session.FirstLevel = false;
             }
             orig(self, playerIntro, fromLoader);
+            // also, set the core mode right
+            if (fromLoader && this.InRandomizer) {
+                var leveldata = self.Session.LevelData;
+                var dyn = new DynData<LevelData>(leveldata);
+                RandoConfigCoreMode modes = dyn.Get<RandoConfigCoreMode>("coreModes");
+                self.CoreMode = modes?.All ?? Session.CoreModes.None;
+                self.Session.CoreMode = self.CoreMode;
+            }
         }
 
         public override void CreateModMenuSection(TextMenu menu, bool inGame, EventInstance snapshot) {

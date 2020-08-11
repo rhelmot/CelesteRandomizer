@@ -214,6 +214,7 @@ ASide:
       Kind: in
   - Room: "b-01"
     Core:
+      All: hot
       Left: hot
       Right: cold
     Holes:
@@ -225,6 +226,7 @@ ASide:
       Kind: inout
   - Room: "b-02"
     Core:
+      All: hot
       Left: hot
       Right: cold
     Holes:
@@ -240,6 +242,7 @@ ASide:
         Dashes: one
   - Room: "b-03"
     Core:
+      All: hot
       Left: hot
       Right: cold
     Holes:
@@ -358,6 +361,7 @@ ASide:
         Y: 24
   - Room: "b-07"
     Core:
+      All: hot
       Down: hot
       Up: cold
     Holes:
@@ -382,6 +386,7 @@ ASide:
         Y: 16
   - Room: "c-00"
     Core:
+      All: cold
       Down: cold
       Up: hot
       Right: hot
@@ -452,6 +457,7 @@ ASide:
           Difficulty: hard
   - Room: "c-01"
     Core:
+      All: hot
       Left: hot
       Right: cold
     Holes:
@@ -529,6 +535,7 @@ ASide:
   - Room: "c-03"
     Hub: true
     Core:
+      All: cold
       Up: cold
       Left: cold  # okay FINE
       Right: hot
@@ -725,6 +732,7 @@ ASide:
         Y: 24
   - Room: "d-03"
     Core:
+      All: cold
       Down: cold
       Up: hot
     Holes:
@@ -910,6 +918,7 @@ ASide:
           cameraY: 0
   - Room: "d-10"
     Core:
+      All: cold
       Left: cold
       Right: hot
     Holes:
@@ -1081,6 +1090,7 @@ BSide:
           Difficulty: expert
   - Room: "a-02"
     Core:
+      All: hot
       Left: hot
       Down: hot
       Up: cold
@@ -1215,6 +1225,7 @@ BSide:
         Remove: true
   - Room: "b-01"
     Core:
+      All: hot
       Left: hot
       Right: cold
       Down: cold
@@ -1316,10 +1327,7 @@ BSide:
       Idx: 0
       Kind: out
       ReqOut:
-        Or:
-        - Dashes: two
-        - Dashes: one
-          Difficulty: hard
+        Dashes: two
     - Side: Left
       Idx: 0
       Kind: in
