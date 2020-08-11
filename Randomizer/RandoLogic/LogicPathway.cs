@@ -9,7 +9,7 @@ namespace Celeste.Mod.Randomizer {
 
         private static readonly float[] PathwayMinimums = { 40, 80, 120, 180 };
         private static readonly float[] PathwayRanges = { 15, 30, 40, 80 };
-        private static readonly float[] PathwayMaxRoom = { 6, 15, 10000, 10000 };
+        private static readonly float[] PathwayMaxRoom = { 6, 15, 10000, 10000, 10000 };
 
         private void GeneratePathway() {
             this.Tasks.AddToFront(new TaskPathwayStart(this));

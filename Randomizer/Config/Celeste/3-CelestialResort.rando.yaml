@@ -96,6 +96,9 @@ ASide:
     - Side: Left
       Idx: 1
       Kind: None
+    - Side: Down
+      Idx: 0
+      Kind: None
     InternalEdges:
     - Collectable: 1
       ReqBoth:
@@ -140,6 +143,9 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: None
     InternalEdges:
     - Split: LeftToRight
       ReqBoth:
@@ -313,6 +319,9 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: None
     InternalEdges:
     - To: "right"
       ReqOut:
@@ -395,6 +404,9 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: none
     Tweaks:
     - ID: 8
       Update:
@@ -407,6 +419,9 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: none
     InternalEdges:
     - To: "right"
       ReqBoth:
@@ -720,6 +735,7 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: inout
+      Launch: -1
   - Room: "12-y"  # chest 3 secret
     Holes:
     - Side: Left

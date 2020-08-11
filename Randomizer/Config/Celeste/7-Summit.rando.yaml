@@ -5,6 +5,15 @@ ASide:
       Idx: 0
       Kind: out
       Launch: 19
+    - Side: Down
+      Idx: 0
+      Kind: None
+    - Side: Left
+      Idx: 0
+      Kind: None
+    - Side: Right
+      Idx: 0
+      Kind: None
   - Room: "a-00"
     Holes:
     - Side: Right
@@ -258,6 +267,13 @@ ASide:
     - Side: Left
       Idx: 1
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: Unknown
+      Launch: -1
+    - Side: Right
+      Idx: 0
+      Kind: None
   - Room: "b-00"
     Holes:
     - Side: Up
@@ -352,6 +368,10 @@ ASide:
       - Side: Left
         Idx: 1
         Kind: inout
+      - Side: Down
+        Idx: 0
+        Kind: Unknown
+        Launch: -1
     - Room: "topleft"
       Holes:
       - Side: Left
@@ -479,6 +499,7 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: inout
+      Launch: -1
     InternalEdges:
     - Split: TopToBottom
       ReqBoth:
@@ -772,6 +793,7 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: in
+      Launch: -1
   - Room: "c-03"
     Holes:
     - Side: Left
@@ -1267,6 +1289,10 @@ ASide:
       Idx: 2
       Kind: None
     - Side: Down
+      Idx: 3
+      Kind: Unknown
+      Launch: -1
+    - Side: Down
       Idx: 4
       Kind: None
     InternalEdges:
@@ -1329,19 +1355,30 @@ ASide:
       Kind: in
   - Room: "d-04"
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: unknown
+      Launch: -1
+    - Side: Down
+      Idx: 1
+      Kind: unknown
+      Launch: -1
     InternalEdges:
-    - Split: LeftToRight
+    - To: "right"
       ReqBoth:
         Dashes: one
     - Collectable: 0
       ReqBoth:
         Dashes: one
+    Subrooms:
+    - Room: "right"
+      Holes:
+      - Side: Right
+        Idx: 0
+        Kind: inout
   - Room: "d-05"
     Holes:
     - Side: Up
@@ -2768,6 +2805,9 @@ ASide:
       Launch: 163
       ReqOut:
         Dashes: two
+    - Side: Up
+      Idx: 1
+      Kind: None
     - Side: Down
       Idx: 0
       Kind: in
@@ -2835,6 +2875,15 @@ BSide:
       Idx: 0
       Kind: out
       Launch: 19
+    - Side: Down
+      Idx: 0
+      Kind: None
+    - Side: Left
+      Idx: 0
+      Kind: None
+    - Side: Right
+      Idx: 0
+      Kind: None
   - Room: "a-00"
     Holes:
     - Side: Right
@@ -3167,6 +3216,9 @@ BSide:
     - Side: Down
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 1
+      Kind: none
     Tweaks:
     - Name: "spawn"
       Update:
@@ -3183,6 +3235,14 @@ BSide:
     - Side: Down
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 2
+      Kind: Unknown
+      Launch: -1
+    - Side: Down
+      Idx: 3
+      Kind: Unknown
+      Launch: -1
     Tweaks:
     - Name: "spawn"
       Update:
