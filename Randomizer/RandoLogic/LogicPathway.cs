@@ -198,13 +198,21 @@ namespace Celeste.Mod.Randomizer {
                 this.Tries++;
 
                 var caps = this.Logic.Caps.WithoutKey();
-                var closure = LinkedNodeSet.Closure(this.Node, caps, caps, this.InternalOnly);
+                int maxSteps = 99999;
+                if (!InternalOnly) {
+                    maxSteps = this.Logic.Random.Next(6, 20);
+                }
+                var closure = LinkedNodeSet.Closure(this.Node, caps, caps, this.InternalOnly, maxSteps);
                 closure.Shuffle(this.Logic.Random);
 
                 if (!extendingMap) {
                     // just try to place a key
                     foreach (var spot in closure.UnlinkedCollectables()) {
                         if (spot.Static.MustFly) {
+                            continue;
+                        }
+                        if (spot.Node.Room == this.Node.Room) {
+                            // don't be boring!
                             continue;
                         }
                         this.AddReceipt(PlaceCollectableReceipt.Do(spot.Node, spot.Static, LinkedNode.LinkedCollectable.Key));

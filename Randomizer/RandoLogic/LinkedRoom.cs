@@ -568,22 +568,22 @@ namespace Celeste.Mod.Randomizer {
         private Capabilities CapsReverse;
         private Random Random;
 
-        public static LinkedNodeSet Closure(LinkedNode start, Capabilities capsForward, Capabilities capsReverse, bool internalOnly) {
+        public static LinkedNodeSet Closure(LinkedNode start, Capabilities capsForward, Capabilities capsReverse, bool internalOnly, int maxDistance=9999) {
             var result = new HashSet<LinkedNode>();
-            var queue = new Queue<LinkedNode>();
-            void enqueue(LinkedNode node) {
-                if (!result.Contains(node)) {
-                    queue.Enqueue(node);
+            var queue = new Queue<Tuple<LinkedNode, int>>();
+            void enqueue(LinkedNode node, int remaining) {
+                if (remaining > 0 && !result.Contains(node)) {
+                    queue.Enqueue(Tuple.Create(node, remaining));
                     result.Add(node);
                 }
             }
-            enqueue(start);
+            enqueue(start, maxDistance);
 
             while (queue.Count != 0) {
                 var item = queue.Dequeue();
 
-                foreach (var succ in item.Successors(capsForward, capsReverse, internalOnly)) {
-                    enqueue(succ);
+                foreach (var succ in item.Item1.Successors(capsForward, capsReverse, internalOnly)) {
+                    enqueue(succ, item.Item2 - 1);
                 }
             }
 

@@ -1380,6 +1380,7 @@ CSide:
     - Split: LeftToRight
       ReqOut:
         Dashes: one
+        Difficulty: hard
       ReqIn:
         Dashes: two
         Difficulty: hard
