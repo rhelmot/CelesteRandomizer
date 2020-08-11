@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Monocle;
 using System;
+using System.Reflection;
 using System.Collections;
 using System.Linq;
 using MonoMod.Cil;
@@ -37,7 +38,7 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.Player.Added += DontMoveOnWakeup;
             On.Celeste.BadelineOldsite.Added += PlayBadelineCutscene;
             On.Celeste.Textbox.ctor_string_Language_Func1Array += RandomizeTextboxText;
-            On.Celeste.Level.LoadLevel += DontRestartTimer;
+            On.Celeste.Level.LoadLevel += OnLoadLevelHook;
             On.Celeste.AutoSplitterInfo.Update += MainThreadHook;
             On.Celeste.LevelLoader.ctor += MarkSeedUnclean;
             On.Celeste.LevelExit.ctor += MarkSeedUnclean2;
@@ -74,7 +75,7 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.Player.Added -= DontMoveOnWakeup;
             On.Celeste.BadelineOldsite.Added -= PlayBadelineCutscene;
             On.Celeste.Textbox.ctor_string_Language_Func1Array -= RandomizeTextboxText;
-            On.Celeste.Level.LoadLevel -= DontRestartTimer;
+            On.Celeste.Level.LoadLevel -= OnLoadLevelHook;
             On.Celeste.AutoSplitterInfo.Update -= MainThreadHook;
             On.Celeste.LevelLoader.ctor -= MarkSeedUnclean;
             On.Celeste.LevelExit.ctor -= MarkSeedUnclean2;
@@ -91,7 +92,7 @@ namespace Celeste.Mod.Randomizer {
             IL.Celeste.AngryOshiro.ChaseUpdate -= MoveOutOfTheWay;
         }
 
-        public void DontRestartTimer(On.Celeste.Level.orig_LoadLevel orig, Level self, Player.IntroTypes playerIntro, bool fromLoader) {
+        public void OnLoadLevelHook(On.Celeste.Level.orig_LoadLevel orig, Level self, Player.IntroTypes playerIntro, bool fromLoader) {
             if (fromLoader && this.InRandomizer) {
                 self.Session.FirstLevel = false;
             }
@@ -104,6 +105,35 @@ namespace Celeste.Mod.Randomizer {
                 self.CoreMode = modes?.All ?? Session.CoreModes.None;
                 self.Session.CoreMode = self.CoreMode;
             }
+
+            if (this.InRandomizer && Settings.Algorithm == LogicType.Labyrinth && Everest.Loader.DependencyLoaded(new EverestModuleMetadata() { Name = "BingoUI" })) {
+                var ui = LoadGemUI(); // must be a separate method or the jit will be very sad :(
+                self.Add(ui); // lord fucking help us
+            }
+        }
+
+        private Entity SavedGemUI;
+        public Entity LoadGemUI() {
+            if (SavedGemUI != null) {
+                return SavedGemUI;
+            }
+            // lol reflection
+            var bingo = AppDomain.CurrentDomain.GetAssemblies().Where(asm => asm.FullName.Contains("BingoUI")).First();
+            var tcd_cls = bingo.GetType("Celeste.Mod.BingoUI.TotalCollectableDisplay");
+            var dtype = tcd_cls.GetNestedType("CheckVal");
+            var checker = typeof(RandoModule).GetMethod("CheckGems");
+            var texture = GFX.Game["collectables/summitgems/3/gem00"];
+            var constructor = tcd_cls.GetConstructor(new Type[] { typeof(float), dtype, typeof(bool), typeof(int), typeof(MTexture) });
+            Entity tcd = (Entity)constructor.Invoke(new object[] { 177f, Delegate.CreateDelegate(dtype, this, checker), true, 0, texture });
+            SavedGemUI = tcd;
+            return tcd;
+        }
+
+        public int CheckGems() {
+            if (Engine.Scene is Level level) {
+                return level.Session.SummitGems.Count((hasGem) => hasGem);
+            }
+            return 0;
         }
 
         public override void CreateModMenuSection(TextMenu menu, bool inGame, EventInstance snapshot) {
