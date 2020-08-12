@@ -1543,6 +1543,9 @@ BSide:
     - To: "up"
       ReqOut:
         Dashes: one
+      ReqIn:
+        Dashes: two
+        Difficulty: expert
     - To: "right"
       ReqOut:
         Or:
@@ -1550,6 +1553,9 @@ BSide:
           Difficulty: perfect
         - Dashes: two
           Difficulty: expert
+      ReqIn:
+        Dashes: two
+        Difficulty: expert
     Subrooms:
     - Room: "up"
       Holes:
@@ -1561,6 +1567,9 @@ BSide:
         ReqOut:
           Dashes: two
           Difficulty: perfect
+        ReqIn:
+          Dashes: two
+          Difficulty: hard
     - Room: "right"
       Holes:
       - Side: Right
