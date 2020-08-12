@@ -1546,3 +1546,99 @@ CSide:
       ReqIn:
         Dashes: one
         Difficulty: hard
+    - Side: Up
+      Idx: 0
+      Kind: Unknown
+      ReqIn:
+        Dashes: one
+        Difficulty: hard
+    - Side: Up
+      Idx: 1
+      Kind: Unknown
+      ReqIn:
+        Dashes: one
+        Difficulty: hard
+    - Side: Up
+      Idx: 2
+      Kind: Unknown
+      ReqIn:
+        Dashes: one
+        Difficulty: hard
+    - Side: Up
+      Idx: 3
+      Kind: Unknown
+      ReqIn:
+        Dashes: one
+        Difficulty: hard
+    - Side: Up
+      Idx: 4
+      Kind: Unknown
+      ReqIn:
+        Dashes: one
+        Difficulty: hard
+    - Side: Down
+      Idx: 0
+      Kind: Unknown
+      ReqIn:
+        Dashes: one
+        Difficulty: hard
+    - Side: Down
+      Idx: 1
+      Kind: Unknown
+      ReqIn:
+        Dashes: one
+        Difficulty: hard
+    - Side: Down
+      Idx: 2
+      Kind: Unknown
+      ReqIn:
+        Dashes: one
+        Difficulty: hard
+    - Side: Down
+      Idx: 3
+      Kind: Unknown
+      ReqIn:
+        Dashes: one
+        Difficulty: hard
+    - Side: Down
+      Idx: 4
+      Kind: Unknown
+      ReqIn:
+        Dashes: one
+        Difficulty: hard
+    - Side: Down
+      Idx: 5
+      Kind: Unknown
+      ReqIn:
+        Dashes: one
+        Difficulty: hard
+    - Side: Down
+      Idx: 6
+      Kind: Unknown
+      ReqIn:
+        Dashes: one
+        Difficulty: hard
+    - Side: Down
+      Idx: 7
+      Kind: Unknown
+      ReqIn:
+        Dashes: one
+        Difficulty: hard
+    - Side: Down
+      Idx: 8
+      Kind: Unknown
+      ReqIn:
+        Dashes: one
+        Difficulty: hard
+    - Side: Down
+      Idx: 9
+      Kind: Unknown
+      ReqIn:
+        Dashes: one
+        Difficulty: hard
+    - Side: Down
+      Idx: 10
+      Kind: Unknown
+      ReqIn:
+        Dashes: one
+        Difficulty: hard

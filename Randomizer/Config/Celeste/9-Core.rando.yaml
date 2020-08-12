@@ -633,6 +633,14 @@ ASide:
         Add: true
         X: 808
         Y: 160
+    - Name: "jumpThru"
+      ID: 283
+      Update:
+        Width: 24
+    - Name: "jumpThru"
+      ID: 275
+      Update:
+        Width: 8
   - Room: "c-04"
     Core:
       All: hot
@@ -1327,7 +1335,10 @@ BSide:
       Idx: 0
       Kind: out
       ReqOut:
-        Dashes: two
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: hard
     - Side: Left
       Idx: 0
       Kind: in
