@@ -66,18 +66,6 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: inout
-      ReqIn:
-        Dashes: one
-    - Side: Up
-      Idx: 0
-      Kind: Unknown
-      ReqIn:
-        Dashes: one
-    - Side: Left
-      Idx: 0
-      Kind: Unknown
-      ReqIn:
-        Dashes: one
   - Room: "0"
     Hub: true
     Holes:
