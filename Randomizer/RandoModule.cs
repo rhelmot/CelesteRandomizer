@@ -107,13 +107,16 @@ namespace Celeste.Mod.Randomizer {
             }
 
             if (this.InRandomizer && Settings.Algorithm == LogicType.Labyrinth && Everest.Loader.DependencyLoaded(new EverestModuleMetadata() { Name = "BingoUI" })) {
-                var ui = LoadGemUI(); // must be a separate method or the jit will be very sad :(
+                var ui = LoadGemUI(fromLoader); // must be a separate method or the jit will be very sad :(
                 self.Add(ui); // lord fucking help us
             }
         }
 
         private Entity SavedGemUI;
-        public Entity LoadGemUI() {
+        public Entity LoadGemUI(bool reset) {
+            if (reset) {
+                SavedGemUI = null;
+            }
             if (SavedGemUI != null) {
                 return SavedGemUI;
             }
