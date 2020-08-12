@@ -72,7 +72,14 @@ namespace Celeste.Mod.Randomizer {
                 new TextMenu.Header(Dialog.Clean("MODOPTIONS_RANDOMIZER_MAPPICKER_HEADER")),
                 new TextMenu.Button(Dialog.Clean("MODOPTIONS_RANDOMIZER_MAPPICKER_TOGGLEALL")).Pressed(() => {
                     var items = menu.GetItems();
-                    if (!(items[2] is TextMenu.OnOff firstToggle)) {
+                    TextMenu.OnOff firstToggle = null;
+                    foreach (var item in items) {
+                        if (item is TextMenu.OnOff) {
+                            firstToggle = item as TextMenu.OnOff;
+                            break;
+                        }
+                    }
+                    if (firstToggle == null) {
                         // ???
                         return;
                     }
@@ -87,9 +94,16 @@ namespace Celeste.Mod.Randomizer {
                 }),
             };
 
+            string currentSet = null;
+
             foreach (var key in RandoLogic.AvailableAreas) {
                 var area = AreaData.Get(key);
                 var mode = AreaData.GetMode(key);
+
+                if (currentSet != area.GetLevelSet()) {
+                    currentSet = area.GetLevelSet();
+                    menu.Add(new TextMenu.SubHeader(DialogExt.CleanLevelSet(currentSet)));
+                }
 
                 var on = Settings.MapIncluded(key);
                 var name = area.Name;
@@ -103,6 +117,21 @@ namespace Celeste.Mod.Randomizer {
                     HeightExtra = -10f,
                     Offset = new Vector2(30, -5),
                 });
+            }
+
+            if (currentSet != "Celeste") {
+                menu.Insert(2, new TextMenu.Button(Dialog.Clean("MODOPTIONS_RANDOMIZER_MAPPICKER_RESET")).Pressed(() => {
+                    Settings.SetNormalMaps();
+                    // this is a stupid way to do this
+                    int levelsetIdx = -1;
+                    foreach (var item in menu.GetItems()) {
+                        if (item is TextMenu.SubHeader && !(item is TextMenuExt.SubHeaderExt)) {
+                            levelsetIdx++;
+                        } else if (item is TextMenu.OnOff toggle) {
+                            toggle.Index = levelsetIdx == 0 ? 1 : 0;
+                        }
+                    }
+                }));
             }
 
             Scene.Add(menu);
