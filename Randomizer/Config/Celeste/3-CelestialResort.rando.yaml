@@ -1620,10 +1620,10 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+      HighBound: 10
     - Side: Left
       Idx: 1
       Kind: none
-      HighBound: 10
     - Side: Right
       Idx: 0
       Kind: none
