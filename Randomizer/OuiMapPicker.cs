@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using Monocle;
 using Microsoft.Xna.Framework;
 
@@ -94,6 +95,15 @@ namespace Celeste.Mod.Randomizer {
                 }),
             };
 
+            var lvlCount = new Dictionary<RandoSettings.AreaKeyNotStupid, int>();
+            foreach (var room in RandoLogic.AllRooms) {
+                var notstupid = new RandoSettings.AreaKeyNotStupid(room.Area);
+                if (lvlCount.TryGetValue(notstupid, out int c)) {
+                    lvlCount[notstupid] = c + 1;
+                } else {
+                    lvlCount[notstupid] = 1;
+                }
+            }
             string currentSet = null;
 
             foreach (var key in RandoLogic.AvailableAreas) {
@@ -113,7 +123,7 @@ namespace Celeste.Mod.Randomizer {
                 }
 
                 menu.Add(new TextMenu.OnOff(name, on).Change(this.MakeChangeFunc(key)));
-                menu.Add(new TextMenuExt.SubHeaderExt(mode.MapData.LevelCount.ToString() + " " + Dialog.Clean("MODOPTIONS_RANDOMIZER_MAPPICKER_LEVELS")) {
+                menu.Add(new TextMenuExt.SubHeaderExt(lvlCount[new RandoSettings.AreaKeyNotStupid(key)].ToString() + " " + Dialog.Clean("MODOPTIONS_RANDOMIZER_MAPPICKER_LEVELS")) {
                     HeightExtra = -10f,
                     Offset = new Vector2(30, -5),
                 });

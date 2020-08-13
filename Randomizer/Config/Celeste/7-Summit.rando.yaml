@@ -2857,24 +2857,216 @@ ASide:
       Kind: None
   - Room: "credits-city"
     Holes:
+    - Side: Left
+      Idx: 0
+      Kind: inout
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    - Side: Up
+      Idx: 0
+      Kind: inout
+      ReqOut:
+        Dashes: one
+    - Side: Up
+      Idx: 1
+      Kind: inout
+      ReqOut:
+        Dashes: one
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 16
+        Y: 200
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 112
+        Y: 96
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 512
+        Y: 24
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 640
+        Y: 208
   - Room: "credits-clouds"
     Holes:
+    - Side: Left
+      Idx: 0
+      Kind: inout
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: none
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 16
+        Y: 304
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 392
+        Y: 80
   - Room: "credits-dashes"
     Holes:
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    InternalEdges:
+    - To: "everything_else"
+      ReqOut:
+        Dashes: one
+      ReqIn:
+        Dashes: zero
+    Subrooms:
+    - Room: "everything_else"
+      Holes:
+      - Side: Left
+        Idx: 0
+        Kind: inout
+        ReqOut:
+          Dashes: one
+      - Side: Down
+        Idx: 0
+        Kind: unknown  # reeeeeally wanna make this inout
+    Tweaks:
+    - Name: "templeGate"
+      ID: 10
+      Update:
+        Remove: true
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 16
+        Y: 272
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 608
+        Y: 368
   - Room: "credits-payphone"
     Holes:
-  - Room: "credits-prologue"
+    - Side: Left
+      Idx: 0
+      Kind: inout
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 16
+        Y: 200
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 576
+        Y: 200
+  - Room: "credits-prologue" # already included in epilogue
     Holes:
   - Room: "credits-resort"
     Holes:
+    - Side: Left
+      Idx: 0
+      Kind: None
+    - Side: Left
+      Idx: 1
+      Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: none
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 16
+        Y: 240
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 800
+        Y: 208
   - Room: "credits-summit"
     Holes:
+    - Side: Left
+      Idx: 0
+      Kind: inout
+    - Side: Right
+      Idx: 0
+      Kind: inout
+      ReqOut:
+        Or:
+        - Dashes: one
+          Difficulty: hard
+        - Dashes: two
+    - Side: Down
+      Idx: 0
+      Kind: unknown  # reeeeeally want this to be inout
   - Room: "credits-tree"
     Holes:
+    - Side: Down
+      Idx: 0
+      Kind: inout
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 64
+        Y: 296
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 704
+        Y: 48
   - Room: "credits-walking"
     Holes:
+    - Side: Left
+      Idx: 0
+      Kind: inout
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 16
+        Y: 216
   - Room: "credits-wallslide"
     Holes:
+    - Side: Left
+      Idx: 0
+      Kind: inout
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 16
+        Y: 480
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 816
+        Y: 160
 
 BSide:
   - Room: "a-00-intro"

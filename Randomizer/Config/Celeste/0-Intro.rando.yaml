@@ -73,8 +73,8 @@ ASide:
       Idx: 0
       Kind: inout
   - Room: "3"
+    End: true
     Holes:
     - Side: Left
       Idx: 0
       Kind: inout
-    End: true

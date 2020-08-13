@@ -221,15 +221,16 @@ namespace Celeste.Mod.Randomizer {
         public int LevelCount {
             get {
                 int sum = 0;
-                foreach (var key in this.IncludedMaps) {
-                    var map = AreaData.GetMode(key.Stupid);
-                    sum += map.MapData.LevelCount;
+                foreach (var room in RandoLogic.AllRooms) {
+                    if (this.MapIncluded(room.Area)) {
+                        sum++;
+                    }
                 }
                 return sum;
             }
         }
 
-        private struct AreaKeyNotStupid {
+        public struct AreaKeyNotStupid {
             public int ID;
             public AreaMode Mode;
 

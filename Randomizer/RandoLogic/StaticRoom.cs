@@ -20,6 +20,10 @@ namespace Celeste.Mod.Randomizer {
         public List<StaticCollectable> Collectables;
 
         public StaticRoom(AreaKey Area, RandoConfigRoom config, LevelData Level, List<Hole> Holes) {
+            // hack: force credits screens into the epilogue roomset
+            if (Area.ID == 7 && Level.Name.StartsWith("credits-")) {
+                Area = new AreaKey(8);
+            }
             this.Area = Area;
             this.Level = Level;
             this.Holes = Holes;
