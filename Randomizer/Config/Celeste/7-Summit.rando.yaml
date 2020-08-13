@@ -1946,11 +1946,11 @@ ASide:
         ReqIn:
           Dashes: one
     Tweaks:
-    - Name: "cameraTargetTrigger"
+    - Name: "cameraOffsetTrigger"
       ID: 1
       Update:
         Remove: true
-    - Name: "cameraTargetTrigger"
+    - Name: "cameraOffsetTrigger"
       ID: 2
       Update:
         Remove: true
