@@ -1536,6 +1536,65 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: in
+    Tweaks:
+    - Name: "cameraTargetTrigger"
+      Update:
+        Add: true
+        X: 0
+        Y: 0
+        Width: 304
+        Height: 208
+        Values:
+          lerpStrength: 0.3
+          positionMode: NoEffect
+          xOnly: false
+          yOnly: true
+        Nodes:
+        - Idx: 0
+          X: 152
+          Y: -56
+    - Name: "cameraTargetTrigger"
+      Update:
+        Add: true
+        X: 304
+        Y: 0
+        Width: 56
+        Height: 208
+        Values:
+          lerpStrength: 0.3
+          positionMode: RightToLeft
+          xOnly: false
+          yOnly: true
+        Nodes:
+        - Idx: 0
+          X: 328
+          Y: 48
+    - Name: "cameraTargetTrigger"
+      Update:
+        Add: true
+        X: 360
+        Y: 0
+        Width: 384
+        Height: 208
+        Values:
+          lerpStrength: 0.3
+          positionMode: NoEffect
+          xOnly: false
+          yOnly: true
+        Nodes:
+        - Idx: 0
+          X: 568
+          Y: 384
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 304
+        Y: 104
+        Width: 16
+        Height: 16
+        Values:
+          cameraX: 0.0
+          cameraY: 1.0
   - Room: "c-03"
     Holes:
     - Side: Right
