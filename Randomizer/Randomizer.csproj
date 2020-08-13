@@ -35,7 +35,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Celeste">
-      <HintPath>..\..\Everest\lib-stripped\Celeste.exe</HintPath>
+      <HintPath>..\packages\Celeste.exe</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="FNA">
@@ -106,6 +106,7 @@
     <Compile Include="RandoLogic\Receipt.cs" />
     <Compile Include="PriorityQueue.cs" />
     <Compile Include="RandoLogic\Requirements.cs" />
+    <Compile Include="RandoModuleSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="everest.yaml">

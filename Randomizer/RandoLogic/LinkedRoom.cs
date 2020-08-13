@@ -560,6 +560,10 @@ namespace Celeste.Mod.Randomizer {
             }
             return this.Static == col.Static && this.Node == col.Node;
         }
+
+        public override int GetHashCode() {
+            return 8765 ^ this.Static.GetHashCode() ^ this.Node.GetHashCode();
+        }
     }
 
     public class LinkedNodeSet {

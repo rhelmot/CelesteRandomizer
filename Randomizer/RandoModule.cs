@@ -12,6 +12,20 @@ using System.Collections.Generic;
 namespace Celeste.Mod.Randomizer {
     public class RandoModule : EverestModule {
         public static RandoModule Instance;
+        public override Type SettingsType => typeof(RandoModuleSettings);
+        public RandoModuleSettings SavedData {
+            get {
+                var result = Instance._Settings as RandoModuleSettings;
+                if (result.CurrentVersion != this.Metadata.VersionString) {
+                    result.CurrentVersion = this.Metadata.VersionString;
+                    result.BestTimes = new Dictionary<uint, long>();
+                    result.BestSetSeedTimes = new Dictionary<Ruleset, long>();
+                    result.BestRandomSeedTimes = new Dictionary<Ruleset, long>();
+                }
+                return result;
+            }
+        }
+
 
         public RandoSettings Settings;
         public const int MAX_SEED_CHARS = 20;
@@ -27,6 +41,7 @@ namespace Celeste.Mod.Randomizer {
             Everest.Events.Level.OnCreatePauseMenuButtons += ModifyLevelMenu;
             Everest.Events.Level.OnTransitionTo += OnTransition;
             Everest.Events.Level.OnLoadLevel += OnLoadLevel;
+            Everest.Events.Level.OnComplete += OnComplete;
             On.Celeste.OverworldLoader.ctor += EnterToRandoMenu;
             On.Celeste.Overworld.ctor += HideMaddy;
             On.Celeste.MapData.Load += DontLoadRandoMaps;
@@ -53,6 +68,7 @@ namespace Celeste.Mod.Randomizer {
             IL.Celeste.CS07_Ascend.OnEnd += DontGiveTwoDashes;
             IL.Celeste.CS07_Ascend.Cutscene += DontGiveTwoDashes;
             IL.Celeste.AngryOshiro.ChaseUpdate += MoveOutOfTheWay;
+            IL.Celeste.SpeedrunTimerDisplay.DrawTime += SetPlatinumColor;
         }
 
         public override void LoadContent(bool firstLoad) {
@@ -64,6 +80,7 @@ namespace Celeste.Mod.Randomizer {
             Everest.Events.Level.OnCreatePauseMenuButtons -= ModifyLevelMenu;
             Everest.Events.Level.OnTransitionTo -= OnTransition;
             Everest.Events.Level.OnLoadLevel -= OnLoadLevel;
+            Everest.Events.Level.OnComplete -= OnComplete;
             On.Celeste.OverworldLoader.ctor -= EnterToRandoMenu;
             On.Celeste.Overworld.ctor -= HideMaddy;
             On.Celeste.MapData.Load -= DontLoadRandoMaps;
@@ -90,11 +107,19 @@ namespace Celeste.Mod.Randomizer {
             IL.Celeste.CS07_Ascend.OnEnd -= DontGiveTwoDashes;
             IL.Celeste.CS07_Ascend.Cutscene -= DontGiveTwoDashes;
             IL.Celeste.AngryOshiro.ChaseUpdate -= MoveOutOfTheWay;
+            IL.Celeste.SpeedrunTimerDisplay.DrawTime += SetPlatinumColor;
         }
 
+        public bool StartedFromRandomizerMenu; // real variable
+        public bool StartingFromRandomizerMenu; // handoff variable
         public void OnLoadLevelHook(On.Celeste.Level.orig_LoadLevel orig, Level self, Player.IntroTypes playerIntro, bool fromLoader) {
             if (fromLoader && this.InRandomizer) {
+                // Don't restart the timer on retry
                 self.Session.FirstLevel = false;
+                // shuffle a bunch of damn metadata
+                StartedFromRandomizerMenu = StartingFromRandomizerMenu;
+                StartingFromRandomizerMenu = false;
+                BeatBestTimePlatinum = false;
             }
             orig(self, playerIntro, fromLoader);
             // also, set the core mode right
@@ -109,6 +134,48 @@ namespace Celeste.Mod.Randomizer {
             if (this.InRandomizer && Settings.Algorithm == LogicType.Labyrinth && Everest.Loader.DependencyLoaded(new EverestModuleMetadata() { Name = "BingoUI" })) {
                 var ui = LoadGemUI(fromLoader); // must be a separate method or the jit will be very sad :(
                 self.Add(ui); // lord fucking help us
+            }
+        }
+
+        public bool BeatBestTimePlatinum;
+        void OnComplete(Level level) {
+            BeatBestTimePlatinum = false;
+            if (this.StartedFromRandomizerMenu && level.Session.StartedFromBeginning) {  // how strong can/should we make this condition?   
+                var hash = uint.Parse(Settings.Hash); // convert and unconvert, yeah I know
+
+                level.Session.BeatBestTime = false;
+                if (this.SavedData.BestTimes.TryGetValue(hash, out long prevBest)) {
+                    if (level.Session.Time < prevBest) {
+                        level.Session.BeatBestTime = true;
+                        this.SavedData.BestTimes[hash] = level.Session.Time;
+                    }
+                } else {
+                    this.SavedData.BestTimes[hash] = level.Session.Time;
+                }
+
+                if (Settings.Rules != Ruleset.Custom) {
+                    if (this.SavedData.BestSetSeedTimes.TryGetValue(Settings.Rules, out long prevBestSet)) {
+                        if (level.Session.Time < prevBestSet) {
+                            BeatBestTimePlatinum = true;
+                            this.SavedData.BestSetSeedTimes[Settings.Rules] = level.Session.Time;
+                        }
+                    } else {
+                        this.SavedData.BestSetSeedTimes[Settings.Rules] = level.Session.Time;
+                    }
+
+                    if (this.SeedCleanRandom) {
+                        if (this.SavedData.BestRandomSeedTimes.TryGetValue(Settings.Rules, out long prevBestRand)) {
+                            if (level.Session.Time < prevBestRand) {
+                                BeatBestTimePlatinum = true;
+                                this.SavedData.BestRandomSeedTimes[Settings.Rules] = level.Session.Time;
+                            }
+                        } else {
+                            this.SavedData.BestRandomSeedTimes[Settings.Rules] = level.Session.Time;
+                        }
+                    }
+                }
+
+                this.SaveSettings();
             }
         }
 
@@ -435,6 +502,7 @@ namespace Celeste.Mod.Randomizer {
                 SaveData.Instance.Areas[newArea.ID].Modes[0].HeartGem = false;
                 // mark clean
                 this.SeedCleanRandom = Settings.SeedType == SeedType.Random;
+                this.StartingFromRandomizerMenu = true;
                 Entering = true;
 
                 var fade = new FadeWipe(Engine.Scene, false, () => {   // assign to variable to suppress compiler warning
@@ -464,6 +532,9 @@ namespace Celeste.Mod.Randomizer {
 
         public void MarkSeedUnclean2(On.Celeste.LevelExit.orig_ctor orig, LevelExit self, LevelExit.Mode mode, Session session, HiresSnow snow) {
             orig(self, mode, session, snow);
+            if (mode == LevelExit.Mode.GoldenBerryRestart || mode == LevelExit.Mode.Restart) {
+                this.StartingFromRandomizerMenu = this.StartedFromRandomizerMenu;
+            }
             if (mode != LevelExit.Mode.Completed) {
                 this.SeedCleanRandom = false;
             }
@@ -564,6 +635,45 @@ namespace Celeste.Mod.Randomizer {
                 }
                 return targety;
             });
+        }
+
+        public void SetPlatinumColor(ILContext il) {
+            ILCursor cursor = new ILCursor(il);
+            if (!cursor.TryGotoNext(MoveType.Before, instr => instr.MatchLdcI4(0))) {
+                throw new Exception("Failed to find patch spot 1");
+            }
+            var afterInstr = cursor.MarkLabel();
+
+            cursor.Index = 0;
+            if (!cursor.TryGotoNext(MoveType.AfterLabel, instr => instr.MatchLdarg(5))) {
+                throw new Exception("Failed to find patch spot 2");
+            }
+
+            cursor.EmitDelegate<Func<bool>>(() => {
+                if (!this.InRandomizer) {
+                    return false;
+                }
+                return BeatBestTimePlatinum;
+            });
+
+            var beforeInstr = cursor.DefineLabel();
+            cursor.Emit(Mono.Cecil.Cil.OpCodes.Brfalse, beforeInstr);
+
+            cursor.Emit(Mono.Cecil.Cil.OpCodes.Ldstr, "cb19d2");
+            cursor.Emit(Mono.Cecil.Cil.OpCodes.Call, typeof(Monocle.Calc).GetMethod("HexToColor", new Type[] {typeof(string)}));
+            cursor.Emit(Mono.Cecil.Cil.OpCodes.Ldarg, 6);
+            cursor.Emit(Mono.Cecil.Cil.OpCodes.Call, typeof(Microsoft.Xna.Framework.Color).GetMethod("op_Multiply"));
+            cursor.Emit(Mono.Cecil.Cil.OpCodes.Stloc, 5);
+
+            cursor.Emit(Mono.Cecil.Cil.OpCodes.Ldstr, "994f9c");
+            cursor.Emit(Mono.Cecil.Cil.OpCodes.Call, typeof(Monocle.Calc).GetMethod("HexToColor", new Type[] {typeof(string)}));
+            cursor.Emit(Mono.Cecil.Cil.OpCodes.Ldarg, 6);
+            cursor.Emit(Mono.Cecil.Cil.OpCodes.Call, typeof(Microsoft.Xna.Framework.Color).GetMethod("op_Multiply"));
+            cursor.Emit(Mono.Cecil.Cil.OpCodes.Stloc, 6);
+
+            cursor.Emit(Mono.Cecil.Cil.OpCodes.Br, afterInstr);
+            cursor.MarkLabel(beforeInstr);
+            //Logger.Log("DEBUG", il.ToString());
         }
     }
 
