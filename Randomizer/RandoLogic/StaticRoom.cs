@@ -422,7 +422,7 @@ namespace Celeste.Mod.Randomizer {
                         if (entity.Values == null) entity.Values = new Dictionary<string, object>();
                         entity.Values["canChangeMusic"] = false;
                         if (entity.Name == "finalBoss") { // big hack: disable vertical camera locking unless the room is very small horizontally
-                            if (result.Bounds.Width <= 376) {
+                            if (result.Bounds.Width > 376) {
                                 entity.Values["cameraLockY"] = "false";
                             }
                         }
