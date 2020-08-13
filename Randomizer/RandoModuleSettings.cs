@@ -1,5 +1,5 @@
+using System;
 using System.Collections.Generic;
-using YamlDotNet.Serialization;
 
 namespace Celeste.Mod.Randomizer {
     public class RandoModuleSettings : EverestModuleSettings {
@@ -7,10 +7,10 @@ namespace Celeste.Mod.Randomizer {
         public Dictionary<uint, long> BestTimes { get; set; }
 
         [SettingIgnore]
-        public Dictionary<Ruleset, long> BestSetSeedTimes { get; set; }
+        public Dictionary<Ruleset, Tuple<long, string>> BestSetSeedTimes { get; set; }
 
         [SettingIgnore]
-        public Dictionary<Ruleset, long> BestRandomSeedTimes { get; set; }
+        public Dictionary<Ruleset, Tuple<long, string>> BestRandomSeedTimes { get; set; }
 
         [SettingIgnore]
         public string CurrentVersion { get; set; }
