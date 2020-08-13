@@ -12,6 +12,7 @@ namespace Celeste.Mod.Randomizer {
         private bool entering;
 
         private float alpha;
+        private float journalEase;
 
         private const float onScreenX = 960f;
         private const float offScreenX = 2880f;
@@ -26,6 +27,10 @@ namespace Celeste.Mod.Randomizer {
             ReloadMenu();
             menu.Visible = Visible = true;
             menu.Focused = false;
+
+            if (from is OuiRandoRecords) {
+                savedMenuIndex = menu.LastPossibleSelection;
+            }
 
             // restore selection if coming from a submenu.
             if (savedMenuIndex != -1) {
@@ -73,15 +78,29 @@ namespace Celeste.Mod.Randomizer {
                 if (Input.MenuCancel.Pressed && builderThread == null) {
                     Audio.Play(SFX.ui_main_button_back);
                     Overworld.Goto<OuiMainMenu>();
-                }
-                if (Input.Pause.Pressed) {
+                } else if (Input.Pause.Pressed) {
                     Audio.Play(SFX.ui_main_button_select);
                     menu.Selection = menu.LastPossibleSelection;
                     menu.Current.OnPressed();
+                } else if (Input.MenuJournal.Pressed) {
+                    Audio.Play(SFX.ui_world_journal_select);
+                    Overworld.Goto<OuiRandoRecords>();
                 }
             }
 
+			journalEase = Calc.Approach (journalEase, (menu?.Focused ?? false) ? 1f : 0f, Engine.DeltaTime * 4f);
+
             base.Update();
+        }
+
+        public override void Render() {
+            base.Render();
+
+			if (journalEase > 0f) {
+				Vector2 position = new Vector2(128f * Ease.CubeOut (journalEase), 952f);
+				GFX.Gui ["menu/journal"].DrawCentered (position, Color.White * Ease.CubeOut (journalEase));
+				Input.GuiButton (Input.MenuJournal, "controls/keyboard/oemquestion").Draw (position, Vector2.Zero, Color.White * Ease.CubeOut (journalEase));
+			}
         }
 
         private void ReloadMenu() {

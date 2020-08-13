@@ -107,6 +107,7 @@
     <Compile Include="PriorityQueue.cs" />
     <Compile Include="RandoLogic\Requirements.cs" />
     <Compile Include="RandoModuleSettings.cs" />
+    <Compile Include="OuiRandoRecords.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="everest.yaml">

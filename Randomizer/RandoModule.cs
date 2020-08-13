@@ -19,8 +19,8 @@ namespace Celeste.Mod.Randomizer {
                 if (result.CurrentVersion != this.Metadata.VersionString) {
                     result.CurrentVersion = this.Metadata.VersionString;
                     result.BestTimes = new Dictionary<uint, long>();
-                    result.BestSetSeedTimes = new Dictionary<Ruleset, Tuple<long, string>>();
-                    result.BestRandomSeedTimes = new Dictionary<Ruleset, Tuple<long, string>>();
+                    result.BestSetSeedTimes = new Dictionary<Ruleset, RecordTuple>();
+                    result.BestRandomSeedTimes = new Dictionary<Ruleset, RecordTuple>();
                 }
                 return result;
             }
@@ -157,20 +157,20 @@ namespace Celeste.Mod.Randomizer {
                     if (this.SavedData.BestSetSeedTimes.TryGetValue(Settings.Rules, out var prevBestSet)) {
                         if (level.Session.Time < prevBestSet.Item1) {
                             BeatBestTimePlatinum = true;
-                            this.SavedData.BestSetSeedTimes[Settings.Rules] = Tuple.Create(level.Session.Time, Settings.Seed);
+                            this.SavedData.BestSetSeedTimes[Settings.Rules] = RecordTuple.Create(level.Session.Time, Settings.Seed);
                         }
                     } else {
-                        this.SavedData.BestSetSeedTimes[Settings.Rules] = Tuple.Create(level.Session.Time, Settings.Seed);
+                        this.SavedData.BestSetSeedTimes[Settings.Rules] = RecordTuple.Create(level.Session.Time, Settings.Seed);
                     }
 
                     if (this.SeedCleanRandom) {
                         if (this.SavedData.BestRandomSeedTimes.TryGetValue(Settings.Rules, out var prevBestRand)) {
                             if (level.Session.Time < prevBestRand.Item1) {
                                 BeatBestTimePlatinum = true;
-                                this.SavedData.BestRandomSeedTimes[Settings.Rules] = Tuple.Create(level.Session.Time, Settings.Seed);
+                                this.SavedData.BestRandomSeedTimes[Settings.Rules] = RecordTuple.Create(level.Session.Time, Settings.Seed);
                             }
                         } else {
-                            this.SavedData.BestRandomSeedTimes[Settings.Rules] = Tuple.Create(level.Session.Time, Settings.Seed);
+                            this.SavedData.BestRandomSeedTimes[Settings.Rules] = RecordTuple.Create(level.Session.Time, Settings.Seed);
                         }
                     }
                 }
