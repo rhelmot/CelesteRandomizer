@@ -532,6 +532,7 @@ namespace Celeste.Mod.Randomizer {
 
         public void MarkSeedUnclean2(On.Celeste.LevelExit.orig_ctor orig, LevelExit self, LevelExit.Mode mode, Session session, HiresSnow snow) {
             orig(self, mode, session, snow);
+            BeatBestTimePlatinum = false;
             if (mode == LevelExit.Mode.GoldenBerryRestart || mode == LevelExit.Mode.Restart) {
                 this.StartingFromRandomizerMenu = this.StartedFromRandomizerMenu;
             }
@@ -639,6 +640,9 @@ namespace Celeste.Mod.Randomizer {
 
         public void SetPlatinumColor(ILContext il) {
             ILCursor cursor = new ILCursor(il);
+            if (!cursor.TryGotoNext(MoveType.After, instr => instr.MatchLdarg(5))) {
+                throw new Exception("Failed to find patch spot 2 [first pass]");
+            }
             if (!cursor.TryGotoNext(MoveType.Before, instr => instr.MatchLdcI4(0))) {
                 throw new Exception("Failed to find patch spot 1");
             }
