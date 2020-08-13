@@ -1383,10 +1383,7 @@ BSide:
       Idx: 0
       Kind: out
       ReqOut:
-        Or:
-        - Dashes: two
-        - Dashes: one
-          Difficulty: expert # corner kick, neutral jumps
+        Dashes: two
     - Side: Down
       Idx: 0
       Kind: in

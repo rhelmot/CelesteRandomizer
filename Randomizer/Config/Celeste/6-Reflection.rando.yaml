@@ -742,7 +742,7 @@ ASide:
         Add: true
         X: 736
         Y: 32
-        Width: 232
+        Width: 32
         Height: 64
         Values:
           cameraX: -1
@@ -765,7 +765,7 @@ ASide:
         Add: true
         X: 736
         Y: 32
-        Width: 232
+        Width: 32
         Height: 64
         Values:
           cameraX: -1

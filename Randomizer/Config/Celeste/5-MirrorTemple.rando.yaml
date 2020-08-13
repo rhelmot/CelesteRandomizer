@@ -656,6 +656,7 @@ ASide:
       ReqBoth:
         Dashes: one
   - Room: "b-11"
+    Hub: true
     Holes:
     - Side: Right
       Idx: 0
@@ -1834,7 +1835,7 @@ BSide:
         Kind: inout
       Collectables:
       - Idx: 1
-  - Room: "b-03"  # TODO maybe you can do this room backwards?
+  - Room: "b-03"
     Holes:
     - Side: Up
       Idx: 0
@@ -1861,6 +1862,11 @@ BSide:
         Idx: 0
         Kind: inout
     Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 224
+        Y: 24
     - Name: "jumpThru"
       ID: 228
       Update:
