@@ -1820,6 +1820,10 @@ ASide:
       Y: 168
       Update:
         X: 64
+    - Name: "cameraTargetTrigger"
+      ID: 0
+      Update:
+        Remove: true
   - Room: "e-02"
     Holes:
     - Side: Down
@@ -1942,6 +1946,14 @@ ASide:
         ReqIn:
           Dashes: one
     Tweaks:
+    - Name: "cameraTargetTrigger"
+      ID: 1
+      Update:
+        Remove: true
+    - Name: "cameraTargetTrigger"
+      ID: 2
+      Update:
+        Remove: true
     - Name: "cameraOffsetTrigger"
       Update:
         Add: true
@@ -1952,26 +1964,22 @@ ASide:
         Values:
           cameraX: -1
           cameraY: 0
-    - Name: "cameraOffsetTrigger"
+    - Name: "cameraTargetTrigger"
       Update:
         Add: true
-        X: 640
-        Y: 128
-        Width: 8
-        Height: 72
-        Values:
-          cameraX: -1
-          cameraY: 0
-    - Name: "cameraOffsetTrigger"
-      Update:
-        Add: true
-        X: 560
+        X: 544
         Y: 0
-        Width: 16
-        Height: 64
+        Width: 96
+        Height: 120
         Values:
-          cameraX: -1
-          cameraY: 0
+          lerpStrength: 0.25
+          positionMode: NoEffect
+          xOnly: false
+          yOnly: true
+        Nodes:
+        - Idx: 0
+          X: 576
+          Y: 200
   - Room: "e-06"
     Holes:
     - Side: Right
@@ -3148,7 +3156,7 @@ BSide:
         Height: 24
         Values:
           cameraX: 0
-          cameraY: 1
+          cameraY: 1.3
   - Room: "b-02"
     Holes:
     - Side: Right

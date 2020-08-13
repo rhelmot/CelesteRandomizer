@@ -498,10 +498,7 @@ ASide:
       Idx: 0
       Kind: inout
       ReqOut:
-        Or:
-        - Dashes: one
-        - Dashes: zero
-          Difficulty: expert
+        Dashes: one
     - Side: Down
       Idx: 0
       Kind: inout
@@ -577,7 +574,10 @@ ASide:
       Idx: 0
       Kind: out
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: expert
   - Room: "08-b" # key loop 4
     Holes:
     - Side: Up

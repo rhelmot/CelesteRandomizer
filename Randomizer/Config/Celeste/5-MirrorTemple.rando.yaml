@@ -58,7 +58,7 @@ ASide:
       Kind: inout
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
     - Side: Down
       Idx: 0
       Kind: inout
@@ -78,6 +78,43 @@ ASide:
     - Collectable: 1
       ReqBoth:
         Dashes: one
+    Tweaks:
+    - Name: "templeGate"
+      ID: 2
+      Update:
+        Remove: true
+    - Name: "cameraTargetTrigger"
+      Update:
+        Add: true
+        X: 120
+        Y: 504
+        Width: 96
+        Height: 48
+        Values:
+          lerpStrength: 0.15
+          positionMode: NoEffect
+          xOnly: false
+          yOnly: false
+        Nodes:
+        - Idx: 0
+          X: 64
+          Y: 624
+    - Name: "cameraTargetTrigger"
+      Update:
+        Add: true
+        X: 280
+        Y: 504
+        Width: 96
+        Height: 48
+        Values:
+          lerpStrength: 0.15
+          positionMode: NoEffect
+          xOnly: false
+          yOnly: false
+        Nodes:
+        - Idx: 0
+          X: 344
+          Y: 624
   - Room: "a-02"
     Holes:
     - Side: Up
@@ -170,6 +207,7 @@ ASide:
       ReqBoth:
         Dashes: one
   - Room: "a-08"
+    Hub: true
     Holes:
     - Side: Up
       Idx: 0
@@ -567,6 +605,17 @@ ASide:
         Dashes: one
       ReqIn:
         Dashes: zero
+    Tweaks:
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 288
+        Y: 8
+        Width: 24
+        Height: 48
+        Values:
+          cameraX: 0.0
+          cameraY: 0.8
   - Room: "b-08"
     Holes:
     - Side: Right
@@ -682,20 +731,51 @@ ASide:
         Dashes: one
   - Room: "b-06"
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: out
-      ReqOut:
-        Dashes: one
-    - Side: Right
-      Idx: 1
-      Kind: out
-      ReqOut:
-        Key: true
-        KeyholeID: 2
     - Side: Left
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - To: "top"
+      ReqOut:
+        Dashes: one
+      ReqIn:
+        Or:
+        - Dashes: one
+          Difficulty: hard
+        - Dashes: two
+    - To: "right"
+      ReqBoth:
+        Key: true
+        KeyholeID: 2
+    Subrooms:
+    - Room: "top"
+      Holes:
+      - Side: Right
+        Idx: 0
+        Kind: inout
+    - Room: "right"
+      Holes:
+      - Side: Right
+        Idx: 1
+        Kind: inout
+    Tweaks:
+    - Name: "jumpThru"
+      ID: 18
+      Update:
+        X: 608
+        Width: 8
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 632
+        Y: 24
+    - Name: "changeRespawnTrigger"
+      Update:
+        Add: true
+        X: 624
+        Y: 8
+        Width: 16
+        Height: 16
   - Room: "b-19"
     Holes:
     - Side: Right
@@ -771,6 +851,17 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    Tweaks:
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 520
+        Y: 8
+        Width: 16
+        Height: 48
+        Values:
+          cameraX: -1.0
+          cameraY: 0.0
   - Room: "c-01b"
     Holes:
     - Side: Right
@@ -798,6 +889,16 @@ ASide:
       ID: 32
       Update:
         Remove: true
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 384
+        Y: 8
+        Width: 16
+        Height: 48
+        Values:
+          cameraX: -1.0
+          cameraY: 0.0
   - Room: "c-08b"
     Holes:
     - Side: Right
@@ -825,6 +926,16 @@ ASide:
       ID: 116
       Update:
         Remove: true
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 344
+        Y: 8
+        Width: 24
+        Height: 48
+        Values:
+          cameraX: -1.0
+          cameraY: 0.0
   - Room: "c-10"
     Holes:
     - Side: Right
@@ -884,34 +995,59 @@ ASide:
         Add: true
         X: 200
         Y: 16
-  - Room: "d-00"  # TODO properly do this room up with subrooms
+  - Room: "d-00"  # god this room is a mess
+    Hub: true
     Holes:
-    - Side: Up
-      Idx: 0
-      Kind: out
-      ReqOut:
-        Dashes: one
-    - Side: Right
-      Idx: 0
-      Kind: inout
-      ReqOut:
-        Dashes: two
-      ReqIn:
-        Or:
-        - Dashes: two
-        - Difficulty: hard
-          Dashes: one
-    - Side: Left
-      Idx: 0
-      Kind: inout
-      ReqIn:
-        Dashes: one
-        Difficulty: hard
-      ReqOut:
-        Dashes: two
     - Side: Down
       Idx: 0
       Kind: in
+    InternalEdges:
+    - To: "top"
+      ReqBoth:
+        Dashes: one
+    Subrooms:
+    - Room: "top"
+      Holes:
+      - Side: Up
+        Idx: 0
+        Kind: inout
+      InternalEdges:
+      - To: "right"
+        ReqOut:
+          Or:
+          - Dashes: two
+          - Dashes: one
+            Difficulty: expert
+        ReqIn:
+          Or:
+          - Dashes: two
+          - Dashes: one
+            Difficulty: hard
+    - Room: "left"
+      Holes:
+      - Side: Left
+        Idx: 0
+        Kind: inout
+    - Room: "right"
+      Holes:
+      - Side: Right
+        Idx: 0
+        Kind: inout
+      InternalEdges:
+      - To: "left"
+        ReqOut:
+          Dashes: zero
+        ReqIn:
+          Or:
+          - Dashes: two
+          - Dashes: one
+            Difficulty: expert
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 168
+        Y: 16
   - Room: "d-01"
     Hub: true
     Holes:
@@ -1063,7 +1199,10 @@ ASide:
       ReqOut:
         Dashes: one
       ReqIn:
-        Dashes: two
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: expert
     Subrooms:
     - Room: "side"
       Holes:
@@ -1079,6 +1218,21 @@ ASide:
       Y: 48
       Update:
         Default: true
+    - Name: "cameraOffsetTrigger"
+      ID: 3
+      Update:
+        X: 272
+        Y: 0
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 8
+        Y: 272
+        Width: 24
+        Height: 48
+        Values:
+          cameraX: -1.0
+          cameraY: -1.0
   - Room: "d-06"
     Holes:
     - Side: Up
@@ -1196,6 +1350,20 @@ ASide:
         Add: true
         X: 312
         Y: 24
+    - Name: "cameraOffsetTrigger"
+      ID: 2
+      Update:
+        Width: 40
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 280
+        Y: 8
+        Width: 48
+        Height: 24
+        Values:
+          cameraX: -1.0
+          cameraY: 0.0
   - Room: "d-13"
     Holes:
     - Side: Up
@@ -1505,6 +1673,17 @@ BSide:
       ReqIn:
         Dashes: two
         Difficulty: hard
+    Tweaks:
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 424
+        Y: 8
+        Width: 32
+        Height: 80
+        Values:
+          cameraX: -1.0
+          cameraY: 0.0
   - Room: "b-00"
     Holes:
     - Side: Up
@@ -1534,7 +1713,14 @@ BSide:
       Y: 160
       Update:
         X: 168
+    - Name: "spawn"
+      X: 812
+      Y: 112
+      Update:
+        X: 24
+        Y: 160
   - Room: "b-01"
+    Hub: true
     Holes:
     - Side: Left
       Idx: 0
@@ -1581,11 +1767,42 @@ BSide:
         Add: true
         X: 592
         Y: 24
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 576
+        Y: 8
+        Width: 48
+        Height: 16
+        Values:
+          cameraX: -1.0
+          cameraY: 0.0
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 784
+        Y: 80
+        Width: 16
+        Height: 32
+        Values:
+          cameraX: -1.0
+          cameraY: 0.0
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 618
+        Y: 40
+        Width: 16
+        Height: 20
+        Values:
+          cameraX: -0.0
+          cameraY: 0.0
   - Room: "b-02"
+    Hub: true
     Holes:
     - Side: Up
       Idx: 0
-      Kind: in    # TODO bubble
+      Kind: inout    # TODO bubble, key
     - Side: Right
       Idx: 0
       Kind: inout
@@ -1614,25 +1831,55 @@ BSide:
       Holes:
       - Side: Right
         Idx: 1
-        Kind: in
+        Kind: inout
       Collectables:
       - Idx: 1
   - Room: "b-03"  # TODO maybe you can do this room backwards?
     Holes:
     - Side: Up
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
         Dashes: one
         Difficulty: hard
     - Side: Left
       Idx: 0
       Kind: out         # TODO: can enter if switch pressed
-    - Side: Down
-      Idx: 0
-      Kind: in
+    InternalEdges:
+    - To: "right"
       ReqIn:
         Dashes: one
+      ReqOut:
+        Or:
+        - Dashes: one
+          Difficulty: perfect
+        - Dashes: two
+    Subrooms:
+    - Room: "right"
+      Holes:
+      - Side: Down
+        Idx: 0
+        Kind: inout
+    Tweaks:
+    - Name: "jumpThru"
+      ID: 228
+      Update:
+        Width: 16
+    - Name: "jumpThru"
+      ID: 227
+      Update:
+        X: 920
+        Width: 24
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 88
+        Y: 72
+        Width: 16
+        Height: 96
+        Values:
+          cameraX: 1.0
+          cameraY: 0.0
   - Room: "b-04"
     Holes:
     - Side: Left
@@ -1640,9 +1887,34 @@ BSide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: in
-      ReqIn:
+      Kind: inout
+    InternalEdges:
+    - Split: RightToLeft
+      ReqOut:
         Dashes: one
+      ReqIn:
+        Dashes: two
+        Difficulty: hard
+    Tweaks:
+    - Name: "jumpThru"
+      ID: 218
+      Update:
+        Width: 24
+    - Name: "jumpThru"
+      ID: 216
+      Update:
+        X: 592
+        Width: 24
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 8
+        Y: 72
+        Width: 16
+        Height: 48
+        Values:
+          cameraX: 1.2
+          cameraY: 0.0
   - Room: "b-05"
     Holes:
     - Side: Right
@@ -1739,7 +2011,7 @@ BSide:
       Idx: 0
       Kind: out
       ReqOut:
-        Dashes: one     # maybe possible in zero with seeker manip?
+        Dashes: one     # seekers don't seem to be able to press ceiling buttons so this can't be done dashless :(
     - Side: Left
       Idx: 0
       Kind: in
@@ -1871,6 +2143,17 @@ CSide:
         - Dashes: two
         - Dashes: one
           Difficulty: hard
+    Tweaks:
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 464
+        Y: 72
+        Width: 16
+        Height: 48
+        Values:
+          cameraX: -1.0
+          cameraY: 0.0
   - Room: "01"
     Holes:
     - Side: Right
