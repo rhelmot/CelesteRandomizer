@@ -57,6 +57,7 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.AutoSplitterInfo.Update += MainThreadHook;
             On.Celeste.LevelLoader.ctor += MarkSeedUnclean;
             On.Celeste.LevelExit.ctor += MarkSeedUnclean2;
+            On.Celeste.Player.SummitLaunchUpdate += SummitLaunchReset;
             IL.Celeste.Level.EnforceBounds += DisableUpTransition;
             IL.Celeste.Level.EnforceBounds += DontBlockOnTheo;
             IL.Celeste.TheoCrystal.Update += BeGracefulOnTransitions;
@@ -96,6 +97,7 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.AutoSplitterInfo.Update -= MainThreadHook;
             On.Celeste.LevelLoader.ctor -= MarkSeedUnclean;
             On.Celeste.LevelExit.ctor -= MarkSeedUnclean2;
+            On.Celeste.Player.SummitLaunchUpdate -= SummitLaunchReset;
             IL.Celeste.Level.EnforceBounds -= DisableUpTransition;
             IL.Celeste.Level.EnforceBounds -= DontBlockOnTheo;
             IL.Celeste.TheoCrystal.Update -= BeGracefulOnTransitions;
@@ -539,6 +541,52 @@ namespace Celeste.Mod.Randomizer {
             }
             if (mode != LevelExit.Mode.Completed) {
                 this.SeedCleanRandom = false;
+            }
+        }
+
+        public int SummitLaunchReset(On.Celeste.Player.orig_SummitLaunchUpdate orig, Player self) {
+            var level = Engine.Scene as Level;
+            if (this.InRandomizer && self.Y < level.Bounds.Y - 8) {
+                // teleport to spawn point
+                self.Position = level.Session.RespawnPoint.Value;
+
+                // reset camera
+                var tmp = level.CameraLockMode;
+                level.CameraLockMode = Level.CameraLockModes.None;
+                level.Camera.Position = level.GetFullCameraTargetAt(self, self.Position);
+                level.CameraLockMode = tmp;
+                level.CameraUpwardMaxY = level.Camera.Y + 180f;
+
+                // remove effects
+                AscendManager mgr = null;
+                Entity fader = null;
+                HeightDisplay h = null;
+                foreach (var ent in Engine.Scene.Entities) {
+                    if (ent is AscendManager manager) {
+                        mgr = manager;
+                    }
+                    if (ent.GetType().Name == "Fader") {
+                        fader = ent;
+                    }
+                    if (ent is HeightDisplay heightDisplay) {
+                        h = heightDisplay;
+                    }
+                }
+                if (mgr != null) {
+                    level.Remove(mgr);
+                }
+                if (fader != null) {
+                    level.Remove(fader);
+                }
+                if (h != null) {
+                    level.Remove(h);
+                }
+                level.NextTransitionDuration = 0.65f;
+
+                // return to normal
+                return Player.StNormal;
+            } else {
+                return orig(self);
             }
         }
 
