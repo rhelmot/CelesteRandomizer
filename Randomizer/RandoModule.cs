@@ -393,7 +393,7 @@ namespace Celeste.Mod.Randomizer {
             orig(version, ease, alpha);
 
             if (this.InRandomizer) {
-                var text = "rando v" + this.Metadata.VersionString + "\n" + this.Settings.Seed;
+                var text = this.Settings.Seed;
                 if (this.Settings.Rules != Ruleset.Custom) {
                     text += " " + this.Settings.Rules.ToString();
                     if (this.SeedCleanRandom) {
@@ -401,6 +401,7 @@ namespace Celeste.Mod.Randomizer {
                     }
                 }
                 text += "\n#" + this.Settings.Hash.ToString();
+                text += "\nrando " + this.Metadata.VersionString;
                 ActiveFont.DrawOutline(text, new Vector2(1820f + 300f * (1f - Ease.CubeOut(ease)), 894f), new Vector2(0.5f, 0f), Vector2.One * 0.5f, Color.White, 2f, Color.Black);
             }
         }
