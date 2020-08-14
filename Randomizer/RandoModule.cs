@@ -59,6 +59,7 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.LevelExit.ctor += MarkSeedUnclean2;
             On.Celeste.Player.SummitLaunchUpdate += SummitLaunchReset;
             IL.Celeste.Level.EnforceBounds += DisableUpTransition;
+            IL.Celeste.Level.EnforceBounds += DisableDownTransition;
             IL.Celeste.Level.EnforceBounds += DontBlockOnTheo;
             IL.Celeste.TheoCrystal.Update += BeGracefulOnTransitions;
             IL.Celeste.SummitGem.OnPlayer += GemRefillsDashes;
@@ -99,6 +100,7 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.LevelExit.ctor -= MarkSeedUnclean2;
             On.Celeste.Player.SummitLaunchUpdate -= SummitLaunchReset;
             IL.Celeste.Level.EnforceBounds -= DisableUpTransition;
+            IL.Celeste.Level.EnforceBounds -= DisableDownTransition;
             IL.Celeste.Level.EnforceBounds -= DontBlockOnTheo;
             IL.Celeste.TheoCrystal.Update -= BeGracefulOnTransitions;
             IL.Celeste.SummitGem.OnPlayer -= GemRefillsDashes;
@@ -600,14 +602,55 @@ namespace Celeste.Mod.Randomizer {
                 if (!this.InRandomizer) {
                     return true;
                 }
+                
                 var currentRoom = level.Session.LevelData;
-                var extra = new DynData<LevelData>(currentRoom);
-                if (extra.Get<bool?>("DisableUpTransition") ?? false) {
-                    return false;
+                var player = level.Tracker.GetEntity<Player>();
+                var dyn = new DynData<LevelData>(currentRoom);
+                var holes = dyn.Get<List<Hole>>("UsedVerticalHoles");
+                var found = false;
+                foreach (var hole in holes) {
+                    if (hole.Side != ScreenDirection.Up) {
+                        continue;
+                    }
+                    if (player.Center.X > currentRoom.Bounds.Left + hole.LowBound*8 && player.Center.X < currentRoom.Bounds.Left + hole.HighBound*8 + 8) {
+                        found = true;
+                        break;
+                    }
                 }
-                return true;
+
+                return found;
             });
             cursor.Emit(Mono.Cecil.Cil.OpCodes.And);
+        }
+
+        public void DisableDownTransition(ILContext il) {
+            ILCursor cursor = new ILCursor(il);
+            if (!cursor.TryGotoNext(MoveType.After, instr => instr.MatchLdfld<LevelData>("DisableDownTransition"))) {
+                throw new Exception("Could not find patch point");
+            }
+            cursor.Emit(Mono.Cecil.Cil.OpCodes.Ldarg_0);
+            cursor.EmitDelegate<Func<bool, Level, bool>>((prevDisable, level) => {
+                if (!this.InRandomizer) {
+                    return prevDisable;
+                }
+
+                var currentRoom = level.Session.LevelData;
+                var player = level.Tracker.GetEntity<Player>();
+                var dyn = new DynData<LevelData>(currentRoom);
+                var holes = dyn.Get<List<Hole>>("UsedVerticalHoles");
+                var found = false;
+                foreach (var hole in holes) {
+                    if (hole.Side != ScreenDirection.Down) {
+                        continue;
+                    }
+                    if (player.Center.X > currentRoom.Bounds.Left + hole.LowBound*8 && player.Center.X < currentRoom.Bounds.Left + hole.HighBound*8 + 8) {
+                        found = true;
+                        break;
+                    }
+                }
+
+                return !found;
+            });
         }
 
         public void DontBlockOnTheo(ILContext il) {

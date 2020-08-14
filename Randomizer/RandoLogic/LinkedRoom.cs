@@ -246,6 +246,24 @@ namespace Celeste.Mod.Randomizer {
                 blockHole(newHole);
             }
 
+            Hole neuterHole(Hole hole1, Hole hole2) {
+                if (hole1.Size <= hole2.Size) {
+                    return hole1;
+                }
+
+                if ((hole1.Side == ScreenDirection.Up && hole1.Launch != null) || (hole2.Side == ScreenDirection.Up && hole2.Launch != null)) {
+                    return hole1;
+                }
+
+                var align = hole1.Compatible(hole2);
+                bool alignLeft = hole1.LowBound - align == hole2.LowBound;
+                if (alignLeft) {
+                    return new Hole(hole1.Side, hole1.LowBound, hole1.LowBound + hole2.Size, false);
+                } else {
+                    return new Hole(hole1.Side, hole1.HighBound - hole2.Size, hole1.HighBound, false);
+                }
+            }
+
             void beamHole(Hole hole) {
                 Vector2 center;
                 int rotation;
@@ -310,10 +328,9 @@ namespace Celeste.Mod.Randomizer {
                 }
             }
 
-            bool disableDown = true;
-            bool disableUp = true;
             var unusedHorizontalHoles = new HashSet<Hole>();
             var unusedTopHoles = new HashSet<Hole>();
+            var usedVerticalHoles = new List<Hole>();
             foreach (var hole in this.Static.Holes) {
                 if (hole.Side == ScreenDirection.Left || hole.Side == ScreenDirection.Right) {
                     unusedHorizontalHoles.Add(hole);
@@ -326,11 +343,8 @@ namespace Celeste.Mod.Randomizer {
                 foreach (var edge in node.Edges) {
                     var hole = edge.CorrespondingEdge(node).HoleTarget;
                     var hole2 = edge.OtherEdge(node).HoleTarget;
-                    if (hole != null && hole.Side == ScreenDirection.Down) {
-                        disableDown = false;
-                    }
-                    if (hole != null && hole.Side == ScreenDirection.Up) {
-                        disableUp = false;
+                    if (hole != null && hole2 != null && (hole.Side == ScreenDirection.Down || hole.Side == ScreenDirection.Up)) {
+                        usedVerticalHoles.Add(neuterHole(hole, hole2));
                     }
                     if (hole != null && (hole.Side == ScreenDirection.Left || hole.Side == ScreenDirection.Right)) {
                         unusedHorizontalHoles.Remove(hole);
@@ -394,10 +408,8 @@ namespace Celeste.Mod.Randomizer {
                 }
             }
 
-            result.DisableDownTransition = disableDown;
-            if (disableUp) {
-                new DynData<LevelData>(result).Set("DisableUpTransition", true);
-            }
+            result.DisableDownTransition = false; // overridden in hook, doesn't matter
+            new DynData<LevelData>(result).Set("UsedVerticalHoles", usedVerticalHoles);
             foreach (var hole in unusedHorizontalHoles) {
                 blockHole(hole);
             }
