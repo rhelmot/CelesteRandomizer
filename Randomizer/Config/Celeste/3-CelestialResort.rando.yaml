@@ -1318,6 +1318,16 @@ ASide:
         - Idx: 0
           X: 0
           Y: 0
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 8
+        Y: 80
+        Width: 24
+        Height: 80
+        Values:
+          cameraX: 1.0
+          cameraY: 0.0
   - Room: "00-d"  # presidential suite
     Holes:
     - Side: Up
