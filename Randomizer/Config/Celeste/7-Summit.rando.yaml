@@ -669,6 +669,9 @@ ASide:
       ReqIn:
         Dashes: two
         Difficulty: hard
+    - Collectable: 0
+      ReqBoth:
+        Dashes: one
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:

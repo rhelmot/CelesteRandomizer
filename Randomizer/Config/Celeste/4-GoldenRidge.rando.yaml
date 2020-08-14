@@ -748,6 +748,9 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: inout
+    - Side: Up
+      Idx: 0
+      Kind: None  # TODO split this into two half-open holes
     InternalEdges:
     - To: "Right"
       ReqBoth:
