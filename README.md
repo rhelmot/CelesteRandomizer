@@ -33,16 +33,7 @@ Of course, all of this is entirely subjective and was categorized by me, so if y
 ### Map construction algorithms
 
 - The *Pathway* algorithm constructs a straight-line path from a start to an end. It may add side-routes to place keys necessary to proceed. It may not be traversable in reverse.
-- The *Labyrinth* algorithm constructs a sprawling map with no defined goals. It is designed for exploring and having fun. Every room is accessable from every other room; every passage can be traversed in both directions with respect to the current number of dashes and player skill level.
-
-### Known bugs
-
-- https://github.com/rhelmot/CelesteRandomizer/issues/7
-
-  Sometimes the randomizer will attach a room where the exit is a launcher boost out the top to an entrance with no ground to land on. Instead of slamming down onto the ground, Madeline will fall through to the previous room. The workaround is to pause and retry the room. If the retry option is greyed out, you need to wait longer, until Madeline reaches the ground of the previous room... pretty sketchy!
-
-  On a similar note, in Labyrinth maps you may encounter a situation where you are launched into the air but the next room simply never loads. This means that the room is a dead end, and you should press Retry to backtrack.
-
+- The *Labyrinth* algorithm constructs a sprawling map with the summit gems hidden in it and a central hub to which you can return to collect a heart.
 
 Randomizing custom maps
 -----------------------

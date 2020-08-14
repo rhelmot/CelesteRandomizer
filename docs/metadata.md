@@ -40,6 +40,8 @@ Collectables:
 - <collectable description>
 - <collectable description>
 End: {true/false}
+Hub: {true/false}
+Core: <core mode description>
 ```
 
 ## Holes
@@ -72,6 +74,36 @@ Holes:
 ```
 
 The requirements section will be elaboreted on below.
+
+For holes which are used with a badeline launch, you should set the Launch parameter to the coordinate/8 of Madeline's x-position during the launch. For example:
+
+![Celeste screenshot of madeline launching through a hole](img/launch.png)
+
+This hole should be marked up as:
+
+```
+  - Side: Up
+    Idx: 0
+    Kind: out  # all badeline launches must be marked as out-only
+    Launch: 34
+```
+
+The Launch parameter can be set for any Up or Down hole, though it is only required for Down holes which would otherwise never be used (think: the 7b cassette room).
+
+## Core Mode
+
+You can specify the core mode you would like the room to be in when entered from any given direction:
+
+```
+Core:
+  All: hot
+  Left: cold
+  Right: none
+  Up: hot
+  Down: cold
+```
+
+If you omit any of the fields the All field will be used for that instead. the All field is also what is used if you just spawn in the room as a starting room.
 
 ## Tweaks
 
@@ -108,7 +140,9 @@ Tweaks:
       Y: 208
 ```
 
-You can combine the two syntaxes and specify neither Add nor Remove to update attributes (currently just X Y Width Height) for existing entities. To update the position of spawn points, which don't have an ID, you can specify its starting X and Y coordinates before the update directive.
+You can combine the two syntaxes and specify neither Add nor Remove to update attributes for existing entities. To update the position of spawn points, which don't have an ID, you can specify its starting X and Y coordinates before the update directive.
+
+X, Y, Width, and Height can be specified as subkeys of Update in order to change the entity's position and dimentions, you can also update its nodes and its additional properties. the Values subkey should be a mapping from name to string, and the entity's Values dictionary will be updated accordingly. Unfortunately, the only way I've been able to find the exact right names to use for Values keys is by decompiling the game... For nodes, you can specify a subkey Nodes which contains a list of mappings containing keys Idx, X, and Y. Look at the existing metadata for examples.
 
 ## Subrooms and Internal Edges
 
