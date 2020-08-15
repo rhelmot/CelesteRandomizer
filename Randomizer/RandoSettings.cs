@@ -15,6 +15,7 @@ namespace Celeste.Mod.Randomizer {
         C,
         D,
         E,
+        F,
         Last
     }
 
@@ -142,6 +143,17 @@ namespace Celeste.Mod.Randomizer {
                     this.Length = MapLength.Medium;
                     this.Dashes = NumDashes.One;
                     this.Difficulty = Difficulty.Normal;
+                    this.Lights = ShineLights.Hubs;
+                    this.Darkness = Darkness.Never;
+                    break;
+                case Ruleset.F:
+                    this.SetNormalMaps();
+                    this.RepeatRooms = false;
+                    this.EnterUnknown = false;
+                    this.Algorithm = LogicType.Labyrinth;
+                    this.Length = MapLength.Medium;
+                    this.Dashes = NumDashes.Two;
+                    this.Difficulty = Difficulty.Hard;
                     this.Lights = ShineLights.Hubs;
                     this.Darkness = Darkness.Never;
                     break;

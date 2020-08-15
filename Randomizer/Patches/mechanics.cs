@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 using Monocle;
@@ -60,7 +61,7 @@ namespace Celeste.Mod.Randomizer {
             var bingo = AppDomain.CurrentDomain.GetAssemblies().Where(asm => asm.FullName.Contains("BingoUI")).First();
             var tcd_cls = bingo.GetType("Celeste.Mod.BingoUI.TotalCollectableDisplay");
             var dtype = tcd_cls.GetNestedType("CheckVal");
-            var checker = typeof(RandoModule).GetMethod("CheckGems");
+            var checker = typeof(RandoModule).GetMethod("CheckGems", BindingFlags.Instance | BindingFlags.NonPublic);
             var texture = GFX.Game["collectables/summitgems/3/gem00"];
             var constructor = tcd_cls.GetConstructor(new Type[] { typeof(float), dtype, typeof(bool), typeof(int), typeof(MTexture) });
             Entity tcd = (Entity)constructor.Invoke(new object[] { 177f, Delegate.CreateDelegate(dtype, this, checker), true, 0, texture });
