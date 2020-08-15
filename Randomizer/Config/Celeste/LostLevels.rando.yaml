@@ -112,6 +112,37 @@ ASide:
         - Dashes: two
         - Dashes: one
           Difficulty: hard
+    Tweaks:
+    - ID: 0
+      Name: "cameraOffsetTrigger"
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 760
+        Y: 0
+        Width: 24
+        Height: 88
+        Values:
+          cameraX: -1.4
+          cameraY: 0.0
+    - Name: "cameraTargetTrigger"
+      Update:
+        Add: true
+        X: 496
+        Y: 0
+        Width: 272
+        Height: 184
+        Values:
+          lerpStrength: 0.2
+          positionMode: NoEffect
+          xOnly: true
+          yOnly: false
+        Nodes:
+        - Idx: 0
+          X: 728
+          Y: 88
     ExtraSpace:
     - X: 368
       Y: 168
@@ -705,6 +736,17 @@ ASide:
     - Split: LeftToRight
       ReqBoth:
         Dashes: one
+    Tweaks:
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 448
+        Y: 0
+        Width: 24
+        Height: 48
+        Values:
+          cameraX: -1.0
+          cameraY: 0.0
   - Room: "e-06"
     Holes:
     - Side: Right
@@ -778,6 +820,17 @@ ASide:
         Kind: Unknown
         ReqIn:
           Dashes: one
+    Tweaks:
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 944
+        Y: 0
+        Width: 24
+        Height: 48
+        Values:
+          cameraX: -1.0
+          cameraY: 0.0
   - Room: "f-01"
     Holes:
     - Side: Right
@@ -795,6 +848,17 @@ ASide:
           Difficulty: hard
       ReqIn:
         Dashes: one
+    Tweaks:
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 408
+        Y: 0
+        Width: 24
+        Height: 104
+        Values:
+          cameraX: -1.0
+          cameraY: 1.4
   - Room: "f-02"  # TODO this room crashes because of something related to spritesets
     Holes:
     - Side: Right
@@ -848,6 +912,17 @@ ASide:
           Diffiulty: hard
       ReqIn:
         Dashes: one
+    Tweaks:
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 592
+        Y: 0
+        Width: 24
+        Height: 56
+        Values:
+          cameraX: -1.2
+          cameraY: 0.0
   - Room: "f-05"
     Holes:
     - Side: Right
@@ -1288,6 +1363,17 @@ ASide:
           Difficulty: hard
       ReqIn:
         Dashes: one
+    Tweaks:
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 528
+        Y: 0
+        Width: 24
+        Height: 72
+        Values:
+          cameraX: -1.0
+          cameraY: 0.0
   - Room: "i-02"
     Holes:
     - Side: Right
@@ -1305,6 +1391,17 @@ ASide:
           Difficulty: hard
       ReqIn:
         Dashes: two
+    Tweaks:
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 696
+        Y: 0
+        Width: 24
+        Height: 64
+        Values:
+          cameraX: -1.0
+          cameraY: 0.0
   - Room: "i-03"
     Holes:
     - Side: Right
@@ -1317,6 +1414,17 @@ ASide:
     - Split: LeftToRight
       ReqBoth:
         Dashes: one
+    Tweaks:
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 520
+        Y: 0
+        Width: 24
+        Height: 88
+        Values:
+          cameraX: -1.0
+          cameraY: 0.0
   - Room: "i-04"
     Holes:
     - Side: Right
@@ -1462,6 +1570,21 @@ ASide:
     - ID: 207
       Update:
         Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 0
+      Update:
+        Values:
+          X: 80
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 1720
+        Y: 0
+        Width: 24
+        Height: 136
+        Values:
+          cameraX: -1.2
+          cameraY: 0.0
   - Room: "j-08"
     Holes:
     - Side: Right

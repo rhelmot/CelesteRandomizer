@@ -576,6 +576,11 @@ ASide:
           Dashes: two
           Difficulty: hard
     Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 840
+        Y: 160
     - Name: "cameraOffsetTrigger"
       Update:
         Add: true
