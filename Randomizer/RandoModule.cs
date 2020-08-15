@@ -29,7 +29,6 @@ namespace Celeste.Mod.Randomizer {
 
         public RandoSettings Settings;
         public const int MAX_SEED_CHARS = 20;
-        public bool SeedCleanRandom;
 
         public RandoModule() {
             Instance = this;
@@ -55,9 +54,10 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.Textbox.ctor_string_Language_Func1Array += RandomizeTextboxText;
             On.Celeste.Level.LoadLevel += OnLoadLevelHook;
             On.Celeste.AutoSplitterInfo.Update += MainThreadHook;
-            On.Celeste.LevelLoader.ctor += MarkSeedUnclean;
-            On.Celeste.LevelExit.ctor += MarkSeedUnclean2;
             On.Celeste.Player.SummitLaunchUpdate += SummitLaunchReset;
+            On.Celeste.Session.Restart += MaintainSessionFlags;
+            On.Celeste.Editor.MapEditor.ctor += MarkSessionUnclean;
+            On.Celeste.Editor.MapEditor.LoadLevel += MaintainSessionFlags2;
             IL.Celeste.Level.EnforceBounds += DisableUpTransition;
             IL.Celeste.Level.EnforceBounds += DisableDownTransition;
             IL.Celeste.Level.EnforceBounds += DontBlockOnTheo;
@@ -71,6 +71,7 @@ namespace Celeste.Mod.Randomizer {
             IL.Celeste.CS07_Ascend.Cutscene += DontGiveTwoDashes;
             IL.Celeste.AngryOshiro.ChaseUpdate += MoveOutOfTheWay;
             IL.Celeste.SpeedrunTimerDisplay.DrawTime += SetPlatinumColor;
+            IL.Celeste.NPC03_Oshiro_Lobby.Added += PleaseDontStopTheMusic;
         }
 
         public override void LoadContent(bool firstLoad) {
@@ -96,9 +97,10 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.Textbox.ctor_string_Language_Func1Array -= RandomizeTextboxText;
             On.Celeste.Level.LoadLevel -= OnLoadLevelHook;
             On.Celeste.AutoSplitterInfo.Update -= MainThreadHook;
-            On.Celeste.LevelLoader.ctor -= MarkSeedUnclean;
-            On.Celeste.LevelExit.ctor -= MarkSeedUnclean2;
             On.Celeste.Player.SummitLaunchUpdate -= SummitLaunchReset;
+            On.Celeste.Session.Restart -= MaintainSessionFlags;
+            On.Celeste.Editor.MapEditor.ctor -= MarkSessionUnclean;
+            On.Celeste.Editor.MapEditor.LoadLevel -= MaintainSessionFlags2;
             IL.Celeste.Level.EnforceBounds -= DisableUpTransition;
             IL.Celeste.Level.EnforceBounds -= DisableDownTransition;
             IL.Celeste.Level.EnforceBounds -= DontBlockOnTheo;
@@ -111,19 +113,42 @@ namespace Celeste.Mod.Randomizer {
             IL.Celeste.CS07_Ascend.OnEnd -= DontGiveTwoDashes;
             IL.Celeste.CS07_Ascend.Cutscene -= DontGiveTwoDashes;
             IL.Celeste.AngryOshiro.ChaseUpdate -= MoveOutOfTheWay;
-            IL.Celeste.SpeedrunTimerDisplay.DrawTime += SetPlatinumColor;
+            IL.Celeste.SpeedrunTimerDisplay.DrawTime -= SetPlatinumColor;
+            IL.Celeste.NPC03_Oshiro_Lobby.Added -= PleaseDontStopTheMusic;
         }
 
-        public bool StartedFromRandomizerMenu; // real variable
-        public bool StartingFromRandomizerMenu; // handoff variable
+        public void MarkSessionUnclean(On.Celeste.Editor.MapEditor.orig_ctor orig, Editor.MapEditor self, AreaKey area, bool reloadMapData) {
+            if (Engine.Scene is Level level) {
+                level.Session.SeedCleanRandom(false);
+            }
+            orig(self, area, reloadMapData);
+        }
+
+        public Session MaintainSessionFlags(On.Celeste.Session.orig_Restart orig, Session self, string intoLevel) {
+            var result = orig(self, intoLevel);
+            result.StartedFromRandomizerMenu(self.StartedFromRandomizerMenu());
+            return result;
+
+        }
+
+        public void MaintainSessionFlags2(On.Celeste.Editor.MapEditor.orig_LoadLevel orig, Editor.MapEditor self, Editor.LevelTemplate levelTemplate, Vector2 at) {
+            var field = typeof(Editor.MapEditor).GetField("CurrentSession", BindingFlags.Instance | BindingFlags.Public);
+            var oldval = false;
+            if (field != null) {
+                var session = (Session)field.GetValue(self);
+                oldval = session.StartedFromRandomizerMenu();
+            }
+            orig(self, levelTemplate, at);
+            if (Engine.Scene is LevelLoader ll) {  // should always be true
+                var newsession = (Session)typeof(LevelLoader).GetField("Session", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(ll);
+                newsession.StartedFromRandomizerMenu(oldval);
+            }
+        }
+
         public void OnLoadLevelHook(On.Celeste.Level.orig_LoadLevel orig, Level self, Player.IntroTypes playerIntro, bool fromLoader) {
             if (fromLoader && this.InRandomizer) {
                 // Don't restart the timer on retry
                 self.Session.FirstLevel = false;
-                // shuffle a bunch of damn metadata
-                StartedFromRandomizerMenu = StartingFromRandomizerMenu;
-                StartingFromRandomizerMenu = false;
-                BeatBestTimePlatinum = false;
             }
             orig(self, playerIntro, fromLoader);
             // also, set the core mode right
@@ -141,10 +166,9 @@ namespace Celeste.Mod.Randomizer {
             }
         }
 
-        public bool BeatBestTimePlatinum;
         void OnComplete(Level level) {
-            BeatBestTimePlatinum = false;
-            if (this.StartedFromRandomizerMenu && level.Session.StartedFromBeginning) {  // how strong can/should we make this condition?   
+            level.Session.BeatBestTimePlatinum(false);
+            if (level.Session.StartedFromRandomizerMenu() && level.Session.StartedFromBeginning) {  // how strong can/should we make this condition?   
                 var hash = uint.Parse(Settings.Hash); // convert and unconvert, yeah I know
 
                 level.Session.BeatBestTime = false;
@@ -160,17 +184,17 @@ namespace Celeste.Mod.Randomizer {
                 if (Settings.Rules != Ruleset.Custom) {
                     if (this.SavedData.BestSetSeedTimes.TryGetValue(Settings.Rules, out var prevBestSet)) {
                         if (level.Session.Time < prevBestSet.Item1) {
-                            BeatBestTimePlatinum = true;
+                            level.Session.BeatBestTimePlatinum(true);
                             this.SavedData.BestSetSeedTimes[Settings.Rules] = RecordTuple.Create(level.Session.Time, Settings.Seed);
                         }
                     } else {
                         this.SavedData.BestSetSeedTimes[Settings.Rules] = RecordTuple.Create(level.Session.Time, Settings.Seed);
                     }
 
-                    if (this.SeedCleanRandom) {
+                    if (level.Session.SeedCleanRandom()) {
                         if (this.SavedData.BestRandomSeedTimes.TryGetValue(Settings.Rules, out var prevBestRand)) {
                             if (level.Session.Time < prevBestRand.Item1) {
-                                BeatBestTimePlatinum = true;
+                                level.Session.BeatBestTimePlatinum(true);
                                 this.SavedData.BestRandomSeedTimes[Settings.Rules] = RecordTuple.Create(level.Session.Time, Settings.Seed);
                             }
                         } else {
@@ -396,11 +420,13 @@ namespace Celeste.Mod.Randomizer {
             }
             orig(version, ease, alpha);
 
-            if (this.InRandomizer) {
+            var unStatic = Engine.Scene as AreaComplete;
+            var session = unStatic.Session;
+            if (session.StartedFromRandomizerMenu()) {
                 var text = this.Settings.Seed;
                 if (this.Settings.Rules != Ruleset.Custom) {
                     text += " " + this.Settings.Rules.ToString();
-                    if (this.SeedCleanRandom) {
+                    if (session.SeedCleanRandom()) {
                         text += "!";
                     }
                 }
@@ -505,9 +531,6 @@ namespace Celeste.Mod.Randomizer {
                 SaveData.Instance.Areas[newArea.ID].Modes[0].Completed = true;
                 // mark heart as not collected
                 SaveData.Instance.Areas[newArea.ID].Modes[0].HeartGem = false;
-                // mark clean
-                this.SeedCleanRandom = Settings.SeedType == SeedType.Random;
-                this.StartingFromRandomizerMenu = true;
                 Entering = true;
 
                 var fade = new FadeWipe(Engine.Scene, false, () => {   // assign to variable to suppress compiler warning
@@ -515,6 +538,8 @@ namespace Celeste.Mod.Randomizer {
                         FirstLevel = true,
                         StartedFromBeginning = true,
                     };
+                    session.StartedFromRandomizerMenu(true);
+                    session.SeedCleanRandom(Settings.SeedType == SeedType.Random);
                     LevelEnter.Go(session, true);
                     StartMe = null;
                     Entering = false;
@@ -525,24 +550,6 @@ namespace Celeste.Mod.Randomizer {
                     RandoConfigFile.YamlSkeleton(area);
 
                 }*/
-            }
-        }
-
-        public void MarkSeedUnclean(On.Celeste.LevelLoader.orig_ctor orig, LevelLoader self, Session session, Vector2? at) {
-            orig(self, session, at);
-            if (!session.StartedFromBeginning) {
-                this.SeedCleanRandom = false;
-            }
-        }
-
-        public void MarkSeedUnclean2(On.Celeste.LevelExit.orig_ctor orig, LevelExit self, LevelExit.Mode mode, Session session, HiresSnow snow) {
-            orig(self, mode, session, snow);
-            BeatBestTimePlatinum = false;
-            if (mode == LevelExit.Mode.GoldenBerryRestart || mode == LevelExit.Mode.Restart) {
-                this.StartingFromRandomizerMenu = this.StartedFromRandomizerMenu;
-            }
-            if (mode != LevelExit.Mode.Completed) {
-                this.SeedCleanRandom = false;
             }
         }
 
@@ -563,6 +570,7 @@ namespace Celeste.Mod.Randomizer {
                 AscendManager mgr = null;
                 Entity fader = null;
                 HeightDisplay h = null;
+                BadelineDummy b = null;
                 foreach (var ent in Engine.Scene.Entities) {
                     if (ent is AscendManager manager) {
                         mgr = manager;
@@ -573,6 +581,9 @@ namespace Celeste.Mod.Randomizer {
                     if (ent is HeightDisplay heightDisplay) {
                         h = heightDisplay;
                     }
+                    if (ent is BadelineDummy bd) {
+                        b = bd;
+                    }
                 }
                 if (mgr != null) {
                     level.Remove(mgr);
@@ -582,6 +593,9 @@ namespace Celeste.Mod.Randomizer {
                 }
                 if (h != null) {
                     level.Remove(h);
+                }
+                if (b != null) {
+                    level.Remove(b);
                 }
                 level.NextTransitionDuration = 0.65f;
 
@@ -749,7 +763,10 @@ namespace Celeste.Mod.Randomizer {
                 if (!this.InRandomizer) {
                     return false;
                 }
-                return BeatBestTimePlatinum;
+                if (Engine.Scene is Level level) {
+                    return level.Session.BeatBestTimePlatinum();
+                }
+                return false;
             });
 
             var beforeInstr = cursor.DefineLabel();
@@ -771,9 +788,47 @@ namespace Celeste.Mod.Randomizer {
             cursor.MarkLabel(beforeInstr);
             //Logger.Log("DEBUG", il.ToString());
         }
+
+        public void PleaseDontStopTheMusic(ILContext il) {
+            var cursor = new ILCursor(il);
+            cursor.TryGotoNext(MoveType.After, instr => instr.MatchCallvirt<AudioTrackState>("set_Event"));
+            if (!cursor.TryGotoNext(MoveType.Before, instr => instr.MatchCallvirt<AudioTrackState>("set_Event"))) {
+                throw new Exception("Could not find patching spot");
+            }
+            cursor.Remove();
+            cursor.EmitDelegate<Action<AudioTrackState, string>>((music, track) => {
+                if (!this.InRandomizer) {
+                    music.Event = track;
+                }
+            });
+        }
     }
 
     public class DisablableTextMenu : TextMenu {
         public bool DisableMovement;
+    }
+
+    public static class SessionExt {
+        public static bool BeatBestTimePlatinum(this Session session, bool? set=null) {
+            return SessionVariable(session, "BeatBestTimePlatinum", set);
+        }
+
+        public static bool SeedCleanRandom(this Session session, bool? set=null) {
+            return SessionVariable(session, "SeedCleanRandom", set);
+        }
+
+        public static bool StartedFromRandomizerMenu(this Session session, bool? set=null) {
+            return SessionVariable(session, "StartedFromRandomizerMenu", set);
+        }
+
+        private static bool SessionVariable(Session session, string name, bool? set=null) {
+            var dyn = new DynData<Session>(session);
+            if (set != null) {
+                dyn.Set<bool>(name, set.Value);
+                return set.Value;
+            } else {
+                return dyn.Get<bool?>(name) ?? false;
+            }
+        }
     }
 }
