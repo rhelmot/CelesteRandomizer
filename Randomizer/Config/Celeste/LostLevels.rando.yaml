@@ -1245,6 +1245,7 @@ ASide:
       Idx: 0
       Kind: in
       Launch: 66
+      HighBound: 92
   - Room: "i-00b"
     Holes:
     - Side: Right
