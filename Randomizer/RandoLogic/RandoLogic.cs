@@ -62,12 +62,12 @@ namespace Celeste.Mod.Randomizer {
 
             var r = new RandoLogic(settings, key);
 
+            newArea.Mode[0].MapData = r.MakeMap();
             newArea.Wipe = r.PickWipe();
             newArea.CompleteScreenName = r.PickCompleteScreen();
             newArea.CassetteSong = r.PickCassetteAudio();
             newArea.Mode[0].AudioState = new AudioState(r.PickMusicAudio(), r.PickAmbienceAudio());
             r.RandomizeDialog();
-            newArea.Mode[0].MapData = r.MakeMap();
 
             Logger.Log("randomizer", $"new area {newArea.GetSID()}");
 
@@ -294,7 +294,8 @@ namespace Celeste.Mod.Randomizer {
         }
 
         private string PickCompleteScreen() {
-            switch (this.Random.Next(8)) {
+            // ensure different rulesets of the same seed have different end screens
+            switch ((this.Settings.IntSeed + (int)this.Settings.Rules) % 8) {
                 case 0:
                     return AreaData.Areas[1].CompleteScreenName;
                 case 1:
