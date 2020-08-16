@@ -3018,6 +3018,17 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: unknown  # reeeeeally want this to be inout
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 16
+        Y: 232
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 272
+        Y: 296
   - Room: "credits-tree"
     Holes:
     - Side: Down
