@@ -52,7 +52,8 @@ namespace Celeste.Mod.Randomizer {
         }
 
         public override void CreateModMenuSection(TextMenu menu, bool inGame, EventInstance snapshot) {
-            base.CreateModMenuSection(menu, inGame, snapshot);
+            // uncomment this when we have actual options to control
+            //base.CreateModMenuSection(menu, inGame, snapshot);
         }
 
         public bool InRandomizer {
