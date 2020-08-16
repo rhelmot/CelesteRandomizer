@@ -466,8 +466,9 @@ namespace Celeste.Mod.Randomizer {
             if (this.Random.Next(100) == 0) {
                 poem = Dialog.Clean($"RANDOHEART_FIXED_{Random.Next(int.Parse(Dialog.Clean("RANDOHEART_FIXED_COUNT")))}");
             } else {
-                poem = Dialog.Clean($"RANDOHEART_ADJ_{Random.Next(int.Parse(Dialog.Clean("RANDOHEART_ADJ_COUNT")))}") + " " +
-                       Dialog.Clean($"RANDOHEART_NOUN_{Random.Next(int.Parse(Dialog.Clean("RANDOHEART_NOUN_COUNT")))}");
+                string adj = Dialog.Clean($"RANDOHEART_ADJ_{Random.Next(int.Parse(Dialog.Clean("RANDOHEART_ADJ_COUNT")))}");
+                string noun = Dialog.Clean($"RANDOHEART_NOUN_{Random.Next(int.Parse(Dialog.Clean("RANDOHEART_NOUN_COUNT")))}");
+                poem = string.Format(Dialog.Get("RANDOHEART_ADJ_NOUN"), adj, noun);
             }
             var key = this.Key.GetSID().DialogKeyify() + "_A";
             AreaData.Get(this.Key).Mode[0].PoemID = key;

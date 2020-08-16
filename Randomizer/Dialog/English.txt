@@ -92,7 +92,9 @@ rooms through places that don't make sense
     RANDOHEART_FIXED_1=First Try
     RANDOHEART_FIXED_2=Big Yeet
     RANDOHEART_FIXED_COUNT=3
-    
+
+    RANDOHEART_ADJ_NOUN={0} {1}
+
     RANDOHEART_ADJ_0=Huge
     RANDOHEART_ADJ_1=Confusing
     RANDOHEART_ADJ_2=Rainbow
