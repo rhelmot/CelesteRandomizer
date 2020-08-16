@@ -551,7 +551,7 @@ ASide:
         Dashes: zero
       ReqIn:
         Or:
-        - Difficulty: hard
+        - Difficulty: expert
           Dashes: zero
         - Dashes: one
     Tweaks:
@@ -598,6 +598,8 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+      ReqOut:
+        Dashes: one
     InternalEdges:
     - To: "right"
       ReqIn:

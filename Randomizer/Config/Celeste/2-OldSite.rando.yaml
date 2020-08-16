@@ -766,6 +766,10 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - Collectable: 0
+      ReqBoth:
+        Dashes: one
   - Room: "d6"
     Holes:
     - Side: Up
