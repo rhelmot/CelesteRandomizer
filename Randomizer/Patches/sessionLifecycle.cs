@@ -92,16 +92,34 @@ namespace Celeste.Mod.Randomizer {
         }
 
         // when we teleport with the map editor, maintain the randomizer status
+        // awful reflection hack instead of IL mod to maintain compatibility across everest versions
         private void MaintainSessionFlags2(On.Celeste.Editor.MapEditor.orig_LoadLevel orig, Editor.MapEditor self, Editor.LevelTemplate levelTemplate, Vector2 at) {
-            var field = typeof(Editor.MapEditor).GetField("CurrentSession", BindingFlags.Instance | BindingFlags.Public);
+            var field = typeof(Editor.MapEditor).GetField("CurrentSession", BindingFlags.Instance | BindingFlags.NonPublic);
             var oldval = false;
             if (field != null) {
                 var session = (Session)field.GetValue(self);
                 oldval = session.StartedFromRandomizerMenu();
             }
             orig(self, levelTemplate, at);
-            if (Engine.Scene is LevelLoader ll) {  // should always be true
-                var newsession = (Session)typeof(LevelLoader).GetField("Session", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(ll);
+
+            var scene1 = Engine.Scene;
+            Scene scene2 = null;
+            Session newsession = null;
+            var field2 = typeof(Monocle.Engine).GetField("nextScene", BindingFlags.Instance | BindingFlags.NonPublic);
+            if (field2 != null) {
+                scene2 = (Scene)field2.GetValue(Engine.Instance);
+            }
+            if (scene1 != null && scene1 is LevelLoader ll) {
+                newsession = (Session)typeof(LevelLoader).GetField("session", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(ll);
+            } else if (scene1 != null && scene1 is Level ll2) {
+                newsession = ll2.Session;
+            } else if (scene2 != null && scene2 is LevelLoader ll3) {
+                newsession = (Session)typeof(LevelLoader).GetField("session", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(ll3);
+            } else if (scene2 != null && scene2 is Level ll4) {
+                newsession = ll4.Session;
+            }
+
+            if (newsession != null) {
                 newsession.StartedFromRandomizerMenu(oldval);
             }
         }
