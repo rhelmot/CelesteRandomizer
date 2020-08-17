@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Reflection;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Monocle;
@@ -9,7 +10,8 @@ namespace Celeste.Mod.Randomizer {
         public static AreaKey GenerateMap(RandoSettings settings) {
             var lastarea = AreaData.Areas[AreaData.Areas.Count - 1];
             var newID = AreaData.Areas.Count;
-            if (lastarea.GetLevelSet() == "randomizer") {
+            bool secondVerseSameAsTheFirst = lastarea.GetSID().StartsWith("randomizer/");
+            if (secondVerseSameAsTheFirst) {
                 newID--;
             }
 
@@ -48,8 +50,10 @@ namespace Celeste.Mod.Randomizer {
             };
 
             newArea.SetSID($"randomizer/{newArea.Name}");
-            if (lastarea.GetSID().StartsWith("randomizer/")) {
+            if (secondVerseSameAsTheFirst) {
                 AreaData.Areas[AreaData.Areas.Count - 1] = newArea;
+                // invalidate the MapEditor area key cache, as it will erroniously see a cache hit
+                typeof(Editor.MapEditor).GetField("area", BindingFlags.NonPublic | BindingFlags.Static).SetValue(null, AreaKey.None);
             } else {
                 // avert race condition
                 RandoModule.AreaHandoff = newArea;
