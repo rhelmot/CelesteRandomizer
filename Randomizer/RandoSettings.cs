@@ -221,6 +221,20 @@ namespace Celeste.Mod.Randomizer {
 
         public uint IntSeed {
             get {
+                var euniSeed = this.Seed.Length <= 10;
+                foreach (var i in this.Seed) {
+                    if (!Char.IsDigit(i)) {
+                        euniSeed = false;
+                        break;
+                    }
+                }
+                if (euniSeed) {
+                    var big = ulong.Parse(this.Seed);
+                    if (big <= (ulong)uint.MaxValue) {
+                        return (uint)big;
+                    }
+                }
+
                 // djb2 impl
                 uint h = 5381;
                 foreach (var i in this.Seed) {
