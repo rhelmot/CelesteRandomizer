@@ -148,14 +148,15 @@ namespace Celeste.Mod.Randomizer {
         }
 
         private void AreaCompleteDrawHash(On.Celeste.AreaComplete.orig_VersionNumberAndVariants orig, string version, float ease, float alpha) {
-            if (this.InRandomizer) {
-                SaveData.Instance.VariantMode = false;
-            }
             orig(version, ease, alpha);
 
-            var unStatic = Engine.Scene as AreaComplete;
-            var session = unStatic.Session;
-            if (session.StartedFromRandomizerMenu()) {
+            Session session = null;
+            if (Engine.Scene is AreaComplete unStatic) {
+                session = unStatic.Session;
+            } else if (Engine.Scene is Level unStatic2) {
+                session = unStatic2.Session;
+            }
+            if (session?.StartedFromRandomizerMenu() ?? false) {
                 var text = this.Settings.Seed;
                 if (this.Settings.Rules != Ruleset.Custom) {
                     text += " " + this.Settings.Rules.ToString();
