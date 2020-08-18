@@ -7,9 +7,12 @@ using Monocle;
 using Microsoft.Xna.Framework;
 using MonoMod.Cil;
 using MonoMod.Utils;
+using MonoMod.RuntimeDetour;
 
 namespace Celeste.Mod.Randomizer {
     public partial class RandoModule : EverestModule {
+
+        private List<IDetour> SpecialHooksMechanics = new List<IDetour>();
         private void LoadMechanics() {
             Everest.Events.Level.OnTransitionTo += OnTransition;
             Everest.Events.Level.OnLoadLevel += OnLoadLevel;
@@ -17,6 +20,13 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.Level.LoadLevel += OnLoadLevelHook;
             IL.Celeste.Level.EnforceBounds += DisableUpTransition;
             IL.Celeste.Level.EnforceBounds += DisableDownTransition;
+
+            IL.Celeste.CS02_DreamingPhonecall.OnEnd += CutsceneWarpTarget;
+            On.Celeste.CS06_Campfire.OnBegin += FixCampfire;
+            SpecialHooksMechanics.Add(new ILHook(typeof(CS04_MirrorPortal).GetNestedType("<Cutscene>d__6", BindingFlags.NonPublic).GetMethod("MoveNext", BindingFlags.NonPublic | BindingFlags.Instance), CutsceneWarpMirrorFakeBSide));
+            SpecialHooksMechanics.Add(new ILHook(typeof(CS04_MirrorPortal).GetNestedType("<>c__DisplayClass9_0", BindingFlags.NonPublic).GetMethod("<OnEnd>b__0", BindingFlags.NonPublic | BindingFlags.Instance), CutsceneWarpTargetMirror));
+            SpecialHooksMechanics.Add(new ILHook(typeof(CS06_StarJumpEnd).GetNestedType("<>c__DisplayClass40_0", BindingFlags.NonPublic).GetMethod("<OnEnd>b__0", BindingFlags.NonPublic | BindingFlags.Instance), CutsceneWarpTarget));
+            SpecialHooksMechanics.Add(new ILHook(typeof(CS06_StarJumpEnd).GetNestedType("<>c__DisplayClass40_0", BindingFlags.NonPublic).GetMethod("<OnEnd>b__1", BindingFlags.NonPublic | BindingFlags.Instance), CutsceneWarpTargetFall));
         }
 
         private void UnloadMechanics() {
@@ -26,6 +36,14 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.Level.LoadLevel -= OnLoadLevelHook;
             IL.Celeste.Level.EnforceBounds -= DisableUpTransition;
             IL.Celeste.Level.EnforceBounds -= DisableDownTransition;
+
+            IL.Celeste.CS02_DreamingPhonecall.OnEnd -= CutsceneWarpTarget;
+            IL.Celeste.CS04_MirrorPortal.Cutscene -= CutsceneWarpMirrorFakeBSide;
+            On.Celeste.CS06_Campfire.OnBegin -= FixCampfire;
+            foreach (var detour in this.SpecialHooksMechanics) {
+                detour.Dispose();
+            }
+            this.SpecialHooksMechanics.Clear();
         }
 
         private void OnLoadLevelHook(On.Celeste.Level.orig_LoadLevel orig, Level self, Player.IntroTypes playerIntro, bool fromLoader) {
@@ -214,6 +232,65 @@ namespace Celeste.Mod.Randomizer {
 
                 return !found;
             });
+        }
+
+        private void CutsceneWarpTarget(ILContext il) {
+            var cursor = new ILCursor(il);
+            while (cursor.TryGotoNext(MoveType.Before, instr => instr.MatchStfld("Celeste.Session", "Level"))) {
+                cursor.EmitDelegate<Func<string, string>>((prevNextLevel) => {
+                    if (!this.InRandomizer) {
+                        return prevNextLevel;
+                    }
+
+                    var dyn = new DynData<LevelData>(SaveData.Instance.CurrentSession.LevelData);
+                    var newNextLevel = dyn.Get<string>("CustomWarp");
+                    if (newNextLevel == null) {
+                        throw new Exception("Randomizer error: no target for warp");
+                    }
+                    return newNextLevel;
+                });
+                cursor.Index++;
+            }
+
+            cursor.Index = 0;
+            while (cursor.TryGotoNext(MoveType.Before, instr => instr.MatchStfld("Celeste.Session", "RespawnPoint"))) {
+                cursor.EmitDelegate<Func<Vector2?, Vector2?>>((prevStartPoint) => this.InRandomizer ? null : prevStartPoint);
+                cursor.Index++;
+            }
+        }
+
+        private void CutsceneWarpTargetMirror(ILContext il) {
+            this.CutsceneWarpTarget(il);
+            this.CutsceneWarpMirrorFakeBSide(il);
+        }
+
+        private void CutsceneWarpTargetFall(ILContext il) {
+            this.CutsceneWarpTarget(il);
+            var cursor = new ILCursor(il);
+            if (!cursor.TryGotoNext(MoveType.After, instr => instr.MatchLdcI4(6))) {
+                throw new Exception("Could not find patch point!");
+            }
+            cursor.EmitDelegate<Func<Player.IntroTypes, Player.IntroTypes>>(oldType => this.InRandomizer ? Player.IntroTypes.None : oldType);
+        }
+
+        private void CutsceneWarpMirrorFakeBSide(ILContext il) {
+            var cursor = new ILCursor(il);
+            var count = 0;
+            while (cursor.TryGotoNext(MoveType.After, instr => instr.MatchLdfld("Celeste.AreaKey", "Mode"))) {
+                cursor.EmitDelegate<Func<AreaMode, AreaMode>>(oldMode => this.InRandomizer ? AreaMode.BSide : oldMode);
+                count++;
+            }
+
+            if (count == 0) {
+                throw new Exception("Could not find patch point(s)!");
+            }
+        }
+
+        private void FixCampfire(On.Celeste.CS06_Campfire.orig_OnBegin orig, CS06_Campfire self, Level level) {
+            orig(self, level);
+            if (!level.Session.GetFlag("campfire_chat")) {
+                level.Tracker.GetEntity<Player>().Y = level.Session.LevelData.Spawns[0].Y;
+            }
         }
     }
 }

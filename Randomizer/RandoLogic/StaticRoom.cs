@@ -226,6 +226,8 @@ namespace Celeste.Mod.Randomizer {
                 StaticNode toNode;
                 if (edge.To != null) {
                     toNode = this.Nodes[edge.To];
+                } else if (edge.CustomWarp) {
+                    toNode = null;
                 } else if (edge.Split != null) {
                     if (node.Edges.Count != 2) {
                         throw new Exception($"[{this.Name}.{node.Name}] Cannot split: must have exactly two edges");
@@ -284,7 +286,7 @@ namespace Celeste.Mod.Randomizer {
                     thing.ParentNode = toNode;
                     toNode.Collectables.Add(thing); 
                 } else {
-                    throw new Exception($"[{this.Name}.{node.Name}] Internal edge must have either To or Split or Collectable");
+                    throw new Exception($"[{this.Name}.{node.Name}] Internal edge must have either To or Split or Collectable or CustomWarp");
                 }
 
                 var reqIn = this.ProcessReqs(edge.ReqIn, null, false);
@@ -294,12 +296,15 @@ namespace Celeste.Mod.Randomizer {
                     FromNode = node,
                     NodeTarget = toNode,
                     ReqIn = reqIn,
-                    ReqOut = reqOut
+                    ReqOut = reqOut,
+                    CustomWarp = edge.CustomWarp,
                 };
-                var reverse = new StaticEdgeReversed(forward, node);
 
                 node.Edges.Add(forward);
-                toNode.Edges.Add(reverse);
+                if (toNode != null) {
+                    var reverse = new StaticEdgeReversed(forward, node);
+                    toNode.Edges.Add(reverse);
+                }
             }
 
             foreach (var col in config.Collectables) {
@@ -635,6 +640,16 @@ namespace Celeste.Mod.Randomizer {
         public List<StaticEdge> Edges = new List<StaticEdge>();
         public List<StaticCollectable> Collectables = new List<StaticCollectable>();
         public StaticRoom ParentRoom;
+
+        public StaticEdge WarpEdge {
+            get {
+                return new StaticEdge {
+                    FromNode = this,
+                    ReqIn = new Possible(),
+                    ReqOut = new Possible(),
+                };
+            }
+        }
     }
 
     public class StaticCollectable {
@@ -649,6 +664,7 @@ namespace Celeste.Mod.Randomizer {
         public virtual Requirement ReqIn { get; set; }
         public virtual Requirement ReqOut { get; set; }
         public Hole HoleTarget;
+        public bool CustomWarp;
     }
 
     public class StaticEdgeReversed : StaticEdge {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using Monocle;
 
@@ -87,7 +88,7 @@ namespace Celeste.Mod.Randomizer {
 
             public override bool Next() {
                 var closure = LinkedNodeSet.Closure(this.Node, this.Logic.Caps, null, true);
-                var available = closure.UnlinkedEdges((UnlinkedEdge u) => !this.TriedEdges.Contains(u.Static) && this.Logic.Map.HoleFree(this.Node.Room, u.Static.HoleTarget));
+                var available = closure.UnlinkedEdges((UnlinkedEdge u) => !this.TriedEdges.Contains(u.Static) && (u.Static.HoleTarget == null || this.Logic.Map.HoleFree(this.Node.Room, u.Static.HoleTarget)));
                 if (available.Count == 0) {
                     Logger.Log("randomizer", $"Failure: No edges out of {Node.Room.Static.Name}:{Node.Static.Name}");
                     return false;
@@ -125,10 +126,7 @@ namespace Celeste.Mod.Randomizer {
 
             private ConnectAndMapReceipt WorkingPossibility() {
                 var caps = this.Logic.Caps.WithoutKey(); // don't try to enter a door locked from the other side
-                var possibilities = this.Logic.AvailableNewEdges(caps, null, (StaticEdge e) => 
-                    !this.TriedRooms.Contains(e.FromNode.ParentRoom) && 
-                    this.IsEnd == e.FromNode.ParentRoom.End && 
-                    e.FromNode.ParentRoom.Worth <= PathwayMaxRoom[(int)Logic.Settings.Length + (this.IsEnd ? 1 : 0)]);
+                var possibilities = this.Logic.AvailableNewEdges(caps, null, e => RoomFilter(e.FromNode.ParentRoom));
 
                 foreach (var edge in possibilities) {
                     var result = ConnectAndMapReceipt.Do(this.Logic, this.Edge, edge);
@@ -140,8 +138,28 @@ namespace Celeste.Mod.Randomizer {
                 return null;
             }
 
+            private bool RoomFilter(StaticRoom room) {
+                return !this.TriedRooms.Contains(room) && 
+                    this.IsEnd == room.End && 
+                    room.Worth <= PathwayMaxRoom[(int)Logic.Settings.Length + (this.IsEnd ? 1 : 0)];
+            }
+
+            private ConnectAndMapReceipt WorkingWarpPossibility() {
+                var allrooms = new List<StaticRoom>(this.Logic.RemainingRooms.Where(RoomFilter));
+                allrooms.Shuffle(this.Logic.Random);
+
+                foreach (var room in allrooms) {
+                    var result = ConnectAndMapReceipt.DoWarp(this.Logic, this.Edge, room);
+                    if (result != null) {
+                        return result;
+                    }
+                }
+                
+                return null;
+            }
+
             public override bool Next() {
-                var receipt = this.WorkingPossibility();
+                var receipt = this.Edge.Static.CustomWarp ? this.WorkingWarpPossibility() : this.WorkingPossibility();
                 if (receipt == null) {
                     Logger.Log("randomizer", $"Failure: could not find a room that fits on {Edge.Node.Room.Static.Name}:{Edge.Node.Static.Name}:{Edge.Static.HoleTarget}");
                     return false;

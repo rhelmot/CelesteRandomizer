@@ -449,6 +449,21 @@ namespace Celeste.Mod.Randomizer {
             if (bgEffect != null) {
                 map.Background.Children.Add(new BinaryPacker.Element { Name = bgEffect });
             }
+
+            // starjump cutscene requires a northernlights bg
+            // TODO maybe only do one bg for all instances of the room?
+            if (bgEffect != "northernlights") {
+                foreach (var room in map.Levels) {
+                    if (room.Name.StartsWith("Celeste/6-Reflection/A/start")) {
+                        map.Background.Children.Add(new BinaryPacker.Element {
+                            Name = "northernlights",
+                            Attributes = new Dictionary<string, object> {
+                                { "only", room.Name }
+                            }
+                        });
+                    }
+                }
+            }
         }
 
         private IEnumerable<string> FindWindyLevels(MapData map) {

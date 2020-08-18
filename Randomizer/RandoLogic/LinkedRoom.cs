@@ -94,6 +94,20 @@ namespace Celeste.Mod.Randomizer {
             foreach (var room in this.Rooms) {
                 map.Levels.Add(room.Bake(this.nonce++, random));
             }
+
+            // set warp targets
+            foreach (var room in this.Rooms) {
+                foreach (var node in room.Nodes.Values) {
+                    foreach (var edge in node.Edges) {
+                        var s = edge.CorrespondingEdge(node);
+                        if (s.CustomWarp) {
+                            var baked = room.BakedRoom;
+                            var dyn = new DynData<LevelData>(baked);
+                            dyn.Set<string>("CustomWarp", edge.OtherNode(node).Room.BakedRoom.Name);
+                        }
+                    }
+                }
+            }
         }
 
         public int Count {
@@ -116,6 +130,13 @@ namespace Celeste.Mod.Randomizer {
         public Dictionary<string, LinkedNode> Nodes = new Dictionary<string, LinkedNode>();
         public HashSet<int> UsedKeyholes = new HashSet<int>();
         public bool IsBacktrack;
+        public LevelData BakedRoom { get; private set; }
+
+        public Vector2 Position {
+            get {
+                return new Vector2(this.Bounds.Left, this.Bounds.Top);
+            }
+        }
 
         public LinkedRoom(StaticRoom Room, Vector2 Position) {
             this.Static = Room;
@@ -132,6 +153,7 @@ namespace Celeste.Mod.Randomizer {
 
         public virtual LevelData Bake(int? nonce, Random random) {
             var result = this.Static.MakeLevelData(new Vector2(this.Bounds.Left, this.Bounds.Top), nonce);
+            this.BakedRoom = result;
 
             bool ohgodwhat = random.Next(100) == 0; // :)
             string pickCrystalColor() {
@@ -341,7 +363,8 @@ namespace Celeste.Mod.Randomizer {
             }
             foreach (var node in this.Nodes.Values) {
                 foreach (var edge in node.Edges) {
-                    var hole = edge.CorrespondingEdge(node).HoleTarget;
+                    var edgeStatic = edge.CorrespondingEdge(node);
+                    var hole = edgeStatic.HoleTarget;
                     var hole2 = edge.OtherEdge(node).HoleTarget;
                     if (hole != null && hole2 != null && (hole.Side == ScreenDirection.Down || hole.Side == ScreenDirection.Up)) {
                         usedVerticalHoles.Add(neuterHole(hole, hole2));
@@ -508,7 +531,7 @@ namespace Celeste.Mod.Randomizer {
 
         public IEnumerable<StaticEdge> UnlinkedEdges(Capabilities capsForward, Capabilities capsReverse) {
             foreach (var staticedge in this.Static.Edges) {
-                if (staticedge.HoleTarget == null) {
+                if (staticedge.HoleTarget == null && !staticedge.CustomWarp) {
                     continue;
                 }
                 bool found = false;

@@ -590,11 +590,15 @@ ASide:
     - Collectable: 0
       ReqBoth:
         Dashes: one
-  - Room: "13"  # TODO: Warp
+  - Room: "13"
     Holes:
     - Side: Left
       Idx: 0
-      Kind: None
+      Kind: in
+    InternalEdges:
+    - CustomWarp: true
+      ReqOut:
+        Dashes: zero
     Tweaks:
     - Name: "goldenBerryCollectTrigger"
       ID: 1

@@ -834,11 +834,15 @@ ASide:
       Kind: inout
       ReqIn:
         Dashes: one
-  - Room: "b-16"  # TODO: warp
+  - Room: "b-16"
     Holes:
     - Side: Down
       Idx: 0
-      Kind: None
+      Kind: in
+    InternalEdges:
+    - CustomWarp: true
+      ReqOut:
+        Dashes: one
   - Room: "c-00"
     Holes:
     - Side: Right
@@ -1990,7 +1994,11 @@ BSide:
     Holes:
     - Side: Down
       Idx: 0
-      Kind: none        # TODO: warp
+      Kind: in
+    InternalEdges:
+    - CustomWarp: true
+      ReqOut:
+        Dashes: one
   - Room: "c-00"
     Holes:
     - Side: Right

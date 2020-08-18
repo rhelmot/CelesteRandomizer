@@ -86,6 +86,54 @@ namespace Celeste.Mod.Randomizer {
                 };
             }
 
+            public static ConnectAndMapReceipt DoWarp(RandoLogic logic, UnlinkedEdge fromEdge, StaticRoom toRoomStatic) {
+                var fromRoom = fromEdge.Node.Room;
+                if (!fromEdge.Static.CustomWarp) {
+                    return null;
+                }
+
+                float jumpScale = 8*100;
+                int jumpDir = 0;
+                LinkedRoom toRoom = null;
+                Vector2 newPosition;
+                while (true) {
+                    newPosition = fromRoom.Position + Vector2.UnitX * jumpScale * (jumpDir == 0 ? 1 : jumpDir == 1 ? -1 : 0)
+                                                    + Vector2.UnitY * jumpScale * (jumpDir == 2 ? 1 : jumpDir == 3 ? -1 : 0);
+                    toRoom = new LinkedRoom(toRoomStatic, newPosition);
+
+                    if (logic.Map.AreaFree(toRoom)) {
+                        break;
+                    }
+
+                    if (++jumpDir == 4) {
+                        jumpDir = 0;
+                        jumpScale *= 1.5f;
+                    }
+                }
+
+                logic.Map.AddRoom(toRoom);
+                var newEdge = new LinkedEdge {
+                    NodeA = fromEdge.Node,
+                    NodeB = toRoom.Nodes["main"],
+                    StaticA = fromEdge.Static,
+                    StaticB = toRoomStatic.Nodes["main"].WarpEdge,
+                };
+                newEdge.NodeA.Edges.Add(newEdge);
+                newEdge.NodeB.Edges.Add(newEdge);
+
+                if (!logic.Settings.RepeatRooms) {
+                    logic.RemainingRooms.Remove(toRoomStatic);
+                }
+
+                Logger.Log("randomizer", $"Adding room {toRoomStatic.Name} at {newPosition} ({logic.Map.Count})");
+                return new ConnectAndMapReceipt {
+                    NewRoom = toRoom,
+                    Logic = logic,
+                    Edge = newEdge,
+                    EntryNode = toRoom.Nodes["main"],
+                };
+            }
+
             public override void Undo() {
                 Logger.Log("randomizer", $"Undo: Adding room {NewRoom.Static.Name} at {NewRoom.Bounds}");
                 this.Logic.Map.RemoveRoom(this.NewRoom);

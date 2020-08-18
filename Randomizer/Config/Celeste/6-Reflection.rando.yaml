@@ -1,6 +1,28 @@
 ASide:
-  - Room: "start"  # TODO: warp?
+  - Room: "start"
     Holes:
+    - Side: Left  # TODO why does entering through left-0 or right-0 trigger softlock prevention?
+      Idx: 0
+      Kind: none
+    - Side: Left
+      Idx: 1
+      Kind: in
+    - Side: Right
+      Idx: 0
+      Kind: none
+    - Side: Left
+      Idx: 2
+      Kind: none
+    - Side: Right
+      Idx: 1
+      Kind: None
+    - Side: Down
+      Idx: 0
+      Kind: None
+    InternalEdges:
+    - CustomWarp: true
+      ReqOut:
+        Dashes: one
   - Room: "00"
     Holes:
     - Side: Up
