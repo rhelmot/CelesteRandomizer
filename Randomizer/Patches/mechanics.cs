@@ -22,7 +22,6 @@ namespace Celeste.Mod.Randomizer {
             IL.Celeste.Level.EnforceBounds += DisableDownTransition;
 
             IL.Celeste.CS02_DreamingPhonecall.OnEnd += CutsceneWarpTarget;
-            On.Celeste.CS06_Campfire.OnBegin += FixCampfire;
             SpecialHooksMechanics.Add(new ILHook(typeof(CS04_MirrorPortal).GetNestedType("<Cutscene>d__6", BindingFlags.NonPublic).GetMethod("MoveNext", BindingFlags.NonPublic | BindingFlags.Instance), CutsceneWarpMirrorFakeBSide));
             SpecialHooksMechanics.Add(new ILHook(typeof(CS04_MirrorPortal).GetNestedType("<>c__DisplayClass9_0", BindingFlags.NonPublic).GetMethod("<OnEnd>b__0", BindingFlags.NonPublic | BindingFlags.Instance), CutsceneWarpTargetMirror));
             SpecialHooksMechanics.Add(new ILHook(typeof(CS06_StarJumpEnd).GetNestedType("<>c__DisplayClass40_0", BindingFlags.NonPublic).GetMethod("<OnEnd>b__0", BindingFlags.NonPublic | BindingFlags.Instance), CutsceneWarpTarget));
@@ -39,7 +38,6 @@ namespace Celeste.Mod.Randomizer {
 
             IL.Celeste.CS02_DreamingPhonecall.OnEnd -= CutsceneWarpTarget;
             IL.Celeste.CS04_MirrorPortal.Cutscene -= CutsceneWarpMirrorFakeBSide;
-            On.Celeste.CS06_Campfire.OnBegin -= FixCampfire;
             foreach (var detour in this.SpecialHooksMechanics) {
                 detour.Dispose();
             }
@@ -283,13 +281,6 @@ namespace Celeste.Mod.Randomizer {
 
             if (count == 0) {
                 throw new Exception("Could not find patch point(s)!");
-            }
-        }
-
-        private void FixCampfire(On.Celeste.CS06_Campfire.orig_OnBegin orig, CS06_Campfire self, Level level) {
-            orig(self, level);
-            if (!level.Session.GetFlag("campfire_chat")) {
-                level.Tracker.GetEntity<Player>().Y = level.Session.LevelData.Spawns[0].Y;
             }
         }
     }
