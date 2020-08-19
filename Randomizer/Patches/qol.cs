@@ -5,6 +5,7 @@ using System.Reflection;
 using Monocle;
 using Microsoft.Xna.Framework;
 using MonoMod.Cil;
+using MonoMod.Utils;
 using MonoMod.RuntimeDetour;
 
 namespace Celeste.Mod.Randomizer {
@@ -29,10 +30,10 @@ namespace Celeste.Mod.Randomizer {
             IL.Celeste.AngryOshiro.ChaseUpdate += MoveOutOfTheWay;
             IL.Celeste.NPC03_Oshiro_Lobby.Added += PleaseDontStopTheMusic;
             IL.Celeste.EventTrigger.OnEnter += DontGiveOneDash;
-            IL.Celeste.CS10_MoonIntro.BadelineAppears += DontGiveOneDash;
             IL.Celeste.CS10_MoonIntro.OnEnd += DontGiveOneDash;
             IL.Celeste.CS10_BadelineHelps.OnEnd += DontGiveOneDash;
 
+            SpecialHooksQol.Add(new ILHook(typeof(CS10_MoonIntro).GetMethod("BadelineAppears", BindingFlags.Instance | BindingFlags.NonPublic).GetStateMachineTarget(), DontGiveOneDash));
             SpecialHooksQol.Add(new ILHook(typeof(EventTrigger).GetNestedType("<>c__DisplayClass10_0", BindingFlags.NonPublic).GetMethod("<OnEnter>b__0", BindingFlags.NonPublic | BindingFlags.Instance), DontGiveOneDash));
         }
 
@@ -55,7 +56,6 @@ namespace Celeste.Mod.Randomizer {
             IL.Celeste.AngryOshiro.ChaseUpdate -= MoveOutOfTheWay;
             IL.Celeste.NPC03_Oshiro_Lobby.Added -= PleaseDontStopTheMusic;
             IL.Celeste.EventTrigger.OnEnter -= DontGiveOneDash;
-            IL.Celeste.CS10_MoonIntro.BadelineAppears -= DontGiveOneDash;
             IL.Celeste.CS10_MoonIntro.OnEnd -= DontGiveOneDash;
             IL.Celeste.CS10_BadelineHelps.OnEnd -= DontGiveOneDash;
 
@@ -229,6 +229,7 @@ namespace Celeste.Mod.Randomizer {
         }
 
         private void DontGiveOneDash(ILContext il) {
+            //Logger.Log("DEBUG", il.ToString());
             var cursor = new ILCursor(il);
             var count = 0;
             while (cursor.TryGotoNext(MoveType.Before, instr => instr.MatchStfld("Celeste.PlayerInventory", "Dashes"))) {
