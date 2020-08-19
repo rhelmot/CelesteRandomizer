@@ -1,11 +1,15 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Reflection;
 using Monocle;
 using Microsoft.Xna.Framework;
 using MonoMod.Cil;
+using MonoMod.RuntimeDetour;
 
 namespace Celeste.Mod.Randomizer {
     public partial class RandoModule : EverestModule {
+        private List<IDetour> SpecialHooksQol = new List<IDetour>();
         private void LoadQol() {
             On.Celeste.TextMenu.MoveSelection += DisableMenuMovement;
             On.Celeste.Cassette.CollectRoutine += NeverCollectCassettes;
@@ -24,6 +28,12 @@ namespace Celeste.Mod.Randomizer {
             IL.Celeste.CS07_Ascend.Cutscene += DontGiveTwoDashes;
             IL.Celeste.AngryOshiro.ChaseUpdate += MoveOutOfTheWay;
             IL.Celeste.NPC03_Oshiro_Lobby.Added += PleaseDontStopTheMusic;
+            IL.Celeste.EventTrigger.OnEnter += DontGiveOneDash;
+            IL.Celeste.CS10_MoonIntro.BadelineAppears += DontGiveOneDash;
+            IL.Celeste.CS10_MoonIntro.OnEnd += DontGiveOneDash;
+            IL.Celeste.CS10_BadelineHelps.OnEnd += DontGiveOneDash;
+
+            SpecialHooksQol.Add(new ILHook(typeof(EventTrigger).GetNestedType("<>c__DisplayClass10_0", BindingFlags.NonPublic).GetMethod("<OnEnter>b__0", BindingFlags.NonPublic | BindingFlags.Instance), DontGiveOneDash));
         }
 
         private void UnloadQol() {
@@ -44,6 +54,15 @@ namespace Celeste.Mod.Randomizer {
             IL.Celeste.CS07_Ascend.Cutscene -= DontGiveTwoDashes;
             IL.Celeste.AngryOshiro.ChaseUpdate -= MoveOutOfTheWay;
             IL.Celeste.NPC03_Oshiro_Lobby.Added -= PleaseDontStopTheMusic;
+            IL.Celeste.EventTrigger.OnEnter -= DontGiveOneDash;
+            IL.Celeste.CS10_MoonIntro.BadelineAppears -= DontGiveOneDash;
+            IL.Celeste.CS10_MoonIntro.OnEnd -= DontGiveOneDash;
+            IL.Celeste.CS10_BadelineHelps.OnEnd -= DontGiveOneDash;
+
+            foreach (var detour in this.SpecialHooksQol) {
+                detour.Dispose();
+            }
+            this.SpecialHooksQol.Clear();
         }
 
         private void DisableMenuMovement(On.Celeste.TextMenu.orig_MoveSelection orig, TextMenu self, int direction, bool wiggle = false) {
@@ -206,6 +225,24 @@ namespace Celeste.Mod.Randomizer {
                     }
                     return dashes;
                 });
+            }
+        }
+
+        private void DontGiveOneDash(ILContext il) {
+            var cursor = new ILCursor(il);
+            var count = 0;
+            while (cursor.TryGotoNext(MoveType.Before, instr => instr.MatchStfld("Celeste.PlayerInventory", "Dashes"))) {
+                cursor.EmitDelegate<Func<int, int>>((dashes) => {
+                    if (this.InRandomizer) {
+                        return (Engine.Scene as Level).Session.Inventory.Dashes;
+                    }
+                    return dashes;
+                });
+                cursor.Index++;
+                count++;
+            }
+            if (count == 0) {
+                throw new Exception("Could not find patch point(s)!");
             }
         }
 
