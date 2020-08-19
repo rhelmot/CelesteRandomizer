@@ -715,6 +715,13 @@ ASide:
     - Side: Right
       Idx: 4
       Kind: none
+    InternalEdges:
+    - Collectable: 0
+      ReqBoth:
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: hard
   - Room: "c-00"
     Holes:
     - Side: Up
