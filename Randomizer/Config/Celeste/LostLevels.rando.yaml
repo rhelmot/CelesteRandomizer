@@ -1,12 +1,17 @@
 ASide:
-  - Room: "intro-00-past"  # TODO warp
+  - Room: "intro-00-past"
     Holes:
     - Side: Down
       Idx: 0
-      Kind: none
+      Kind: in
     - Side: Down
       Idx: 1
-      Kind: None
+      Kind: in
+    InternalEdges:
+    - Warp: "intro-01-future"
+      To: "main"
+      ReqOut:
+        Dashes: one
   - Room: "intro-01-future"
     Holes:
     - Side: Up

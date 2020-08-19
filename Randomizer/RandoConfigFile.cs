@@ -146,6 +146,7 @@ namespace Celeste.Mod.Randomizer {
 
     public class RandoConfigInternalEdge {
         public String To { get; set; }
+        public String Warp { get; set; }
         public RandoConfigReq ReqIn { get; set; }
         public RandoConfigReq ReqOut { get; set; }
         public RandoConfigReq ReqBoth {

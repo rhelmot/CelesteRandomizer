@@ -107,6 +107,15 @@ namespace Celeste.Mod.Randomizer {
                         }
                     }
                 }
+
+                if (room.WarpMap != null) {
+                    var newMap = new Dictionary<string, string>();
+                    foreach (var kv in room.WarpMap) {
+                        newMap[kv.Key] = kv.Value.BakedRoom.Name;
+                    }
+                    var dyn = new DynData<LevelData>(room.BakedRoom);
+                    dyn.Set<Dictionary<string, string>>("WarpMapping", newMap);
+                }
             }
         }
 
@@ -128,6 +137,7 @@ namespace Celeste.Mod.Randomizer {
         public List<Rectangle> ExtraBounds;
         public StaticRoom Static;
         public Dictionary<string, LinkedNode> Nodes = new Dictionary<string, LinkedNode>();
+        public Dictionary<string, LinkedRoom> WarpMap = new Dictionary<string, LinkedRoom>();
         public HashSet<int> UsedKeyholes = new HashSet<int>();
         public bool IsBacktrack;
         public LevelData BakedRoom { get; private set; }
@@ -483,7 +493,12 @@ namespace Celeste.Mod.Randomizer {
                 if (capsReverse != null && !iedge.ReqIn.Able(capsReverse)) {
                     continue;
                 }
-                yield return this.Room.Nodes[iedge.NodeTarget.Name];
+                if (iedge.NodeTarget.ParentRoom == this.Room.Static) {
+                    yield return this.Room.Nodes[iedge.NodeTarget.Name];
+                } else {
+                    yield return this.Room.WarpMap[iedge.NodeTarget.ParentRoom.Level.Name].Nodes[iedge.NodeTarget.Name];
+                }
+                
             }
 
             if (!onlyInternal) {
@@ -512,7 +527,11 @@ namespace Celeste.Mod.Randomizer {
                     continue;
                 }
 
-                yield return Tuple.Create(this.Room.Nodes[iedge.NodeTarget.Name], reqs);
+                if (iedge.NodeTarget.ParentRoom == this.Room.Static) {
+                    yield return Tuple.Create(this.Room.Nodes[iedge.NodeTarget.Name], reqs);
+                } else {
+                    yield return Tuple.Create(this.Room.WarpMap[iedge.NodeTarget.ParentRoom.Level.Name].Nodes[iedge.NodeTarget.Name], reqs);
+                }
             }
 
             if (!onlyInternal) {

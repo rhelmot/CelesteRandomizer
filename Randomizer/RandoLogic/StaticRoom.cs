@@ -224,7 +224,11 @@ namespace Celeste.Mod.Randomizer {
 
             foreach (var edge in config.InternalEdges ?? new List<RandoConfigInternalEdge>()) {
                 StaticNode toNode;
-                if (edge.To != null) {
+                if (edge.Warp != null) {
+                    // deal with this later
+                    node.WarpConfig.Add(edge);
+                    continue;
+                } else if (edge.To != null) {
                     toNode = this.Nodes[edge.To];
                 } else if (edge.CustomWarp) {
                     toNode = null;
@@ -385,6 +389,29 @@ namespace Celeste.Mod.Randomizer {
                 return conjunction[0];
             }
             return new Conjunction(conjunction);
+        }
+
+        public void ProcessWarps(Dictionary<string, StaticRoom> mapRooms) {
+            foreach (var node in this.Nodes.Values) {
+                foreach (var conf in node.WarpConfig) {
+                    if (!mapRooms.TryGetValue(conf.Warp, out StaticRoom toRoom)) {
+                        throw new Exception($"{this.Name}: could not find warp target {conf.Warp}");
+                    }
+                    if (!toRoom.Nodes.TryGetValue(conf.To ?? "main", out StaticNode toNode)) {
+                        throw new Exception($"{this.Name}: warp target {conf.Warp} has no node {conf.To ?? "main"}");
+                    }
+
+                    var edge = new StaticEdge {
+                        FromNode = node,
+                        NodeTarget = toNode,
+                        ReqOut = this.ProcessReqs(conf.ReqOut, null, true),
+                        ReqIn = this.ProcessReqs(conf.ReqIn, null, false),
+                    };
+                    node.Edges.Add(edge);
+                    var reverse = new StaticEdgeReversed(edge, node);
+                    toNode.Edges.Add(reverse);
+                }
+            }
         }
 
         public LevelData MakeLevelData(Vector2 newPosition, int? nonce) {
@@ -640,6 +667,7 @@ namespace Celeste.Mod.Randomizer {
         public List<StaticEdge> Edges = new List<StaticEdge>();
         public List<StaticCollectable> Collectables = new List<StaticCollectable>();
         public StaticRoom ParentRoom;
+        public List<RandoConfigInternalEdge> WarpConfig = new List<RandoConfigInternalEdge>();
 
         public StaticEdge WarpEdge {
             get {

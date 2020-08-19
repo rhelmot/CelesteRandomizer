@@ -26,6 +26,8 @@ namespace Celeste.Mod.Randomizer {
             SpecialHooksMechanics.Add(new ILHook(typeof(CS04_MirrorPortal).GetNestedType("<>c__DisplayClass9_0", BindingFlags.NonPublic).GetMethod("<OnEnd>b__0", BindingFlags.NonPublic | BindingFlags.Instance), CutsceneWarpTargetMirror));
             SpecialHooksMechanics.Add(new ILHook(typeof(CS06_StarJumpEnd).GetNestedType("<>c__DisplayClass40_0", BindingFlags.NonPublic).GetMethod("<OnEnd>b__0", BindingFlags.NonPublic | BindingFlags.Instance), CutsceneWarpTarget));
             SpecialHooksMechanics.Add(new ILHook(typeof(CS06_StarJumpEnd).GetNestedType("<>c__DisplayClass40_0", BindingFlags.NonPublic).GetMethod("<OnEnd>b__1", BindingFlags.NonPublic | BindingFlags.Instance), CutsceneWarpTargetFall));
+
+            SpecialHooksMechanics.Add(new ILHook(typeof(EventTrigger).GetNestedType("<>c__DisplayClass10_0", BindingFlags.NonPublic).GetMethod("<OnEnter>b__0", BindingFlags.NonPublic | BindingFlags.Instance), SpecificWarpTarget));
         }
 
         private void UnloadMechanics() {
@@ -277,6 +279,35 @@ namespace Celeste.Mod.Randomizer {
             while (cursor.TryGotoNext(MoveType.After, instr => instr.MatchLdfld("Celeste.AreaKey", "Mode"))) {
                 cursor.EmitDelegate<Func<AreaMode, AreaMode>>(oldMode => this.InRandomizer ? AreaMode.BSide : oldMode);
                 count++;
+            }
+
+            if (count == 0) {
+                throw new Exception("Could not find patch point(s)!");
+            }
+        }
+
+        private void SpecificWarpTarget(ILContext il) {
+            var cursor = new ILCursor(il);
+            var count = 0;
+            while (cursor.TryGotoNext(MoveType.Before, instr => instr.MatchStfld("Celeste.Session", "Level"))) {
+                cursor.EmitDelegate<Func<string, string>>((oldTarget) => {
+                    if (!this.InRandomizer) {
+                        return oldTarget;
+                    }
+                    var session = SaveData.Instance.CurrentSession;
+                    var room = session.LevelData;
+                    var dyn = new DynData<LevelData>(room);
+                    var mapping = dyn.Get<Dictionary<string, string>>("WarpMapping");
+                    if (mapping == null) {
+                        throw new Exception("Randomizer error: no warp mapping information available");
+                    }
+                    if (!mapping.TryGetValue(oldTarget, out string newTarget)) {
+                        throw new Exception("Randomizer error: no warp mapping target for " + oldTarget);
+                    }
+                    return newTarget;
+                });
+                count++;
+                cursor.Index++;
             }
 
             if (count == 0) {

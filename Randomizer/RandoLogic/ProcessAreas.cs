@@ -92,6 +92,7 @@ namespace Celeste.Mod.Randomizer {
 
         private static List<StaticRoom> ProcessMap(MapData map, Dictionary<String, RandoConfigRoom> config) {
             var result = new List<StaticRoom>();
+            var resultMap = new Dictionary<string, StaticRoom>();
 
             foreach (LevelData level in map.Levels) {
                 if (level.Dummy) {
@@ -104,7 +105,13 @@ namespace Celeste.Mod.Randomizer {
                     continue;
                 }
                 var holes = RandoLogic.FindHoles(level);
-                result.Add(new StaticRoom(map.Area, roomConfig, level, holes));
+                var room = new StaticRoom(map.Area, roomConfig, level, holes);
+                result.Add(room);
+                resultMap[level.Name] = room;
+            }
+
+            foreach (var room in result) {
+                room.ProcessWarps(resultMap);
             }
 
             return result;
