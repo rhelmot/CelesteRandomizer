@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Monocle;
@@ -116,6 +117,8 @@ namespace Celeste.Mod.Randomizer {
                     var dyn = new DynData<LevelData>(room.BakedRoom);
                     dyn.Set<Dictionary<string, string>>("WarpMapping", newMap);
                 }
+
+                room.Bake2();
             }
         }
 
@@ -450,6 +453,23 @@ namespace Celeste.Mod.Randomizer {
                 gateTopHole(hole);
             }
             return result;
+        }
+
+        public void Bake2() {
+            foreach (var e in this.BakedRoom.Entities.Union(this.BakedRoom.Triggers)) {
+                switch (e.Name) {
+                    case "AcidHelper/InstantTeleportTrigger":
+                    case "AcidHelper/InstantTeleporter":
+                        var target = e.Attr("targetRoomId", "");
+                        if (target != "") {
+                            if (!this.WarpMap.TryGetValue(target, out var targetRoom)) {
+                                throw new GenerationError($"{this.Static.Name}: warp to {target} but no configuration");
+                            }
+                            e.Values["targetRoomId"] = targetRoom.BakedRoom.Name;
+                        }
+                        break;
+                }
+            }
         }
     }
 

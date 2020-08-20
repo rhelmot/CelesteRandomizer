@@ -62,6 +62,7 @@ namespace Celeste.Mod.Randomizer {
                     };
                     session.StartedFromRandomizerMenu(true);
                     session.SeedCleanRandom(Settings.SeedType == SeedType.Random);
+                    SaveData.Instance.StartSession(session);    // need to set this earlier than we would get otherwise
                     LevelEnter.Go(session, true);
                     StartMe = null;
                     Entering = false;

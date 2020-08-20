@@ -1,11 +1,7 @@
 ﻿using FMOD.Studio;
-using Microsoft.Xna.Framework;
-using Monocle;
 using System;
-using System.Collections;
 using System.Linq;
-using MonoMod.Cil;
-using MonoMod.Utils;
+using System.Reflection;
 using System.Collections.Generic;
 
 namespace Celeste.Mod.Randomizer {
@@ -40,7 +36,21 @@ namespace Celeste.Mod.Randomizer {
             LoadMenuLifecycle();
         }
 
+        public Action ResetExtendedVariants;
+        // Abusing this method as a delayed load thing
         public override void LoadContent(bool firstLoad) {
+            var listof = AppDomain.CurrentDomain.GetAssemblies().Where(asm => asm.FullName.Contains("ExtendedVariant"));
+            if (listof.Count() != 0) {
+                var dll = listof.First();
+                var ty = dll.GetType("ExtendedVariants.Module.ExtendedVariantsModule");
+                var module = ty.GetField("Instance", BindingFlags.Static | BindingFlags.Public).GetValue(null);
+                var method = ty.GetMethod("ResetToDefaultSettings", BindingFlags.Public | BindingFlags.Instance);
+                ResetExtendedVariants = () => {
+                    method.Invoke(module, new object[0]);
+                };
+            } else {
+                ResetExtendedVariants = () => {};
+            }
         }
 
 

@@ -18,6 +18,7 @@ namespace Celeste.Mod.Randomizer {
             Everest.Events.Level.OnLoadLevel += OnLoadLevel;
             On.Celeste.Textbox.ctor_string_Language_Func1Array += RandomizeTextboxText;
             On.Celeste.Level.LoadLevel += OnLoadLevelHook;
+            On.Celeste.LevelLoader.LoadingThread += PatchLoadingThread;
             IL.Celeste.Level.EnforceBounds += DisableUpTransition;
             IL.Celeste.Level.EnforceBounds += DisableDownTransition;
 
@@ -35,6 +36,7 @@ namespace Celeste.Mod.Randomizer {
             Everest.Events.Level.OnLoadLevel -= OnLoadLevel;
             On.Celeste.Textbox.ctor_string_Language_Func1Array -= RandomizeTextboxText;
             On.Celeste.Level.LoadLevel -= OnLoadLevelHook;
+            On.Celeste.LevelLoader.LoadingThread -= PatchLoadingThread;
             IL.Celeste.Level.EnforceBounds -= DisableUpTransition;
             IL.Celeste.Level.EnforceBounds -= DisableDownTransition;
 
@@ -127,6 +129,9 @@ namespace Celeste.Mod.Randomizer {
 
                 // reset camera (should hopefully fix badeline issues)
                 level.CameraUpwardMaxY = level.Camera.Y + 1000f;
+
+                // reset extended variants :(
+                this.ResetExtendedVariants();
             }
         }
 
@@ -312,6 +317,60 @@ namespace Celeste.Mod.Randomizer {
 
             if (count == 0) {
                 throw new Exception("Could not find patch point(s)!");
+            }
+        }
+
+        private void PatchLoadingThread(On.Celeste.LevelLoader.orig_LoadingThread orig, LevelLoader self) {
+            if (this.InRandomizer) {
+                Logger.Log("randomizer", "Mashing up tilesets...");
+                MakeFrankenTilesets();
+            }
+            orig(self);
+        }
+
+        private void MakeFrankenTilesets() {
+            var fgPaths = new List<string>();
+            var bgPaths = new List<string>();
+
+            foreach (var map in this.Settings.EnabledMaps) {
+                var meta = AreaData.Get(map).GetMeta();
+                var fgPath = meta?.ForegroundTiles;
+                var bgPath = meta?.BackgroundTiles;
+                if (!string.IsNullOrEmpty(fgPath) && !fgPaths.Contains(fgPath)) {
+                    fgPaths.Add(fgPath);
+                }
+                if (!string.IsNullOrEmpty(bgPath) && !bgPaths.Contains(bgPath)) {
+                    bgPaths.Add(bgPath);
+                }
+            }
+
+            MakeFrankenTileset(GFX.FGAutotiler, fgPaths);
+            MakeFrankenTileset(GFX.BGAutotiler, bgPaths);
+        }
+
+        private static void MakeFrankenTileset(Autotiler basic, List<string> additions) {
+            var counts = new Dictionary<char, int>();
+            var r = new Random(); // TODO how to seed this?
+            // uhhhhhhh this is intensely sketchy
+            var lookup = (IDictionary)typeof(Autotiler).GetField("lookup", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(basic);
+            foreach (char k in lookup.Keys) {
+                counts[k] = 1;
+            }
+
+            foreach (var path in additions) {
+                var advanced = new Autotiler(path);
+                var lookup2 = (IDictionary)typeof(Autotiler).GetField("lookup", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(advanced);
+                foreach (char k in lookup2.Keys) {
+                    if (counts.ContainsKey(k)) {
+                        counts[k]++;
+                        if (r.Next(counts[k]) == 0) {
+                            lookup[k] = lookup2[k];
+                        }
+                    } else {
+                        counts[k] = 1;
+                        lookup[k] = lookup2[k];
+                    }
+                }
             }
         }
     }

@@ -449,6 +449,7 @@ namespace Celeste.Mod.Randomizer {
                     case "bloomfadetrigger":
                     case "summitgem":
                     case "picoconsole":
+                    case "acidhelper/advancedmusiclayerfadetrigger":
                         removals.Add(entity);
                         return;
                     case "finalboss":
