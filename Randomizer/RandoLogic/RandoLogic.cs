@@ -6,6 +6,10 @@ using Microsoft.Xna.Framework;
 using Monocle;
 
 namespace Celeste.Mod.Randomizer {
+    public class GenerationError : Exception {
+        public GenerationError(string message) : base(message) {}
+    }
+
     public partial class RandoLogic {
         public static AreaKey GenerateMap(RandoSettings settings) {
             var lastarea = AreaData.Areas[AreaData.Areas.Count - 1];

@@ -20,7 +20,7 @@ namespace Celeste.Mod.Randomizer {
 
                 while (!nextTask.Next()) {
                     if (this.CompletedTasks.Count == 0) {
-                        throw new Exception("Could not generate map");
+                        throw new GenerationError("Could not generate map");
                     }
 
                     this.Tasks.AddToFront(nextTask);
@@ -127,6 +127,10 @@ namespace Celeste.Mod.Randomizer {
             private ConnectAndMapReceipt WorkingPossibility() {
                 var caps = this.Logic.Caps.WithoutKey(); // don't try to enter a door locked from the other side
                 var possibilities = this.Logic.AvailableNewEdges(caps, null, e => RoomFilter(e.FromNode.ParentRoom));
+
+                if (possibilities.Count == 0 && this.IsEnd) {
+                    throw new GenerationError("No ending rooms available");
+                }
 
                 foreach (var edge in possibilities) {
                     var result = ConnectAndMapReceipt.Do(this.Logic, this.Edge, edge);

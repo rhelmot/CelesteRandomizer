@@ -298,13 +298,14 @@ namespace Celeste.Mod.Randomizer {
                             newArea = RandoLogic.GenerateMap(Settings);
                         } catch (ThreadAbortException) {
                             return;
+                        } catch (GenerationError e) {
+                            errortext.Title = e.Message;
+                            errortext.FadeVisible = true;
+                            reenableMenu();
+                            return;
                         } catch (Exception e) {
-                            if (e.Message == "Could not generate map") {
-                                errortext.Title = e.Message;
-                            } else {
-                                errortext.Title = "Encountered an error - Check log.txt for details";
-                                Logger.LogDetailed(e, "randomizer");
-                            }
+                            errortext.Title = "Encountered an error - Check log.txt for details";
+                            Logger.LogDetailed(e, "randomizer");
                             errortext.FadeVisible = true;
                             reenableMenu();
                             return;
