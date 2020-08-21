@@ -327,7 +327,10 @@ ASide:
       ReqOut:
         Dashes: one
       ReqIn:
-        Dashes: two
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: perfect
     - To: "up"
       ReqOut:
         Dashes: one
