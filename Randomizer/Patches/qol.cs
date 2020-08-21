@@ -32,6 +32,9 @@ namespace Celeste.Mod.Randomizer {
             IL.Celeste.EventTrigger.OnEnter += DontGiveOneDash;
             IL.Celeste.CS10_MoonIntro.OnEnd += DontGiveOneDash;
             IL.Celeste.CS10_BadelineHelps.OnEnd += DontGiveOneDash;
+            IL.Celeste.CS06_Campfire.OnBegin += FuckUpLess;
+            On.Celeste.CS06_Campfire.OnBegin += FuckUpEvenLess;
+            IL.Celeste.CS06_Campfire.OnEnd += FuckUpWayLess;
 
             SpecialHooksQol.Add(new ILHook(typeof(CS10_MoonIntro).GetMethod("BadelineAppears", BindingFlags.Instance | BindingFlags.NonPublic).GetStateMachineTarget(), DontGiveOneDash));
             SpecialHooksQol.Add(new ILHook(typeof(EventTrigger).GetNestedType("<>c__DisplayClass10_0", BindingFlags.NonPublic).GetMethod("<OnEnter>b__0", BindingFlags.NonPublic | BindingFlags.Instance), DontGiveOneDash));
@@ -58,6 +61,9 @@ namespace Celeste.Mod.Randomizer {
             IL.Celeste.EventTrigger.OnEnter -= DontGiveOneDash;
             IL.Celeste.CS10_MoonIntro.OnEnd -= DontGiveOneDash;
             IL.Celeste.CS10_BadelineHelps.OnEnd -= DontGiveOneDash;
+            IL.Celeste.CS06_Campfire.OnBegin -= FuckUpLess;
+            On.Celeste.CS06_Campfire.OnBegin -= FuckUpEvenLess;
+            IL.Celeste.CS06_Campfire.OnEnd -= FuckUpWayLess;
 
             foreach (var detour in this.SpecialHooksQol) {
                 detour.Dispose();
@@ -274,6 +280,58 @@ namespace Celeste.Mod.Randomizer {
                     music.Event = track;
                 }
             });
+        }
+
+        private void FuckUpLess(ILContext il) {
+            var cursor = new ILCursor(il);
+            if (!cursor.TryGotoNext(MoveType.After, instr => instr.MatchCallvirt<Session>("GetFlag"))) {
+                throw new Exception("Could not find patching spot 1");
+            }
+
+            cursor.EmitDelegate<Func<bool, bool>>(thing => this.InRandomizer ? true : thing);
+
+            /*cursor.Index = 0;
+            if (!cursor.TryGotoNext(MoveType.Before, instr => instr.MatchLdarg(0),
+                                                     instr => instr.MatchLdfld("Celeste.CS06_Campfire", "player"))) {
+                throw new Exception("Could not find patching spot 2");
+            }
+
+            var label = cursor.DefineLabel();
+            cursor.EmitDelegate<Func<bool>>(() => this.InRandomizer);
+            cursor.Emit(Mono.Cecil.Cil.OpCodes.Brtrue, label);
+
+            if (!cursor.TryGotoNext(MoveType.Before, instr => instr.MatchStfld("Monocle.StateMachine", "Locked"))) {
+                throw new Exception("Could not find patching spot 3");
+            }
+            cursor.MarkLabel(label);*/
+        }
+
+        private void FuckUpEvenLess(On.Celeste.CS06_Campfire.orig_OnBegin orig, CS06_Campfire self, Level level) {
+            orig(self, level);
+            var player = level.Tracker.GetEntity<Player>();
+            player.X = level.Bounds.Left - 8;
+            player.StateMachine.Locked = false;
+            player.StateMachine.State = 0;
+        }
+
+        private void FuckUpWayLess(ILContext il) {
+            var cursor = new ILCursor(il);
+            if (!cursor.TryGotoNext(MoveType.Before, instr => instr.MatchLdarg(0),
+                                                     instr => instr.MatchLdfld("Celeste.CS06_Campfire", "player"),
+                                                     instr => instr.MatchLdfld("Celeste.Player", "Sprite"))) {
+                throw new Exception("Could not find patching spot 1");
+            }
+
+            var label = cursor.DefineLabel();
+            cursor.EmitDelegate<Func<bool>>(() => this.InRandomizer);
+            cursor.Emit(Mono.Cecil.Cil.OpCodes.Brtrue, label);
+
+            if (!cursor.TryGotoNext(MoveType.Before, instr => instr.MatchLdarg(0),
+                                                     instr => instr.MatchCall("Monocle.Entity", "RemoveSelf"))) {
+                throw new Exception("Could not find patching spot 2");
+            }
+
+            cursor.MarkLabel(label);
         }
     }
 

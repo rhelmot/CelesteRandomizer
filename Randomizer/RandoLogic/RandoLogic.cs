@@ -20,7 +20,7 @@ namespace Celeste.Mod.Randomizer {
             }
 
             var newArea = new AreaData {
-                IntroType = Player.IntroTypes.None,
+                IntroType = Player.IntroTypes.ThinkForABit,
                 Interlude = false,
                 Dreaming = false,
                 ID = newID,
