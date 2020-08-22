@@ -803,7 +803,12 @@ ASide:
       Kind: inout
     InternalEdges:
     - Split: LeftToRight
-      ReqBoth:
+      ReqOut:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: expert
+      ReqIn:
         Dashes: one
   - Room: "d8"
     Holes:
@@ -1022,10 +1027,6 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: inout
-    InternalEdges:
-    - Split: BottomToTop
-      ReqOut:
-        Dashes: one
   - Room: "end_4"
     Holes:
     - Side: Right
@@ -1205,7 +1206,12 @@ BSide:
       Kind: inout
     InternalEdges:
     - Split: BottomToTop
-      ReqBoth:
+      ReqOut:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: hard
+      ReqIn:
         Dashes: one
     Tweaks:
     - ID: 0

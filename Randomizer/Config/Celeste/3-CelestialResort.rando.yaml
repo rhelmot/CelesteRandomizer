@@ -861,7 +861,10 @@ ASide:
       Idx: 0
       Kind: out
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: zero
+          Difficulty: perfect
+        - Dashes: one
   - Room: "13-x"  # towels 5
     Holes:
     - Side: Up
@@ -1251,7 +1254,10 @@ ASide:
     InternalEdges:
     - To: "left"
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect
       ReqIn:
         Dashes: zero
     Subrooms:
