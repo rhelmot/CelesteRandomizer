@@ -931,7 +931,7 @@ BSide:
     Holes:
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
     - Side: Up
       Idx: 0
       Kind: inout
@@ -974,7 +974,7 @@ BSide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
     InternalEdges:
     - Split: BottomToTop
       ReqOut:
@@ -1018,7 +1018,7 @@ BSide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
     InternalEdges:
     - Split: BottomToTop
       ReqOut:
@@ -1061,7 +1061,7 @@ BSide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
     InternalEdges:
     - Split: LeftToRight
       ReqBoth:
@@ -1162,7 +1162,7 @@ BSide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
     InternalEdges:
     - Split: BottomToTop
       ReqOut:
@@ -1207,7 +1207,7 @@ BSide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
     - Side: Left
       Idx: 0
       Kind: None
@@ -1399,17 +1399,14 @@ BSide:
           cameraX: 0.0
           cameraY: 1.2
   - Room: "end"
+    End: true
     Holes:
     - Side: Down
       Idx: 0
       Kind: in
-      ReqIn:
-        Dashes: one
     - Side: Left
       Idx: 0
-      Kind: unknown
-      ReqIn:
-        Dashes: one
+      Kind: in
     - Side: Down
       Idx: 1
       Kind: None
@@ -1446,7 +1443,6 @@ BSide:
     - Side: Right
       Idx: 3
       Kind: None
-    End: true
 
 CSide:
   - Room: "00"
