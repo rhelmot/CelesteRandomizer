@@ -308,10 +308,12 @@ namespace Celeste.Mod.Randomizer {
 
         private void FuckUpEvenLess(On.Celeste.CS06_Campfire.orig_OnBegin orig, CS06_Campfire self, Level level) {
             orig(self, level);
-            var player = level.Tracker.GetEntity<Player>();
-            player.X = level.Bounds.Left - 8;
-            player.StateMachine.Locked = false;
-            player.StateMachine.State = 0;
+            if (this.InRandomizer) {
+                var player = level.Tracker.GetEntity<Player>();
+                player.X = level.Bounds.Left - 8;
+                player.StateMachine.Locked = false;
+                player.StateMachine.State = 0;
+            }
         }
 
         private void FuckUpWayLess(ILContext il) {
