@@ -832,6 +832,7 @@ ASide:
         Idx: 0
         Kind: inout
     - Room: "right"
+      Holes:
       - Side: Right
         Idx: 0
         Kind: inout
