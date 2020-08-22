@@ -2928,19 +2928,19 @@ ASide:
         Y: 80
   - Room: "credits-dashes"
     Holes:
-    - Side: Right
+    - Side: Left
       Idx: 0
       Kind: inout
     InternalEdges:
     - To: "everything_else"
       ReqOut:
-        Dashes: one
-      ReqIn:
         Dashes: zero
+      ReqIn:
+        Dashes: one
     Subrooms:
     - Room: "everything_else"
       Holes:
-      - Side: Left
+      - Side: Right
         Idx: 0
         Kind: inout
         ReqOut:

@@ -219,8 +219,10 @@ ASide:
       Kind: inout
     InternalEdges:
     - To: "left"
-      ReqBoth:
+      ReqOut:
         Dashes: one
+      ReqIn:
+        Dashes: zero
     Subrooms:
     - Room: "left"
       Holes:
@@ -497,7 +499,10 @@ ASide:
         - Dashes: zero
           Difficulty: expert
       ReqIn:
-        Dashes: one             # can't traverse backwards without a dash
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: hard
     Subrooms:
     - Room: "right"
       Holes:
@@ -615,6 +620,12 @@ ASide:
       - Side: Right
         Idx: 0
         Kind: inout
+      InternalEdges:
+      - Collectable: 0
+        ReqOut:
+          Dashes: one
+        ReqIn:
+          Dashes: zero
     Tweaks:
     - ID: 0
       Name: "changeRespawnTrigger"
@@ -801,30 +812,29 @@ ASide:
       Kind: inout
   - Room: "12"
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
-      ReqBoth:
-        Or:
-        - Dashes: one
-        - Dashes: zero
-          Difficulty: expert
-    - Side: Left
-      Idx: 0
-      Kind: inout
-      ReqBoth:
-        Or:
-        - Dashes: one
-        - Dashes: zero
-          Difficulty: expert
     - Side: Down
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - To: "right"
       ReqBoth:
         Or:
         - Dashes: one
         - Dashes: zero
           Difficulty: expert
+    - To: "top"
+      ReqBoth:
+        Dashes: zero
+    Subrooms:
+    - Room: "top"
+      Holes:
+      - Side: Left
+        Idx: 0
+        Kind: inout
+    - Room: "right"
+      - Side: Right
+        Idx: 0
+        Kind: inout
     Tweaks:
     - ID: 0
       Update:
@@ -850,6 +860,13 @@ ASide:
     - Side: Right
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - Collectable: 0
+      ReqBoth:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect
   - Room: "12a"
     Holes:
     - Side: Up

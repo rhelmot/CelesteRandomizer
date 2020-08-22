@@ -785,8 +785,14 @@ ASide:
     InternalEdges:
     - Split: LeftToRight
       ReqIn:
-        Dashes: one
-        Difficulty: hard
+        Or:
+        - Dashes: one
+          Difficulty: hard
+        - Dashes: zero
+          Difficulty: perfect
+        - Dashes: two
+      ReqOut:
+        Dashes: zero
   - Room: "d7"
     Holes:
     - Side: Right
