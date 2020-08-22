@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
+using YamlDotNet.Serialization;
 
 namespace Celeste.Mod.Randomizer {
     public enum SeedType {
@@ -75,7 +77,7 @@ namespace Celeste.Mod.Randomizer {
         public Difficulty Difficulty;
         public ShineLights Lights = ShineLights.Hubs;
         public Darkness Darkness = Darkness.Vanilla;
-        private HashSet<AreaKeyNotStupid> IncludedMaps = new HashSet<AreaKeyNotStupid>();
+        public List<AreaKeyNotStupid> IncludedMaps = new List<AreaKeyNotStupid>();
 
         public void Enforce() {
             if (this.SeedType == SeedType.Random) {
@@ -183,7 +185,7 @@ namespace Celeste.Mod.Randomizer {
             yield return (uint)Lights;
             yield return (uint)Darkness;
 
-            var sortedMaps = new List<AreaKeyNotStupid>(IncludedMaps);
+            var sortedMaps = new List<AreaKeyNotStupid>(IncludedMaps.Where(key => key.ID != -1));
             sortedMaps.Sort((AreaKeyNotStupid x, AreaKeyNotStupid y) => {
                 var xs = x.Stupid.GetSID();
                 var ys = y.Stupid.GetSID();
@@ -208,6 +210,7 @@ namespace Celeste.Mod.Randomizer {
             }
         }
 
+        [YamlIgnore]
         public string Hash {
             get {
                 // djb2 impl
@@ -219,6 +222,7 @@ namespace Celeste.Mod.Randomizer {
             }
         }
 
+        [YamlIgnore]
         public uint IntSeed {
             get {
                 var euniSeed = this.Seed.Length <= 10;
@@ -244,6 +248,7 @@ namespace Celeste.Mod.Randomizer {
             }
         }
 
+        [YamlIgnore]
         public int LevelCount {
             get {
                 int sum = 0;
@@ -257,19 +262,26 @@ namespace Celeste.Mod.Randomizer {
         }
 
         public struct AreaKeyNotStupid {
-            public int ID;
+            public string SID;
             public AreaMode Mode;
 
-            public AreaKeyNotStupid(int ID, AreaMode Mode) {
-                this.ID = ID;
-                this.Mode = Mode;
+            [YamlIgnore]
+            public int ID {
+                get {
+                    var data = AreaDataExt.Get(this.SID);
+                    if (data == null) {
+                        return -1;
+                    }
+                    return data.ID;
+                }
             }
 
             public AreaKeyNotStupid(AreaKey Stupid) {
-                this.ID = Stupid.ID; 
+                this.SID = Stupid.GetSID();
                 this.Mode = Stupid.Mode;
             }
 
+            [YamlIgnore]
             public AreaKey Stupid {
                 get {
                     return new AreaKey(this.ID, this.Mode);
@@ -293,6 +305,7 @@ namespace Celeste.Mod.Randomizer {
             this.IncludedMaps.Clear();
         }
 
+        [YamlIgnore]
         public IEnumerable<AreaKey> EnabledMaps {
             get {
                 var result = new List<AreaKey>();

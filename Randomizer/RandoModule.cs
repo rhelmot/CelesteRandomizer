@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
+using MonoMod.Utils;
 
 namespace Celeste.Mod.Randomizer {
     public partial class RandoModule : EverestModule {
@@ -16,6 +17,7 @@ namespace Celeste.Mod.Randomizer {
                     result.BestTimes = new Dictionary<uint, long>();
                     result.BestSetSeedTimes = new Dictionary<Ruleset, RecordTuple>();
                     result.BestRandomSeedTimes = new Dictionary<Ruleset, RecordTuple>();
+                    // intentionally do not wipe settings, they should upgrade gracefully
                 }
                 return result;
             }
@@ -26,10 +28,10 @@ namespace Celeste.Mod.Randomizer {
 
         public RandoModule() {
             Instance = this;
-            Settings = new RandoSettings();
         }
 
         public override void Load() {
+            Settings = this.SavedData.SavedSettings?.Copy() ?? new RandoSettings();
             LoadQol();
             LoadMechanics();
             LoadSessionLifecycle();
@@ -66,26 +68,22 @@ namespace Celeste.Mod.Randomizer {
             //base.CreateModMenuSection(menu, inGame, snapshot);
         }
 
-        public bool InRandomizer {
+        public RandoSettings InRandomizerSettings {
             get {
-                if (SaveData.Instance == null) {
-                    return false;
-                }
-                if (SaveData.Instance.CurrentSession == null) {
-                    return false;
-                }
-                if (SaveData.Instance.CurrentSession.Area == null) {
-                    return false;
-                }
-                try {
-                    AreaData area = AreaData.Get(SaveData.Instance.CurrentSession.Area);
-                    return area.GetSID().StartsWith("randomizer/");
-                } catch (NullReferenceException) {
-                    return false; // I have no idea why this happens but it happens sometimes
-                }
+                AreaKey? key = SaveData.Instance?.CurrentSession?.Area;
+                if (key == null) return null;
+                AreaData area = AreaData.Get(key.Value);
+                if (area == null) return null;
+                var dyn = new DynData<AreaData>(area);
+                var attachedSettings = dyn.Get<RandoSettings>("RandoSettings");
+                return attachedSettings;
             }
         }
 
-
+        public bool InRandomizer {
+            get {
+                return this.InRandomizerSettings != null;
+            }
+        }
     }
 }

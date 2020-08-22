@@ -14,6 +14,9 @@ namespace Celeste.Mod.Randomizer {
 
         [SettingIgnore]
         public string CurrentVersion { get; set; }
+
+        [SettingIgnore]
+        public RandoSettings SavedSettings { get; set; }
     }
 
     public struct RecordTuple {

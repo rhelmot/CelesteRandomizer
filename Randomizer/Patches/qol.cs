@@ -206,7 +206,7 @@ namespace Celeste.Mod.Randomizer {
             ILCursor cursor = new ILCursor(il);
             cursor.TryGotoNext(MoveType.After, instr => instr.MatchCallvirt<Player>("get_DashAttacking"));
             cursor.EmitDelegate<Func<bool, bool>>((dobreak) => {
-                if (this.InRandomizer && this.Settings.Dashes == NumDashes.Zero) {
+                if ((this.InRandomizerSettings?.Dashes ?? NumDashes.One) == NumDashes.Zero) {
                     return true;
                 }
                 return dobreak;
@@ -218,7 +218,9 @@ namespace Celeste.Mod.Randomizer {
             cursor.TryGotoNext(MoveType.After, instr => instr.MatchCallvirt<Monocle.Entity>("Add"));
             cursor.Emit(Mono.Cecil.Cil.OpCodes.Ldarg_1);
             cursor.EmitDelegate<Action<Player>>((player) => {
-                player.RefillDash();
+                if (this.InRandomizer) {
+                    player.RefillDash();
+                }
             });
         }
 

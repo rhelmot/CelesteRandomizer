@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Monocle;
+using MonoMod.Utils;
 
 namespace Celeste.Mod.Randomizer {
     public class GenerationError : Exception {
@@ -52,6 +53,8 @@ namespace Celeste.Mod.Randomizer {
             newArea.OnLevelBegin = (level) => {
                 level.Add(new SeekerEffectsController());
             };
+            var dyn = new DynData<AreaData>(newArea);
+            dyn.Set<RandoSettings>("RandoSettings", settings.Copy());
 
             newArea.SetSID($"randomizer/{newArea.Name}");
             if (secondVerseSameAsTheFirst) {

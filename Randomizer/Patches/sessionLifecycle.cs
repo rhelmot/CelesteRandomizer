@@ -12,9 +12,7 @@ namespace Celeste.Mod.Randomizer {
             Everest.Events.Level.OnComplete += OnComplete;
             On.Celeste.AreaComplete.VersionNumberAndVariants += AreaCompleteDrawHash;
             On.Celeste.AutoSplitterInfo.Update += MainThreadHook;
-            On.Celeste.Session.Restart += MaintainSessionFlags;
             On.Celeste.Editor.MapEditor.ctor += MarkSessionUnclean;
-            On.Celeste.Editor.MapEditor.LoadLevel += MaintainSessionFlags2;
             IL.Celeste.SpeedrunTimerDisplay.DrawTime += SetPlatinumColor;
         }
 
@@ -22,9 +20,7 @@ namespace Celeste.Mod.Randomizer {
             Everest.Events.Level.OnComplete -= OnComplete;
             On.Celeste.AreaComplete.VersionNumberAndVariants -= AreaCompleteDrawHash;
             On.Celeste.AutoSplitterInfo.Update -= MainThreadHook;
-            On.Celeste.Session.Restart -= MaintainSessionFlags;
             On.Celeste.Editor.MapEditor.ctor -= MarkSessionUnclean;
-            On.Celeste.Editor.MapEditor.LoadLevel -= MaintainSessionFlags2;
             IL.Celeste.SpeedrunTimerDisplay.DrawTime -= SetPlatinumColor;
         }
         public static AreaData AreaHandoff;
@@ -60,7 +56,6 @@ namespace Celeste.Mod.Randomizer {
                         FirstLevel = true,
                         StartedFromBeginning = true,
                     };
-                    session.StartedFromRandomizerMenu(true);
                     session.SeedCleanRandom(Settings.SeedType == SeedType.Random);
                     SaveData.Instance.StartSession(session);    // need to set this earlier than we would get otherwise
                     LevelEnter.Go(session, true);
@@ -84,51 +79,11 @@ namespace Celeste.Mod.Randomizer {
             orig(self, area, reloadMapData);
         }
 
-        // when we restart the level, mantain the randomizer status
-        private Session MaintainSessionFlags(On.Celeste.Session.orig_Restart orig, Session self, string intoLevel) {
-            var result = orig(self, intoLevel);
-            result.StartedFromRandomizerMenu(self.StartedFromRandomizerMenu());
-            return result;
-
-        }
-
-        // when we teleport with the map editor, maintain the randomizer status
-        // awful reflection hack instead of IL mod to maintain compatibility across everest versions
-        private void MaintainSessionFlags2(On.Celeste.Editor.MapEditor.orig_LoadLevel orig, Editor.MapEditor self, Editor.LevelTemplate levelTemplate, Vector2 at) {
-            var field = typeof(Editor.MapEditor).GetField("CurrentSession", BindingFlags.Instance | BindingFlags.NonPublic);
-            var oldval = false;
-            if (field != null) {
-                var session = (Session)field.GetValue(self);
-                oldval = session.StartedFromRandomizerMenu();
-            }
-            orig(self, levelTemplate, at);
-
-            var scene1 = Engine.Scene;
-            Scene scene2 = null;
-            Session newsession = null;
-            var field2 = typeof(Monocle.Engine).GetField("nextScene", BindingFlags.Instance | BindingFlags.NonPublic);
-            if (field2 != null) {
-                scene2 = (Scene)field2.GetValue(Engine.Instance);
-            }
-            if (scene1 != null && scene1 is LevelLoader ll) {
-                newsession = (Session)typeof(LevelLoader).GetField("session", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(ll);
-            } else if (scene1 != null && scene1 is Level ll2) {
-                newsession = ll2.Session;
-            } else if (scene2 != null && scene2 is LevelLoader ll3) {
-                newsession = (Session)typeof(LevelLoader).GetField("session", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(ll3);
-            } else if (scene2 != null && scene2 is Level ll4) {
-                newsession = ll4.Session;
-            }
-
-            if (newsession != null) {
-                newsession.StartedFromRandomizerMenu(oldval);
-            }
-        }
-
         void OnComplete(Level level) {
             level.Session.BeatBestTimePlatinum(false);
-            if (level.Session.StartedFromRandomizerMenu() && level.Session.StartedFromBeginning) {  // how strong can/should we make this condition?   
-                var hash = uint.Parse(Settings.Hash); // convert and unconvert, yeah I know
+            var settings = this.InRandomizerSettings;
+            if (settings != null && level.Session.StartedFromBeginning) {  // how strong can/should we make this condition?   
+                var hash = uint.Parse(settings.Hash); // convert and unconvert, yeah I know
 
                 level.Session.BeatBestTime = false;
                 if (this.SavedData.BestTimes.TryGetValue(hash, out long prevBest)) {
@@ -140,24 +95,24 @@ namespace Celeste.Mod.Randomizer {
                     this.SavedData.BestTimes[hash] = level.Session.Time;
                 }
 
-                if (Settings.Rules != Ruleset.Custom) {
-                    if (this.SavedData.BestSetSeedTimes.TryGetValue(Settings.Rules, out var prevBestSet)) {
+                if (settings.Rules != Ruleset.Custom) {
+                    if (this.SavedData.BestSetSeedTimes.TryGetValue(settings.Rules, out var prevBestSet)) {
                         if (level.Session.Time < prevBestSet.Item1) {
                             level.Session.BeatBestTimePlatinum(true);
-                            this.SavedData.BestSetSeedTimes[Settings.Rules] = RecordTuple.Create(level.Session.Time, Settings.Seed);
+                            this.SavedData.BestSetSeedTimes[settings.Rules] = RecordTuple.Create(level.Session.Time, settings.Seed);
                         }
                     } else {
-                        this.SavedData.BestSetSeedTimes[Settings.Rules] = RecordTuple.Create(level.Session.Time, Settings.Seed);
+                        this.SavedData.BestSetSeedTimes[settings.Rules] = RecordTuple.Create(level.Session.Time, settings.Seed);
                     }
 
                     if (level.Session.SeedCleanRandom()) {
-                        if (this.SavedData.BestRandomSeedTimes.TryGetValue(Settings.Rules, out var prevBestRand)) {
+                        if (this.SavedData.BestRandomSeedTimes.TryGetValue(settings.Rules, out var prevBestRand)) {
                             if (level.Session.Time < prevBestRand.Item1) {
                                 level.Session.BeatBestTimePlatinum(true);
-                                this.SavedData.BestRandomSeedTimes[Settings.Rules] = RecordTuple.Create(level.Session.Time, Settings.Seed);
+                                this.SavedData.BestRandomSeedTimes[settings.Rules] = RecordTuple.Create(level.Session.Time, settings.Seed);
                             }
                         } else {
-                            this.SavedData.BestRandomSeedTimes[Settings.Rules] = RecordTuple.Create(level.Session.Time, Settings.Seed);
+                            this.SavedData.BestRandomSeedTimes[settings.Rules] = RecordTuple.Create(level.Session.Time, settings.Seed);
                         }
                     }
                 }
@@ -169,21 +124,17 @@ namespace Celeste.Mod.Randomizer {
         private void AreaCompleteDrawHash(On.Celeste.AreaComplete.orig_VersionNumberAndVariants orig, string version, float ease, float alpha) {
             orig(version, ease, alpha);
 
-            Session session = null;
-            if (Engine.Scene is AreaComplete unStatic) {
-                session = unStatic.Session;
-            } else if (Engine.Scene is Level unStatic2) {
-                session = unStatic2.Session;
-            }
-            if (session?.StartedFromRandomizerMenu() ?? false) {
-                var text = this.Settings.Seed;
-                if (this.Settings.Rules != Ruleset.Custom) {
-                    text += " " + this.Settings.Rules.ToString();
-                    if (session.SeedCleanRandom()) {
+            var settings = this.InRandomizerSettings;
+            var session = SaveData.Instance?.CurrentSession;
+            if (settings != null) {
+                var text = settings.Seed;
+                if (settings.Rules != Ruleset.Custom) {
+                    text += " " + settings.Rules.ToString();
+                    if (session?.SeedCleanRandom() ?? false) {
                         text += "!";
                     }
                 }
-                text += "\n#" + this.Settings.Hash.ToString();
+                text += "\n#" + settings.Hash.ToString();
                 text += "\nrando " + this.Metadata.VersionString;
                 ActiveFont.DrawOutline(text, new Vector2(1820f + 300f * (1f - Ease.CubeOut(ease)), 894f), new Vector2(0.5f, 0f), Vector2.One * 0.5f, Color.White, 2f, Color.Black);
             }
@@ -242,10 +193,6 @@ namespace Celeste.Mod.Randomizer {
 
         public static bool SeedCleanRandom(this Session session, bool? set=null) {
             return SessionVariable(session, "SeedCleanRandom", set);
-        }
-
-        public static bool StartedFromRandomizerMenu(this Session session, bool? set=null) {
-            return SessionVariable(session, "StartedFromRandomizerMenu", set);
         }
 
         private static bool SessionVariable(Session session, string name, bool? set=null) {

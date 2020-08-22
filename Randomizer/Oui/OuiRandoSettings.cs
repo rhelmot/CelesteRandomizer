@@ -54,6 +54,10 @@ namespace Celeste.Mod.Randomizer {
             // save the menu position in case we want to restore it.
             savedMenuIndex = menu.Selection;
 
+            // save settings
+            RandoModule.Instance.SavedData.SavedSettings = Settings.Copy();
+            RandoModule.Instance.SaveSettings();
+
             for (float p = 0f; p < 1f; p += Engine.DeltaTime * 4f) {
                 menu.X = onScreenX + 1920f * Ease.CubeIn(p);
                 alpha = 1f - Ease.CubeIn(p);
@@ -310,6 +314,10 @@ namespace Celeste.Mod.Randomizer {
                             reenableMenu();
                             return;
                         }
+                        // save settings
+                        RandoModule.Instance.SavedData.SavedSettings = Settings.Copy();
+                        RandoModule.Instance.SaveSettings();
+                        
                         this.entering = true;
                         RandoModule.StartMe = newArea;
                         while (RandoModule.StartMe != null) {

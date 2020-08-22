@@ -108,7 +108,9 @@ namespace Celeste.Mod.Randomizer {
         private void InitRandoData(On.Celeste.AreaData.orig_Load orig) {
             orig();
             RandoLogic.ProcessAreas();
-            Settings.SetNormalMaps();
+            if (SavedData.SavedSettings == null) {
+                Settings.SetNormalMaps();
+            }
         }
     }
 }

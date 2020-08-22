@@ -49,7 +49,8 @@ namespace Celeste.Mod.Randomizer {
         }
 
         private void OnLoadLevelHook(On.Celeste.Level.orig_LoadLevel orig, Level self, Player.IntroTypes playerIntro, bool fromLoader) {
-            if (fromLoader && this.InRandomizer) {
+            var settings = this.InRandomizerSettings;
+            if (fromLoader && settings != null) {
                 // Don't restart the timer on retry
                 self.Session.FirstLevel = false;
             }
@@ -63,7 +64,7 @@ namespace Celeste.Mod.Randomizer {
                 self.Session.CoreMode = self.CoreMode;
             }
 
-            if (this.InRandomizer && Settings.Algorithm == LogicType.Labyrinth && Everest.Loader.DependencyLoaded(new EverestModuleMetadata() { Name = "BingoUI" })) {
+            if (settings != null && settings.Algorithm == LogicType.Labyrinth && Everest.Loader.DependencyLoaded(new EverestModuleMetadata() { Name = "BingoUI" })) {
                 var ui = LoadGemUI(fromLoader); // must be a separate method or the jit will be very sad :(
                 self.Add(ui); // lord fucking help us
             }
@@ -136,10 +137,11 @@ namespace Celeste.Mod.Randomizer {
         }
 
         private void OnLoadLevel(Level level, Player.IntroTypes playerIntro, bool isFromLoader) {
-            if (this.InRandomizer) {
+            var settings = this.InRandomizerSettings;
+            if (settings != null) {
                 // set summit gems
                 SaveData.Instance.SummitGems = new bool[6];
-                if (Settings.Length == MapLength.Short) {
+                if (settings.Length == MapLength.Short) {
                     SaveData.Instance.SummitGems[0] = true;
                     SaveData.Instance.SummitGems[1] = true;
                     SaveData.Instance.SummitGems[2] = true;
@@ -321,18 +323,19 @@ namespace Celeste.Mod.Randomizer {
         }
 
         private void PatchLoadingThread(On.Celeste.LevelLoader.orig_LoadingThread orig, LevelLoader self) {
-            if (this.InRandomizer) {
+            var settings = this.InRandomizerSettings;
+            if (settings != null) {
                 Logger.Log("randomizer", "Mashing up tilesets...");
-                MakeFrankenTilesets();
+                MakeFrankenTilesets(settings);
             }
             orig(self);
         }
 
-        private void MakeFrankenTilesets() {
+        private void MakeFrankenTilesets(RandoSettings settings) {
             var fgPaths = new List<string>();
             var bgPaths = new List<string>();
 
-            foreach (var map in this.Settings.EnabledMaps) {
+            foreach (var map in settings.EnabledMaps) {
                 var meta = AreaData.Get(map).GetMeta();
                 var fgPath = meta?.ForegroundTiles;
                 var bgPath = meta?.BackgroundTiles;
