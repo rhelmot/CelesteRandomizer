@@ -979,7 +979,10 @@ BSide:
     InternalEdges:
     - Split: BottomToTop
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: expert
       ReqIn:
         Or:
         - Dashes: one
@@ -1097,8 +1100,13 @@ BSide:
       Kind: inout
     InternalEdges:
     - Split: LeftToRight
-      ReqBoth:
+      ReqOut:
         Dashes: one
+      ReqIn:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: hard
     Tweaks:
     - Name: "spawn"
       Update:
@@ -1170,6 +1178,7 @@ BSide:
         Dashes: one
       ReqIn:
         Dashes: two
+        Difficulty: hard
     Tweaks:
     - ID: 0
       Update:
@@ -1241,7 +1250,10 @@ BSide:
     InternalEdges:
     - Split: BottomToTop
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: expert
       ReqIn:
         Dashes: zero
     Tweaks:

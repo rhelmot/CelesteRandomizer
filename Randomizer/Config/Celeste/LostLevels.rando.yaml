@@ -698,6 +698,11 @@ ASide:
     - Side: down
       Idx: 2
       Kind: None
+    ExtraSpace:
+    - X: 472
+      Y: 176
+      Width: 16
+      Height: 120
   - Room: "e-05"
     Holes:
     - Side: Right
@@ -795,6 +800,9 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 1
+      Kind: None
   - Room: "f-00"
     Holes:
     - Side: Left
