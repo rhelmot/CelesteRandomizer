@@ -42,8 +42,8 @@ namespace Celeste.Mod.Randomizer {
 
                 // use the debug file
                 SaveData.InitializeDebugMode();
-                // turn off variants mode
-                SaveData.Instance.VariantMode = false;
+                // turn on/off variants mode
+                SaveData.Instance.VariantMode = Settings.Variants;
                 SaveData.Instance.AssistMode = false;
                 // mark as completed to spawn golden berry
                 SaveData.Instance.Areas[newArea.ID].Modes[0].Completed = true;
@@ -136,7 +136,8 @@ namespace Celeste.Mod.Randomizer {
                 }
                 text += "\n#" + settings.Hash.ToString();
                 text += "\nrando " + this.Metadata.VersionString;
-                ActiveFont.DrawOutline(text, new Vector2(1820f + 300f * (1f - Ease.CubeOut(ease)), 894f), new Vector2(0.5f, 0f), Vector2.One * 0.5f, Color.White, 2f, Color.Black);
+                var variants = SaveData.Instance?.VariantMode ?? false;
+                ActiveFont.DrawOutline(text, new Vector2(1820f + 300f * (1f - Ease.CubeOut(ease)), variants ? 810f : 894f), new Vector2(0.5f, 0f), Vector2.One * 0.5f, Color.White, 2f, Color.Black);
             }
         }
         

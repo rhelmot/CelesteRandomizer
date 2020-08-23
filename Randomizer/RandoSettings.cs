@@ -71,6 +71,7 @@ namespace Celeste.Mod.Randomizer {
         public bool RepeatRooms;
         public bool EnterUnknown;
         public bool SpawnGolden;
+        public bool Variants = true;
         public LogicType Algorithm;
         public MapLength Length;
         public NumDashes Dashes = NumDashes.One;
@@ -97,6 +98,7 @@ namespace Celeste.Mod.Randomizer {
                     this.SetNormalMaps();
                     this.RepeatRooms = false;
                     this.EnterUnknown = false;
+                    this.Variants = false;
                     this.Algorithm = LogicType.Pathway;
                     this.Length = MapLength.Short;
                     this.Dashes = NumDashes.One;
@@ -108,6 +110,7 @@ namespace Celeste.Mod.Randomizer {
                     this.SetNormalMaps();
                     this.RepeatRooms = false;
                     this.EnterUnknown = false;
+                    this.Variants = false;
                     this.Algorithm = LogicType.Pathway;
                     this.Length = MapLength.Medium;
                     this.Dashes = NumDashes.Two;
@@ -119,6 +122,7 @@ namespace Celeste.Mod.Randomizer {
                     this.SetNormalMaps();
                     this.RepeatRooms = false;
                     this.EnterUnknown = false;
+                    this.Variants = false;
                     this.Algorithm = LogicType.Pathway;
                     this.Length = MapLength.Medium;
                     this.Dashes = NumDashes.One;
@@ -130,6 +134,7 @@ namespace Celeste.Mod.Randomizer {
                     this.SetNormalMaps();
                     this.RepeatRooms = false;
                     this.EnterUnknown = false;
+                    this.Variants = false;
                     this.Algorithm = LogicType.Pathway;
                     this.Length = MapLength.Long;
                     this.Dashes = NumDashes.Two;
@@ -141,6 +146,7 @@ namespace Celeste.Mod.Randomizer {
                     this.SetNormalMaps();
                     this.RepeatRooms = false;
                     this.EnterUnknown = false;
+                    this.Variants = false;
                     this.Algorithm = LogicType.Labyrinth;
                     this.Length = MapLength.Medium;
                     this.Dashes = NumDashes.One;
@@ -152,6 +158,7 @@ namespace Celeste.Mod.Randomizer {
                     this.SetNormalMaps();
                     this.RepeatRooms = false;
                     this.EnterUnknown = false;
+                    this.Variants = false;
                     this.Algorithm = LogicType.Labyrinth;
                     this.Length = MapLength.Medium;
                     this.Dashes = NumDashes.Two;

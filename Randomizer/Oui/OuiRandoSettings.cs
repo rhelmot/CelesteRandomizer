@@ -223,12 +223,17 @@ namespace Celeste.Mod.Randomizer {
                 Settings.SpawnGolden = val;
             });
 
+            var variantstoggle = new TextMenu.OnOff(Dialog.Clean("MODOPTIONS_RANDOMIZER_VARIANTS"), Settings.Variants).Change((val) => {
+                Settings.Variants = val;
+            });
+
             var moreoptions = false;
             repeatroomstoggle.Visible = false;
             enterunknowntoggle.Visible = false;
             goldentoggle.Visible = false;
             shinetoggle.Visible = false;
             darktoggle.Visible = false;
+            variantstoggle.Visible = false;
 
             var moreoptionsbtn = new TextMenu.Button(Dialog.Clean("MODOPTIONS_RANDOMIZER_MOREOPTIONS"));
             moreoptionsbtn.Pressed(() => {
@@ -240,11 +245,13 @@ namespace Celeste.Mod.Randomizer {
                 goldentoggle.Visible = moreoptions;
                 shinetoggle.Visible = moreoptions;
                 darktoggle.Visible = moreoptions;
+                variantstoggle.Visible = moreoptions;
             });
 
             void syncModel() {
                 repeatroomstoggle.Index = Settings.RepeatRooms ? 1 : 0;
                 enterunknowntoggle.Index = Settings.EnterUnknown ? 1 : 0;
+                variantstoggle.Index = Settings.Variants ? 1 : 0;
                 logictoggle.Index = (int)Settings.Algorithm;
                 lengthtoggle.Index = (int)Settings.Length;
                 numdashestoggle.Index = (int)Settings.Dashes;
@@ -263,6 +270,7 @@ namespace Celeste.Mod.Randomizer {
                 difficultytoggle.Disabled = locked;
                 shinetoggle.Disabled = locked;
                 darktoggle.Disabled = locked;
+                variantstoggle.Disabled = locked;
             }
             syncModel();
 
@@ -349,6 +357,7 @@ namespace Celeste.Mod.Randomizer {
             menu.Add(shinetoggle);
             menu.Add(darktoggle);
             menu.Add(goldentoggle);
+            menu.Add(variantstoggle);
             menu.Add(startbutton);
             menu.Add(hashtext);
             menu.Add(errortext);
