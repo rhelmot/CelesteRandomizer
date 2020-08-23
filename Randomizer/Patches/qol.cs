@@ -38,6 +38,7 @@ namespace Celeste.Mod.Randomizer {
 
             SpecialHooksQol.Add(new ILHook(typeof(CS10_MoonIntro).GetMethod("BadelineAppears", BindingFlags.Instance | BindingFlags.NonPublic).GetStateMachineTarget(), DontGiveOneDash));
             SpecialHooksQol.Add(new ILHook(typeof(EventTrigger).GetNestedType("<>c__DisplayClass10_0", BindingFlags.NonPublic).GetMethod("<OnEnter>b__0", BindingFlags.NonPublic | BindingFlags.Instance), DontGiveOneDash));
+            SpecialHooksQol.Add(new Hook(typeof(EventTrigger).GetNestedType("<>c__DisplayClass10_0", BindingFlags.NonPublic).GetMethod("<OnEnter>b__0", BindingFlags.NonPublic | BindingFlags.Instance), new Action<Action<object>, object>((orig, self) => TransferGoldenBerries(orig, self))));
         }
 
         private void UnloadQol() {
@@ -336,6 +337,34 @@ namespace Celeste.Mod.Randomizer {
             }
 
             cursor.MarkLabel(label);
+        }
+
+        private void TransferGoldenBerries(Action<object> orig, object self) {
+            var level = Engine.Scene as Level;
+            var player = level.Tracker.GetEntity<Player>();
+            var leader = player.Get<Leader>();
+            foreach (var follower in leader.Followers) {
+                if (follower.Entity != null) {
+                    follower.Entity.Position -= player.Position;
+                    follower.Entity.AddTag(Tags.Global);
+                    level.Session.DoNotLoad.Add(follower.ParentEntityID);
+                }
+            }
+            for (int i = 0; i < leader.PastPoints.Count; i++) {
+                leader.PastPoints[i] -= player.Position;
+            }
+            orig(self);
+            foreach (var follower in leader.Followers) {
+                if (follower.Entity != null) {
+                    follower.Entity.Position += player.Position;
+                    follower.Entity.RemoveTag(Tags.Global);
+                    level.Session.DoNotLoad.Remove(follower.ParentEntityID);
+                }
+            }
+            for (int i = 0; i < leader.PastPoints.Count; i++) {
+                leader.PastPoints[i] += player.Position;
+            }
+            leader.TransferFollowers();
         }
     }
 
