@@ -131,8 +131,10 @@ namespace Celeste.Mod.Randomizer {
                 // reset camera (should hopefully fix badeline issues)
                 level.CameraUpwardMaxY = level.Camera.Y + 1000f;
 
-                // reset extended variants :(
-                this.ResetExtendedVariants();
+                // reset extended variants... maybe!
+                if (new DynData<MapData>(level.Session.MapData).Get<bool?>("HasExtendedVariantTriggers") ?? false) {
+                    this.ResetExtendedVariants();
+                }
             }
         }
 

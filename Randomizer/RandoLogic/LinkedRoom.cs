@@ -91,6 +91,11 @@ namespace Celeste.Mod.Randomizer {
             }
         }
 
+        private static HashSet<string> extendedVariantsEntities = new HashSet<string> {
+            "ExtendedVariantTrigger", "ExtendedVariantMode/ExtendedVariantTrigger", "ExtendedVariantMode/ColorGradeTrigger",
+            "ExtendedVariantMode/JumpRefill", "ExtendedVariantMode/RecoverJumpRefill", "ExtendedVariantMode/ExtraJumpRefill"
+        };
+
         public void FillMap(MapData map, Random random) {
             foreach (var room in this.Rooms) {
                 map.Levels.Add(room.Bake(this.nonce++, random));
@@ -120,6 +125,12 @@ namespace Celeste.Mod.Randomizer {
 
                 room.Bake2();
             }
+
+            var hasExtendedVariantTriggers = map.Levels.Exists(levelData =>
+                levelData.Triggers.Exists(entityData => extendedVariantsEntities.Contains(entityData.Name)) ||
+                levelData.Entities.Exists(entityData => extendedVariantsEntities.Contains(entityData.Name)));
+            var dyn2 = new DynData<MapData>(map);
+            dyn2.Set<bool?>("HasExtendedVariantTriggers", hasExtendedVariantTriggers);
         }
 
         public int Count {
