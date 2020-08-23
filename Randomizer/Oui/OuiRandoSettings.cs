@@ -227,6 +227,10 @@ namespace Celeste.Mod.Randomizer {
                 Settings.Variants = val;
             });
 
+            var decorationstoggle = new TextMenu.OnOff(Dialog.Clean("MODOPTIONS_RANDOMIZER_DECORATIONS"), Settings.RandomDecorations).Change((val) => {
+                Settings.RandomDecorations = val;
+            });
+
             var moreoptions = false;
             repeatroomstoggle.Visible = false;
             enterunknowntoggle.Visible = false;
@@ -234,6 +238,7 @@ namespace Celeste.Mod.Randomizer {
             shinetoggle.Visible = false;
             darktoggle.Visible = false;
             variantstoggle.Visible = false;
+            decorationstoggle.Visible = false;
 
             var moreoptionsbtn = new TextMenu.Button(Dialog.Clean("MODOPTIONS_RANDOMIZER_MOREOPTIONS"));
             moreoptionsbtn.Pressed(() => {
@@ -246,6 +251,7 @@ namespace Celeste.Mod.Randomizer {
                 shinetoggle.Visible = moreoptions;
                 darktoggle.Visible = moreoptions;
                 variantstoggle.Visible = moreoptions;
+                decorationstoggle.Visible = moreoptions;
             });
 
             void syncModel() {
@@ -358,6 +364,7 @@ namespace Celeste.Mod.Randomizer {
             menu.Add(darktoggle);
             menu.Add(goldentoggle);
             menu.Add(variantstoggle);
+            menu.Add(decorationstoggle);
             menu.Add(startbutton);
             menu.Add(hashtext);
             menu.Add(errortext);

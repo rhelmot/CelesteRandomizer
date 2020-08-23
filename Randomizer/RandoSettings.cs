@@ -72,6 +72,7 @@ namespace Celeste.Mod.Randomizer {
         public bool EnterUnknown;
         public bool SpawnGolden;
         public bool Variants = true;
+        public bool RandomDecorations = true;
         public LogicType Algorithm;
         public MapLength Length;
         public NumDashes Dashes = NumDashes.One;

@@ -158,8 +158,8 @@ namespace Celeste.Mod.Randomizer {
         private class LabyrinthStartRoom : LinkedRoom {
             public LabyrinthStartRoom(StaticRoom room) : base(room, Vector2.Zero) { }
 
-            public override LevelData Bake(int? nonce, Random random) {
-                var result = base.Bake(nonce, random);
+            public override LevelData Bake(int? nonce, RandoSettings settings, Random random) {
+                var result = base.Bake(nonce, settings, random);
 
                 int maxID = 0;
                 EntityData granny = null;

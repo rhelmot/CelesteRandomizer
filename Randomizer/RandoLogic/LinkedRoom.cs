@@ -96,9 +96,9 @@ namespace Celeste.Mod.Randomizer {
             "ExtendedVariantMode/JumpRefill", "ExtendedVariantMode/RecoverJumpRefill", "ExtendedVariantMode/ExtraJumpRefill"
         };
 
-        public void FillMap(MapData map, Random random) {
+        public void FillMap(MapData map, RandoSettings settings, Random random) {
             foreach (var room in this.Rooms) {
-                map.Levels.Add(room.Bake(this.nonce++, random));
+                map.Levels.Add(room.Bake(this.nonce++, settings, random));
             }
 
             // set warp targets
@@ -175,7 +175,7 @@ namespace Celeste.Mod.Randomizer {
             }
         }
 
-        public virtual LevelData Bake(int? nonce, Random random) {
+        public virtual LevelData Bake(int? nonce, RandoSettings settings, Random random) {
             var result = this.Static.MakeLevelData(new Vector2(this.Bounds.Left, this.Bounds.Top), nonce);
             this.BakedRoom = result;
 
@@ -206,11 +206,23 @@ namespace Celeste.Mod.Randomizer {
                 }
             }
             string crystalcolor = pickCrystalColor();
+            string canonCrystalcolor = this.Static.Area.ID == 3 || this.Static.Area.ID == 7 && this.Static.Level.Name.StartsWith("d-") ? "dust" :
+                                       this.Static.Area.ID == 5 ? "red" :
+                                       this.Static.Area.ID == 6 ? "purple" :
+                                       this.Static.Area.ID == 10 ? "rainbow" : "blue";
 
             string pickSpinnerColor() {
                 return new string[] { "dust", "spike", "star" }[random.Next(3)];
             }
             string spinnercolor = pickSpinnerColor();
+            string canonSpinnerColor = this.Static.Area.ID == 10 ? "star" :
+                                       this.Static.Area.ID == 3 || this.Static.Area.ID == 7 && this.Static.Level.Name.StartsWith("d-") ? "dust" : "spike";
+
+            string pickSpikeColor() {
+                return new string[] { "outline", "reflection", "tentacles", "cliffside"}[random.Next(4)];
+            }
+            string spikecolor = pickSpikeColor();
+            string canonSpikecolor = AreaData.Get(this.Static.Area).Spike;
 
             int maxID = 0;
             var toRemove = new List<EntityData>();
@@ -223,10 +235,19 @@ namespace Celeste.Mod.Randomizer {
                             crystalcolor = pickCrystalColor();
                         }
                         if (e.Values == null) e.Values = new Dictionary<string, object>();
-                        if (crystalcolor == "dust") {
-                            e.Values["dust"] = "true";
-                        } else {
-                            e.Values["color"] = crystalcolor;
+                        if (settings.RandomDecorations) {
+                            if (crystalcolor == "dust") {
+                                e.Values["dust"] = true;
+                            } else {
+                                e.Values.Remove("dust");
+                                e.Values["color"] = crystalcolor;
+                            }
+                        } else if (!e.Has("dust") && !e.Has("color")) {
+                            if (canonCrystalcolor == "dust") {
+                                e.Values["dust"] = true;
+                            } else {
+                                e.Values["color"] = canonCrystalcolor;
+                            }
                         }
                         break;
                     case "trackSpinner":
@@ -235,10 +256,37 @@ namespace Celeste.Mod.Randomizer {
                             spinnercolor = pickSpinnerColor();
                         }
                         if (e.Values == null) e.Values = new Dictionary<string, object>();
-                        if (spinnercolor == "dust") {
-                            e.Values["dust"] = "true";
-                        } else if (spinnercolor == "star") {
-                            e.Values["star"] = "true";
+                        if (settings.RandomDecorations) {
+                            if (spinnercolor == "star") {
+                                e.Values["star"] = true;
+                            } else if (spinnercolor == "dust") {
+                                e.Values["dust"] = true;
+                            } else {
+                                e.Values.Remove("star");
+                                e.Values.Remove("dust");
+                            }
+                        } else if (!e.Has("star") && !e.Has("dust")) {
+                            if (canonSpinnerColor == "star") {
+                                e.Values["star"] = true;
+                            } else if (canonSpinnerColor == "dust") {
+                                e.Values["dust"] = true;
+                            } else {
+                                // no action
+                            }
+                        }
+                        break;
+                    case "spikesUp":
+                    case "spikesDown":
+                    case "spikesLeft":
+                    case "spikesRight":
+                        if (ohgodwhat) {
+                            spikecolor = pickSpikeColor();
+                        }
+                        if (e.Values == null) e.Values = new Dictionary<string, object>();
+                        if (settings.RandomDecorations) {
+                            e.Values["type"] = spikecolor;
+                        } else if (e.Attr("type", "default") == "default") {
+                            e.Values["type"] = canonSpikecolor;
                         }
                         break;
                     case "lockBlock":

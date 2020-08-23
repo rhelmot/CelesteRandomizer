@@ -341,7 +341,7 @@ namespace Celeste.Mod.Randomizer {
             var map = new MapData(this.Key);
             typeof(MapData).GetField("DashlessGoldenberries").SetValue(map, new List<EntityData>());
             map.Levels = new List<LevelData>();
-            this.Map.FillMap(map, this.Random);
+            this.Map.FillMap(map, this.Settings, this.Random);
             this.SetMapBounds(map);
             this.SetForeground(map);
             this.SetBackground(map);
@@ -402,6 +402,10 @@ namespace Celeste.Mod.Randomizer {
                 case 8:
                     fgName = "godrays";
                     break;
+            }
+            if (!this.Settings.RandomDecorations) {
+                fgName = null;
+                needsWind = true;
             }
 
             map.Foreground = new BinaryPacker.Element{ Children = new List<BinaryPacker.Element>() };
