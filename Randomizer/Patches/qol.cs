@@ -35,6 +35,7 @@ namespace Celeste.Mod.Randomizer {
             IL.Celeste.CS06_Campfire.OnBegin += FuckUpLess;
             On.Celeste.CS06_Campfire.OnBegin += FuckUpEvenLess;
             IL.Celeste.CS06_Campfire.OnEnd += FuckUpWayLess;
+            IL.Celeste.LightningRenderer.Track += TrackExtraSpace;
 
             SpecialHooksQol.Add(new ILHook(typeof(CS10_MoonIntro).GetMethod("BadelineAppears", BindingFlags.Instance | BindingFlags.NonPublic).GetStateMachineTarget(), DontGiveOneDash));
             SpecialHooksQol.Add(new ILHook(typeof(EventTrigger).GetNestedType("<>c__DisplayClass10_0", BindingFlags.NonPublic).GetMethod("<OnEnter>b__0", BindingFlags.NonPublic | BindingFlags.Instance), DontGiveOneDash));
@@ -65,6 +66,7 @@ namespace Celeste.Mod.Randomizer {
             IL.Celeste.CS06_Campfire.OnBegin -= FuckUpLess;
             On.Celeste.CS06_Campfire.OnBegin -= FuckUpEvenLess;
             IL.Celeste.CS06_Campfire.OnEnd -= FuckUpWayLess;
+            IL.Celeste.LightningRenderer.Track -= TrackExtraSpace;
 
             foreach (var detour in this.SpecialHooksQol) {
                 detour.Dispose();
@@ -365,6 +367,15 @@ namespace Celeste.Mod.Randomizer {
                 leader.PastPoints[i] += player.Position;
             }
             leader.TransferFollowers();
+        }
+
+        private void TrackExtraSpace(ILContext il) {
+            var cursor = new ILCursor(il);
+            if (!cursor.TryGotoNext(MoveType.After, instr => instr.MatchLdfld("Microsoft.Xna.Framework.Rectangle", "Height"))) {
+                throw new Exception("Could not find patch point!");
+            }
+            cursor.Emit(Mono.Cecil.Cil.OpCodes.Ldc_I4, 32);
+            cursor.Emit(Mono.Cecil.Cil.OpCodes.Add);
         }
     }
 
