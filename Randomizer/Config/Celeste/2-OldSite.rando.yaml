@@ -3,7 +3,10 @@ ASide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: in
+      Kind: inout
+      ReqOut:
+        Dashes: two
+        Difficulty: expert
     - Side: Right
       Idx: 0
       Kind: inout

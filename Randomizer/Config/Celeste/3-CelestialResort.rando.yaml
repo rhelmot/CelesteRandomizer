@@ -885,7 +885,10 @@ ASide:
     InternalEdges:
     - Split: TopToBottom
       ReqBoth:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: hard
   - Room: "12-x"  # towels end
     Holes:
     - Side: Up
