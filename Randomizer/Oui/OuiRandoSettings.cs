@@ -181,12 +181,20 @@ namespace Celeste.Mod.Randomizer {
                 updateHashText();
             });
 
+            var difficultytext = new TextMenuExt.EaseInSubHeaderExt(Dialog.Clean("MODOPTIONS_RANDOMIZER_DIFFICULTY_EXPLAIN_" + Settings.Difficulty.ToString().ToUpperInvariant()), false, menu) {
+                HeightExtra = 17f,
+                Offset = new Vector2(30, -5),
+            };
+
             var difficultytoggle = new TextMenu.Slider(Dialog.Clean("MODOPTIONS_RANDOMIZER_DIFFICULTY"), (i) => {
                 return Dialog.Clean("MODOPTIONS_RANDOMIZER_DIFFICULTY_" + Enum.GetNames(typeof(Difficulty))[i].ToUpperInvariant());
             }, 0, (int)Difficulty.Last - 1, (int)Settings.Difficulty).Change((i) => {
                 Settings.Difficulty = (Difficulty)i;
                 updateHashText();
+                difficultytext.Title = Dialog.Clean("MODOPTIONS_RANDOMIZER_DIFFICULTY_EXPLAIN_" + Settings.Difficulty.ToString().ToUpperInvariant());
             });
+            difficultytoggle.OnEnter += () => { difficultytext.FadeVisible = true; };
+            difficultytoggle.OnLeave += () => { difficultytext.FadeVisible = false; };
 
             var repeatroomstoggle = new TextMenu.OnOff(Dialog.Clean("MODOPTIONS_RANDOMIZER_REPEATROOMS"), Settings.RepeatRooms).Change((val) => {
                 Settings.RepeatRooms = val;
@@ -356,6 +364,7 @@ namespace Celeste.Mod.Randomizer {
             menu.Add(lengthtoggle);
             menu.Add(numdashestoggle);
             menu.Add(difficultytoggle);
+            menu.Add(difficultytext);
             menu.Add(moreoptionsbtn);
             menu.Add(repeatroomstoggle);
             menu.Add(enterunknowntoggle);

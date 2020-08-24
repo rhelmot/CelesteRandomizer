@@ -60,6 +60,18 @@ rooms through places that don't make sense
     MODOPTIONS_RANDOMIZER_DIFFICULTY_HARD=Hard
     MODOPTIONS_RANDOMIZER_DIFFICULTY_EXPERT=Expert
     MODOPTIONS_RANDOMIZER_DIFFICULTY_PERFECT=Perfect
+    MODOPTIONS_RANDOMIZER_DIFFICULTY_EXPLAIN_NORMAL=
+Can handle the A-sides and the occasional
+B-side
+    MODOPTIONS_RANDOMIZER_DIFFICULTY_EXPLAIN_HARD=
+Comfortable with Farewell and the C-sides;
+knows some speedrun tech
+    MODOPTIONS_RANDOMIZER_DIFFICULTY_EXPLAIN_EXPERT=
+Can do spike jumps, corner kicks, corner
+boosts, easy demodashes
+    MODOPTIONS_RANDOMIZER_DIFFICULTY_EXPLAIN_PERFECT=
+Willing to suffer for extremely precise and
+unfair gameplay
     MODOPTIONS_RANDOMIZER_GOLDENBERRY=Golden Strawberry
     MODOPTIONS_RANDOMIZER_SHINE=Illuminate Path
     MODOPTIONS_RANDOMIZER_SHINE_OFF=Off

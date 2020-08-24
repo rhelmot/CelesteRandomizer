@@ -24,7 +24,7 @@ The difficulty modes are intended as follows:
 - *Normal:* Player is comfortable with the A-sides and can figure out a B-side room given some time
 - *Hard:* Player is comfortable with Farewell and the C-Sides, knows a little bit of speedrun tech
 - *Expert:* Player is comfortable with spike jumps, corner boosts, easy demodashes
-- *Perfect:* Player knows the above tech and is using slowdown and savestates
+- *Perfect:* Player knows the above tech and is willing to suffer with extremely precise and unfair gameplay
 
 If you need a difficulty easier than Normal, you should disable the maps that you don't feel comfortable with.
 
