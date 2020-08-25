@@ -221,8 +221,6 @@ ASide:
     - To: "left"
       ReqOut:
         Dashes: one
-      ReqIn:
-        Dashes: zero
     Subrooms:
     - Room: "left"
       Holes:
@@ -487,22 +485,17 @@ ASide:
     Holes:
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: in              # could be inout by tweaking crumble block
     - Side: Down
       Idx: 0
       Kind: inout
     InternalEdges:
     - To: "right"
-      ReqOut:
+      ReqBoth:
         Or:
         - Dashes: one
         - Dashes: zero
           Difficulty: expert
-      ReqIn:
-        Or:
-        - Dashes: one
-        - Dashes: zero
-          Difficulty: hard
     Subrooms:
     - Room: "right"
       Holes:
@@ -515,7 +508,7 @@ ASide:
       - Side: Down
         Idx: 1
         Kind: inout
-        ReqOut:
+        ReqBoth:
           Dashes: one
       - Side: Down
         Idx: 2
@@ -533,7 +526,10 @@ ASide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: in
+      Kind: inout
+      ReqOut:
+        Dashes: one
+        Difficulty: hard
     - Side: Up
       Idx: 1
       Kind: inout
@@ -620,12 +616,6 @@ ASide:
       - Side: Right
         Idx: 0
         Kind: inout
-      InternalEdges:
-      - Collectable: 0
-        ReqOut:
-          Dashes: one
-        ReqIn:
-          Dashes: zero
     Tweaks:
     - ID: 0
       Name: "changeRespawnTrigger"
@@ -646,7 +636,7 @@ ASide:
         Dashes: one
     - Side: Up
       Idx: 1
-      Kind: in
+      Kind: in              # tweak crumble block for inout?
     - Side: Left
       Idx: 0
       Kind: inout
@@ -812,30 +802,30 @@ ASide:
       Kind: inout
   - Room: "12"
     Holes:
-    - Side: Down
+    - Side: Right
       Idx: 0
       Kind: inout
-    InternalEdges:
-    - To: "right"
       ReqBoth:
         Or:
         - Dashes: one
         - Dashes: zero
           Difficulty: expert
-    - To: "top"
+    - Side: Left
+      Idx: 0
+      Kind: inout
       ReqBoth:
-        Dashes: zero
-    Subrooms:
-    - Room: "top"
-      Holes:
-      - Side: Left
-        Idx: 0
-        Kind: inout
-    - Room: "right"
-      Holes:
-      - Side: Right
-        Idx: 0
-        Kind: inout
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: expert
+    - Side: Down
+      Idx: 0
+      Kind: inout
+      ReqBoth:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: expert
     Tweaks:
     - ID: 0
       Update:
@@ -861,13 +851,6 @@ ASide:
     - Side: Right
       Idx: 0
       Kind: inout
-    InternalEdges:
-    - Collectable: 0
-      ReqBoth:
-        Or:
-        - Dashes: one
-        - Dashes: zero
-          Difficulty: perfect
   - Room: "12a"
     Holes:
     - Side: Up
@@ -901,7 +884,7 @@ ASide:
     Holes:
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: in              # tweak platform for inout? (applies to 1B end)
     End: true
 
 BSide:
@@ -932,22 +915,17 @@ BSide:
     Holes:
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in
     - Side: Up
       Idx: 0
       Kind: inout
     InternalEdges:
     - Split: BottomToTop
-      ReqOut:
+      ReqBoth:
         Or:
         - Dashes: one
         - Dashes: zero
           Difficulty: hard
-      ReqIn:
-        Or:
-        - Dashes: one
-        - Dashes: zero
-          Difficulty: expert
     Tweaks:
     - ID: 0
       Update:
@@ -975,14 +953,14 @@ BSide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in
     InternalEdges:
     - Split: BottomToTop
       ReqOut:
         Or:
         - Dashes: one
         - Dashes: zero
-          Difficulty: expert
+          Difficulty: perfect
       ReqIn:
         Or:
         - Dashes: one
@@ -1022,7 +1000,7 @@ BSide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in
     InternalEdges:
     - Split: BottomToTop
       ReqOut:
@@ -1065,7 +1043,7 @@ BSide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in
     InternalEdges:
     - Split: LeftToRight
       ReqBoth:
@@ -1106,7 +1084,7 @@ BSide:
         Or:
         - Dashes: one
         - Dashes: zero
-          Difficulty: hard
+          Difficutly: expert
     Tweaks:
     - Name: "spawn"
       Update:
@@ -1171,14 +1149,13 @@ BSide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in
     InternalEdges:
     - Split: BottomToTop
       ReqOut:
         Dashes: one
       ReqIn:
         Dashes: two
-        Difficulty: hard
     Tweaks:
     - ID: 0
       Update:
@@ -1217,7 +1194,7 @@ BSide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in
     - Side: Left
       Idx: 0
       Kind: None
@@ -1412,14 +1389,17 @@ BSide:
           cameraX: 0.0
           cameraY: 1.2
   - Room: "end"
-    End: true
     Holes:
     - Side: Down
       Idx: 0
       Kind: in
+      ReqIn:
+        Dashes: one
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: unknown
+      ReqIn:
+        Dashes: one
     - Side: Down
       Idx: 1
       Kind: None
@@ -1456,6 +1436,7 @@ BSide:
     - Side: Right
       Idx: 3
       Kind: None
+    End: true
 
 CSide:
   - Room: "00"
@@ -1625,7 +1606,17 @@ CSide:
       Kind: None
     - Side: Down
       Idx: 5
-      Kind: None
+      Kind: unknown
+      ReqIn:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect
     - Side: Down
       Idx: 6
-      Kind: None
+      Kind: unknown
+      ReqIn:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect
