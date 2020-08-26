@@ -481,7 +481,7 @@ ASide:
         Or:
         - Dashes: one
         - Dashes: zero
-          Difficulty: hard
+          Difficulty: expert
   - Room: "8"
     Hub: true
     Holes:
