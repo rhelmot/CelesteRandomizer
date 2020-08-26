@@ -481,13 +481,13 @@ ASide:
         Or:
         - Dashes: one
         - Dashes: zero
-          Difficulty: hard
+          Difficulty: expert
   - Room: "8"
     Hub: true
     Holes:
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: in              # could be inout by tweaking crumble block
     - Side: Down
       Idx: 0
       Kind: inout
@@ -515,7 +515,7 @@ ASide:
       - Side: Down
         Idx: 1
         Kind: inout
-        ReqOut:
+        ReqBoth:
           Dashes: one
       - Side: Down
         Idx: 2
@@ -646,7 +646,7 @@ ASide:
         Dashes: one
     - Side: Up
       Idx: 1
-      Kind: in
+      Kind: in              # tweak crumble block for inout?
     - Side: Left
       Idx: 0
       Kind: inout
@@ -901,7 +901,7 @@ ASide:
     Holes:
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: in              # tweak platform for inout? (applies to 1B end)
     End: true
 
 BSide:
@@ -938,16 +938,11 @@ BSide:
       Kind: inout
     InternalEdges:
     - Split: BottomToTop
-      ReqOut:
+      ReqBoth:
         Or:
         - Dashes: one
         - Dashes: zero
           Difficulty: hard
-      ReqIn:
-        Or:
-        - Dashes: one
-        - Dashes: zero
-          Difficulty: expert
     Tweaks:
     - ID: 0
       Update:
@@ -1625,7 +1620,17 @@ CSide:
       Kind: None
     - Side: Down
       Idx: 5
-      Kind: None
+      Kind: unknown
+      ReqIn:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect
     - Side: Down
       Idx: 6
-      Kind: None
+      Kind: unknown
+      ReqIn:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect
