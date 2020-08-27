@@ -101,7 +101,7 @@ namespace Celeste.Mod.Randomizer {
                 if (!config.TryGetValue(level.Name, out RandoConfigRoom roomConfig)) {
                     continue;
                 }
-                if (roomConfig == null || roomConfig.Holes == null) {
+                if (roomConfig == null) {
                     continue;
                 }
                 var holes = RandoLogic.FindHoles(level);

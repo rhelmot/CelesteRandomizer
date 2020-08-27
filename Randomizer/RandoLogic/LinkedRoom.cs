@@ -522,9 +522,25 @@ namespace Celeste.Mod.Randomizer {
                         var target = e.Attr("targetRoomId", "");
                         if (target != "") {
                             if (!this.WarpMap.TryGetValue(target, out var targetRoom)) {
-                                throw new GenerationError($"{this.Static.Name}: warp to {target} but no configuration");
+                                Logger.Log("randomizer", "Additional info for unconfigured warp");
+                                Logger.Log("randomizer", $"Warp: {this.Static.Name} -> {target}");
+                                Logger.Log("randomizer", $"Name/ID: {e.Name} {e.ID}");
+                                Logger.Log("randomizer", $"Position: {e.Position}");
+                                throw new GenerationError($"{this.Static.Name}: warp to {target} but no config");
                             }
                             e.Values["targetRoomId"] = targetRoom.BakedRoom.Name;
+
+                            // spawn coordinates are in map-space, so rebase them according to the target room
+                            var x = e.Int("respawnPositionX", 0);
+                            var y = e.Int("respawnPositionY", 0);
+                            if (x != 0 && y != 0) {
+                                x -= (int)targetRoom.Static.Level.Position.X;
+                                y -= (int)targetRoom.Static.Level.Position.Y;
+                                x += (int)targetRoom.BakedRoom.Position.X;
+                                y += (int)targetRoom.BakedRoom.Position.Y;
+                            }
+                            e.Values["respawnPositionX"] = x;
+                            e.Values["respawnPositionY"] = y;
                         }
                         break;
                 }

@@ -98,7 +98,7 @@ namespace Celeste.Mod.Randomizer {
     public class RandoConfigRoom {
         public String Room;
         public List<RandoConfigCollectable> Collectables = new List<RandoConfigCollectable>();
-        public List<RandoConfigHole> Holes { get; set; }
+        public List<RandoConfigHole> Holes { get; set; } = new List<RandoConfigHole>();
         public List<RandoConfigRoom> Subrooms { get; set; }
         public List<RandoConfigInternalEdge> InternalEdges { get; set; }
         public bool End { get; set; }
