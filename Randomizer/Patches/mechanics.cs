@@ -1,4 +1,5 @@
 using System;
+using System.Xml;
 using System.Linq;
 using System.Reflection;
 using System.Collections;
@@ -336,24 +337,30 @@ namespace Celeste.Mod.Randomizer {
         private void MakeFrankenTilesets(RandoSettings settings) {
             var fgPaths = new List<string>();
             var bgPaths = new List<string>();
+            var atPaths = new List<string>();
 
             foreach (var map in settings.EnabledMaps) {
                 var meta = AreaData.Get(map).GetMeta();
                 var fgPath = meta?.ForegroundTiles;
                 var bgPath = meta?.BackgroundTiles;
+                var atPath = meta?.AnimatedTiles;
                 if (!string.IsNullOrEmpty(fgPath) && !fgPaths.Contains(fgPath)) {
                     fgPaths.Add(fgPath);
                 }
                 if (!string.IsNullOrEmpty(bgPath) && !bgPaths.Contains(bgPath)) {
                     bgPaths.Add(bgPath);
                 }
+                if (!string.IsNullOrEmpty(atPath) && !atPaths.Contains(atPath)) {
+                    atPaths.Add(atPath);
+                }
             }
 
-            MakeFrankenTileset(GFX.FGAutotiler, fgPaths);
-            MakeFrankenTileset(GFX.BGAutotiler, bgPaths);
+            CombineAutotilers(GFX.FGAutotiler, fgPaths);
+            CombineAutotilers(GFX.BGAutotiler, bgPaths);
+            CombineAnimatedTiles(GFX.AnimatedTilesBank, atPaths);
         }
 
-        private static void MakeFrankenTileset(Autotiler basic, List<string> additions) {
+        private static void CombineAutotilers(Autotiler basic, List<string> additions) {
             var counts = new Dictionary<char, int>();
             var r = new Random(); // TODO how to seed this?
             // uhhhhhhh this is intensely sketchy
@@ -374,6 +381,53 @@ namespace Celeste.Mod.Randomizer {
                     } else {
                         counts[k] = 1;
                         lookup[k] = lookup2[k];
+                    }
+                }
+            }
+        }
+
+        private static void CombineAnimatedTiles(AnimatedTilesBank basic, List<string> additions) {
+            var counts = new Dictionary<string, int>();
+            foreach (var key in basic.AnimationsByName.Keys) {
+                counts[key] = 1;
+            }
+            var r = new Random();
+
+            foreach (var path in additions) {
+                XmlElement animatedData = Calc.LoadContentXML(path)["Data"];
+                foreach (XmlElement el in animatedData) {
+                    if (el == null) {
+                        continue;
+                    }
+
+                    var name = el.Attr("name");
+                    bool insert;
+                    if (counts.TryGetValue(name, out int count)) {
+                        count++;
+                        counts[name] = count;
+                        insert = r.Next(count) == 0;
+                    } else {
+                        counts[name] = 1;
+                        insert = true;
+                    }
+
+                    if (insert) {
+                        int idx = -1;
+                        if (basic.AnimationsByName.ContainsKey(name)) {
+                            idx = basic.Animations.IndexOf(basic.AnimationsByName[name]);
+                            basic.AnimationsByName.Remove(name);
+                        }
+                        basic.Add(
+                            name,
+                            el.AttrFloat("delay", 0f),
+                            el.AttrVector2("posX", "posY", Vector2.Zero),
+                            el.AttrVector2("origX", "origY", Vector2.Zero),
+                            GFX.Game.GetAtlasSubtextures(el.Attr("path"))
+                        );
+                        if (idx != -1) {
+                            basic.Animations[idx] = basic.AnimationsByName[name];
+                            basic.Animations.RemoveAt(basic.Animations.Count - 1);
+                        }
                     }
                 }
             }
