@@ -1899,10 +1899,10 @@ BSide:
       Idx: 0
       Kind: inout
     InternalEdges:
-    - Split: RightToLeft
-      ReqOut:
-        Dashes: one
+    - Split: LeftToRight
       ReqIn:
+        Dashes: one
+      ReqOut:
         Dashes: two
         Difficulty: hard
     Tweaks:
