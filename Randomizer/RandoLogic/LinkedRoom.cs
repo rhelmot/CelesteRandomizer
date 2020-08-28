@@ -543,6 +543,10 @@ namespace Celeste.Mod.Randomizer {
                             e.Values["respawnPositionY"] = y;
                         }
                         break;
+                    case "AcidHelper/GradualColorGradeChangeTrigger":
+                    case "ShroomHelper/GradualColorGradeChangeTrigger":
+                        e.Values["speed"] = 2f;
+                        break;
                 }
             }
         }

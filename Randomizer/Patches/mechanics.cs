@@ -69,6 +69,11 @@ namespace Celeste.Mod.Randomizer {
                 var ui = LoadGemUI(fromLoader); // must be a separate method or the jit will be very sad :(
                 self.Add(ui); // lord fucking help us
             }
+
+            if (settings != null && playerIntro == Player.IntroTypes.Transition) {
+                // reset color grading
+                self.NextColorGrade("", 2f);
+            }
         }
 
         private Entity SavedGemUI;
