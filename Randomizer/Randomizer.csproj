@@ -125,6 +125,9 @@
     <None Include="Dialog\German.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Dialog\Spanish.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Config\Celeste\0-Intro.rando.yaml">
