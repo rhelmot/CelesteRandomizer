@@ -179,6 +179,14 @@ namespace Celeste.Mod.Randomizer {
             var result = this.Static.MakeLevelData(new Vector2(this.Bounds.Left, this.Bounds.Top), nonce);
             this.BakedRoom = result;
 
+            bool hasCassetteBlocks = false;
+            foreach (var e in result.Entities) {
+                if (e.Name == "cassetteBlock") {
+                    hasCassetteBlocks = true;
+                    break;
+                }
+            }
+
             bool ohgodwhat = random.Next(100) == 0; // :)
             string pickCrystalColor() {
                 tryagain:
@@ -219,7 +227,12 @@ namespace Celeste.Mod.Randomizer {
                                        this.Static.Area.ID == 3 || this.Static.Area.ID == 7 && this.Static.Level.Name.StartsWith("d-") ? "dust" : "spike";
 
             string pickSpikeColor() {
-                return new string[] { "outline", "reflection", "tentacles", "cliffside"}[random.Next(4)];
+                tryagain:
+                var result2 = new string[] { "outline", "reflection", "tentacles", "cliffside"}[random.Next(4)];
+                if (hasCassetteBlocks && result2 == "tentacles") {
+                    goto tryagain;
+                }
+                return result2;
             }
             string spikecolor = pickSpikeColor();
             string canonSpikecolor = AreaData.Get(this.Static.Area).Spike;
@@ -284,7 +297,8 @@ namespace Celeste.Mod.Randomizer {
                         }
                         if (e.Values == null) e.Values = new Dictionary<string, object>();
                         if (settings.RandomDecorations) {
-                            e.Values["type"] = spikecolor;
+                            bool single = ((e.Name == "spikesUp" || e.Name == "spikesDown") && e.Width == 8) || ((e.Name == "spikesLeft" || e.Name == "spikesRight") && e.Height == 8);
+                            e.Values["type"] = single && spikecolor == "tentacles" ? "outline" : spikecolor;
                         } else if (e.Attr("type", "default") == "default") {
                             e.Values["type"] = canonSpikecolor;
                         }
