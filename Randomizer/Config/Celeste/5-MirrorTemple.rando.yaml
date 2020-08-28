@@ -1850,6 +1850,8 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: out         # TODO: can enter if switch pressed
+      ReqOut:
+        Dashes: one
     InternalEdges:
     - To: "right"
       ReqIn:

@@ -1513,6 +1513,9 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: none
   - Room: "c-00"
     Holes:
     - Side: Right

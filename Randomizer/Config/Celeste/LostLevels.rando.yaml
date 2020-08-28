@@ -791,6 +791,12 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: up
+      Idx: 0
+      Kind: none
+      Side: up
+      Idx: 1
+      Kind: none
   - Room: "f-door"
     Holes:
     - Side: Right
