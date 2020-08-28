@@ -60,6 +60,18 @@ betreten können die keinen Sinn ergeben
     MODOPTIONS_RANDOMIZER_DIFFICULTY_HARD=Schwer
     MODOPTIONS_RANDOMIZER_DIFFICULTY_EXPERT=Experte
     MODOPTIONS_RANDOMIZER_DIFFICULTY_PERFECT=Perfekt
+    MODOPTIONS_RANDOMIZER_DIFFICULTY_EXPLAIN_NORMAL=
+Kommt mit den A-Seiten klar,
+und gelegentlich mit B-Seiten
+    MODOPTIONS_RANDOMIZER_DIFFICULTY_EXPLAIN_HARD=
+Geübt in Abschied und den C-Seiten;
+Kennt die eine oder andere Speedrun-Technik
+    MODOPTIONS_RANDOMIZER_DIFFICULTY_EXPLAIN_EXPERT=
+Kann mit Spikejumps, Cornerkicks, Cornerboosts
+und einfachen Demodashes umgehen
+    MODOPTIONS_RANDOMIZER_DIFFICULTY_EXPLAIN_PERFECT=
+Bereit zu leiden unter extremer Präzision und
+unfairem Gameplay
     MODOPTIONS_RANDOMIZER_GOLDENBERRY=Goldene Erdbeere
     MODOPTIONS_RANDOMIZER_SHINE=Pfad Beleuchtung
     MODOPTIONS_RANDOMIZER_SHINE_OFF=Aus
