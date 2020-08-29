@@ -1451,6 +1451,17 @@ BSide:
     - Side: Right
       Idx: 3
       Kind: None
+    Tweaks:
+    - Name: "spikesUp"
+      ID: 20
+      Update:
+        Width: 72
+    - Name: "spikesUp"
+      Update:
+        Add: true
+        X: 680
+        Y: 136
+        Width: 64
 
 CSide:
   - Room: "00"
