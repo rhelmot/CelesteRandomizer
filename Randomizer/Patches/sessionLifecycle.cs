@@ -80,6 +80,7 @@ namespace Celeste.Mod.Randomizer {
                 session.SeedCleanRandom(clean);
                 UseSession = session;
                 StartMe = genTask.Result;
+                genTask = null;
                 return true;
             });
             cursor.Emit(Mono.Cecil.Cil.OpCodes.Brtrue, label);
@@ -104,14 +105,21 @@ namespace Celeste.Mod.Randomizer {
             orig(self);
             var settings = this.InRandomizerSettings;
             this.endingSettings = settings;
-            if (settings != null && settings.Algorithm == LogicType.Endless) {
-                var newSettings = settings.Copy();
-                newSettings.EndlessLevel++;
-                Audio.SetMusic(SFX.music_complete_bside);
-                Audio.SetAmbience(null);
-
-                this.genTask = Task.Run(() => RandoLogic.GenerateMap(newSettings));
+            if (settings == null || settings.Algorithm != LogicType.Endless) {
+                return;
             }
+
+            LevelExit.Mode mode = (LevelExit.Mode) typeof(LevelExit).GetField("mode", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(self);
+            if (mode != LevelExit.Mode.Completed) {
+                return;
+            }
+
+            var newSettings = settings.Copy();
+            newSettings.EndlessLevel++;
+            Audio.SetMusic(SFX.music_complete_bside);
+            Audio.SetAmbience(null);
+
+            this.genTask = Task.Run(() => RandoLogic.GenerateMap(newSettings));
         }
 
         public static AreaData AreaHandoff;
@@ -151,6 +159,7 @@ namespace Celeste.Mod.Randomizer {
                     Session session;
                     if (UseSession != null) {
                         session = UseSession;
+                        UseSession = null;
                     } else {
                         session = new Session(newArea) {
                             FirstLevel = true,
@@ -159,9 +168,9 @@ namespace Celeste.Mod.Randomizer {
                         session.SeedCleanRandom(Settings.SeedType == SeedType.Random);
                     }
                     SaveData.Instance.StartSession(session);    // need to set this earlier than we would get otherwise
-                    LevelEnter.Go(session, true);
                     StartMe = null;
                     Entering = false;
+                    LevelEnter.Go(session, true);
                 });
 
                 /*foreach (AreaData area in AreaData.Areas) {
@@ -239,7 +248,7 @@ namespace Celeste.Mod.Randomizer {
                 text += "\n#" + settings.Hash;
                 text += "\nrando " + this.Metadata.VersionString;
                 var variants = SaveData.Instance?.VariantMode ?? false;
-                ActiveFont.DrawOutline(text, new Vector2(1820f + 300f * (1f - Ease.CubeOut(ease)), variants ? 810f : 894f), new Vector2(0.5f, 0f), Vector2.One * 0.5f, Color.White, 2f, Color.Black);
+                ActiveFont.DrawOutline(text, new Vector2(1820f + 300f * (1f - Ease.CubeOut(ease)), variants ? 810f : 894f), new Vector2(0.5f, 0f), Vector2.One * 0.5f, settings.SpawnGolden ? Calc.HexToColor("fad768") : Color.White, 2f, Color.Black);
             }
         }
         

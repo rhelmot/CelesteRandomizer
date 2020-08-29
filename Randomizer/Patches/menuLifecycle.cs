@@ -8,6 +8,8 @@ namespace Celeste.Mod.Randomizer {
             Everest.Events.MainMenu.OnCreateButtons += CreateMainMenuButton;
             Everest.Events.Level.OnCreatePauseMenuButtons += ModifyLevelMenu;
             On.Celeste.OverworldLoader.ctor += EnterToRandoMenu;
+            On.Celeste.LevelExit.ctor += EndlessCantRestart;
+            On.Celeste.Level.GiveUp += EndlessCantRestartSnarky;
             On.Celeste.Overworld.ctor += HideMaddy;
             On.Celeste.MapData.Load += DontLoadRandoMaps;
             On.Celeste.AreaData.Load += InitRandoData;
@@ -17,6 +19,8 @@ namespace Celeste.Mod.Randomizer {
             Everest.Events.MainMenu.OnCreateButtons -= CreateMainMenuButton;
             Everest.Events.Level.OnCreatePauseMenuButtons -= ModifyLevelMenu;
             On.Celeste.OverworldLoader.ctor -= EnterToRandoMenu;
+            On.Celeste.LevelExit.ctor -= EndlessCantRestart;
+            On.Celeste.Level.GiveUp -= EndlessCantRestartSnarky;
             On.Celeste.Overworld.ctor -= HideMaddy;
             On.Celeste.MapData.Load -= DontLoadRandoMaps;
             On.Celeste.AreaData.Load -= InitRandoData;
@@ -32,7 +36,8 @@ namespace Celeste.Mod.Randomizer {
         }
 
         private void ModifyLevelMenu(Level level, TextMenu pausemenu, bool minimal) {
-            if (this.InRandomizer) {
+            var settings = this.InRandomizerSettings;
+            if (settings != null) {
                 foreach (var item in new System.Collections.Generic.List<TextMenu.Item>(pausemenu.GetItems())) {
                     if (item.GetType() == typeof(TextMenu.Button)) {
                         var btn = (TextMenu.Button)item;
@@ -40,7 +45,11 @@ namespace Celeste.Mod.Randomizer {
                             pausemenu.Remove(item);
                         }
                         if (btn.Label == Dialog.Clean("MENU_PAUSE_RESTARTAREA")) {
-                            btn.Label = Dialog.Clean("MENU_PAUSE_RESTARTRANDO");
+                            if (settings.Algorithm == LogicType.Endless) {
+                                pausemenu.Remove(item);
+                            } else {
+                                btn.Label = Dialog.Clean("MENU_PAUSE_RESTARTRANDO");
+                            }
                         }
                     }
                 }
@@ -88,6 +97,41 @@ namespace Celeste.Mod.Randomizer {
                 startMode = (Overworld.StartMode)55;
             }
             orig(self, startMode, snow);
+        }
+
+        private void EndlessCantRestart(On.Celeste.LevelExit.orig_ctor orig, LevelExit self, LevelExit.Mode mode, Session session, HiresSnow snow) {
+            var settings = this.InRandomizerSettings;
+            if (settings != null && settings.Algorithm == LogicType.Endless && (mode == LevelExit.Mode.Restart || mode == LevelExit.Mode.GoldenBerryRestart)) {
+                mode = LevelExit.Mode.SaveAndQuit;
+            }
+
+            orig(self, mode, session, snow);
+        }
+
+        private void EndlessCantRestartSnarky(On.Celeste.Level.orig_GiveUp orig, Level self, int returnIndex, bool restartArea, bool minimal, bool showHint) {
+            var settings = this.InRandomizerSettings;
+            if (settings == null || settings.Algorithm != LogicType.Endless || !restartArea) {
+                orig(self, returnIndex, restartArea, minimal, showHint);
+                return;
+            }
+
+            self.Paused = true;
+            var menu = new TextMenu() {
+                new TextMenu.Header(Dialog.Clean("MENU_CANTRESTART_HEADER")),
+            };
+            menu.AutoScroll = false;
+            menu.OnPause = menu.OnESC = () => {
+              menu.RemoveSelf();
+              self.Paused = false;
+              Engine.FreezeTimer = 0.15f;
+              Audio.Play("event:/ui/game/unpause");
+            };
+            menu.OnCancel = () => {
+              Audio.Play("event:/ui/main/button_back");
+              menu.RemoveSelf();
+              self.Pause(returnIndex, minimal);
+            };
+            self.Add(menu);
         }
 
         // This is a bit of a hack. is there a better way to control this?

@@ -325,9 +325,10 @@ namespace Celeste.Mod.Randomizer {
         }
 
         private string PickCompleteScreen() {
+            uint seed = this.Settings.IntSeed;
             tryagain:
             // ensure different rulesets of the same seed have different end screens
-            switch ((this.Settings.IntSeed + (int)this.Settings.Rules) % 8) {
+            switch ((seed + (int)this.Settings.Rules) % 8) {
                 case 0:
                     return AreaData.Areas[1].CompleteScreenName;
                 case 1:
@@ -345,6 +346,7 @@ namespace Celeste.Mod.Randomizer {
                 case 7:
                 default:
                     if (this.Settings.Algorithm == LogicType.Endless) {
+                        seed = (uint)new Random((int)seed).Next();
                         goto tryagain;
                     }
                     return AreaData.Areas[9].CompleteScreenName;

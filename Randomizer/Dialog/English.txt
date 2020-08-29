@@ -102,6 +102,8 @@ unfair gameplay
     MENU_QUITRANDO_CONFIRM=Yes
     MENU_QUITRANDO_CANCEL=Cancel
     
+    MENU_CANTRESTART_HEADER=NO TURNING BACK NOW!
+    
 # Endless interlude
     RANDOENDLESS_HEADER=Level {0} Complete!
     
