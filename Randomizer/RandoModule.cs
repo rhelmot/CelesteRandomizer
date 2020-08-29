@@ -7,6 +7,9 @@ using MonoMod.Utils;
 
 namespace Celeste.Mod.Randomizer {
     public partial class RandoModule : EverestModule {
+        public const LevelExit.Mode LEVELEXIT_ENDLESS = (LevelExit.Mode) 56;
+        public const Overworld.StartMode STARTMODE_RANDOMIZER = (Overworld.StartMode) 55;
+        
         public static RandoModule Instance;
         public override Type SettingsType => typeof(RandoModuleSettings);
         public RandoModuleSettings SavedData {

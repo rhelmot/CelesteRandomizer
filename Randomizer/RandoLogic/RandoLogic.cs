@@ -11,6 +11,10 @@ namespace Celeste.Mod.Randomizer {
         public GenerationError(string message) : base(message) {}
     }
 
+    public class RetryException : Exception {
+        public RetryException() : base("Too many backtracks") {}
+    }
+
     public partial class RandoLogic {
         public static AreaKey GenerateMap(RandoSettings settings) {
             var lastarea = AreaData.Areas[AreaData.Areas.Count - 1];
@@ -25,7 +29,7 @@ namespace Celeste.Mod.Randomizer {
                 Interlude = false,
                 Dreaming = false,
                 ID = newID,
-                Name = $"{settings.Seed}_{settings.Hash}",
+                Name = $"{settings.Seed}_{settings.EndlessLevel}_{settings.Hash}",
                 Mode = new ModeProperties[3] {
                     new ModeProperties {
                         Inventory = settings.Dashes == NumDashes.Zero ? new PlayerInventory(0, true, true, false) :
@@ -71,14 +75,23 @@ namespace Celeste.Mod.Randomizer {
 
             var key = new AreaKey(newArea.ID);
 
-            var r = new RandoLogic(settings, key);
+            int tryNum = 0;
+            while (true) {
+                try {
+                    var r = new RandoLogic(settings, key, tryNum);
 
-            newArea.Mode[0].MapData = r.MakeMap();
-            newArea.Wipe = r.PickWipe();
-            newArea.CompleteScreenName = r.PickCompleteScreen();
-            newArea.CassetteSong = r.PickCassetteAudio();
-            newArea.Mode[0].AudioState = new AudioState(r.PickMusicAudio(), r.PickAmbienceAudio());
-            r.RandomizeDialog();
+                    newArea.Mode[0].MapData = r.MakeMap();
+                    newArea.Wipe = r.PickWipe();
+                    newArea.CompleteScreenName = r.PickCompleteScreen();
+                    newArea.CassetteSong = r.PickCassetteAudio();
+                    newArea.Mode[0].AudioState = new AudioState(r.PickMusicAudio(), r.PickAmbienceAudio());
+                    r.RandomizeDialog();
+                    break;
+                } catch (RetryException) {
+                    tryNum++;
+                    Logger.Log("randomizer", $"Too many retries ({tryNum}), starting again");
+                }
+            }
 
             Logger.Log("randomizer", $"new area {newArea.GetSID()}");
 
@@ -102,8 +115,15 @@ namespace Celeste.Mod.Randomizer {
             }
         }
 
-        private RandoLogic(RandoSettings settings, AreaKey key) {
+        private RandoLogic(RandoSettings settings, AreaKey key, int tryNum) {
             this.Random = new Random((int)settings.IntSeed);
+            for (int i = 0; i < settings.EndlessLevel; i++) {
+                this.Random = new Random(this.Random.Next());
+            }
+            for (int i = 0; i < tryNum; i++) {
+                this.Random.Next();
+                this.Random = new Random(this.Random.Next());
+            }
             this.Settings = settings;
             this.Key = key;
             this.ResetRooms();
@@ -305,6 +325,7 @@ namespace Celeste.Mod.Randomizer {
         }
 
         private string PickCompleteScreen() {
+            tryagain:
             // ensure different rulesets of the same seed have different end screens
             switch ((this.Settings.IntSeed + (int)this.Settings.Rules) % 8) {
                 case 0:
@@ -323,6 +344,9 @@ namespace Celeste.Mod.Randomizer {
                     return AreaData.Areas[7].CompleteScreenName;
                 case 7:
                 default:
+                    if (this.Settings.Algorithm == LogicType.Endless) {
+                        goto tryagain;
+                    }
                     return AreaData.Areas[9].CompleteScreenName;
             }
         }
@@ -334,6 +358,7 @@ namespace Celeste.Mod.Randomizer {
                     this.GenerateLabyrinth();
                     break;
                 case LogicType.Pathway:
+                case LogicType.Endless:
                     this.GeneratePathway();
                     break;
             }

@@ -24,6 +24,7 @@ namespace Celeste.Mod.Randomizer {
     public enum LogicType {
         Pathway,
         Labyrinth,
+        Endless,
         Last
     }
 
@@ -80,6 +81,8 @@ namespace Celeste.Mod.Randomizer {
         public ShineLights Lights = ShineLights.Hubs;
         public Darkness Darkness = Darkness.Vanilla;
         public List<AreaKeyNotStupid> IncludedMaps = new List<AreaKeyNotStupid>();
+        [YamlIgnore]
+        public int EndlessLevel;
 
         public void Enforce() {
             if (this.SeedType == SeedType.Random) {

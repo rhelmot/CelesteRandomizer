@@ -1,19 +1,28 @@
 using System;
 using System.Reflection;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 using Monocle;
 using Microsoft.Xna.Framework;
 using MonoMod.Cil;
 using MonoMod.Utils;
+using MonoMod.RuntimeDetour;
 
 namespace Celeste.Mod.Randomizer {
-    public partial class RandoModule : EverestModule {
+    public partial class RandoModule {
 
+        private List<IDetour> SpecialHooksSession = new List<IDetour>();
         private void LoadSessionLifecycle() {
             Everest.Events.Level.OnComplete += OnComplete;
             On.Celeste.AreaComplete.VersionNumberAndVariants += AreaCompleteDrawHash;
             On.Celeste.AutoSplitterInfo.Update += MainThreadHook;
             On.Celeste.Editor.MapEditor.ctor += MarkSessionUnclean;
+            On.Celeste.LevelExit.Begin += HijackExitBegin;
             IL.Celeste.SpeedrunTimerDisplay.DrawTime += SetPlatinumColor;
+            IL.Celeste.AreaComplete.ctor += SetEndlessTitle;
+            
+            // this method is patched by everest so we need to get at the unpatched orig version
+            SpecialHooksSession.Add(new ILHook(typeof(AreaComplete).GetMethod("orig_Update"), GotoNextEndless));
         }
 
         private void UnloadSessionLifecycle() {
@@ -21,29 +30,116 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.AreaComplete.VersionNumberAndVariants -= AreaCompleteDrawHash;
             On.Celeste.AutoSplitterInfo.Update -= MainThreadHook;
             On.Celeste.Editor.MapEditor.ctor -= MarkSessionUnclean;
+            On.Celeste.LevelExit.Begin -= HijackExitBegin;
             IL.Celeste.SpeedrunTimerDisplay.DrawTime -= SetPlatinumColor;
+            IL.Celeste.AreaComplete.ctor -= SetEndlessTitle;
+            IL.Celeste.AreaComplete.Update -= GotoNextEndless;
+            
+            foreach (var detour in this.SpecialHooksSession) {
+                detour.Dispose();
+            }
+            this.SpecialHooksSession.Clear();
         }
+
+        private Task<AreaKey> genTask;
+        private RandoSettings endingSettings = null;
+        private void GotoNextEndless(ILContext il) {
+            Logger.Log("DEBUG", il.ToString());
+            var cursor = new ILCursor(il);
+            if (!cursor.TryGotoNext(MoveType.Before, instr => instr.MatchLdarg(0),
+                                                     instr => instr.MatchLdfld<AreaComplete>("snow"))) {
+                throw new Exception("Can't find patch point 2!");
+            }
+
+            var label = cursor.MarkLabel();
+
+            cursor.Index = 0;
+            if (!cursor.TryGotoNext(MoveType.After, instr => instr.MatchStfld<AreaComplete>("canConfirm"))) {
+                throw new Exception("Can't find patch point 1");
+            }
+
+            cursor.EmitDelegate<Func<bool>>(() => {
+                var settings = this.endingSettings;
+                if (settings == null || settings.Algorithm != LogicType.Endless) {
+                    return false;
+                }
+
+                if (!genTask.IsCompleted) {
+                    typeof(AreaComplete).GetField("canConfirm", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(Engine.Scene, true);
+                    return true;
+                }
+
+                
+                var session = SaveData.Instance.CurrentSession;
+                var time = session.Time;
+                var deaths = session.Deaths;
+                var clean = session.SeedCleanRandom();
+                session = new Session(genTask.Result);
+                session.Time = time;
+                session.Deaths = deaths;
+                session.SeedCleanRandom(clean);
+                UseSession = session;
+                StartMe = genTask.Result;
+                return true;
+            });
+            cursor.Emit(Mono.Cecil.Cil.OpCodes.Brtrue, label);
+        }
+
+        private void SetEndlessTitle(ILContext il) {
+            var cursor = new ILCursor(il);
+            if (!cursor.TryGotoNext(MoveType.After, instr => instr.MatchCall("Celeste.Dialog", "Clean"))) {
+                throw new Exception("Could not find patch point!");
+            }
+
+            cursor.EmitDelegate<Func<string, string>>((val) => {
+                if (this.endingSettings != null && this.endingSettings.Algorithm == LogicType.Endless) {
+                    return string.Format(Dialog.Get("RANDOENDLESS_HEADER"), this.endingSettings.EndlessLevel + 1);
+                }
+
+                return val;
+            });
+        }
+
+        private void HijackExitBegin(On.Celeste.LevelExit.orig_Begin orig, LevelExit self) {
+            orig(self);
+            var settings = this.InRandomizerSettings;
+            this.endingSettings = settings;
+            if (settings != null && settings.Algorithm == LogicType.Endless) {
+                var newSettings = settings.Copy();
+                newSettings.EndlessLevel++;
+                Audio.SetMusic(SFX.music_complete_bside);
+                Audio.SetAmbience(null);
+
+                this.genTask = Task.Run(() => RandoLogic.GenerateMap(newSettings));
+            }
+        }
+
         public static AreaData AreaHandoff;
         public static AreaKey? StartMe;
+        public static Session UseSession;
         private bool Entering;
         private void MainThreadHook(On.Celeste.AutoSplitterInfo.orig_Update orig, AutoSplitterInfo self) {
             orig(self);
 
             if (AreaHandoff != null) {
                 AreaData.Areas.Add(AreaHandoff);
-                var key = new AreaKey(AreaData.Areas.Count - 1); // does this trigger some extra behavior
+                var unused = new AreaKey(AreaData.Areas.Count - 1); // does this trigger some extra behavior
                 AreaHandoff = null;
             }
             if (StartMe != null && !Entering) {
                 var newArea = StartMe.Value;
-                Audio.SetMusic((string)null, true, true);
-                Audio.SetAmbience((string)null, true);
+                
+                var area = AreaData.Get(newArea);
+                var dyn = new DynData<AreaData>(area);
+                var settings = dyn.Get<RandoSettings>("RandoSettings");
+                Audio.SetMusic(null);
+                Audio.SetAmbience(null);
                 Audio.Play("event:/ui/main/savefile_begin");
 
                 // use the debug file
                 SaveData.InitializeDebugMode();
                 // turn on/off variants mode
-                SaveData.Instance.VariantMode = Settings.Variants;
+                SaveData.Instance.VariantMode = settings.Variants;
                 SaveData.Instance.AssistMode = false;
                 // mark as completed to spawn golden berry
                 SaveData.Instance.Areas[newArea.ID].Modes[0].Completed = true;
@@ -51,12 +147,17 @@ namespace Celeste.Mod.Randomizer {
                 SaveData.Instance.Areas[newArea.ID].Modes[0].HeartGem = false;
                 Entering = true;
 
-                var fade = new FadeWipe(Engine.Scene, false, () => {   // assign to variable to suppress compiler warning
-                    var session = new Session(newArea, null, null) {
-                        FirstLevel = true,
-                        StartedFromBeginning = true,
-                    };
-                    session.SeedCleanRandom(Settings.SeedType == SeedType.Random);
+                var unused = new FadeWipe(Engine.Scene, false, () => {   // assign to variable to suppress compiler warning
+                    Session session;
+                    if (UseSession != null) {
+                        session = UseSession;
+                    } else {
+                        session = new Session(newArea) {
+                            FirstLevel = true,
+                            StartedFromBeginning = true,
+                        };
+                        session.SeedCleanRandom(Settings.SeedType == SeedType.Random);
+                    }
                     SaveData.Instance.StartSession(session);    // need to set this earlier than we would get otherwise
                     LevelEnter.Go(session, true);
                     StartMe = null;
@@ -124,7 +225,7 @@ namespace Celeste.Mod.Randomizer {
         private void AreaCompleteDrawHash(On.Celeste.AreaComplete.orig_VersionNumberAndVariants orig, string version, float ease, float alpha) {
             orig(version, ease, alpha);
 
-            var settings = this.InRandomizerSettings;
+            var settings = this.endingSettings;
             var session = SaveData.Instance?.CurrentSession;
             if (settings != null) {
                 var text = settings.Seed;
@@ -134,7 +235,8 @@ namespace Celeste.Mod.Randomizer {
                         text += "!";
                     }
                 }
-                text += "\n#" + settings.Hash.ToString();
+
+                text += "\n#" + settings.Hash;
                 text += "\nrando " + this.Metadata.VersionString;
                 var variants = SaveData.Instance?.VariantMode ?? false;
                 ActiveFont.DrawOutline(text, new Vector2(1820f + 300f * (1f - Ease.CubeOut(ease)), variants ? 810f : 894f), new Vector2(0.5f, 0f), Vector2.One * 0.5f, Color.White, 2f, Color.Black);
@@ -170,15 +272,15 @@ namespace Celeste.Mod.Randomizer {
             cursor.Emit(Mono.Cecil.Cil.OpCodes.Brfalse, beforeInstr);
 
             cursor.Emit(Mono.Cecil.Cil.OpCodes.Ldstr, "cb19d2");
-            cursor.Emit(Mono.Cecil.Cil.OpCodes.Call, typeof(Monocle.Calc).GetMethod("HexToColor", new Type[] {typeof(string)}));
+            cursor.Emit(Mono.Cecil.Cil.OpCodes.Call, typeof(Calc).GetMethod("HexToColor", new[] {typeof(string)}));
             cursor.Emit(Mono.Cecil.Cil.OpCodes.Ldarg, 6);
-            cursor.Emit(Mono.Cecil.Cil.OpCodes.Call, typeof(Microsoft.Xna.Framework.Color).GetMethod("op_Multiply"));
+            cursor.Emit(Mono.Cecil.Cil.OpCodes.Call, typeof(Color).GetMethod("op_Multiply"));
             cursor.Emit(Mono.Cecil.Cil.OpCodes.Stloc, 5);
 
             cursor.Emit(Mono.Cecil.Cil.OpCodes.Ldstr, "994f9c");
-            cursor.Emit(Mono.Cecil.Cil.OpCodes.Call, typeof(Monocle.Calc).GetMethod("HexToColor", new Type[] {typeof(string)}));
+            cursor.Emit(Mono.Cecil.Cil.OpCodes.Call, typeof(Calc).GetMethod("HexToColor", new[] {typeof(string)}));
             cursor.Emit(Mono.Cecil.Cil.OpCodes.Ldarg, 6);
-            cursor.Emit(Mono.Cecil.Cil.OpCodes.Call, typeof(Microsoft.Xna.Framework.Color).GetMethod("op_Multiply"));
+            cursor.Emit(Mono.Cecil.Cil.OpCodes.Call, typeof(Color).GetMethod("op_Multiply"));
             cursor.Emit(Mono.Cecil.Cil.OpCodes.Stloc, 6);
 
             cursor.Emit(Mono.Cecil.Cil.OpCodes.Br, afterInstr);

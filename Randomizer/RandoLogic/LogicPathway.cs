@@ -11,14 +11,20 @@ namespace Celeste.Mod.Randomizer {
         private static readonly float[] PathwayMinimums = { 40, 80, 120, 180 };
         private static readonly float[] PathwayRanges = { 15, 30, 40, 80 };
         private static readonly float[] PathwayMaxRoom = { 6, 15, 10000, 10000, 10000 };
+        private static readonly int[] MaxBacktracks = {100, 200, 500, 1000};
 
         private void GeneratePathway() {
             this.Tasks.AddToFront(new TaskPathwayStart(this));
+            int backtracks = 0;
 
             while (this.Tasks.Count != 0) {
                 var nextTask = this.Tasks.RemoveFromFront();
 
                 while (!nextTask.Next()) {
+                    backtracks++;
+                    if (backtracks > MaxBacktracks[(int) this.Settings.Length]) {
+                        throw new RetryException();
+                    }
                     if (this.CompletedTasks.Count == 0) {
                         throw new GenerationError("Could not generate map");
                     }

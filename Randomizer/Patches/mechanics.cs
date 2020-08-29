@@ -46,6 +46,7 @@ namespace Celeste.Mod.Randomizer {
             foreach (var detour in this.SpecialHooksMechanics) {
                 detour.Dispose();
             }
+
             this.SpecialHooksMechanics.Clear();
         }
 
@@ -85,7 +86,7 @@ namespace Celeste.Mod.Randomizer {
                 return SavedGemUI;
             }
             // lol reflection
-            var bingo = AppDomain.CurrentDomain.GetAssemblies().Where(asm => asm.FullName.Contains("BingoUI")).First();
+            var bingo = AppDomain.CurrentDomain.GetAssemblies().First(asm => asm.FullName.Contains("BingoUI"));
             var tcd_cls = bingo.GetType("Celeste.Mod.BingoUI.TotalCollectableDisplay");
             var dtype = tcd_cls.GetNestedType("CheckVal");
             var checker = typeof(RandoModule).GetMethod("CheckGems", BindingFlags.Instance | BindingFlags.NonPublic);
