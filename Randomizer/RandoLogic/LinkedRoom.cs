@@ -533,7 +533,11 @@ namespace Celeste.Mod.Randomizer {
                 switch (e.Name) {
                     case "AcidHelper/InstantTeleportTrigger":
                     case "AcidHelper/InstantTeleporter":
-                        var target = e.Attr("targetRoomId", "");
+                    case "ContortHelper/TeleportationTrigger":
+                    case "ContortHelper/TeleportationTriggerSimple":
+                    case "ContortHelper/TeleportationTriggerMinimal":
+                        var attr = e.Name.StartsWith("ContortHelper/") ? "roomName" : "targetRoomId";
+                        var target = e.Attr(attr, "");
                         if (target != "") {
                             if (!this.WarpMap.TryGetValue(target, out var targetRoom)) {
                                 Logger.Log("randomizer", "Additional info for unconfigured warp");
@@ -542,21 +546,22 @@ namespace Celeste.Mod.Randomizer {
                                 Logger.Log("randomizer", $"Position: {e.Position}");
                                 throw new GenerationError($"{this.Static.Name}: warp to {target} but no config");
                             }
-                            e.Values["targetRoomId"] = targetRoom.BakedRoom.Name;
+                            e.Values[attr] = targetRoom.BakedRoom.Name;
 
-                            // spawn coordinates are in map-space, so rebase them according to the target room
+                            // spawn coordinates for acidhelper warps are in map-space, so rebase them according to the target room
                             var x = e.Int("respawnPositionX", 0);
                             var y = e.Int("respawnPositionY", 0);
-                            if (x != 0 && y != 0) {
+                            if (x != 0 && y != 0) { // this condition is copied from acidhelper directly
                                 x -= (int)targetRoom.Static.Level.Position.X;
                                 y -= (int)targetRoom.Static.Level.Position.Y;
                                 x += (int)targetRoom.BakedRoom.Position.X;
                                 y += (int)targetRoom.BakedRoom.Position.Y;
+                                e.Values["respawnPositionX"] = x;
+                                e.Values["respawnPositionY"] = y;
                             }
-                            e.Values["respawnPositionX"] = x;
-                            e.Values["respawnPositionY"] = y;
                         }
                         break;
+                    
                     case "AcidHelper/GradualColorGradeChangeTrigger":
                     case "ShroomHelper/GradualColorGradeChangeTrigger":
                         e.Values["speed"] = 2f;
