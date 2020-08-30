@@ -32,12 +32,15 @@ namespace Celeste.Mod.Randomizer {
             IL.Celeste.EventTrigger.OnEnter += DontGiveOneDash;
             IL.Celeste.CS10_MoonIntro.OnEnd += DontGiveOneDash;
             IL.Celeste.CS10_BadelineHelps.OnEnd += DontGiveOneDash;
+            IL.Celeste.CS10_Gravestone.OnEnd += DontGiveTwoDashes;
             IL.Celeste.CS06_Campfire.OnBegin += FuckUpLess;
             On.Celeste.CS06_Campfire.OnBegin += FuckUpEvenLess;
             IL.Celeste.CS06_Campfire.OnEnd += FuckUpWayLess;
             IL.Celeste.LightningRenderer.Track += TrackExtraSpace;
 
             SpecialHooksQol.Add(new ILHook(typeof(CS10_MoonIntro).GetMethod("BadelineAppears", BindingFlags.Instance | BindingFlags.NonPublic).GetStateMachineTarget(), DontGiveOneDash));
+            SpecialHooksQol.Add(new ILHook(typeof(CS10_Gravestone).GetMethod("BadelineAppears", BindingFlags.Instance | BindingFlags.NonPublic).GetStateMachineTarget(), DontGiveOneDash));
+            SpecialHooksQol.Add(new ILHook(typeof(CS10_Gravestone).GetMethod("BadelineRejoin", BindingFlags.Instance | BindingFlags.NonPublic).GetStateMachineTarget(), DontGiveTwoDashes));
             SpecialHooksQol.Add(new ILHook(typeof(EventTrigger).GetNestedType("<>c__DisplayClass10_0", BindingFlags.NonPublic).GetMethod("<OnEnter>b__0", BindingFlags.NonPublic | BindingFlags.Instance), DontGiveOneDash));
             SpecialHooksQol.Add(new Hook(typeof(EventTrigger).GetNestedType("<>c__DisplayClass10_0", BindingFlags.NonPublic).GetMethod("<OnEnter>b__0", BindingFlags.NonPublic | BindingFlags.Instance), new Action<Action<object>, object>((orig, self) => TransferGoldenBerries(orig, self))));
         }
