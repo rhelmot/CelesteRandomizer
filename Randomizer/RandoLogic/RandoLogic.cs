@@ -89,6 +89,9 @@ namespace Celeste.Mod.Randomizer {
                     break;
                 } catch (RetryException) {
                     tryNum++;
+                    if (tryNum >= 500) {
+                        throw new GenerationError("Cannot create map with these settings");
+                    }
                     Logger.Log("randomizer", $"Too many retries ({tryNum}), starting again");
                 }
             }
