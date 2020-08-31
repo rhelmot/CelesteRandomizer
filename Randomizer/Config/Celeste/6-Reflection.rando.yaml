@@ -228,14 +228,13 @@ ASide:
       Idx: 0
       Kind: inout
   - Room: "04c"
-    End: true
+    ReqEnd:
+      Difficulty: hard
+      Dashes: one
     Holes:
     - Side: Right
       Idx: 0
       Kind: inout
-      ReqIn:
-        Difficulty: hard
-        Dashes: one
   - Room: "04d"
     Holes:
     - Side: Left
@@ -1697,13 +1696,12 @@ BSide:
       Idx: 0
       Kind: in
   - Room: "d-05"
-    End: true
+    ReqEnd:
+      Dashes: one
     Holes:
     - Side: Left
       Idx: 0
       Kind: in
-      ReqIn:
-        Dashes: one
 
 CSide:
   - Room: "00"
@@ -1745,13 +1743,12 @@ CSide:
       Idx: 0
       Kind: in
   - Room: "02"
-    End: true
+    ReqEnd:
+      Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: hard
     Holes:
     - Side: Left
       Idx: 0
       Kind: in
-      ReqIn:
-        Or:
-        - Dashes: two
-        - Dashes: one
-          Difficulty: hard

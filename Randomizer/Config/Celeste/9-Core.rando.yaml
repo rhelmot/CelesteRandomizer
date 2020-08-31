@@ -1578,16 +1578,15 @@ BSide:
           cameraX: -1
           cameraY: 0
   - Room: "space"
-    End: true
+    ReqEnd:
+      Or:
+        - Dashes: one
+          Difficulty: perfect
+        - Dashes: two
     Holes:
     - Side: Left
       Idx: 0
       Kind: inout
-      ReqIn:
-        Or:
-        - Dashes: one
-          Difficulty: perfect
-        - Dashes: two
     - Side: Up
       Idx: 0
       Kind: None
@@ -1644,13 +1643,12 @@ CSide:
         Dashes: two
         Difficulty: hard
   - Room: "02"
-    End: true
+    ReqEnd:
+      Dashes: two
+      Difficulty: hard
     Core:
       All: hot
     Holes:
     - Side: Left
       Idx: 0
       Kind: inout
-      ReqIn:
-        Dashes: two
-        Difficulty: hard

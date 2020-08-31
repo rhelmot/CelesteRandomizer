@@ -1249,6 +1249,11 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+    ExtraSpace:
+      - X: 328
+        Y: 184
+        Width: 544
+        Height: 128
   - Room: "h-06b"
     Holes:
     - Side: Up
@@ -1720,7 +1725,9 @@ ASide:
       Idx: 0
       Kind: in
   - Room: "j-16"
-    End: true
+    ReqEnd:
+      Dashes: one
+      Difficulty: hard
     Holes:
     - Side: Up
       Idx: 0
@@ -1734,15 +1741,6 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
-      ReqIn:
-        Dashes: one
-        Difficulty: hard
-    - Side: Down
-      Idx: 0
-      Kind: unknown
-      ReqIn:
-        Dashes: one
-        Difficulty: hard
     Tweaks:
     - ID: 56            # remove cutscene trigger as it changes your dash inventory
       Name: "eventTrigger"
@@ -1798,7 +1796,9 @@ ASide:
       Idx: 1
       Kind: inout
   - Room: "j-19"
-    End: true
+    ReqEnd:
+      Dashes: one
+      Difficulty: hard
     Holes:
     - Side: Left
       Idx: 0
@@ -1809,9 +1809,6 @@ ASide:
     - Side: Left
       Idx: 2
       Kind: in
-      ReqIn:
-        Dashes: one
-        Difficulty: hard
     - Side: Right
       Idx: 0
       Kind: None
@@ -1834,9 +1831,16 @@ ASide:
         Add: true
         X: 160
         Y: 1296
-  - Room: "end-cinematic"
-    Holes:
   - Room: "end-golden"
-    Holes:
-  - Room: "end-granny"
-    Holes:
+    ReqEnd:
+      Dashes: one
+    Tweaks:
+      - Name: "badelineBoost"
+        ID: 1696
+        Update:
+          Remove: true
+      - Name: "blackGem"
+        Update:
+          Add: true
+          X: 160
+          Y: 544

@@ -366,13 +366,12 @@ ASide:
       Idx: 0
       Kind: inout
   - Room: "s1"
-    End: true
+    ReqEnd:
+      Dashes: one
     Holes:
     - Side: Right
       Idx: 0
       Kind: inout
-      ReqIn:
-        Dashes: one
   - Room: "6c"
     Holes:
     - Side: Up
@@ -901,7 +900,10 @@ ASide:
     Holes:
     - Side: Down
       Idx: 0
-      Kind: in              # tweak platform for inout? (applies to 1B end)
+      Kind: in
+    - Side: Left
+      Idx: 0
+      Kind: in
     End: true
 
 BSide:
@@ -1568,16 +1570,15 @@ CSide:
         - Dashes: two
           Difficulty: normal
   - Room: "02"
-    End: true
+    ReqEnd:
+      Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: hard
     Holes:
     - Side: Left
       Idx: 0
       Kind: inout
-      ReqIn:
-        Or:
-        - Dashes: two
-        - Dashes: one
-          Difficulty: hard
     - Side: Up
       Idx: 0
       Kind: None
@@ -1629,19 +1630,20 @@ CSide:
     - Side: Down
       Idx: 4
       Kind: None
-    - Side: Down
-      Idx: 5
-      Kind: unknown
-      ReqIn:
-        Or:
-        - Dashes: one
-        - Dashes: zero
-          Difficulty: perfect
-    - Side: Down
-      Idx: 6
-      Kind: unknown
-      ReqIn:
-        Or:
-        - Dashes: one
-        - Dashes: zero
-          Difficulty: perfect
+      # TODO if end is ever tied to nodes rather than rooms then 5 and 6 can have special requirements
+#    - Side: Down
+#      Idx: 5
+#      Kind: unknown
+#      ReqIn:
+#        Or:
+#        - Dashes: one
+#        - Dashes: zero
+#          Difficulty: perfect
+#    - Side: Down
+#      Idx: 6
+#      Kind: unknown
+#      ReqIn:
+#        Or:
+#        - Dashes: one
+#        - Dashes: zero
+#          Difficulty: perfect

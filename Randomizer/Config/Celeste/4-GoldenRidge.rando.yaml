@@ -1815,13 +1815,12 @@ BSide:
       Idx: 0
       Kind: in
   - Room: "end"
-    End: true
+    ReqEnd:
+      Dashes: one
     Holes:
     - Side: Left
       Idx: 0
       Kind: inout
-      ReqIn:
-        Dashes: one
 
 CSide:
   - Room: "00"
@@ -1877,13 +1876,12 @@ CSide:
           cameraX: 0
           cameraY: 1.5
   - Room: "02"
-    End: true
+    ReqEnd:
+      Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: hard
     Holes:
     - Side: Left
       Idx: 0
       Kind: inout
-      ReqIn:
-        Or:
-        - Dashes: two
-        - Dashes: one
-          Difficulty: hard

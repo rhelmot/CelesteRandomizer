@@ -51,7 +51,7 @@ namespace Celeste.Mod.Randomizer {
                     if (room.Worth > PathwayMaxRoom[(int)Logic.Settings.Length]) {
                         continue;
                     }
-                    if (room.End) {
+                    if (!(room.ReqEnd is Impossible)) {
                         continue;
                     }
                     yield return room;
@@ -150,9 +150,10 @@ namespace Celeste.Mod.Randomizer {
 
             private bool RoomFilter(StaticRoom room) {
                 return !this.TriedRooms.Contains(room) && 
-                    this.IsEnd == room.End && 
+                    (this.IsEnd ? room.ReqEnd.Able(this.Logic.Caps) : room.ReqEnd is Impossible) && 
                     room.Worth <= PathwayMaxRoom[(int)Logic.Settings.Length + (this.IsEnd ? 1 : 0)];
             }
+            
 
             private ConnectAndMapReceipt WorkingWarpPossibility() {
                 var allrooms = new List<StaticRoom>(this.Logic.RemainingRooms.Where(RoomFilter));
@@ -205,7 +206,7 @@ namespace Celeste.Mod.Randomizer {
             private ConnectAndMapReceipt WorkingPossibility(UnlinkedEdge fromEdge) {
                 var capsNoKey = this.Logic.Caps.WithoutKey();
 
-                foreach (var toEdge in this.Logic.AvailableNewEdges(capsNoKey, capsNoKey, (StaticEdge e) => !e.FromNode.ParentRoom.End)) {
+                foreach (var toEdge in this.Logic.AvailableNewEdges(capsNoKey, capsNoKey, e => e.FromNode.ParentRoom.ReqEnd is Impossible)) {
                     var result = ConnectAndMapReceipt.Do(this.Logic, fromEdge, toEdge);
                     if (result != null) {
                         return result;
@@ -254,7 +255,7 @@ namespace Celeste.Mod.Randomizer {
                     if (!this.Logic.Map.HoleFree(outEdge.Node.Room, outEdge.Static.HoleTarget)) {
                         continue;
                     }
-                    foreach (var toEdge in this.Logic.AvailableNewEdges(caps, caps, (StaticEdge e) => !e.FromNode.ParentRoom.End)) {
+                    foreach (var toEdge in this.Logic.AvailableNewEdges(caps, caps, e => e.FromNode.ParentRoom.ReqEnd is Impossible)) {
                         var mapped = ConnectAndMapReceipt.Do(this.Logic, outEdge, toEdge, isBacktrack: true);
                         if (mapped == null) {
                             continue;

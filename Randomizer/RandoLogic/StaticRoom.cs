@@ -8,7 +8,7 @@ namespace Celeste.Mod.Randomizer {
         public AreaKey Area;
         public LevelData Level;
         public readonly string Name;
-        public readonly bool End;
+        public readonly Requirement ReqEnd;
         public readonly bool Hub;
         public readonly float Worth;
         private List<RandoConfigEdit> Tweaks;
@@ -29,7 +29,7 @@ namespace Celeste.Mod.Randomizer {
             this.Holes = Holes;
 
             this.Name = AreaData.Get(Area).GetSID() + "/" + (Area.Mode == AreaMode.Normal ? "A" : Area.Mode == AreaMode.BSide ? "B" : "C") + "/" + Level.Name;
-            this.End = config.End;
+            this.ReqEnd = this.ProcessReqs(config.ReqEnd);
             this.Hub = config.Hub;
             this.Tweaks = config.Tweaks ?? new List<RandoConfigEdit>();
             this.CoreModes = config.Core;

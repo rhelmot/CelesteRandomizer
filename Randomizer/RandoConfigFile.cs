@@ -1,7 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using YamlDotNet.Serialization;
+
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable CollectionNeverUpdated.Global
+// ReSharper disable UnassignedField.Global
+// ReSharper disable FieldCanBeMadeReadOnly.Global
+// ReSharper disable ClassNeverInstantiated.Global
+// ReSharper disable UnusedMember.Global
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 
 namespace Celeste.Mod.Randomizer {
     public class RandoConfigFile {
@@ -10,8 +18,8 @@ namespace Celeste.Mod.Randomizer {
         public List<RandoConfigRoom> CSide { get; set; }
 
         public static RandoConfigFile Load(AreaData area) {
-            String fullpath = "Config/" + area.GetSID() + ".rando";
-            if (!Everest.Content.TryGet(fullpath, out ModAsset asset)) {
+            String fullPath = "Config/" + area.GetSID() + ".rando";
+            if (!Everest.Content.TryGet(fullPath, out ModAsset asset)) {
                 return null;
             } else {
                 try {
@@ -42,8 +50,8 @@ namespace Celeste.Mod.Randomizer {
                         lastDirection = hole.Side;
                     }
 
-                    LevelData targetlvl = map.GetAt(hole.LowCoord(lvl.Bounds)) ?? map.GetAt(hole.HighCoord(lvl.Bounds));
-                    if (targetlvl != null) {
+                    LevelData targetLvl = map.GetAt(hole.LowCoord(lvl.Bounds)) ?? map.GetAt(hole.HighCoord(lvl.Bounds));
+                    if (targetLvl != null) {
                         Logger.Log("randomizer", $"    - Side: {hole.Side}");
                         Logger.Log("randomizer", $"      Idx: {holeIdx}");
                         Logger.Log("randomizer", "      Kind: inout");
@@ -68,7 +76,7 @@ namespace Celeste.Mod.Randomizer {
         }
 
         public Dictionary<String, RandoConfigRoom> GetRoomMapping(AreaMode mode) {
-            List<RandoConfigRoom> rooms = null;
+            List<RandoConfigRoom> rooms;
             switch (mode) {
                 case AreaMode.Normal:
                 default:
@@ -101,7 +109,13 @@ namespace Celeste.Mod.Randomizer {
         public List<RandoConfigHole> Holes { get; set; } = new List<RandoConfigHole>();
         public List<RandoConfigRoom> Subrooms { get; set; }
         public List<RandoConfigInternalEdge> InternalEdges { get; set; }
-        public bool End { get; set; }
+
+        public bool End {
+            get => this.ReqEnd != null;
+            set => this.ReqEnd = value ? new RandoConfigReq() : null;
+        }
+
+        public RandoConfigReq ReqEnd { get; set; }
         public bool Hub { get; set; }
         public List<RandoConfigEdit> Tweaks { get; set; }
         public RandoConfigCoreMode Core { get; set; }
@@ -124,9 +138,7 @@ namespace Celeste.Mod.Randomizer {
         public RandoConfigReq ReqIn { get; set; }
         public RandoConfigReq ReqOut { get; set; }
         public RandoConfigReq ReqBoth {
-            get {
-                return null;
-            }
+            get => null;
 
             set {
                 this.ReqIn = value;
@@ -150,9 +162,7 @@ namespace Celeste.Mod.Randomizer {
         public RandoConfigReq ReqIn { get; set; }
         public RandoConfigReq ReqOut { get; set; }
         public RandoConfigReq ReqBoth {
-            get {
-                return null;
-            }
+            get => null;
 
             set {
                 this.ReqIn = value;
@@ -215,23 +225,23 @@ namespace Celeste.Mod.Randomizer {
         public Session.CoreModes All = Session.CoreModes.None;
 
         public Session.CoreModes Left {
-            get { return left ?? All; }
-            set { left = value; }
+            get => left ?? All;
+            set => left = value;
         }
 
         public Session.CoreModes Right {
-            get { return right ?? All; }
-            set { right = value; }
+            get => right ?? All;
+            set => right = value;
         }
 
         public Session.CoreModes Up {
-            get { return up ?? All; }
-            set { up = value; }
+            get => up ?? All;
+            set => up = value;
         }
 
         public Session.CoreModes Down {
-            get { return down ?? All; }
-            set { down = value; }
+            get => down ?? All;
+            set => down = value;
         }
     }
 }

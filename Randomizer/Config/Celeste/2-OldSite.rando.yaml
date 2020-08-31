@@ -642,6 +642,7 @@ ASide:
         Kind: inout
         ReqBoth:
           Dashes: one
+        Launch: -1
       - Side: Left
         Idx: 2
         Kind: inout
@@ -1491,23 +1492,18 @@ BSide:
         X: 296
         Y: 24
   - Room: "end"
-    End: true
+    ReqEnd:
+      Dashes: one
     Holes:
     - Side: Down
       Idx: 0
       Kind: in
-      ReqIn:
-        Dashes: one
     - Side: Left
       Idx: 0
       Kind: inout
-      ReqIn:
-        Dashes: one
     - Side: Right
       Idx: 0
       Kind: inout
-      ReqIn:
-        Dashes: one
     Tweaks:
     - Name: "spawn"
       Update:
@@ -1549,107 +1545,10 @@ CSide:
       Update:
         Remove: true
   - Room: "02"
-    End: true
+    ReqEnd:
+      Dashes: one
+      Difficulty: hard
     Holes:
     - Side: Left
       Idx: 0
       Kind: in
-      ReqIn:
-        Dashes: one
-        Difficulty: hard
-    - Side: Up
-      Idx: 0
-      Kind: Unknown
-      ReqIn:
-        Dashes: one
-        Difficulty: hard
-    - Side: Up
-      Idx: 1
-      Kind: Unknown
-      ReqIn:
-        Dashes: one
-        Difficulty: hard
-    - Side: Up
-      Idx: 2
-      Kind: Unknown
-      ReqIn:
-        Dashes: one
-        Difficulty: hard
-    - Side: Up
-      Idx: 3
-      Kind: Unknown
-      ReqIn:
-        Dashes: one
-        Difficulty: hard
-    - Side: Up
-      Idx: 4
-      Kind: Unknown
-      ReqIn:
-        Dashes: one
-        Difficulty: hard
-    - Side: Down
-      Idx: 0
-      Kind: Unknown
-      ReqIn:
-        Dashes: one
-        Difficulty: hard
-    - Side: Down
-      Idx: 1
-      Kind: Unknown
-      ReqIn:
-        Dashes: one
-        Difficulty: hard
-    - Side: Down
-      Idx: 2
-      Kind: Unknown
-      ReqIn:
-        Dashes: one
-        Difficulty: hard
-    - Side: Down
-      Idx: 3
-      Kind: Unknown
-      ReqIn:
-        Dashes: one
-        Difficulty: hard
-    - Side: Down
-      Idx: 4
-      Kind: Unknown
-      ReqIn:
-        Dashes: one
-        Difficulty: hard
-    - Side: Down
-      Idx: 5
-      Kind: Unknown
-      ReqIn:
-        Dashes: one
-        Difficulty: hard
-    - Side: Down
-      Idx: 6
-      Kind: Unknown
-      ReqIn:
-        Dashes: one
-        Difficulty: hard
-    - Side: Down
-      Idx: 7
-      Kind: Unknown
-      ReqIn:
-        Dashes: one
-        Difficulty: hard
-    - Side: Down
-      Idx: 8
-      Kind: Unknown
-      ReqIn:
-        Dashes: one
-        Difficulty: hard
-    - Side: Down
-      Idx: 9
-      Kind: Unknown
-      ReqIn:
-        Dashes: one
-        Difficulty: hard
-    - Side: Down
-      Idx: 10
-      Kind: Unknown
-      ReqIn:
-        Dashes: one
-        Difficulty: hard

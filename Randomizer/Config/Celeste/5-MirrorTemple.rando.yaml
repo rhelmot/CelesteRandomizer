@@ -827,13 +827,12 @@ ASide:
       Update:
         Remove: true
   - Room: "b-15"
-    End: true
+    ReqEnd:
+      Dashes: one
     Holes:
     - Side: Left
       Idx: 0
       Kind: inout
-      ReqIn:
-        Dashes: one
   - Room: "b-16"
     Holes:
     - Side: Down
@@ -1590,6 +1589,7 @@ ASide:
       Idx: 0
       Kind: in
   - Room: "e-11"
+    End: true
     Holes:
     - Side: Left
       Idx: 0
@@ -1597,9 +1597,6 @@ ASide:
     - Side: Right
       Idx: 0
       Kind: None
-    End: true
-  - Room: "void"
-    Holes:
 
 BSide:
   - Room: "start"
@@ -2132,13 +2129,12 @@ BSide:
       Idx: 0
       Kind: in
   - Room: "d-05"
-    End: true
+    ReqEnd:
+      Dashes: one
     Holes:
     - Side: Left
       Idx: 0
       Kind: in
-      ReqIn:
-        Dashes: one
 
 CSide:
   - Room: "00"
@@ -2186,13 +2182,12 @@ CSide:
       ReqIn:
         Dashes: two
   - Room: "02"
-    End: true
+    ReqEnd:
+      Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: hard
     Holes:
     - Side: Left
       Idx: 0
       Kind: inout
-      ReqIn:
-        Or:
-        - Dashes: two
-        - Dashes: one
-          Difficulty: hard
