@@ -80,9 +80,15 @@ namespace Celeste.Mod.Randomizer {
         public Difficulty Difficulty;
         public ShineLights Lights = ShineLights.Hubs;
         public Darkness Darkness = Darkness.Vanilla;
-        public List<AreaKeyNotStupid> IncludedMaps = new List<AreaKeyNotStupid>();
+        [YamlIgnore]
+        public HashSet<AreaKeyNotStupid> IncludedMaps = new HashSet<AreaKeyNotStupid>();
         [YamlIgnore]
         public int EndlessLevel;
+
+        public List<AreaKeyNotStupid> IncludedMapsList {
+            get => new List<AreaKeyNotStupid>(this.IncludedMaps);
+            set => this.IncludedMaps = new HashSet<AreaKeyNotStupid>(value);
+        }
 
         public void Enforce() {
             if (this.SeedType == SeedType.Random) {
