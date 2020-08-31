@@ -44,7 +44,6 @@ namespace Celeste.Mod.Randomizer {
         private Task<AreaKey> genTask;
         private RandoSettings endingSettings = null;
         private void GotoNextEndless(ILContext il) {
-            Logger.Log("DEBUG", il.ToString());
             var cursor = new ILCursor(il);
             if (!cursor.TryGotoNext(MoveType.Before, instr => instr.MatchLdarg(0),
                                                      instr => instr.MatchLdfld<AreaComplete>("snow"))) {
@@ -294,7 +293,6 @@ namespace Celeste.Mod.Randomizer {
 
             cursor.Emit(Mono.Cecil.Cil.OpCodes.Br, afterInstr);
             cursor.MarkLabel(beforeInstr);
-            //Logger.Log("DEBUG", il.ToString());
         }
     }
 

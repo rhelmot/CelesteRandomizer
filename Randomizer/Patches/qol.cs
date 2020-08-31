@@ -243,7 +243,6 @@ namespace Celeste.Mod.Randomizer {
         }
 
         private void DontGiveOneDash(ILContext il) {
-            //Logger.Log("DEBUG", il.ToString());
             var cursor = new ILCursor(il);
             var count = 0;
             while (cursor.TryGotoNext(MoveType.Before, instr => instr.MatchStfld("Celeste.PlayerInventory", "Dashes"))) {
@@ -315,10 +314,11 @@ namespace Celeste.Mod.Randomizer {
         }
 
         private void FuckUpEvenLess(On.Celeste.CS06_Campfire.orig_OnBegin orig, CS06_Campfire self, Level level) {
+            var player = level.Tracker.GetEntity<Player>();
+            var savedX = player.X;
             orig(self, level);
             if (this.InRandomizer) {
-                var player = level.Tracker.GetEntity<Player>();
-                player.X = level.Bounds.Left - 8;
+                player.X = savedX;
                 player.StateMachine.Locked = false;
                 player.StateMachine.State = 0;
             }

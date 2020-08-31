@@ -26,8 +26,11 @@ namespace Celeste.Mod.Randomizer {
             IL.Celeste.CS02_DreamingPhonecall.OnEnd += CutsceneWarpTarget;
             SpecialHooksMechanics.Add(new ILHook(typeof(CS04_MirrorPortal).GetMethod("Cutscene", BindingFlags.NonPublic | BindingFlags.Instance).GetStateMachineTarget(), CutsceneWarpMirrorFakeBSide));
             SpecialHooksMechanics.Add(new ILHook(typeof(CS04_MirrorPortal).GetNestedType("<>c__DisplayClass9_0", BindingFlags.NonPublic).GetMethod("<OnEnd>b__0", BindingFlags.NonPublic | BindingFlags.Instance), CutsceneWarpTargetMirror));
+            IL.Celeste.CS06_StarJumpEnd.OnBegin += StoreBerries;
             SpecialHooksMechanics.Add(new ILHook(typeof(CS06_StarJumpEnd).GetNestedType("<>c__DisplayClass40_0", BindingFlags.NonPublic).GetMethod("<OnEnd>b__0", BindingFlags.NonPublic | BindingFlags.Instance), CutsceneWarpTarget));
             SpecialHooksMechanics.Add(new ILHook(typeof(CS06_StarJumpEnd).GetNestedType("<>c__DisplayClass40_0", BindingFlags.NonPublic).GetMethod("<OnEnd>b__1", BindingFlags.NonPublic | BindingFlags.Instance), CutsceneWarpTargetFall));
+            SpecialHooksMechanics.Add(new ILHook(typeof(CS06_StarJumpEnd).GetNestedType("<>c__DisplayClass40_0", BindingFlags.NonPublic).GetMethod("<OnEnd>b__0", BindingFlags.NonPublic | BindingFlags.Instance), RestoreBerries));
+            SpecialHooksMechanics.Add(new ILHook(typeof(CS06_StarJumpEnd).GetNestedType("<>c__DisplayClass40_0", BindingFlags.NonPublic).GetMethod("<OnEnd>b__1", BindingFlags.NonPublic | BindingFlags.Instance), RestoreBerries));
 
             SpecialHooksMechanics.Add(new ILHook(typeof(EventTrigger).GetNestedType("<>c__DisplayClass10_0", BindingFlags.NonPublic).GetMethod("<OnEnter>b__0", BindingFlags.NonPublic | BindingFlags.Instance), SpecificWarpTarget));
         }
@@ -43,11 +46,34 @@ namespace Celeste.Mod.Randomizer {
 
             IL.Celeste.CS02_DreamingPhonecall.OnEnd -= CutsceneWarpTarget;
             IL.Celeste.CS04_MirrorPortal.Cutscene -= CutsceneWarpMirrorFakeBSide;
+            IL.Celeste.CS06_StarJumpEnd.OnBegin -= StoreBerries;
             foreach (var detour in this.SpecialHooksMechanics) {
                 detour.Dispose();
             }
 
             this.SpecialHooksMechanics.Clear();
+        }
+
+        private void StoreBerries(ILContext il) {
+            var cursor = new ILCursor(il);
+            cursor.EmitDelegate<Action>(() => {
+                Leader.StoreStrawberries((Engine.Scene as Level).Tracker.GetEntity<Player>().Leader);
+            });
+        }
+
+        private void RestoreBerries(ILContext il) {
+            var cursor = new ILCursor(il);
+            if (!cursor.TryGotoNext(MoveType.After, instr => instr.MatchCallvirt<Level>("LoadLevel"))) {
+                throw new Exception("Could not find patching point");
+            }
+
+            cursor.EmitDelegate<Action>(() => {
+                var level = Engine.Scene as Level ?? (Level)typeof(Engine).GetField("nextScene", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(Engine.Instance);
+                var tracker = level.Tracker;
+                var player = tracker.GetEntity<Player>();
+                var leader = player.Leader;
+                Leader.RestoreStrawberries(leader);
+            });
         }
 
         private void OnLoadLevelHook(On.Celeste.Level.orig_LoadLevel orig, Level self, Player.IntroTypes playerIntro, bool fromLoader) {
@@ -252,6 +278,7 @@ namespace Celeste.Mod.Randomizer {
 
         private void CutsceneWarpTarget(ILContext il) {
             var cursor = new ILCursor(il);
+            var count = 0;
             while (cursor.TryGotoNext(MoveType.Before, instr => instr.MatchStfld("Celeste.Session", "Level"))) {
                 cursor.EmitDelegate<Func<string, string>>((prevNextLevel) => {
                     if (!this.InRandomizer) {
@@ -266,6 +293,11 @@ namespace Celeste.Mod.Randomizer {
                     return newNextLevel;
                 });
                 cursor.Index++;
+                count++;
+            }
+
+            if (count == 0) {
+                throw new Exception("Could not find patch point 1");
             }
 
             cursor.Index = 0;
@@ -281,12 +313,12 @@ namespace Celeste.Mod.Randomizer {
         }
 
         private void CutsceneWarpTargetFall(ILContext il) {
-            this.CutsceneWarpTarget(il);
             var cursor = new ILCursor(il);
             if (!cursor.TryGotoNext(MoveType.After, instr => instr.MatchLdcI4(6))) {
                 throw new Exception("Could not find patch point!");
             }
             cursor.EmitDelegate<Func<Player.IntroTypes, Player.IntroTypes>>(oldType => this.InRandomizer ? Player.IntroTypes.None : oldType);
+            this.CutsceneWarpTarget(il);
         }
 
         private void CutsceneWarpMirrorFakeBSide(ILContext il) {
