@@ -722,6 +722,11 @@ ASide:
         - Dashes: two
         - Dashes: one
           Difficulty: hard
+    Tweaks:
+      - Name: "cameraTargetTrigger"
+        ID: 1
+        Update:
+          Y: 0
   - Room: "c-00"
     Holes:
     - Side: Up
