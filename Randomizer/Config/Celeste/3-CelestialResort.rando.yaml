@@ -279,6 +279,7 @@ ASide:
         Y: -8
         Height: 32
   - Room: "00-c" # third secret
+    Hub: true
     Holes:
     - Side: Right
       Idx: 0

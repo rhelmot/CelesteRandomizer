@@ -856,6 +856,18 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 1
+      Kind: None
+    - Side: Down
+      Idx: 2
+      Kind: None
+    - Side: Down
+      Idx: 3
+      Kind: None
+    - Side: Down
+      Idx: 4
+      Kind: None
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
@@ -910,6 +922,18 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: None
+    - Side: Down
+      Idx: 1
+      Kind: None
+    - Side: Down
+      Idx: 2
+      Kind: None
+    - Side: Down
+      Idx: 3
+      Kind: None
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
@@ -949,6 +973,18 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: None
+    - Side: Down
+      Idx: 1
+      Kind: None
+    - Side: Down
+      Idx: 2
+      Kind: None
+    - Side: Down
+      Idx: 3
+      Kind: None
   - Room: "d-10b"
     Core:
       All: hot
@@ -959,6 +995,9 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: None
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
@@ -995,6 +1034,18 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: None
+    - Side: Down
+      Idx: 1
+      Kind: None
+    - Side: Down
+      Idx: 2
+      Kind: None
+    - Side: Down
+      Idx: 3
+      Kind: None
   - Room: "d-11"
     Core:
       All: hot
@@ -1005,6 +1056,21 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: None
+    - Side: Down
+      Idx: 1
+      Kind: None
+    - Side: Down
+      Idx: 2
+      Kind: None
+    - Side: Down
+      Idx: 3
+      Kind: None
+    - Side: Down
+      Idx: 4
+      Kind: None
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
@@ -1431,6 +1497,12 @@ BSide:
     - Side: Down
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 1
+      Kind: none
+    - Side: Down
+      Idx: 2
+      Kind: none
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
@@ -1492,6 +1564,9 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: none
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
@@ -1524,6 +1599,15 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: none
+    - Side: Down
+      Idx: 1
+      Kind: none
+    - Side: Down
+      Idx: 2
+      Kind: none
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
@@ -1652,3 +1736,18 @@ CSide:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: none
+    - Side: Down
+      Idx: 1
+      Kind: none
+    - Side: Up
+      Idx: 0
+      Kind: none
+    - Side: Up
+      Idx: 1
+      Kind: none
+    - Side: Up
+      Idx: 2
+      Kind: none

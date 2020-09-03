@@ -1127,6 +1127,7 @@ ASide:
           cameraX: 0.0
           cameraY: -0.3
   - Room: "end_s1"
+    Hub: true
     Holes:
     - Side: Down
       Idx: 0

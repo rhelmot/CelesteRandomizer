@@ -613,6 +613,11 @@ ASide:
         Values:
           cameraX: -1
           cameraY: 0
+    - Name: "jumpThru"
+      ID: 555
+      Update:
+        X: 360
+        Width: 8
   - Room: "14b"
     Holes:
     - Side: Right
