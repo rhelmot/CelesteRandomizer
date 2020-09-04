@@ -1397,7 +1397,7 @@ ASide:
     - Side: Down
       Idx: 1
       Kind: inout
-      ReqOut:
+      ReqBoth:
         Dashes: one
     InternalEdges:
     - Collectable: 1
