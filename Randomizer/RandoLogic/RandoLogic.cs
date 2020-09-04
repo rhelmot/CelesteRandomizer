@@ -33,9 +33,9 @@ namespace Celeste.Mod.Randomizer {
                 Name = $"{settings.Seed}_{settings.EndlessLevel}_{settings.Hash}",
                 Mode = new ModeProperties[3] {
                     new ModeProperties {
-                        Inventory = settings.Dashes == NumDashes.Zero ? new PlayerInventory(0, true, true, false) :
-                                    settings.Dashes == NumDashes.One ? PlayerInventory.Default :
-                                                                        PlayerInventory.CH6End,
+                        Inventory = settings.Dashes == NumDashes.Zero ? new PlayerInventory(0, true, false, false) :
+                                    settings.Dashes == NumDashes.One ?  new PlayerInventory(1, true, false, false) : 
+                                                                        new PlayerInventory(2, true, false, false),
                     }, null, null
                 },
                 Icon = AreaData.Areas[0].Icon,

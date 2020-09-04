@@ -896,11 +896,11 @@ ASide:
         Values:
           cameraX: -1.0
           cameraY: 1.4
-  - Room: "f-02"  # TODO this room crashes because of something related to spritesets
+  - Room: "f-02"
     Holes:
     - Side: Right
       Idx: 0
-      Kind: None
+      Kind: out
       ReqOut:
         Or:
         - Dashes: two
@@ -908,7 +908,7 @@ ASide:
           Difficulty: hard
     - Side: Left
       Idx: 0
-      Kind: None
+      Kind: in
   - Room: "f-03"
     Holes:
     - Side: Right
@@ -1490,11 +1490,11 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
-  - Room: "j-00"  # TODO this room crashes on the cutscene because of bad spritesets or something
+  - Room: "j-00"
     Holes:
     - Side: Right
       Idx: 0
-      Kind: none
+      Kind: out
       ReqOut:
         Or:
         - Dashes: two
@@ -1502,7 +1502,13 @@ ASide:
           Difficulty: hard
     - Side: Left
       Idx: 0
-      Kind: none
+      Kind: in
+    Tweaks:
+      - Name: "lightningBlock"
+        ID: 89
+        Update:
+          Values:
+            music_session: true
   - Room: "j-00b"
     Holes:
     - Side: Right
