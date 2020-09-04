@@ -2743,6 +2743,12 @@ ASide:
     - To: "right"
       ReqOut:
         Dashes: one
+      ReqIn:
+        Or:
+        - Dashes: two
+          Difficulty: hard
+        - Dashes: one
+          Difficulty: expert
     Subrooms:
     - Room: "right"
       Holes:
@@ -2752,6 +2758,12 @@ ASide:
       - Side: Right
         Idx: 0
         Kind: inout
+    Tweaks:
+      - Name: "jumpThru"
+        ID: 733
+        Update:
+          X: 232
+          Width: 24
   - Room: "f-10b"
     Holes:
     - Side: Right
