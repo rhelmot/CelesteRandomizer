@@ -1724,6 +1724,9 @@ ASide:
     - Side: Left
       Idx: 1
       Kind: none
+    - Side: Down
+      Idx: 0
+      Kind: none
   - Room: "j-14b"
     Holes:
     - Side: Right

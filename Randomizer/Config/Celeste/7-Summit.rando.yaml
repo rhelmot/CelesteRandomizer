@@ -2364,7 +2364,10 @@ ASide:
         Difficulty: hard
     - Collectable: 0
       ReqBoth:
-        Dashes: two
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: hard
     Subrooms:
     - Room: "right"
       Holes:
@@ -2532,8 +2535,6 @@ ASide:
     - Side: Up
       Idx: 2
       Kind: inout
-      ReqOut:
-        Dashes: one
     - Side: Right
       Idx: 0
       Kind: out
@@ -2775,7 +2776,10 @@ ASide:
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
-        Dashes: two
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: hard
       ReqIn:
         Dashes: two
         Difficulty: expert

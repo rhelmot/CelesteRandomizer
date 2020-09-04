@@ -1217,7 +1217,10 @@ BSide:
         - Dashes: zero
           Difficulty: hard
       ReqIn:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: hard
     Tweaks:
     - ID: 0
       Name: "jumpThru"
@@ -1354,10 +1357,10 @@ BSide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: out
+      Kind: inout
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
     InternalEdges:
     - Split: BottomToTop
       ReqOut:
