@@ -576,8 +576,11 @@ ASide:
       InternalEdges:
       - To: "TopExit"
         ReqOut:
-          Dashes: two
-          Difficulty: hard
+          Or:
+          - Dashes: two
+            Difficulty: hard
+          - Dashes: one
+            Difficulty: expert
     Tweaks:
     - Name: "spawn"
       Update:

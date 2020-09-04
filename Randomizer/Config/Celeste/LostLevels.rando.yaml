@@ -539,18 +539,34 @@ ASide:
         Dashes: one
   - Room: "d-05"
     Holes:
-    - Side: Up
-      Idx: 0
-      Kind: in
-    - Side: Down
-      Idx: 0
-      Kind: inout
-      ReqOut:
-        Dashes: two
-        Difficulty: hard  # needs a double jump to get enough height from the bottom
-    - Side: Down
-      Idx: 1
-      Kind: in
+      - Side: Down
+        Idx: 0
+        Kind: inout
+    InternalEdges:
+      - To: "exitUp"
+        ReqIn:
+          Or:
+            - Dashes: two
+            - Dashes: one
+              Difficulty: expert
+      - To: "entranceDown"
+        ReqIn:
+          Or:
+            - Dashes: one
+              Difficulty: expert
+            - Dashes: one
+              Difficulty: hard
+    Subrooms:
+      - Room: "exitUp"
+        Holes:
+        - Side: Up
+          Idx: 0
+          Kind: inout
+      - Room: "entranceDown"
+        Holes:
+        - Side: Down
+          Idx: 1
+          Kind: in
   - Room: "e-00y"
     Holes:
     - Side: Up
