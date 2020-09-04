@@ -393,14 +393,15 @@ namespace Celeste.Mod.Randomizer {
                 }
             }
 
-            CombineAutotilers(GFX.FGAutotiler, fgPaths);
-            CombineAutotilers(GFX.BGAutotiler, bgPaths);
-            CombineAnimatedTiles(GFX.AnimatedTilesBank, atPaths);
+            CombineAutotilers(GFX.FGAutotiler, fgPaths, settings);
+            CombineAutotilers(GFX.BGAutotiler, bgPaths, settings);
+            CombineAnimatedTiles(GFX.AnimatedTilesBank, atPaths, settings);
         }
 
-        private static void CombineAutotilers(Autotiler basic, List<string> additions) {
+        private static void CombineAutotilers(Autotiler basic, List<string> additions, RandoSettings settings) {
             var counts = new Dictionary<char, int>();
-            var r = new Random(); // TODO how to seed this?
+            var r = new Random((int)settings.IntSeed);
+            
             // uhhhhhhh this is intensely sketchy
             var lookup = (IDictionary)typeof(Autotiler).GetField("lookup", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(basic);
             foreach (char k in lookup.Keys) {
@@ -424,12 +425,12 @@ namespace Celeste.Mod.Randomizer {
             }
         }
 
-        private static void CombineAnimatedTiles(AnimatedTilesBank basic, List<string> additions) {
+        private static void CombineAnimatedTiles(AnimatedTilesBank basic, List<string> additions, RandoSettings settings) {
             var counts = new Dictionary<string, int>();
             foreach (var key in basic.AnimationsByName.Keys) {
                 counts[key] = 1;
             }
-            var r = new Random();
+            var r = new Random((int)settings.IntSeed);
 
             foreach (var path in additions) {
                 XmlElement animatedData = Calc.LoadContentXML(path)["Data"];
