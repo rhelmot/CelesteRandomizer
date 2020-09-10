@@ -579,7 +579,10 @@ ASide:
         Idx: 0
         Kind: inout
         ReqIn:
-          Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect
       Collectables:
       - Idx: 0
   - Room: "b-05"
