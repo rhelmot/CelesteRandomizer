@@ -195,6 +195,9 @@ ASide:
         ReqOut:
           Dashes: zero
           Difficulty: hard
+      - To: "rightexit"
+        ReqOut:
+          Dashes: zero
     - Room: "rightexit"
       Holes:
       - Side: Right
@@ -204,6 +207,11 @@ ASide:
       - To: "heart"
         ReqOut:
           Dashes: one
+        ReqIn:
+          Or:
+            - Dashes: one
+            - Dashes: zero
+              Difficulty: hard
     - Room: "heart"
       Holes:
       - Side: Left
@@ -425,8 +433,13 @@ ASide:
     - Side: Left
       Idx: 1
       Kind: inout
-      ReqBoth:
+      ReqIn:
         Dashes: one
+      ReqOut:
+        Or:
+          - Dashes: one
+          - Dashes: zero
+            Difficulty: expert
     InternalEdges:
     - To: "right"
       ReqOut:
@@ -783,8 +796,13 @@ ASide:
       Kind: inout
     InternalEdges:
     - Split: LeftToRight
-      ReqBoth:
+      ReqOut:
         Dashes: one
+      ReqIn:
+        Or:
+          - Dashes: one
+          - Dashes: zero
+            Difficulty: expert
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:
@@ -1050,7 +1068,10 @@ ASide:
       Idx: 0
       Kind: out
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect
     - Side: Left
       Idx: 0
       Kind: in

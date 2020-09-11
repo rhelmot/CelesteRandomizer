@@ -99,6 +99,9 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: None
+    - Side: Up
+      Idx: 0
+      Kind: unknown  # assign to main room instead of subroom
     InternalEdges:
     - Collectable: 1
       ReqBoth:

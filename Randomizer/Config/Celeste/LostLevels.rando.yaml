@@ -250,6 +250,9 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: none
+    - Side: Up
+      Idx: 0
+      Kind: none
   - Room: "b-05"
     Holes:
     - Side: Right
@@ -465,6 +468,15 @@ ASide:
     - Side: Down
       Idx: 1
       Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: none
+    - Side: Down
+      Idx: 2
+      Kind: none
+    - Side: Down
+      Idx: 3
+      Kind: none
     Tweaks:
     - Name: "spawn"
       X: 528
