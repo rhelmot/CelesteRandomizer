@@ -113,6 +113,11 @@ ASide:
         Values:
           cameraX: 0
           cameraY: 1
+    - Name: "spawn"
+      X: 200
+      Y: 976
+      Update:
+        Default: true
   - Room: "03"
     Holes:
     - Side: Right
@@ -123,6 +128,9 @@ ASide:
     - Side: Right
       Idx: 1
       Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: none
   - Room: "02b"
     Holes:
     - Side: Up
@@ -290,14 +298,15 @@ ASide:
       Kind: inout
   - Room: "08a"
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: unknown
+      HighOpen: true
     InternalEdges:
-    - Split: LeftToRight
+    - To: "right"
       ReqOut:
         Dashes: one
       ReqIn:
@@ -305,6 +314,12 @@ ASide:
         - Dashes: two
         - Dashes: one
           Difficulty: hard
+    Subrooms:
+    - Room: "right"
+      Holes:
+      - Side: Right
+        Idx: 0
+        Kind: inout
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:
@@ -370,14 +385,15 @@ ASide:
         Remove: true
   - Room: "10a"
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: unknown
+      HighOpen: true
     InternalEdges:
-    - Split: LeftToRight
+    - To: "right"
       ReqOut:
         Dashes: one
       ReqIn:
@@ -385,6 +401,12 @@ ASide:
         - Dashes: one
         - Dashes: zero
           Difficulty: expert
+    Subrooms:
+    - Room: "right"
+      Holes:
+      - Side: Right
+        Idx: 0
+        Kind: inout
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:
@@ -440,6 +462,9 @@ ASide:
           - Dashes: one
           - Dashes: zero
             Difficulty: expert
+    - Side: Down
+      Idx: 0
+      Kind: None
     InternalEdges:
     - To: "right"
       ReqOut:
@@ -499,14 +524,15 @@ ASide:
           cameraY: 0.6
   - Room: "12a"
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: unknown
+      HighOpen: true
     InternalEdges:
-    - Split: LeftToRight
+    - To: "right"
       ReqOut:
         Dashes: one
       ReqIn:
@@ -514,6 +540,17 @@ ASide:
         - Dashes: two
         - Dashes: one
           Difficulty: expert
+    Subrooms:
+    - Room: "right"
+      Holes:
+      - Side: Right
+        Idx: 0
+        Kind: inout
+      - Side: Down
+        New: true
+        Kind: unknown
+        LowBound: 0
+        HighBound: 36
     Tweaks:
     - Name: "spawn"
       Update:
@@ -599,14 +636,15 @@ ASide:
         Remove: true
   - Room: "14a"
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: unknown
+      HighOpen: true
     InternalEdges:
-    - Split: LeftToRight
+    - To: "right"
       ReqOut:
         Dashes: one
       ReqIn:
@@ -615,6 +653,12 @@ ASide:
           Difficulty: expert
         - Dashes: two
           Difficulty: hard
+    Subrooms:
+    - Room: "right"
+      Holes:
+      - Side: Right
+        Idx: 0
+        Kind: inout
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:
@@ -659,6 +703,16 @@ ASide:
     - Side: Left
       Idx: 1
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: unknown
+      Split:
+        New: true
+    - Side: Up
+      Idx: 0
+      Kind: unknown
+      Split:
+        New: true
     Tweaks:
     - Name: "exitBlock"
       ID: 547
@@ -676,6 +730,9 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: None
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
@@ -765,6 +822,9 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: None
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
@@ -822,6 +882,10 @@ ASide:
     - Side: Left
       Idx: 1
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: unknown
+      HighOpen: true
     InternalEdges:
     - To: "right"
       ReqOut:
@@ -837,6 +901,11 @@ ASide:
       - Side: Right
         Idx: 0
         Kind: inout
+      - Side: Down
+        New: true
+        Kind: Unknown
+        HighBound: 139
+        LowBound: 0
     Tweaks:
     - Name: "exitBlock"
       ID: 606
@@ -867,6 +936,18 @@ ASide:
     - Side: Up
       Idx: 1
       Kind: none
+    - Side: Down
+      Idx: 0
+      Kind: None
+    - Side: Down
+      Idx: 1
+      Kind: None
+    - Side: Down
+      Idx: 2
+      Kind: None
+    - Side: Down
+      Idx: 3
+      Kind: None
     InternalEdges:
     - Split: LeftToRight
       ReqBoth:
@@ -950,12 +1031,301 @@ ASide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: in
+      Kind: inout
     - Side: Right
       Idx: 0
-      Kind: out
-      ReqOut:
-        Dashes: one
+      Kind: inout
+    InternalEdges:
+      - Split: TopToBottom
+        ReqOut:
+          Dashes: one
+        ReqIn:
+          Dashes: two
+          Difficulty: hard
+    Tweaks:
+      - Name: "exitBlock"
+        ID: 1080
+        Update:
+          Remove: true
+      - Name: "invisibleBarrier"
+        ID: 1077
+        Update:
+          Remove: true
+      - Name: "fakeBlock"
+        Update:
+          Add: true
+          X: 360
+          Y: 208
+          Width: 48
+          Height: 72
+          Values:
+            tiletype: h
+      - Name: "fakeBlock"
+        Update:
+          Add: true
+          X: 144
+          Y: 112
+          Width: 32
+          Height: 56
+          Values:
+            tiletype: h
+      - Name: "jumpThru"
+        Update:
+          Add: true
+          X: 368
+          Y: 208
+          Width: 16
+      - Name: "jumpThru"
+        Update:
+          Add: true
+          X: 160
+          Y: 112
+          Width: 16
+      - Name: "fgTiles"
+        X: 23
+        Y: 109
+        Update:
+          Tile: h
+      - Name: "fgTiles"
+        X: 23
+        Y: 110
+        Update:
+          Tile: h
+      - Name: "fgTiles"
+        X: 23
+        Y: 111
+        Update:
+          Tile: h
+      - Name: "fgTiles"
+        X: 24
+        Y: 109
+        Update:
+          Tile: h
+      - Name: "fgTiles"
+        X: 24
+        Y: 110
+        Update:
+          Tile: h
+      - Name: "fgTiles"
+        X: 24
+        Y: 111
+        Update:
+          Tile: h
+      - Name: "fgTiles"
+        X: 48
+        Y: 36
+        Update:
+          Tile: 0
+      - Name: "fgTiles"
+        X: 49
+        Y: 36
+        Update:
+          Tile: 0
+      - Name: "fgTiles"
+        X: 48
+        Y: 35
+        Update:
+          Tile: 0
+      - Name: "fgTiles"
+        X: 49
+        Y: 35
+        Update:
+          Tile: 0
+      - Name: "fgTiles"
+        X: 48
+        Y: 34
+        Update:
+          Tile: 0
+      - Name: "fgTiles"
+        X: 49
+        Y: 34
+        Update:
+          Tile: 0
+      - Name: "fgTiles"
+        X: 48
+        Y: 33
+        Update:
+          Tile: 0
+      - Name: "fgTiles"
+        X: 49
+        Y: 33
+        Update:
+          Tile: 0
+      - Name: "fgTiles"
+        X: 47
+        Y: 32
+        Update:
+          Tile: 0
+      - Name: "fgTiles"
+        X: 48
+        Y: 32
+        Update:
+          Tile: 0
+      - Name: "fgTiles"
+        X: 49
+        Y: 32
+        Update:
+          Tile: 0
+      - Name: "fgTiles"
+        X: 46
+        Y: 31
+        Update:
+          Tile: 0
+      - Name: "fgTiles"
+        X: 47
+        Y: 31
+        Update:
+          Tile: 0
+      - Name: "fgTiles"
+        X: 48
+        Y: 31
+        Update:
+          Tile: 0
+      - Name: "fgTiles"
+        X: 46
+        Y: 30
+        Update:
+          Tile: 0
+      - Name: "fgTiles"
+        X: 47
+        Y: 30
+        Update:
+          Tile: 0
+      - Name: "fgTiles"
+        X: 48
+        Y: 30
+        Update:
+          Tile: 0
+      - Name: "fgTiles"
+        X: 46
+        Y: 29
+        Update:
+          Tile: 0
+      - Name: "fgTiles"
+        X: 47
+        Y: 29
+        Update:
+          Tile: 0
+      - Name: "fgTiles"
+        X: 46
+        Y: 28
+        Update:
+          Tile: 0
+      - Name: "fgTiles"
+        X: 47
+        Y: 28
+        Update:
+          Tile: 0
+      - Name: "fgTiles"
+        X: 46
+        Y: 27
+        Update:
+          Tile: 0
+      - Name: "fgTiles"
+        X: 47
+        Y: 27
+        Update:
+          Tile: 0
+      - Name: "fgTiles"
+        X: 46
+        Y: 26
+        Update:
+          Tile: 0
+      - Name: "fgTiles"
+        X: 47
+        Y: 26
+        Update:
+          Tile: 0
+      - Name: "fgTiles"
+        X: 19
+        Y: 21
+        Update:
+          Tile: 0
+      - Name: "fgTiles"
+        X: 20
+        Y: 21
+        Update:
+          Tile: 0
+      - Name: "fgTiles"
+        X: 19
+        Y: 20
+        Update:
+          Tile: 0
+      - Name: "fgTiles"
+        X: 20
+        Y: 20
+        Update:
+          Tile: 0
+      - Name: "fgTiles"
+        X: 19
+        Y: 19
+        Update:
+          Tile: 0
+      - Name: "fgTiles"
+        X: 20
+        Y: 19
+        Update:
+          Tile: 0
+      - Name: "fgTiles"
+        X: 19
+        Y: 18
+        Update:
+          Tile: 0
+      - Name: "fgTiles"
+        X: 20
+        Y: 18
+        Update:
+          Tile: 0
+      - Name: "fgTiles"
+        X: 21
+        Y: 18
+        Update:
+          Tile: 0
+      - Name: "fgTiles"
+        X: 19
+        Y: 17
+        Update:
+          Tile: 0
+      - Name: "fgTiles"
+        X: 20
+        Y: 17
+        Update:
+          Tile: 0
+      - Name: "fgTiles"
+        X: 21
+        Y: 17
+        Update:
+          Tile: 0
+      - Name: "fgTiles"
+        X: 20
+        Y: 16
+        Update:
+          Tile: 0
+      - Name: "fgTiles"
+        X: 21
+        Y: 16
+        Update:
+          Tile: 0
+      - Name: "fgTiles"
+        X: 20
+        Y: 15
+        Update:
+          Tile: 0
+      - Name: "fgTiles"
+        X: 21
+        Y: 15
+        Update:
+          Tile: 0
+      - Name: "fgTiles"
+        X: 20
+        Y: 14
+        Update:
+          Tile: 0
+      - Name: "fgTiles"
+        X: 21
+        Y: 14
+        Update:
+          Tile: 0
   - Room: "b-02b"
     Holes:
     - Side: Right
@@ -974,6 +1344,9 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: None
   - Room: "boss-00"
     Holes:
     - Side: Left
@@ -1145,6 +1518,9 @@ ASide:
       Kind: out
       ReqOut:
         Dashes: one
+    - Side: Down
+      Idx: 0
+      Kind: None
   - Room: "boss-19"
     Holes:
     - Side: Right
@@ -1155,6 +1531,9 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: none
   - Room: "boss-20"
     Holes:
     - Side: Up
@@ -1732,20 +2111,27 @@ BSide:
 CSide:
   - Room: "00"
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: unknown
+      HighOpen: true
     InternalEdges:
-    - Split: LeftToRight
+    - To: "right"
       ReqOut:
         Dashes: one
         Difficulty: hard
       ReqIn:
         Dashes: two
         Difficulty: hard
+    Subrooms:
+    - Room: "right"
+      Holes:
+      - Side: Right
+        Idx: 0
+        Kind: inout
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:
@@ -1778,3 +2164,10 @@ CSide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: unknown
+      HighOpen: true
+    - Side: Down
+      Idx: 1
+      Kind: unknown

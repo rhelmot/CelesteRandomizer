@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework;
 using MonoMod.Utils;
 
@@ -48,7 +50,7 @@ namespace Celeste.Mod.Randomizer {
                         break;
                 }
             }
-            this.Collectables.Sort((StaticCollectable a, StaticCollectable b) => {
+            this.Collectables.Sort((a, b) => {
                 if (a.Position.Y > b.Position.Y) {
                     return 1;
                 } else if (a.Position.Y < b.Position.Y) {
@@ -91,10 +93,7 @@ namespace Celeste.Mod.Randomizer {
                 var lowPos = uhole.LowCoord(this.Level.Bounds);
                 var highPos = uhole.HighCoord(this.Level.Bounds);
                 foreach (var node in this.Nodes.Values) {
-                    foreach (var edge in node.Edges) {
-                        if (edge.HoleTarget == null) {
-                            continue;
-                        }
+                    foreach (var edge in node.Edges.Where(edge => edge.HoleTarget != null)) {
                         if (edge.HoleTarget == uhole) {
                             bestNode = null;
                             goto doublebreak;
@@ -129,14 +128,12 @@ namespace Celeste.Mod.Randomizer {
                 }
 
                 doublebreak:
-                if (bestNode != null) {
-                    bestNode.Edges.Add(new StaticEdge {
-                        FromNode = bestNode,
-                        HoleTarget = uhole,
-                        ReqIn = this.ProcessReqs(null, uhole, false),
-                        ReqOut = this.ProcessReqs(null, uhole, true),
-                    });
-                }
+                bestNode?.Edges?.Add(new StaticEdge {
+                    FromNode = bestNode,
+                    HoleTarget = uhole,
+                    ReqIn = this.ProcessReqs(null, uhole, false),
+                    ReqOut = this.ProcessReqs(null, uhole, true),
+                });
             }
 
             // assign unmarked collectables
@@ -174,6 +171,37 @@ namespace Celeste.Mod.Randomizer {
                     bestNode.Collectables.Add(c);
                 }
             }
+            
+            // perform fg tweaks
+            var regex = new Regex("\\r\\n|\\n\\r|\\n|\\r");
+            var tweakable = new List<List<char>>();
+            foreach (var line in regex.Split(Level.Solids)) {
+                var lst = new List<char>();
+                tweakable.Add(lst);
+                foreach (var ch in line) {
+                    lst.Add(ch);
+                }
+            }
+
+            void setTile(int x, int y, char tile) {
+                while (y >= tweakable.Count) {
+                    tweakable.Add(new List<char>());
+                }
+
+                while (x >= tweakable[y].Count) {
+                    tweakable[y].Add('0');
+                }
+
+                tweakable[y][x] = tile;
+            }
+
+            foreach (var tweak in config.Tweaks ?? new List<RandoConfigEdit>()) {
+                if (tweak.Name == "fgTiles") {
+                    setTile((int)tweak.X, (int)tweak.Y, tweak.Update.Tile);
+                }
+            }
+
+            Level.Solids = string.Join("\n", tweakable.Select(line => string.Join("", line)));
         }
 
         private void ProcessSubroom(StaticNode node, RandoConfigRoom config) {
@@ -182,17 +210,36 @@ namespace Celeste.Mod.Randomizer {
             }
 
             foreach (RandoConfigHole holeConfig in config.Holes ?? new List<RandoConfigHole>()) {
-                Hole matchedHole = null;
-                int remainingMatches = holeConfig.Idx;
-                foreach (Hole hole in this.Holes) {
-                    if (hole.Side == holeConfig.Side) {
-                        if (remainingMatches == 0) {
-                            matchedHole = hole;
-                            break;
-                        } else {
-                            remainingMatches--;
-                        }
+                if (holeConfig.New) {
+                    if (holeConfig.LowBound == null || holeConfig.HighBound == null) {
+                        throw new Exception("Config error: new hole missing LowBound/HighBound");
                     }
+
+                    if (holeConfig.Kind == HoleKind.None) {
+                        throw new Exception("You probably didn't mean to add a new hole with kind None");
+                    }
+
+                    var hole = new Hole(holeConfig.Side, holeConfig.LowBound.Value, holeConfig.HighBound.Value, holeConfig.HighOpen ?? false) {
+                        Launch = holeConfig.Launch,
+                        Kind = holeConfig.Kind,
+                    };
+                    this.Holes.Add(hole);
+                    node.Edges.Add(new StaticEdge {
+                        FromNode = node,
+                        HoleTarget = hole,
+                        ReqIn = this.ProcessReqs(holeConfig.ReqIn, hole, false),
+                        ReqOut = this.ProcessReqs(holeConfig.ReqOut, hole, true),
+                    });
+                    continue;
+                }
+                Hole matchedHole = null;
+                var remainingMatches = holeConfig.Idx;
+                foreach (var hole in this.Holes.Where(hole => hole.Side == holeConfig.Side)) {
+                    if (remainingMatches == 0) {
+                        matchedHole = hole;
+                        break;
+                    }
+                    remainingMatches--;
                 }
 
                 if (matchedHole == null) {
@@ -203,21 +250,37 @@ namespace Celeste.Mod.Randomizer {
                 matchedHole.Kind = holeConfig.Kind;
                 matchedHole.Launch = holeConfig.Launch;
                 if (holeConfig.LowBound != null) {
-                    matchedHole.LowBound = (int)holeConfig.LowBound;
+                    matchedHole.LowBound = holeConfig.LowBound.Value;
                 }
                 if (holeConfig.HighBound != null) {
-                    matchedHole.HighBound = (int)holeConfig.HighBound;
+                    matchedHole.HighBound = holeConfig.HighBound.Value;
                 }
                 if (holeConfig.HighOpen != null) {
-                    matchedHole.HighOpen = (bool)holeConfig.HighOpen;
+                    matchedHole.HighOpen = holeConfig.HighOpen.Value;
                 }
 
                 if (holeConfig.Kind != HoleKind.None) {
-                    node.Edges.Add(new StaticEdge() {
+                    node.Edges.Add(new StaticEdge {
                         FromNode = node,
                         HoleTarget = matchedHole,
                         ReqIn = this.ProcessReqs(holeConfig.ReqIn, matchedHole, false),
-                        ReqOut = this.ProcessReqs(holeConfig.ReqOut, matchedHole, true)
+                        ReqOut = this.ProcessReqs(holeConfig.ReqOut, matchedHole, true),
+                    });
+                }
+                
+                if (holeConfig.Split != null) {
+                    matchedHole.HighOpen = true;
+                    
+                    var hole = new Hole(matchedHole.Side, 0, matchedHole.HighBound, false) {
+                        Launch = holeConfig.Split.Launch,
+                        Kind = holeConfig.Split.Kind,
+                    };
+                    this.Holes.Add(hole);
+                    node.Edges.Add(new StaticEdge {
+                        FromNode = node,
+                        HoleTarget = hole,
+                        ReqIn = this.ProcessReqs(holeConfig.Split.ReqIn, hole, false),
+                        ReqOut = this.ProcessReqs(holeConfig.Split.ReqOut, hole, true),
                     });
                 }
             }
@@ -323,7 +386,7 @@ namespace Celeste.Mod.Randomizer {
                 } else if (col.X != null && col.Y != null) {
                     node.Collectables.Add(new StaticCollectable {
                         ParentNode = node,
-                        Position = new Vector2((float)col.X.Value, (float)col.Y.Value),
+                        Position = new Vector2(col.X.Value, col.Y.Value),
                         MustFly = col.MustFly
                     });
                 } else {
@@ -332,7 +395,11 @@ namespace Celeste.Mod.Randomizer {
             }
         }
 
-        private Requirement ProcessReqs(RandoConfigReq config, Hole matchHole=null, bool isOut=false) {
+        private Requirement ProcessReqs(RandoConfigReq config) {
+            return this.ProcessReqs(config, null, false);
+        }
+
+        private Requirement ProcessReqs(RandoConfigReq config, Hole matchHole, bool isOut) {
             if (matchHole != null) {
                 if (matchHole.Kind == HoleKind.None) {
                     return new Impossible();
@@ -506,7 +573,7 @@ namespace Celeste.Mod.Randomizer {
                             if (econfig.Update?.Values != null) {
                                 if (entity.Values == null) entity.Values = new Dictionary<string, object>();
                                 foreach (var kv in econfig.Update.Values) {
-                                    entity.Values[kv.Key] = (object)kv.Value;
+                                    entity.Values[kv.Key] = kv.Value;
                                 }
                             }
                         }
@@ -528,7 +595,7 @@ namespace Celeste.Mod.Randomizer {
                             if (econfig.Update?.Y != null)
                                 spawn.Y = econfig.Update.Y.Value + newPosition.Y;
                         }
-                        return Tuple.Create(spawn, econfig.Update.Default);
+                        return Tuple.Create(spawn, econfig.Update?.Default ?? false);
                     }
                 }
                 return null;
@@ -540,6 +607,7 @@ namespace Celeste.Mod.Randomizer {
                 float absB = Math.Abs(b);
                 float diff = Math.Abs(a - b);
 
+                // ReSharper disable once CompareOfFloatsByEqualityOperator
                 if (a == b) {
                     // Shortcut, handles infinities
                     return true;
@@ -612,14 +680,16 @@ namespace Celeste.Mod.Randomizer {
                         if (econfig.Update.Values != null) {
                             entity.Values = new Dictionary<string, object>();
                             foreach (var kv in econfig.Update.Values) {
-                                entity.Values.Add(kv.Key, (object)kv.Value);
+                                entity.Values.Add(kv.Key, kv.Value);
                             }
                         }
 
                         if (econfig.Update.Nodes != null) {
-                            // not the safest code but if you fuck this up you deserve a crash
                             entity.Nodes = new Vector2[econfig.Update.Nodes.Count];
                             foreach (var node in econfig.Update.Nodes) {
+                                if (node.X == null || node.Y == null) {
+                                    throw new Exception("Entity configures node without X or Y");
+                                }
                                 entity.Nodes[node.Idx] = new Vector2(node.X.Value, node.Y.Value);
                             }
                         }
@@ -670,15 +740,12 @@ namespace Celeste.Mod.Randomizer {
         public StaticRoom ParentRoom;
         public List<RandoConfigInternalEdge> WarpConfig = new List<RandoConfigInternalEdge>();
 
-        public StaticEdge WarpEdge {
-            get {
-                return new StaticEdge {
-                    FromNode = this,
-                    ReqIn = new Possible(),
-                    ReqOut = new Possible(),
-                };
-            }
-        }
+        public StaticEdge WarpEdge =>
+            new StaticEdge {
+                FromNode = this,
+                ReqIn = new Possible(),
+                ReqOut = new Possible(),
+            };
     }
 
     public class StaticCollectable {
