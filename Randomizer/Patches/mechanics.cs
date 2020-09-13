@@ -84,7 +84,8 @@ namespace Celeste.Mod.Randomizer {
             }
             orig(self, playerIntro, fromLoader);
             // also, set the core mode right
-            if (fromLoader && this.InRandomizer) {
+            // if we're transitioning, we already set it correctly via the direction
+            if (settings != null && !self.Transitioning) {
                 var leveldata = self.Session.LevelData;
                 var dyn = new DynData<LevelData>(leveldata);
                 RandoConfigCoreMode modes = dyn.Get<RandoConfigCoreMode>("coreModes");
