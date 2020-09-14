@@ -148,6 +148,8 @@ namespace Celeste.Mod.Randomizer {
         }
         public HoleKind Kind { get; set; }
         public int? Launch;
+        public bool New;
+        public RandoConfigHole Split;
     }
 
     public class RandoConfigCollectable {
@@ -213,6 +215,7 @@ namespace Celeste.Mod.Randomizer {
         public int? Height { get; set; }
         public List<RandoConfigNode> Nodes { get; set; }
         public Dictionary<string, string> Values { get; set; }
+        public char Tile;
     }
 
     public class RandoConfigNode {

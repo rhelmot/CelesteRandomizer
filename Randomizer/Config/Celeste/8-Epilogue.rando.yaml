@@ -13,23 +13,6 @@ ASide:
         Add: true
         X: 952
         Y: 128
-  - Room: "inside"
-    Holes:
-  - Room: "outside"  # TODO add warp to inside
-    End: true
-    Holes:
-    - Side: Right
-      Idx: 0
-      Kind: none
-    - Side: Left
-      Idx: 0
-      Kind: none
-    Tweaks:
-    - Name: "spawn"
-      Update:
-        Add: true
-        X: 16
-        Y: 160
   - Room: "secret"
     Holes:
     - Side: Left

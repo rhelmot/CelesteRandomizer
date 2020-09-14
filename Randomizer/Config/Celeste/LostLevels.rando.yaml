@@ -250,6 +250,9 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: none
+    - Side: Up
+      Idx: 0
+      Kind: none
   - Room: "b-05"
     Holes:
     - Side: Right
@@ -465,6 +468,15 @@ ASide:
     - Side: Down
       Idx: 1
       Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: none
+    - Side: Down
+      Idx: 2
+      Kind: none
+    - Side: Down
+      Idx: 3
+      Kind: none
     Tweaks:
     - Name: "spawn"
       X: 528
@@ -747,11 +759,6 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: none
-  - Room: "e-05b-dummy"
-    Holes:
-    - Side: Up
-      Idx: 0
-      Kind: None
   - Room: "e-05c"
     Holes:
     - Side: Right
@@ -760,6 +767,9 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: None
     InternalEdges:
     - Split: LeftToRight
       ReqBoth:
@@ -783,6 +793,9 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: None
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
@@ -797,6 +810,9 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: None
   - Room: "e-08"
     Holes:
     - Side: Right
@@ -813,6 +829,12 @@ ASide:
       Side: up
       Idx: 1
       Kind: none
+    - Side: Down
+      Idx: 0
+      Kind: None
+    - Side: Down
+      Idx: 1
+      Kind: None
   - Room: "f-door"
     Holes:
     - Side: Right
@@ -920,6 +942,9 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: none
+    - Side: Down
+      Idx: 0
+      Kind: None
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
@@ -973,6 +998,9 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: None
   - Room: "f-06"
     Holes:
     - Side: Right
@@ -989,6 +1017,9 @@ ASide:
     - Side: up
       Idx: 2
       Kind: none
+    - Side: Down
+      Idx: 0
+      Kind: None
     ExtraSpace:
     - X: 608
       Y: 136
@@ -1007,6 +1038,9 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: None
   - Room: "f-08"
     Holes:
     - Side: Right
@@ -1017,6 +1051,9 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: None
   - Room: "f-09"
     Holes:
     - Side: Up
@@ -1135,6 +1172,9 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: None
   - Room: "h-00b"
     Holes:
     - Side: Left
@@ -1158,6 +1198,9 @@ ASide:
       Kind: out
       ReqOut:
         Dashes: one
+    - Side: Down
+      Idx: 0
+      Kind: None
   - Room: "h-01"
     Holes:
     - Side: Up
@@ -1182,6 +1225,9 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 1
+      Kind: None
   - Room: "h-03"
     Holes:
     - Side: Right
@@ -1195,6 +1241,9 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: None
   - Room: "h-03b"
     Holes:
     - Side: Right
@@ -1208,6 +1257,10 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: unknown
+      Launch: -1
   - Room: "h-04"
     Holes:
     - Side: Right
@@ -1225,6 +1278,9 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: None
   - Room: "h-04b"
     Holes:
     - Side: Left
@@ -1252,6 +1308,10 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: Unknown
+      Launch: -1
   - Room: "h-06"
     Holes:
     - Side: Up
@@ -1265,6 +1325,10 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: Unknown
+      HighOpen: true
     ExtraSpace:
       - X: 328
         Y: 184
@@ -1294,11 +1358,22 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 1
+      Kind: Unknown
+      HighOpen: true
+    - Side: Down
+      Idx: 2
+      Kind: Unknown
+      HighOpen: true
   - Room: "h-08"
     Holes:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: None
     InternalEdges:
     - To: "right"
       ReqOut:
@@ -1323,6 +1398,9 @@ ASide:
     - Side: Left
       Idx: 1
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: None
     InternalEdges:
     - To: "right"
       ReqOut:
@@ -1390,14 +1468,15 @@ ASide:
       Kind: None
   - Room: "i-01"
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: Unknown
+      HighOpen: true
     InternalEdges:
-    - Split: LeftToRight
+    - To: "right"
       ReqOut:
         Or:
         - Dashes: two
@@ -1405,6 +1484,12 @@ ASide:
           Difficulty: hard
       ReqIn:
         Dashes: one
+    Subrooms:
+    - Room: "right"
+      Holes:
+      - Side: Right
+        Idx: 0
+        Kind: inout
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:
@@ -1424,6 +1509,9 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: None
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
@@ -1452,6 +1540,9 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: None
     InternalEdges:
     - Split: LeftToRight
       ReqBoth:
@@ -1477,6 +1568,9 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: None
   - Room: "i-05"
     Holes:
     - Side: Right
@@ -1490,6 +1584,10 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: Unknown
+      HighOpen: true
   - Room: "j-00"
     Holes:
     - Side: Right
@@ -1503,6 +1601,12 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: None
+    - Side: Down
+      Idx: 1
+      Kind: None
     Tweaks:
       - Name: "lightningBlock"
         ID: 89
@@ -1523,6 +1627,9 @@ ASide:
       Idx: 0
       Kind: in
     - Side: Down
+      Idx: 0
+      Kind: None
+    - Side: Down
       Idx: 1
       Kind: none
   - Room: "j-01"
@@ -1535,6 +1642,9 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: None
   - Room: "j-02"
     Holes:
     - Side: Right
@@ -1548,6 +1658,12 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: None
+    - Side: Down
+      Idx: 1
+      Kind: None
   - Room: "j-03"
     Holes:
     - Side: Right
@@ -1561,6 +1677,13 @@ ASide:
     - Side: Left
       Idx: 1
       Kind: none
+    - Side: Down
+      Idx: 0
+      Kind: None
+    - Side: Down
+      Idx: 1
+      Kind: Unknown
+      HighOpen: true
   - Room: "j-04"
     Holes:
     - Side: Right
@@ -1590,6 +1713,9 @@ ASide:
     - Side: Left
       Idx: 1
       Kind: none
+    - Side: Down
+      Idx: 0
+      Kind: None
   - Room: "j-06"
     Holes:
     - Side: Right
@@ -1600,20 +1726,30 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: None
   - Room: "j-07"
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: Unknown
+      HighOpen: true
     InternalEdges:
-    - Split: LeftToRight
+    - To: "right"
       ReqOut:
         Dashes: one
       ReqIn:
         Dashes: two
+    Subrooms:
+    - Room: "right"
+      Holes:
+      - Side: Right
+        Idx: 0
+        Kind: inout
     Tweaks:
     - ID: 207
       Update:
@@ -1646,6 +1782,9 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 1
+      Kind: inout
   - Room: "j-09"
     Holes:
     - Side: Right
@@ -1656,6 +1795,13 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: Unknown
+      HighOpen: true
+    - Side: Down
+      Idx: 1
+      Kind: None
   - Room: "j-10"
     Holes:
     - Side: Right
@@ -1666,6 +1812,10 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: Unknown
+      HighOpen: true
   - Room: "j-11"
     Holes:
     - Side: Right
@@ -1682,6 +1832,13 @@ ASide:
     - Side: up
       Idx: 1
       Kind: none
+    - Side: Down
+      Idx: 0
+      Kind: Unknown
+      HighOpen: true
+    - Side: Down
+      Idx: 1
+      Kind: None
   - Room: "j-12"
     Holes:
     - Side: Right
@@ -1695,6 +1852,9 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: None
   - Room: "j-13"
     Holes:
     - Side: Right
@@ -1708,6 +1868,9 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: none
     - Side: Down
       Idx: 1
       Kind: none
@@ -1727,6 +1890,10 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: none
+    - Side: Down
+      Idx: 1
+      Kind: Unknown
+      HighOpen: true
   - Room: "j-14b"
     Holes:
     - Side: Right
@@ -1738,6 +1905,9 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: none
   - Room: "j-15"
     Holes:
     - Side: Right
@@ -1749,6 +1919,9 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: none
   - Room: "j-16"
     ReqEnd:
       Dashes: one

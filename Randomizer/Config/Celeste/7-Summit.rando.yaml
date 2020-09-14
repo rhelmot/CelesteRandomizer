@@ -1755,6 +1755,7 @@ ASide:
         X: 160
         Width: 16
   - Room: "e-00"
+    Hub: true
     Holes:
     - Side: Up
       Idx: 0
@@ -2342,6 +2343,7 @@ ASide:
       ReqBoth:
         Dashes: two
   - Room: "f-00"
+    Hub: true
     Holes:
     - Side: Right
       Idx: 0
@@ -3269,7 +3271,10 @@ BSide:
       Idx: 5
       Kind: inout
       ReqOut:
-        Dashes: two
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: hard
     - Side: Up
       Idx: 6
       Kind: none
@@ -3281,7 +3286,7 @@ BSide:
       Kind: none
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
     - Side: Left
       Idx: 0
       Kind: none
@@ -3357,6 +3362,15 @@ BSide:
         Add: true
         X: 200
         Y: 16
+    - Name: "jumpThru"
+      ID: 668
+      Update:
+        Width: 16
+    - Name: "spawn"
+      X: 200
+      Y: 432
+      Update:
+        X: 192
   - Room: "b-01"
     Holes:
     - Side: Up
@@ -3513,7 +3527,10 @@ BSide:
       Kind: out
       Launch: 19
       ReqOut:
-        Dashes: two
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: expert
     - Side: Left
       Idx: 1
       Kind: inout
@@ -3523,25 +3540,6 @@ BSide:
     - Side: Right
       Idx: 0
       Kind: None
-  - Room: "c-00"
-    Holes:
-    - Side: Up
-      Idx: 0
-      Kind: out
-      ReqOut:
-        Dashes: two
-    - Side: Down
-      Idx: 0
-      Kind: in
-    - Side: Down
-      Idx: 1
-      Kind: none
-    Tweaks:
-    - Name: "spawn"
-      Update:
-        Add: true
-        X: 496
-        Y: 16
   - Room: "c-01"
     Holes:
     - Side: Up
@@ -3566,6 +3564,28 @@ BSide:
         Add: true
         X: 1544
         Y: 24
+  - Room: "c-00"
+    Holes:
+      - Side: Up
+        Idx: 0
+        Kind: out
+        ReqOut:
+          Or:
+          - Dashes: two
+          - Dashes: one
+            Difficulty: hard  # technical but not all that difficult, also very short
+      - Side: Down
+        Idx: 0
+        Kind: in
+      - Side: Down
+        Idx: 1
+        Kind: none
+    Tweaks:
+      - Name: "spawn"
+        Update:
+          Add: true
+          X: 496
+          Y: 16
   - Room: "c-02"
     Holes:
     - Side: Right
@@ -3761,7 +3781,10 @@ BSide:
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
-        Dashes: two
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: hard
       ReqIn:
         Dashes: zero
     Tweaks:
@@ -3927,7 +3950,33 @@ BSide:
         Dashes: two
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: in  # TODO: this can be inout if we can figure out how to make cameraOffsetTriggers persist through death
+      ReqOut:
+        Or:
+          - Dashes: two
+          - Dashes: one
+            Difficulty: hard
+    Tweaks:
+      - Name: "jumpThru"
+        ID: 702
+        Update:
+          X: 160
+          Width: 16
+      - Name: "spawn"
+        X: 160
+        Y: 2280
+        Update:
+          X: 168
+      - Name: "cameraOffsetTrigger"
+        Update:
+          Add: true
+          X: 0
+          Y: 0
+          Width: 136
+          Height: 240
+          Values:
+            cameraX: 0
+            cameraY: 1
   - Room: "g-01"
     Holes:
     - Side: Up
@@ -3985,7 +4034,10 @@ CSide:
       Kind: out
       Launch: 85
       ReqOut:
-        Dashes: two
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: perfect
     - Side: Down
       Idx: 0
       Kind: in
