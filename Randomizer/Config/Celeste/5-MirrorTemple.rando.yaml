@@ -744,8 +744,10 @@ ASide:
         Dashes: one
       ReqIn:
         Or:
+        - Dashes: zero
+          Difficulty: perfect
         - Dashes: one
-          Difficulty: hard
+          Difficulty: expert
         - Dashes: two
     - To: "right"
       ReqBoth:

@@ -216,6 +216,9 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: none
+    - Side: Up
+      Idx: 0
+      Kind: none
   - Room: "b-03"
     Holes:
     - Side: Right
