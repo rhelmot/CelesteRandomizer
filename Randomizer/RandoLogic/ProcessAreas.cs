@@ -5,7 +5,34 @@ using System.Text.RegularExpressions;
 namespace Celeste.Mod.Randomizer {
     public partial class RandoLogic {
         public static List<StaticRoom> AllRooms = new List<StaticRoom>();
-        public static List<AreaKey> AvailableAreas = new List<AreaKey>();
+        public static List<LevelSet> LevelSets = new List <LevelSet>();
+
+        public class LevelSet {
+            public LevelSet(string name) {
+                this.name = name;
+                this.customGroupNames = new List<string>();
+                this.customGroups = new Dictionary<string, List<AreaKey>>();
+                this.ungroupedKeys = new List<AreaKey>();
+            }
+            public string name;
+            public List<string> customGroupNames;
+            public Dictionary<string, List<AreaKey>> customGroups;
+            public List<AreaKey> ungroupedKeys;
+            public void AddAreaKey(AreaKey areaKey, string customGroup = null) {
+                if (customGroup != null) {
+                    if (customGroups.TryGetValue(customGroup, out List<AreaKey> areaKeys)) {
+                        areaKeys.Add(areaKey);
+                    }
+                    else {
+                        customGroupNames.Add(customGroup);
+                        customGroups[customGroup] = new List<AreaKey> { areaKey };
+                    }
+                }
+                else {
+                    ungroupedKeys.Add(areaKey);
+                }
+            }
+        }
 
         public static List<Hole> FindHoles(LevelData data) {
             List<Hole> result = new List<Hole>();
@@ -136,7 +163,18 @@ namespace Celeste.Mod.Randomizer {
                 }
 
                 RandoLogic.AllRooms.AddRange(RandoLogic.ProcessMap(area.Mode[i].MapData, mapConfig));
-                RandoLogic.AvailableAreas.Add(new AreaKey(area.ID, (AreaMode)i));
+
+                var currentSetName = area.GetLevelSet();
+                LevelSet currentSet;
+                if (RandoLogic.LevelSets.Count == 0 || currentSetName != RandoLogic.LevelSets[RandoLogic.LevelSets.Count - 1].name) {
+                    currentSet = new LevelSet(currentSetName);
+                    RandoLogic.LevelSets.Add(currentSet);
+                }
+                else {
+                    currentSet = RandoLogic.LevelSets[RandoLogic.LevelSets.Count - 1];
+                }
+                var areaKey = new AreaKey(area.ID, (AreaMode)i);
+                currentSet.AddAreaKey(areaKey, config.CustomGroup);
             }
         }
 

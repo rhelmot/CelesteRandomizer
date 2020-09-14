@@ -181,9 +181,11 @@ namespace Celeste.Mod.Randomizer {
 
         public void SetNormalMaps() {
             this.DisableAllMaps();
-            foreach (var key in RandoLogic.AvailableAreas) {
-                if (key.GetLevelSet() == "Celeste") {
-                    this.EnableMap(key);
+            foreach (var levelSet in RandoLogic.LevelSets) {
+                if (levelSet.name == "Celeste") {
+                    foreach (var key in levelSet.ungroupedKeys) {
+                        this.EnableMap(key);
+                    }
                 }
             }
         }
