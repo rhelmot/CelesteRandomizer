@@ -104,32 +104,44 @@ namespace Celeste.Mod.Randomizer {
                     lvlCount[notstupid] = 1;
                 }
             }
-            string currentSet = null;
 
-            foreach (var key in RandoLogic.AvailableAreas) {
-                var area = AreaData.Get(key);
-                var mode = AreaData.GetMode(key);
-
-                if (currentSet != area.GetLevelSet()) {
-                    currentSet = area.GetLevelSet();
-                    menu.Add(new TextMenu.SubHeader(DialogExt.CleanLevelSet(currentSet)));
+            // Create submenu for each level set
+            foreach (RandoLogic.LevelSet levelSet in RandoLogic.LevelSets) {
+                menu.Add(new TextMenu.SubHeader(DialogExt.CleanLevelSet(levelSet.name)));
+                // Add custom groups first
+                foreach (string group in levelSet.customGroupNames) {
+                    var name = group.DialogCleanOrNull() ?? group.SpacedPascalCase();
+                    var areaKeys = levelSet.customGroups[group];
+                    var on = Settings.MapIncluded(areaKeys[0]);
+                    var numLevels = 0;
+                    foreach (AreaKey key in areaKeys) {
+                        numLevels += lvlCount[new RandoSettings.AreaKeyNotStupid(key)];
+                    }
+                    menu.Add(new TextMenu.OnOff(name, on).Change(this.MakeChangeFunc(areaKeys)));
+                    menu.Add(new TextMenuExt.SubHeaderExt(numLevels.ToString() + " " + Dialog.Clean("MODOPTIONS_RANDOMIZER_MAPPICKER_LEVELS")) {
+                        HeightExtra = -10f,
+                        Offset = new Vector2(30, -5),
+                    });
                 }
-
-                var on = Settings.MapIncluded(key);
-                var name = area.Name;
-                name = name.DialogCleanOrNull() ?? name.SpacedPascalCase();
-                if (key.Mode != AreaMode.Normal || (area.Mode.Length != 1 && area.Mode[1] != null)) {
-                    name += " " + Char.ToString((char)('A' + (int)key.Mode));
+                // Now add standalone areas
+                foreach (AreaKey key in levelSet.ungroupedKeys) {
+                    var area = AreaData.Get(key);
+                    var mode = AreaData.GetMode(key);
+                    var on = Settings.MapIncluded(key);
+                    var name = area.Name;
+                    name = name.DialogCleanOrNull() ?? name.SpacedPascalCase();
+                    if (key.Mode != AreaMode.Normal || (area.Mode.Length != 1 && area.Mode[1] != null)) {
+                        name += " " + Char.ToString((char)('A' + (int)key.Mode));
+                    }
+                    menu.Add(new TextMenu.OnOff(name, on).Change(this.MakeChangeFunc(key)));
+                    menu.Add(new TextMenuExt.SubHeaderExt(lvlCount[new RandoSettings.AreaKeyNotStupid(key)].ToString() + " " + Dialog.Clean("MODOPTIONS_RANDOMIZER_MAPPICKER_LEVELS")) {
+                        HeightExtra = -10f,
+                        Offset = new Vector2(30, -5),
+                    });
                 }
-
-                menu.Add(new TextMenu.OnOff(name, on).Change(this.MakeChangeFunc(key)));
-                menu.Add(new TextMenuExt.SubHeaderExt(lvlCount[new RandoSettings.AreaKeyNotStupid(key)].ToString() + " " + Dialog.Clean("MODOPTIONS_RANDOMIZER_MAPPICKER_LEVELS")) {
-                    HeightExtra = -10f,
-                    Offset = new Vector2(30, -5),
-                });
             }
 
-            if (currentSet != "Celeste") {
+            if (RandoLogic.LevelSets.Count > 1) {
                 menu.Insert(2, new TextMenu.Button(Dialog.Clean("MODOPTIONS_RANDOMIZER_MAPPICKER_RESET")).Pressed(() => {
                     Settings.SetNormalMaps();
                     // this is a stupid way to do this
@@ -155,6 +167,26 @@ namespace Celeste.Mod.Randomizer {
                     Settings.EnableMap(key);
                 } else {
                     Settings.DisableMap(key);
+                }
+            };
+        }
+
+        private Action<bool> MakeChangeFunc(List<AreaKey> keys)
+        {
+            return (on) => {
+                if (on)
+                {
+                    foreach (AreaKey key in keys)
+                    {
+                        Settings.EnableMap(key);
+                    }
+                }
+                else
+                {
+                    foreach (AreaKey key in keys)
+                    {
+                        Settings.DisableMap(key);
+                    }
                 }
             };
         }

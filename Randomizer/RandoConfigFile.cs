@@ -16,6 +16,7 @@ namespace Celeste.Mod.Randomizer {
         public List<RandoConfigRoom> ASide { get; set; }
         public List<RandoConfigRoom> BSide { get; set; }
         public List<RandoConfigRoom> CSide { get; set; }
+        public string CustomGroup;
 
         public static RandoConfigFile Load(AreaData area) {
             String fullPath = "Config/" + area.GetSID() + ".rando";
