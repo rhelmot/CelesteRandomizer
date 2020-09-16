@@ -33,8 +33,14 @@ namespace Celeste.Mod.Randomizer {
             SpecialHooksMechanics.Add(new ILHook(typeof(CS06_StarJumpEnd).GetNestedType("<>c__DisplayClass40_0", BindingFlags.NonPublic).GetMethod("<OnEnd>b__1", BindingFlags.NonPublic | BindingFlags.Instance), RestoreBerries));
 
             SpecialHooksMechanics.Add(new ILHook(typeof(EventTrigger).GetNestedType("<>c__DisplayClass10_0", BindingFlags.NonPublic).GetMethod("<OnEnter>b__0", BindingFlags.NonPublic | BindingFlags.Instance), SpecificWarpTarget));
-        }
 
+            On.Celeste.Key.ctor_EntityData_Vector2_EntityID += PatchNewKey;
+            On.Celeste.Strawberry.ctor += PatchNewBerry;
+            On.Celeste.SummitGem.ctor += PatchNewGem;
+            On.Celeste.Key.OnPlayer += PatchCollectKey;
+            On.Celeste.Strawberry.OnPlayer += PatchCollectBerry;
+            On.Celeste.SummitGem.SmashRoutine += PatchCollectGem;
+        }
         private void UnloadMechanics() {
             Everest.Events.Level.OnTransitionTo -= OnTransition;
             Everest.Events.Level.OnLoadLevel -= OnLoadLevel;
@@ -47,11 +53,70 @@ namespace Celeste.Mod.Randomizer {
             IL.Celeste.CS02_DreamingPhonecall.OnEnd -= CutsceneWarpTarget;
             IL.Celeste.CS04_MirrorPortal.Cutscene -= CutsceneWarpMirrorFakeBSide;
             IL.Celeste.CS06_StarJumpEnd.OnBegin -= StoreBerries;
+
+            On.Celeste.Key.ctor_EntityData_Vector2_EntityID -= PatchNewKey;
+            On.Celeste.Strawberry.ctor -= PatchNewBerry;
+            On.Celeste.SummitGem.ctor -= PatchNewGem;
+            On.Celeste.Key.OnPlayer -= PatchCollectKey;
+            On.Celeste.Strawberry.OnPlayer -= PatchCollectBerry;
+            On.Celeste.SummitGem.SmashRoutine -= PatchCollectGem;
+            
             foreach (var detour in this.SpecialHooksMechanics) {
                 detour.Dispose();
             }
-
             this.SpecialHooksMechanics.Clear();
+        }
+        
+        static void PatchAutoBubble(Entity entity, EntityData data) {
+            if (data.Bool("AutoBubble")) {
+                new DynData<Entity>(entity).Set<bool?>("AutoBubble", true);
+            }
+        }
+
+        static void PerformAutoBubble(Entity entity) {
+            if (new DynData<Entity>(entity).Get<bool?>("AutoBubble") ?? false) {
+                var player = entity.Scene.Tracker.GetEntity<Player>();
+                player.Add(new Coroutine(AutoBubbleCoroutine(player)));
+            }
+        }
+
+        static IEnumerator AutoBubbleCoroutine(Player player) {
+            yield return 0.3f;
+            if (!player.Dead) {
+              Audio.Play("event:/game/general/cassette_bubblereturn", player.SceneAs<Level>().Camera.Position + new Vector2(160f, 90f));
+              var respawn = SaveData.Instance.CurrentSession.RespawnPoint.Value;
+              player.StartCassetteFly(respawn, (respawn + player.Position) / 2 - 30 * Vector2.UnitY);
+            }
+        }
+        
+        void PatchNewKey(On.Celeste.Key.orig_ctor_EntityData_Vector2_EntityID orig, Key self, EntityData e, Vector2 v, EntityID i) {
+            orig(self, e, v, i);
+            PatchAutoBubble(self, e);
+        }
+        
+        void PatchNewBerry(On.Celeste.Strawberry.orig_ctor orig, Strawberry self, EntityData e, Vector2 v, EntityID i) {
+            orig(self, e, v, i);
+            PatchAutoBubble(self, e);
+        }
+        
+        void PatchNewGem(On.Celeste.SummitGem.orig_ctor orig, SummitGem self, EntityData e, Vector2 v, EntityID i) {
+            orig(self, e, v, i);
+            PatchAutoBubble(self, e);
+        }
+
+        private IEnumerator PatchCollectGem(On.Celeste.SummitGem.orig_SmashRoutine orig, SummitGem self, Player player, Level level) {
+            PerformAutoBubble(self);
+            return orig(self, player, level);
+        }
+
+        private void PatchCollectBerry(On.Celeste.Strawberry.orig_OnPlayer orig, Strawberry self, Player player) {
+            PerformAutoBubble(self);
+            orig(self, player);
+        }
+
+        private void PatchCollectKey(On.Celeste.Key.orig_OnPlayer orig, Key self, Player player) {
+            PerformAutoBubble(self);
+            orig(self, player);
         }
 
         private void StoreBerries(ILContext il) {
