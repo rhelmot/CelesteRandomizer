@@ -165,104 +165,17 @@ namespace Celeste.Mod.Randomizer {
         }
 
         private string PickMusicAudio() {
-            switch (this.Random.Next(52)) {
-                case 0:
-                case 1:
-                case 2: // ;)
-                default:
-                    return SFX.music_city;
-                case 3:
-                case 4:
-                    return SFX.music_prologue_beginning;
-                case 5:
-                    return SFX.music_oldsite_beginning;
-                case 6:
-                case 7:
-                    return SFX.music_oldsite_awake;
-                case 8:
-                    return SFX.music_oldsite_chase;
-                case 9:
-                    return SFX.music_oldsite_evil_maddy;
-                case 10:
-                case 11:
-                    return SFX.music_resort_intro;
-                case 12:
-                    return SFX.music_resort_explore;
-                case 13:
-                case 14:
-                    return SFX.music_resort_clean;
-                case 15:
-                    return SFX.music_resort_oshiro_chase;
-                case 16:
-                    return SFX.music_resort_oshiro_theme;
-                case 17:
-                case 18:
-                    return SFX.music_cliffside_main;
-                case 19:
-                    return SFX.music_cliffside_heavywinds;
-                case 20:
-                case 21:
-                    return SFX.music_temple_normal;
-                case 22:
-                    return SFX.music_temple_middle;
-                case 23:
-                    return SFX.music_temple_mirror;
-                case 24:
-                case 25:
-                    return SFX.music_reflection_main;
-                case 26:
-                    return SFX.music_reflection_starjump;
-                case 27:
-                    return SFX.music_reflection_fight;
-                case 28:
-                    return SFX.music_reflection_fight_glitch;
-                case 29:
-                    return SFX.music_reflection_maddietheo;
-                case 30:
-                    return SFX.music_summit_main;
-                case 31:
-                    return SFX.music_summit_finalascent;
-                case 32:
-                    return SFX.music_core_main;
-                case 33:
-                    return SFX.music_rmx_01_forsaken_city;
-                case 34:
-                    return SFX.music_rmx_02_old_site;
-                case 35:
-                    return SFX.music_rmx_03_resort;
-                case 36:
-                    return SFX.music_rmx_04_cliffside;
-                case 37:
-                    return SFX.music_rmx_05_mirror_temple;
-                case 38:
-                    return SFX.music_rmx_06_reflection;
-                case 39:
-                    return SFX.music_rmx_07_summit;
-                case 40:
-                    return SFX.music_rmx_09_core;
-                case 41:
-                    return SFX.music_farewell_part02;
-                case 42:
-                    return SFX.music_farewell_part03;
-                case 43:
-                    return SFX.music_farewell_final_run;
-                case 44:
-                    return SFX.music_farewell_golden_room;
-                case 45:
-                    return SFX.music_farewell_granny;
-                case 46:
-                    return SFX.music_reflection_fight_finish;
-                case 47:
-                    return SFX.music_reflection_secretroom;
-                case 48:
-                    return SFX.music_reflection_fall;
-                case 49:
-                    return SFX.music_credits;
-                case 50:
-                    return SFX.music_farewell_cassette;
-                case 51:
-                    return SFX.music_farewell_end_cinematic;
+            float totalWeight = RandoModule.Instance.MetaConfig.Music.Select(t => t.Weight).Sum();
+            float weighAt = this.Random.NextFloat(totalWeight);
+            float soFar = 0f;
+            foreach (var track in RandoModule.Instance.MetaConfig.Music) {
+                soFar += track.Weight;
+                if (weighAt < soFar) {
+                    return track.Name;
+                }
             }
+            // this should be unreachable. but just in case:
+            return RandoModule.Instance.MetaConfig.Music.Last().Name;
         }
 
         private string PickAmbienceAudio() {

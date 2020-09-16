@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Monocle;
 
@@ -165,8 +166,8 @@ namespace Celeste.Mod.Randomizer {
             }
 
             while (this.PriorityCollectables.Count != 0) {
-                var spot = this.PriorityCollectables[this.PriorityCollectables.Count - 1].Item1;
-                var autoBubble = this.PossibleCollectables[this.PriorityCollectables.Count - 1].Item2;
+                var spot = this.PriorityCollectables.Last().Item1;
+                var autoBubble = this.PriorityCollectables.Last().Item2;
                 this.PriorityCollectables.RemoveAt(this.PriorityCollectables.Count - 1);
 
                 spot.Node.Collectables[spot.Static] = Tuple.Create(spot.Static.MustFly ? LinkedNode.LinkedCollectable.WingedStrawberry : LinkedNode.LinkedCollectable.Strawberry, autoBubble);
@@ -175,8 +176,8 @@ namespace Celeste.Mod.Randomizer {
             var targetCount = this.PossibleCollectables.Count / 3 * 2;
             this.PossibleCollectables.Shuffle(this.Random);
             while (this.PossibleCollectables.Count > targetCount) {
-                var spot = this.PossibleCollectables[this.PossibleCollectables.Count - 1].Item1;
-                var autoBubble = this.PossibleCollectables[this.PossibleCollectables.Count - 1].Item2;
+                var spot = this.PossibleCollectables.Last().Item1;
+                var autoBubble = this.PossibleCollectables.Last().Item2;
                 this.PossibleCollectables.RemoveAt(this.PossibleCollectables.Count - 1);
 
                 spot.Node.Collectables[spot.Static] = Tuple.Create(spot.Static.MustFly ? LinkedNode.LinkedCollectable.WingedStrawberry : LinkedNode.LinkedCollectable.Strawberry, autoBubble);

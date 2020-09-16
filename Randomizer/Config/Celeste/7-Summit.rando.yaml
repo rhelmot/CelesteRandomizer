@@ -296,6 +296,10 @@ ASide:
     - Side: Right
       Idx: 0
       Kind: None
+    InternalEdges:
+      - Collectable: 0
+        ReqBoth:
+          Dashes: two
   - Room: "b-00"
     Holes:
     - Side: Up
@@ -1022,13 +1026,18 @@ ASide:
         Add: true
         X: 56
         Y: 32
-  - Room: "c-06c"  # TODO gem
+  - Room: "c-06c"
     Holes:
     - Side: Left
       Idx: 0
       Kind: inout
-      ReqIn:
-        Dashes: one
+    InternalEdges:
+      - Collectable: 0
+        ReqBoth:
+          Or:
+            - Dashes: two
+            - Dashes: one
+              Difficulty: hard
   - Room: "c-07"
     Hub: true
     Holes:
@@ -1497,30 +1506,18 @@ ASide:
         Add: true
         X: 832
         Y: 168
-  - Room: "d-05b"  # TODO gem
+  - Room: "d-05b"
     Holes:
     - Side: Left
       Idx: 0
       Kind: inout
-      ReqIn:
-        Or:
-        - Dashes: two
-        - Dashes: one
-          Difficulty: hard
-  - Room: "d-05x"  # dummy
-    Holes:
-    - Side: Up
-      Idx: 0
-      Kind: none
-    - Side: Up
-      Idx: 1
-      Kind: none
-    - Side: Up
-      Idx: 2
-      Kind: none
-    - Side: Up
-      Idx: 3
-      Kind: none
+    InternalEdges:
+      - Collectable: 0
+        ReqBoth:
+          Or:
+            - Dashes: two
+            - Dashes: one
+              Difficulty: hard
   - Room: "d-06"
     Hub: true
     Holes:

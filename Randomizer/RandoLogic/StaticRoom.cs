@@ -46,14 +46,11 @@ namespace Celeste.Mod.Randomizer {
 
             this.Collectables = new List<StaticCollectable>();
             foreach (var entity in Level.Entities) {
-                switch (entity.Name.ToLower()) {
-                    case "strawberry":
-                    case "key":
-                        this.Collectables.Add(new StaticCollectable {
-                            Position = entity.Position,
-                            MustFly = false,
-                        });
-                        break;
+                if (RandoModule.Instance.MetaConfig.CollectableNames.Contains(entity.Name)) {
+                    this.Collectables.Add(new StaticCollectable {
+                        Position = entity.Position,
+                        MustFly = false,
+                    });
                 }
             }
             this.Collectables.Sort((a, b) => {

@@ -11,6 +11,7 @@ namespace Celeste.Mod.Randomizer {
         public const Overworld.StartMode STARTMODE_RANDOMIZER = (Overworld.StartMode) 55;
         
         public static RandoModule Instance;
+        public RandoMetadataFile MetaConfig;
         public override Type SettingsType => typeof(RandoModuleSettings);
         public RandoModuleSettings SavedData {
             get {

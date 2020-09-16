@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -188,7 +189,5 @@ namespace Celeste.Mod.Randomizer {
                 RandoLogic.ProcessArea(area);
             }
         }
-
-
     }
 }

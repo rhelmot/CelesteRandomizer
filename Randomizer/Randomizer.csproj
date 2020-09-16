@@ -182,6 +182,10 @@
       <LogicalName>Content\Config\Celeste\LostLevels.rando.yaml</LogicalName>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Config\Celeste\rando.yaml">
+      <LogicalName>Content\Config\Celeste\rando.yaml</LogicalName>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Config\" />

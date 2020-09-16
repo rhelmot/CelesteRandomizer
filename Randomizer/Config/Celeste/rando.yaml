@@ -1,0 +1,68 @@
+CollectableNames:
+  - "strawberry"
+  - "key"
+  - "summitgem"
+Music:
+  - Name: "event:/music/lvl0/intro"
+  - Name: "event:/music/lvl1/main"
+    Weight: 3  # ;)
+  - Name: "event:/music/lvl1/theo"
+  - Name: "event:/music/lvl2/beginning"
+  - Name: "event:/music/lvl2/mirror"
+    Weight: 2
+  - Name: "event:/music/lvl2/evil_madeline"
+  - Name: "event:/music/lvl2/chase"
+  - Name: "event:/music/lvl2/awake"
+  - Name: "event:/music/lvl3/intro"
+  - Name: "event:/music/lvl3/explore"
+    Weight: 2
+  - Name: "event:/music/lvl3/clean"
+    Weight: 2
+  - Name: "event:/music/lvl3/clean_extended"
+  - Name: "event:/music/lvl3/oshiro_theme"
+  - Name: "event:/music/lvl3/oshiro_chase"
+  - Name: "event:/music/lvl4/main"
+    Weight: 2
+  - Name: "event:/music/lvl4/heavy_winds"
+  - Name: "event:/music/lvl4/minigame"
+  - Name: "event:/music/lvl5/normal"
+  - Name: "event:/music/lvl5/middle_temple"
+  - Name: "event:/music/lvl5/mirror"
+  - Name: "event:/music/lvl6/madeline_and_theo"
+  - Name: "event:/music/lvl6/starjump"
+    Weight: 0.5
+  - Name: "event:/music/lvl6/the_fall"
+  - Name: "event:/music/lvl6/badeline_fight"
+  - Name: "event:/music/lvl6/badeline_glitch"
+  - Name: "event:/music/lvl6/badeline_acoustic"
+  - Name: "event:/music/lvl6/main"
+  - Name: "event:/music/lvl6/secret_room"
+    Weight: 0.5
+  - Name: "event:/music/lvl7/main"
+  - Name: "event:/music/lvl7/final_ascent"
+  - Name: "event:/music/lvl8/main"
+  - Name: "event:/music/lvl9/main"
+#  - Name: "event:/new_content/music/lvl10/part01"  # needs progress to be set to be anything
+  - Name: "event:/new_content/music/lvl10/part02"
+  - Name: "event:/new_content/music/lvl10/part03"
+  - Name: "event:/new_content/music/lvl10/intermission_heartgroove"
+  - Name: "event:/new_content/music/lvl10/reconciliation"
+  - Name: "event:/new_content/music/lvl10/final_run"
+  - Name: "event:/new_content/music/lvl10/cinematic/end"
+  - Name: "event:/new_content/music/lvl10/granny_farewell"
+    Weight: 0.5
+  - Name: "event:/new_content/music/lvl10/golden_room"
+    Weight: 0.5
+  - Name: "event:/classic/pico8_mus_00"
+    Weight: 0.5
+  - Name: "event:/classic/pico8_mus_01"
+  - Name: "event:/classic/pico8_mus_02"
+  - Name: "event:/classic/pico8_mus_03"
+  - Name: "event:/music/remix/01_forsaken_city"
+  - Name: "event:/music/remix/02_old_site"
+  - Name: "event:/music/remix/03_resort"
+  - Name: "event:/music/remix/04_cliffside"
+  - Name: "event:/music/remix/05_mirror_temple"
+  - Name: "event:/music/remix/06_reflection"
+  - Name: "event:/music/remix/07_summit"
+  - Name: "event:/music/remix/09_core"
