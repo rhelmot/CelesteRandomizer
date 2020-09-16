@@ -232,7 +232,23 @@ namespace Celeste.Mod.Randomizer {
                             // don't be boring!
                             continue;
                         }
-                        this.AddReceipt(PlaceCollectableReceipt.Do(spot.Node, spot.Static, LinkedNode.LinkedCollectable.Key));
+                        this.AddReceipt(PlaceCollectableReceipt.Do(spot.Node, spot.Static, LinkedNode.LinkedCollectable.Key, false));
+                        this.OriginalNode.Room.UsedKeyholes.Add(this.KeyholeID);
+                        return true;
+                    }
+
+                    // try again for things that we need to bubble back from
+                    var newClosure = new LinkedNodeSet(closure);
+                    newClosure.Extend(caps, null, true);
+                    foreach (var spot in newClosure.UnlinkedCollectables()) {
+                        if (spot.Static.MustFly) {
+                            continue;
+                        }
+                        if (spot.Node.Room == this.OriginalNode.Room) {
+                            // don't be boring!
+                            continue;
+                        }
+                        this.AddReceipt(PlaceCollectableReceipt.Do(spot.Node, spot.Static, LinkedNode.LinkedCollectable.Key, true));
                         this.OriginalNode.Room.UsedKeyholes.Add(this.KeyholeID);
                         return true;
                     }

@@ -10,8 +10,8 @@ namespace Celeste.Mod.Randomizer {
         private static readonly int[] LabyrinthMaximums = { 20, 40, 65, 90 };
 
         private List<UnlinkedEdge> PossibleContinuations = new List<UnlinkedEdge>();
-        private List<UnlinkedCollectable> PossibleCollectables = new List<UnlinkedCollectable>();
-        private List<UnlinkedCollectable> PriorityCollectables = new List<UnlinkedCollectable>();
+        private List<Tuple<UnlinkedCollectable, bool>> PossibleCollectables = new List<Tuple<UnlinkedCollectable, bool>>();
+        private List<Tuple<UnlinkedCollectable, bool>> PriorityCollectables = new List<Tuple<UnlinkedCollectable, bool>>();
         int StartingGemCount;
 
         private void GenerateLabyrinth() {
@@ -49,7 +49,19 @@ namespace Celeste.Mod.Randomizer {
                     if (result != null) {
                         var closure = LinkedNodeSet.Closure(result.EntryNode, this.Caps, this.Caps, true);
                         var ue = closure.UnlinkedEdges();
-                        var uc = closure.UnlinkedCollectables();
+                        var uc = new List<Tuple<UnlinkedCollectable, bool>>();
+                        var alreadySeen = new HashSet<UnlinkedCollectable>();
+                        foreach (var c in closure.UnlinkedCollectables()) {
+                            alreadySeen.Add(c);
+                            uc.Add(Tuple.Create(c, false));
+                        }
+                        closure.Extend(this.Caps, null, true);
+                        foreach (var c in closure.UnlinkedCollectables()) {
+                            if (alreadySeen.Contains(c)) {
+                                continue;
+                            }
+                            uc.Add(Tuple.Create(c, true));
+                        }
                         if (ue.Count == 0 && uc.Count == 0) {
                             result.Undo();
                             continue;
@@ -73,7 +85,20 @@ namespace Celeste.Mod.Randomizer {
                 this.PossibleContinuations.RemoveAt(this.PossibleContinuations.Count - 1);
 
                 var closure = LinkedNodeSet.Closure(startEdge.Node, this.Caps, this.Caps, true);
-                var uc = closure.UnlinkedCollectables();
+                var uc = new List<Tuple<UnlinkedCollectable, bool>>();
+                var alreadySeen = new HashSet<UnlinkedCollectable>();
+                foreach (var c in closure.UnlinkedCollectables()) {
+                    alreadySeen.Add(c);
+                    uc.Add(Tuple.Create(c, false));
+                }
+                closure.Extend(this.Caps, null, true);
+                foreach (var c in closure.UnlinkedCollectables()) {
+                    if (alreadySeen.Contains(c)) {
+                        continue;
+                    }
+                    uc.Add(Tuple.Create(c, true));
+                }
+
                 if (uc.Count == 0) {
                     var edgeCount = 0;
                     foreach (var node in startEdge.Node.Room.Nodes.Values) {
@@ -117,19 +142,20 @@ namespace Celeste.Mod.Randomizer {
                     goto tryagain;
                 }
                 var idx = this.Random.Next(collection.Count);
-                var spot = collection[idx];
+                var spot = collection[idx].Item1;
+                var autoBubble = collection[idx].Item2;
                 collection.RemoveAt(idx);
 
                 if (spot.Static.MustFly) {
-                    spot.Node.Collectables[spot.Static] = LinkedNode.LinkedCollectable.WingedStrawberry;
+                    spot.Node.Collectables[spot.Static] = Tuple.Create(LinkedNode.LinkedCollectable.WingedStrawberry, autoBubble);
                     gem--;
                 } else {
-                    spot.Node.Collectables[spot.Static] = gem;
+                    spot.Node.Collectables[spot.Static] = Tuple.Create(gem, autoBubble);
                     //Logger.Log("DEBUG", $"Adding gem to {spot.Node.Room.Static.Name}");
 
                     if (collection == this.PriorityCollectables) {
                         for (int i = 0; i < collection.Count; i++) {
-                            if (collection[i].Node.Room == spot.Node.Room) {
+                            if (collection[i].Item1.Node.Room == spot.Node.Room) {
                                 collection.RemoveAt(i);
                                 i--;
                             }
@@ -139,19 +165,21 @@ namespace Celeste.Mod.Randomizer {
             }
 
             while (this.PriorityCollectables.Count != 0) {
-                var spot = this.PriorityCollectables[this.PriorityCollectables.Count - 1];
+                var spot = this.PriorityCollectables[this.PriorityCollectables.Count - 1].Item1;
+                var autoBubble = this.PossibleCollectables[this.PriorityCollectables.Count - 1].Item2;
                 this.PriorityCollectables.RemoveAt(this.PriorityCollectables.Count - 1);
 
-                spot.Node.Collectables[spot.Static] = spot.Static.MustFly ? LinkedNode.LinkedCollectable.WingedStrawberry : LinkedNode.LinkedCollectable.Strawberry;
+                spot.Node.Collectables[spot.Static] = Tuple.Create(spot.Static.MustFly ? LinkedNode.LinkedCollectable.WingedStrawberry : LinkedNode.LinkedCollectable.Strawberry, autoBubble);
             }
 
             var targetCount = this.PossibleCollectables.Count / 3 * 2;
             this.PossibleCollectables.Shuffle(this.Random);
             while (this.PossibleCollectables.Count > targetCount) {
-                var spot = this.PossibleCollectables[this.PossibleCollectables.Count - 1];
+                var spot = this.PossibleCollectables[this.PossibleCollectables.Count - 1].Item1;
+                var autoBubble = this.PossibleCollectables[this.PossibleCollectables.Count - 1].Item2;
                 this.PossibleCollectables.RemoveAt(this.PossibleCollectables.Count - 1);
 
-                spot.Node.Collectables[spot.Static] = spot.Static.MustFly ? LinkedNode.LinkedCollectable.WingedStrawberry : LinkedNode.LinkedCollectable.Strawberry;
+                spot.Node.Collectables[spot.Static] = Tuple.Create(spot.Static.MustFly ? LinkedNode.LinkedCollectable.WingedStrawberry : LinkedNode.LinkedCollectable.Strawberry, autoBubble);
             }
         }
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 
@@ -240,9 +241,9 @@ namespace Celeste.Mod.Randomizer {
             private LinkedNode Node;
             private StaticCollectable Place;
 
-            public static PlaceCollectableReceipt Do(LinkedNode node, StaticCollectable place, LinkedNode.LinkedCollectable item) {
+            public static PlaceCollectableReceipt Do(LinkedNode node, StaticCollectable place, LinkedNode.LinkedCollectable item, bool autoBubble) {
                 Logger.Log("randomizer", $"Placing collectable {item} in {node.Room.Static.Name}:{node.Static.Name}");
-                node.Collectables[place] = item;
+                node.Collectables[place] = Tuple.Create(item, autoBubble);
                 return new PlaceCollectableReceipt {
                     Node = node,
                     Place = place
