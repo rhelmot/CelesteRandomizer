@@ -203,19 +203,6 @@ namespace Celeste.Mod.Randomizer {
                 this.Tries = tries;
             }
 
-            private ConnectAndMapReceipt WorkingPossibility(UnlinkedEdge fromEdge) {
-                var capsNoKey = this.Logic.Caps.WithoutKey();
-
-                foreach (var toEdge in this.Logic.AvailableNewEdges(capsNoKey, capsNoKey, e => e.FromNode.ParentRoom.ReqEnd is Impossible)) {
-                    var result = ConnectAndMapReceipt.Do(this.Logic, fromEdge, toEdge);
-                    if (result != null) {
-                        return result;
-                    }
-                }
-
-                return null;
-            }
-
             public override bool Next() {
                 if (this.Tries >= 5) {
                     Logger.Log("randomizer", $"Failure: took too many tries to place key from {Node.Room.Static.Name}:{Node.Static.Name}");
@@ -223,7 +210,8 @@ namespace Celeste.Mod.Randomizer {
                 }
 
                 // each attempt we should back further away from the idea that we might add a new room
-                bool extendingMap = this.Logic.Random.Next(5) > this.Tries + 1;
+                int roll = this.Logic.Random.Next(5);
+                bool extendingMap = roll > this.Tries;
                 this.Tries++;
 
                 var caps = this.Logic.Caps.WithoutKey();
@@ -240,7 +228,7 @@ namespace Celeste.Mod.Randomizer {
                         if (spot.Static.MustFly) {
                             continue;
                         }
-                        if (spot.Node.Room == this.Node.Room) {
+                        if (spot.Node.Room == this.OriginalNode.Room) {
                             // don't be boring!
                             continue;
                         }
