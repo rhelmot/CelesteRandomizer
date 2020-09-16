@@ -22,6 +22,10 @@ namespace Celeste.Mod.Randomizer {
         public List<Hole> Holes;
         public List<StaticCollectable> Collectables;
 
+        public override string ToString() {
+            return this.Name;
+        }
+
         public StaticRoom(AreaKey Area, RandoConfigRoom config, LevelData Level, List<Hole> Holes) {
             // hack: force credits screens into the epilogue roomset
             if (Area.ID == 7 && Level.Name.StartsWith("credits-")) {
@@ -742,6 +746,10 @@ namespace Celeste.Mod.Randomizer {
         public StaticRoom ParentRoom;
         public List<RandoConfigInternalEdge> WarpConfig = new List<RandoConfigInternalEdge>();
 
+        public override string ToString() {
+            return $"{this.ParentRoom}:{this.Name}";
+        }
+
         public StaticEdge WarpEdge =>
             new StaticEdge {
                 FromNode = this,
@@ -763,6 +771,16 @@ namespace Celeste.Mod.Randomizer {
         public virtual Requirement ReqOut { get; set; }
         public Hole HoleTarget;
         public bool CustomWarp;
+
+        public override string ToString() {
+            if (this.HoleTarget != null) {
+                return this.HoleTarget.ToString();
+            } else if (this.CustomWarp) {
+                return "CustomWarp";
+            } else {
+                return $"-> {this.NodeTarget}";
+            }
+        }
     }
 
     public class StaticEdgeReversed : StaticEdge {

@@ -162,6 +162,10 @@ namespace Celeste.Mod.Randomizer {
             }
         }
 
+        public override string ToString() {
+            return $"{this.Static.Name}({this.Bounds.Left}, {this.Bounds.Top})";
+        }
+
         public LinkedRoom(StaticRoom Room, Vector2 Position) {
             this.Static = Room;
             this.Bounds = new Rectangle((int)Position.X, (int)Position.Y, Room.Level.Bounds.Width, Room.Level.Bounds.Height);
@@ -577,6 +581,10 @@ namespace Celeste.Mod.Randomizer {
         public List<LinkedEdge> Edges = new List<LinkedEdge>();
         public Dictionary<StaticCollectable, LinkedCollectable> Collectables = new Dictionary<StaticCollectable, LinkedCollectable>();
 
+        public override string ToString() {
+            return $"{this.Static.Name}@{this.Room}";
+        }
+
         public int CompareTo(LinkedNode obj) {
             return 0;
         }
@@ -720,6 +728,10 @@ namespace Celeste.Mod.Randomizer {
     public class UnlinkedEdge {
         public StaticEdge Static;
         public LinkedNode Node;
+
+        public override string ToString() {
+            return $"UnlinkedEdge({this.Static}, {this.Node})";
+        }
     }
 
     public class UnlinkedCollectable {
