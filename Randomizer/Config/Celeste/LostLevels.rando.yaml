@@ -1418,6 +1418,7 @@ ASide:
         Idx: 1
         Kind: Unknown
   - Room: "h-10"
+    SpinnersShatter: true
     Holes:
     - Side: Up
       Idx: 0

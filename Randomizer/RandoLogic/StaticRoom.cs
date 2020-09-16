@@ -13,6 +13,7 @@ namespace Celeste.Mod.Randomizer {
         public readonly Requirement ReqEnd;
         public readonly bool Hub;
         public readonly float Worth;
+        public readonly bool SpinnersShatter;
         private List<RandoConfigEdit> Tweaks;
         private RandoConfigCoreMode CoreModes;
         public Dictionary<string, StaticNode> Nodes;
@@ -37,6 +38,7 @@ namespace Celeste.Mod.Randomizer {
             this.CoreModes = config.Core;
             this.ExtraSpace = config.ExtraSpace ?? new List<RandoConfigRectangle>();
             this.Worth = config.Worth ?? (float)Math.Sqrt(Level.Bounds.Width * Level.Bounds.Width + Level.Bounds.Height * Level.Bounds.Height) / 369.12870384189847f + 1;
+            this.SpinnersShatter = config.SpinnersShatter;
 
             this.Collectables = new List<StaticCollectable>();
             foreach (var entity in Level.Entities) {

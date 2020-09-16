@@ -122,6 +122,7 @@ namespace Celeste.Mod.Randomizer {
         public RandoConfigCoreMode Core { get; set; }
         public List<RandoConfigRectangle> ExtraSpace { get; set; }
         public float? Worth;
+        public bool SpinnersShatter;
     }
 
     public class RandoConfigRectangle {

@@ -207,7 +207,7 @@ namespace Celeste.Mod.Randomizer {
                         return "rainbow";
                     default:
                         // dust bunnies can't be shattered, lmao
-                        if (this.Static.Name == "Celeste/LostLevels/A/h-10") {
+                        if (this.Static.SpinnersShatter) {
                             goto tryagain;
                         }
                         return "dust";
