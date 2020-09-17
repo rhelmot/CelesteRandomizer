@@ -216,6 +216,9 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: none
+    - Side: Up
+      Idx: 0
+      Kind: none
   - Room: "b-03"
     Holes:
     - Side: Right
@@ -593,18 +596,33 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: inout
-      # TODO: split holes
+      # TODO: add upper hole
+    - Side: Right
+      Idx: 0
+      Kind: out  # too dangerous to use for in
+      LowBound: 109
+      HighBound: 112
+      ReqOut:
+        Dashes: one
     - Side: Left
       Idx: 0
       Kind: None
-    - Side: Right
-      Idx: 0
-      Kind: None
-  - Room: "e-00yb" # TODO yikes
+  - Room: "e-00yb"
     Holes:
     - Side: Left
       Idx: 0
-      Kind: inout
+      Kind: in
+      LowBound: 90
+      HighBound: 93
+      HighOpen: false
+    - Side: Left
+      New: true
+      Kind: out
+      LowBound: 4
+      HighBound: 10
+      ReqOut:
+        Dashes: one
+        Difficulty: hard
   - Room: "e-00z"
     Holes:
     - Side: Up
@@ -1415,6 +1433,7 @@ ASide:
         Idx: 1
         Kind: Unknown
   - Room: "h-10"
+    SpinnersShatter: true
     Holes:
     - Side: Up
       Idx: 0

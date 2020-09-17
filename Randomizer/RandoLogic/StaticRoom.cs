@@ -13,6 +13,7 @@ namespace Celeste.Mod.Randomizer {
         public readonly Requirement ReqEnd;
         public readonly bool Hub;
         public readonly float Worth;
+        public readonly bool SpinnersShatter;
         private List<RandoConfigEdit> Tweaks;
         private RandoConfigCoreMode CoreModes;
         public Dictionary<string, StaticNode> Nodes;
@@ -20,6 +21,10 @@ namespace Celeste.Mod.Randomizer {
 
         public List<Hole> Holes;
         public List<StaticCollectable> Collectables;
+
+        public override string ToString() {
+            return this.Name;
+        }
 
         public StaticRoom(AreaKey Area, RandoConfigRoom config, LevelData Level, List<Hole> Holes) {
             // hack: force credits screens into the epilogue roomset
@@ -37,17 +42,15 @@ namespace Celeste.Mod.Randomizer {
             this.CoreModes = config.Core;
             this.ExtraSpace = config.ExtraSpace ?? new List<RandoConfigRectangle>();
             this.Worth = config.Worth ?? (float)Math.Sqrt(Level.Bounds.Width * Level.Bounds.Width + Level.Bounds.Height * Level.Bounds.Height) / 369.12870384189847f + 1;
+            this.SpinnersShatter = config.SpinnersShatter;
 
             this.Collectables = new List<StaticCollectable>();
             foreach (var entity in Level.Entities) {
-                switch (entity.Name.ToLower()) {
-                    case "strawberry":
-                    case "key":
-                        this.Collectables.Add(new StaticCollectable {
-                            Position = entity.Position,
-                            MustFly = false,
-                        });
-                        break;
+                if (RandoModule.Instance.MetaConfig.CollectableNames.Contains(entity.Name)) {
+                    this.Collectables.Add(new StaticCollectable {
+                        Position = entity.Position,
+                        MustFly = false,
+                    });
                 }
             }
             this.Collectables.Sort((a, b) => {
@@ -740,6 +743,10 @@ namespace Celeste.Mod.Randomizer {
         public StaticRoom ParentRoom;
         public List<RandoConfigInternalEdge> WarpConfig = new List<RandoConfigInternalEdge>();
 
+        public override string ToString() {
+            return $"{this.ParentRoom}:{this.Name}";
+        }
+
         public StaticEdge WarpEdge =>
             new StaticEdge {
                 FromNode = this,
@@ -761,6 +768,16 @@ namespace Celeste.Mod.Randomizer {
         public virtual Requirement ReqOut { get; set; }
         public Hole HoleTarget;
         public bool CustomWarp;
+
+        public override string ToString() {
+            if (this.HoleTarget != null) {
+                return this.HoleTarget.ToString();
+            } else if (this.CustomWarp) {
+                return "CustomWarp";
+            } else {
+                return $"-> {this.NodeTarget}";
+            }
+        }
     }
 
     public class StaticEdgeReversed : StaticEdge {

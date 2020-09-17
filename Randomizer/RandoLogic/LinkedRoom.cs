@@ -162,6 +162,10 @@ namespace Celeste.Mod.Randomizer {
             }
         }
 
+        public override string ToString() {
+            return $"{this.Static.Name}({this.Bounds.Left}, {this.Bounds.Top})";
+        }
+
         public LinkedRoom(StaticRoom Room, Vector2 Position) {
             this.Static = Room;
             this.Bounds = new Rectangle((int)Position.X, (int)Position.Y, Room.Level.Bounds.Width, Room.Level.Bounds.Height);
@@ -207,7 +211,7 @@ namespace Celeste.Mod.Randomizer {
                         return "rainbow";
                     default:
                         // dust bunnies can't be shattered, lmao
-                        if (this.Static.Name == "Celeste/LostLevels/A/h-10") {
+                        if (this.Static.SpinnersShatter) {
                             goto tryagain;
                         }
                         return "dust";
@@ -482,7 +486,8 @@ namespace Celeste.Mod.Randomizer {
 
                 foreach (var kv in node.Collectables) {
                     string name = null;
-                    switch (kv.Value) {
+                    var col = kv.Value.Item1;
+                    switch (col) {
                         case LinkedNode.LinkedCollectable.Key:
                             name = "key";
                             break;
@@ -507,17 +512,20 @@ namespace Celeste.Mod.Randomizer {
                         Position = kv.Key.Position,
                         Values = new Dictionary<string, object>(),
                     };
-                    if (kv.Value == LinkedNode.LinkedCollectable.WingedStrawberry) {
+                    if (kv.Value.Item2) {
+                        e.Values["AutoBubble"] = true;
+                    }
+                    if (col == LinkedNode.LinkedCollectable.WingedStrawberry) {
                         e.Values["winged"] = "true";
                     }
-                    if (kv.Value >= LinkedNode.LinkedCollectable.Gem1 && kv.Value <= LinkedNode.LinkedCollectable.Gem6) {
-                        e.Values["gem"] = (kv.Value - LinkedNode.LinkedCollectable.Gem1).ToString();
+                    if (col >= LinkedNode.LinkedCollectable.Gem1 &&col <= LinkedNode.LinkedCollectable.Gem6) {
+                        e.Values["gem"] = (col - LinkedNode.LinkedCollectable.Gem1).ToString();
                     }
                     result.Entities.Add(e);
                 }
             }
 
-            result.DisableDownTransition = false; // overridden in hook, doesn't matter
+            //result.DisableDownTransition = false; // overridden in hook, doesn't matter
             new DynData<LevelData>(result).Set("UsedVerticalHoles", usedVerticalHoles);
             foreach (var hole in unusedHorizontalHoles) {
                 blockHole(hole);
@@ -575,7 +583,11 @@ namespace Celeste.Mod.Randomizer {
         public StaticNode Static;
         public LinkedRoom Room;
         public List<LinkedEdge> Edges = new List<LinkedEdge>();
-        public Dictionary<StaticCollectable, LinkedCollectable> Collectables = new Dictionary<StaticCollectable, LinkedCollectable>();
+        public Dictionary<StaticCollectable, Tuple<LinkedCollectable, bool>> Collectables = new Dictionary<StaticCollectable, Tuple<LinkedCollectable, bool>>();
+
+        public override string ToString() {
+            return $"{this.Static.Name}@{this.Room}";
+        }
 
         public int CompareTo(LinkedNode obj) {
             return 0;
@@ -720,6 +732,10 @@ namespace Celeste.Mod.Randomizer {
     public class UnlinkedEdge {
         public StaticEdge Static;
         public LinkedNode Node;
+
+        public override string ToString() {
+            return $"UnlinkedEdge({this.Static}, {this.Node})";
+        }
     }
 
     public class UnlinkedCollectable {
@@ -744,29 +760,34 @@ namespace Celeste.Mod.Randomizer {
         private Capabilities CapsReverse;
         private Random Random;
 
-        public static LinkedNodeSet Closure(LinkedNode start, Capabilities capsForward, Capabilities capsReverse, bool internalOnly, int maxDistance=9999) {
-            var result = new HashSet<LinkedNode>();
+        public static LinkedNodeSet Closure(LinkedNode start, Capabilities capsForward, Capabilities capsReverse, bool internalOnly, int maxDistance = 9999) {
+            var result = new LinkedNodeSet(new List<LinkedNode> {start});
+            result.Extend(capsForward, capsReverse, internalOnly, maxDistance);
+            return result;
+        }
+
+        public void Extend(Capabilities capsForward, Capabilities capsReverse, bool internalOnly, int maxDistance = 999999) {
             var queue = new Queue<Tuple<LinkedNode, int>>();
+            foreach (var seen in this.Nodes) {
+                queue.Enqueue(Tuple.Create(seen, maxDistance));
+            }
+            
             void enqueue(LinkedNode node, int remaining) {
-                if (remaining > 0 && !result.Contains(node)) {
+                if (remaining > 0 && !this.Nodes.Contains(node)) {
                     queue.Enqueue(Tuple.Create(node, remaining));
-                    result.Add(node);
+                    this.Nodes.Add(node);
                 }
             }
-            enqueue(start, maxDistance);
-
+            
             while (queue.Count != 0) {
                 var item = queue.Dequeue();
-
                 foreach (var succ in item.Item1.Successors(capsForward, capsReverse, internalOnly)) {
                     enqueue(succ, item.Item2 - 1);
                 }
             }
 
-            return new LinkedNodeSet(result) {
-                CapsForward = capsForward,
-                CapsReverse = capsReverse,
-            };
+            this.CapsForward = capsForward;
+            this.CapsReverse = capsReverse;
         }
 
         public static Requirement TraversalRequires(LinkedNode start, Capabilities capsForward, bool internalOnly, UnlinkedEdge end) {
@@ -826,7 +847,12 @@ namespace Celeste.Mod.Randomizer {
             this.Nodes = nodes;
         }
 
-        private LinkedNodeSet(IEnumerable<LinkedNode> nodes) : this(new List<LinkedNode>(nodes)) { }
+        public LinkedNodeSet(LinkedNodeSet toCopy) {
+            this.Nodes = new List<LinkedNode>(toCopy.Nodes);
+            this.CapsForward = toCopy.CapsForward;
+            this.CapsReverse = toCopy.CapsReverse;
+            this.Random = toCopy.Random;
+        }
 
         public LinkedNodeSet Shuffle(Random random) {
             this.Random = random;

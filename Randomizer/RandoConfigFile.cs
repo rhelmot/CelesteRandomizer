@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
@@ -20,16 +22,14 @@ namespace Celeste.Mod.Randomizer {
 
         public static RandoConfigFile Load(AreaData area) {
             String fullPath = "Config/" + area.GetSID() + ".rando";
+            Logger.Log("randomizer", $"Loading config from {fullPath}");
             if (!Everest.Content.TryGet(fullPath, out ModAsset asset)) {
+                Logger.Log("randomizer", "...not found");
                 return null;
             } else {
-                try {
-                    using (StreamReader reader = new StreamReader(asset.Stream)) {
-                        return YamlHelper.Deserializer.Deserialize<RandoConfigFile>(reader);
-                    }
-                } catch (Exception e) {
-                    Logger.Log("randomizer", $"Failed loading config for area {area}: {e.Message}");
-                    return null;
+                // do not catch errors, they should crash on load
+                using (StreamReader reader = new StreamReader(asset.Stream)) {
+                    return YamlHelper.Deserializer.Deserialize<RandoConfigFile>(reader);
                 }
             }
         }
@@ -122,6 +122,7 @@ namespace Celeste.Mod.Randomizer {
         public RandoConfigCoreMode Core { get; set; }
         public List<RandoConfigRectangle> ExtraSpace { get; set; }
         public float? Worth;
+        public bool SpinnersShatter;
     }
 
     public class RandoConfigRectangle {
@@ -248,4 +249,38 @@ namespace Celeste.Mod.Randomizer {
             set => down = value;
         }
     }
+
+    public class RandoMetadataFile {
+        public List<string> CollectableNames = new List<string>();
+        public List<RandoMetadataMusic> Music = new List<RandoMetadataMusic>();
+
+        public void Add(RandoMetadataFile other) {
+            this.CollectableNames.AddRange(other.CollectableNames);
+            this.Music.AddRange(other.Music);
+        }
+        
+        public static RandoMetadataFile LoadAll() {
+            var result = new RandoMetadataFile();
+
+            Regex r = new Regex("^[^\\\\/]+:(/|\\\\).*$");
+            foreach (var kv in Everest.Content.Map.Where(kv => !r.IsMatch(kv.Key) && Path.GetFileName(kv.Value.PathVirtual) == "rando" && kv.Value.Type == typeof(AssetTypeYaml))) {
+                Logger.Log("randomizer", $"Found metadata {kv.Value.PathVirtual} in {kv.Value.Source.Name}");
+                result.Add(Load(kv.Value));
+            }
+            return result;
+        }
+        
+        private static RandoMetadataFile Load(ModAsset asset) {
+            // do not catch errors, they should crash on load
+            using (StreamReader reader = new StreamReader(asset.Stream)) {
+                return YamlHelper.Deserializer.Deserialize<RandoMetadataFile>(reader);
+            }
+        }
+    }
+
+    public class RandoMetadataMusic {
+        public string Name;
+        public float Weight = 1;
+    }
 }
+

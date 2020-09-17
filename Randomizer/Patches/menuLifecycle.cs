@@ -151,6 +151,7 @@ namespace Celeste.Mod.Randomizer {
 
         private void InitRandoData(On.Celeste.AreaData.orig_Load orig) {
             orig();
+            this.MetaConfig = RandoMetadataFile.LoadAll();
             RandoLogic.ProcessAreas();
             if (SavedData.SavedSettings == null) {
                 Settings.SetNormalMaps();

@@ -296,6 +296,10 @@ ASide:
     - Side: Right
       Idx: 0
       Kind: None
+    InternalEdges:
+      - Collectable: 0
+        ReqBoth:
+          Dashes: two
   - Room: "b-00"
     Holes:
     - Side: Up
@@ -1022,13 +1026,18 @@ ASide:
         Add: true
         X: 56
         Y: 32
-  - Room: "c-06c"  # TODO gem
+  - Room: "c-06c"
     Holes:
     - Side: Left
       Idx: 0
       Kind: inout
-      ReqIn:
-        Dashes: one
+    InternalEdges:
+      - Collectable: 0
+        ReqBoth:
+          Or:
+            - Dashes: two
+            - Dashes: one
+              Difficulty: hard
   - Room: "c-07"
     Hub: true
     Holes:
@@ -1231,7 +1240,9 @@ ASide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: none   # TODO: fix hole
+      Kind: inout
+      LowBound: 8
+      HighBound: 11
     InternalEdges:
     - To: "right"
       ReqOut:
@@ -1251,23 +1262,35 @@ ASide:
         Idx: 1
         Kind: in
         Launch: -1
+    Tweaks:
+      - Name: "spinner"
+        ID: 203
+        Update:
+          X: 109
   - Room: "d-01c"
+    Hub: true
     Holes:
     - Side: Up
       Idx: 0
-      Kind: none  # TODO: fix hole
+      Kind: inout
+      LowBound: 8
+      HighBound: 12
     - Side: Up
       Idx: 1
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: none  # TODO: fix hole
+      Kind: inout
+      LowBound: 31
+      HighBound: 32
     - Side: Down
       Idx: 1
       Kind: inout
     InternalEdges:
     - Collectable: 0
-      ReqBoth:
+      ReqOut:
+        Dashes: one
+      ReqIn:
         Or:
         - Dashes: two
         - Dashes: one
@@ -1299,13 +1322,15 @@ ASide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: none  # TODO: fix hole
+      Kind: none  # executive decision: this hole is useless
     - Side: Up
       Idx: 1
       Kind: inout
     InternalEdges:
     - Collectable: 0
-      ReqBoth:
+      ReqOut:
+        Dashes: zero
+      ReqIn:
         Dashes: one
   - Room: "d-02"
     Holes:
@@ -1493,30 +1518,18 @@ ASide:
         Add: true
         X: 832
         Y: 168
-  - Room: "d-05b"  # TODO gem
+  - Room: "d-05b"
     Holes:
     - Side: Left
       Idx: 0
       Kind: inout
-      ReqIn:
-        Or:
-        - Dashes: two
-        - Dashes: one
-          Difficulty: hard
-  - Room: "d-05x"  # dummy
-    Holes:
-    - Side: Up
-      Idx: 0
-      Kind: none
-    - Side: Up
-      Idx: 1
-      Kind: none
-    - Side: Up
-      Idx: 2
-      Kind: none
-    - Side: Up
-      Idx: 3
-      Kind: none
+    InternalEdges:
+      - Collectable: 0
+        ReqBoth:
+          Or:
+            - Dashes: two
+            - Dashes: one
+              Difficulty: hard
   - Room: "d-06"
     Hub: true
     Holes:
@@ -1918,6 +1931,13 @@ ASide:
       - Side: Right
         Idx: 0
         Kind: inout
+      InternalEdges:
+        - To: "berry"
+          ReqOut:
+            Dashes: zero
+          ReqIn:
+            Dashes: one
+    - Room: "berry"
       Collectables:
       - Idx: 0
     Tweaks:
@@ -2215,8 +2235,10 @@ ASide:
       Kind: inout
     InternalEdges:
     - Collectable: 0
-      ReqBoth:
-        Dashes: one  # zero would require a death
+      ReqOut:
+        Dashes: zero
+      ReqIn:
+        Dashes: one
   - Room: "e-11"
     Hub: true
     Holes:
@@ -2273,9 +2295,8 @@ ASide:
         Dashes: two
       InternalEdges:
       - Collectable: 0
-        # disabled as it may make some golden berries impossible
-        #ReqBoth:
-        #  Dashes: two
+        ReqOut:
+          Dashes: two
   - Room: "e-10b"
     Holes:
     - Side: Right
