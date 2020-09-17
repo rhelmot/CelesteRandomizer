@@ -1240,7 +1240,9 @@ ASide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: none   # TODO: fix hole
+      Kind: inout
+      LowBound: 8
+      HighBound: 11
     InternalEdges:
     - To: "right"
       ReqOut:
@@ -1260,17 +1262,27 @@ ASide:
         Idx: 1
         Kind: in
         Launch: -1
+    Tweaks:
+      - Name: "spinner"
+        ID: 203
+        Update:
+          X: 109
   - Room: "d-01c"
+    Hub: true
     Holes:
     - Side: Up
       Idx: 0
-      Kind: none  # TODO: fix hole
+      Kind: inout
+      LowBound: 8
+      HighBound: 12
     - Side: Up
       Idx: 1
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: none  # TODO: fix hole
+      Kind: inout
+      LowBound: 31
+      HighBound: 32
     - Side: Down
       Idx: 1
       Kind: inout
@@ -1310,7 +1322,7 @@ ASide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: none  # TODO: fix hole
+      Kind: none  # executive decision: this hole is useless
     - Side: Up
       Idx: 1
       Kind: inout
