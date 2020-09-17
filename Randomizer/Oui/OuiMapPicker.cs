@@ -95,52 +95,29 @@ namespace Celeste.Mod.Randomizer {
                 }),
             };
 
-            var lvlCount = new Dictionary<RandoSettings.AreaKeyNotStupid, int>();
-            foreach (var room in RandoLogic.AllRooms) {
-                var notstupid = new RandoSettings.AreaKeyNotStupid(room.Area);
-                if (lvlCount.TryGetValue(notstupid, out int c)) {
-                    lvlCount[notstupid] = c + 1;
-                } else {
-                    lvlCount[notstupid] = 1;
+            // Create submenu for Celeste, campaigns, then other levelsets
+            AddLevelSetMenu("Celeste");
+            List<string> completedLevelSets = new List<string> { "Celeste" };
+
+            var campaigns = RandoModule.Instance.MetaConfig.Campaigns;
+            foreach (RandoMetadataCampaign campaign in campaigns) {
+                menu.Add(new TextMenu.SubHeader(DialogExt.CleanLevelSet(campaign.Name)));
+                foreach (RandoMetadataLevelSet levelSet in campaign.LevelSets) {
+                    var name = levelSet.Name;
+                    if (RandoLogic.LevelSets.TryGetValue(levelSet.ID, out var keys)) {
+                        AddLevelSetToggle(name, keys);
+                        completedLevelSets.Add(levelSet.ID);
+                    }
                 }
             }
 
-            // Create submenu for each level set
-            foreach (RandoLogic.LevelSet levelSet in RandoLogic.LevelSets) {
-                menu.Add(new TextMenu.SubHeader(DialogExt.CleanLevelSet(levelSet.name)));
-                // Add custom groups first
-                foreach (string group in levelSet.customGroupNames) {
-                    var name = group.DialogCleanOrNull() ?? group.SpacedPascalCase();
-                    var areaKeys = levelSet.customGroups[group];
-                    var on = Settings.MapIncluded(areaKeys[0]);
-                    var numLevels = 0;
-                    foreach (AreaKey key in areaKeys) {
-                        numLevels += lvlCount[new RandoSettings.AreaKeyNotStupid(key)];
-                    }
-                    menu.Add(new TextMenu.OnOff(name, on).Change(this.MakeChangeFunc(areaKeys)));
-                    menu.Add(new TextMenuExt.SubHeaderExt(numLevels.ToString() + " " + Dialog.Clean("MODOPTIONS_RANDOMIZER_MAPPICKER_LEVELS")) {
-                        HeightExtra = -10f,
-                        Offset = new Vector2(30, -5),
-                    });
-                }
-                // Now add standalone areas
-                foreach (AreaKey key in levelSet.ungroupedKeys) {
-                    var area = AreaData.Get(key);
-                    var mode = AreaData.GetMode(key);
-                    var on = Settings.MapIncluded(key);
-                    var name = area.Name;
-                    name = name.DialogCleanOrNull() ?? name.SpacedPascalCase();
-                    if (key.Mode != AreaMode.Normal || (area.Mode.Length != 1 && area.Mode[1] != null)) {
-                        name += " " + Char.ToString((char)('A' + (int)key.Mode));
-                    }
-                    menu.Add(new TextMenu.OnOff(name, on).Change(this.MakeChangeFunc(key)));
-                    menu.Add(new TextMenuExt.SubHeaderExt(lvlCount[new RandoSettings.AreaKeyNotStupid(key)].ToString() + " " + Dialog.Clean("MODOPTIONS_RANDOMIZER_MAPPICKER_LEVELS")) {
-                        HeightExtra = -10f,
-                        Offset = new Vector2(30, -5),
-                    });
+            foreach (string levelSet in RandoLogic.LevelSets.Keys) {
+                if (!completedLevelSets.Contains(levelSet)) {
+                    AddLevelSetMenu(levelSet);
                 }
             }
 
+            // If Celeste is not the only levelset, Reset should turn all other levelsets off
             if (RandoLogic.LevelSets.Count > 1) {
                 menu.Insert(2, new TextMenu.Button(Dialog.Clean("MODOPTIONS_RANDOMIZER_MAPPICKER_RESET")).Pressed(() => {
                     Settings.SetNormalMaps();
@@ -157,6 +134,43 @@ namespace Celeste.Mod.Randomizer {
             }
 
             Scene.Add(menu);
+        }
+
+        private void AddAreaToggle(string name, AreaKey key) {
+            var on = Settings.MapIncluded(key);
+            var numLevels = RandoLogic.LevelCount[new RandoSettings.AreaKeyNotStupid(key)];
+            menu.Add(new TextMenu.OnOff(name, on).Change(this.MakeChangeFunc(key)));
+            menu.Add(new TextMenuExt.SubHeaderExt(numLevels.ToString() + " " + Dialog.Clean("MODOPTIONS_RANDOMIZER_MAPPICKER_LEVELS")) {
+                HeightExtra = -10f,
+                Offset = new Vector2(30, -5),
+            });
+        }
+
+        private void AddLevelSetToggle(string name, List<AreaKey> keys) {
+            var on = Settings.MapIncluded(keys[0]);
+            var numLevels = 0;
+            foreach (AreaKey key in keys) {
+                numLevels += RandoLogic.LevelCount[new RandoSettings.AreaKeyNotStupid(key)];
+            }
+            menu.Add(new TextMenu.OnOff(name, on).Change(this.MakeChangeFunc(keys)));
+            menu.Add(new TextMenuExt.SubHeaderExt(numLevels.ToString() + " " + Dialog.Clean("MODOPTIONS_RANDOMIZER_MAPPICKER_LEVELS")) {
+                HeightExtra = -10f,
+                Offset = new Vector2(30, -5),
+            });
+        }
+
+        private void AddLevelSetMenu(string levelSetID) {
+            List<AreaKey> keys = RandoLogic.LevelSets[levelSetID];
+            menu.Add(new TextMenu.SubHeader(DialogExt.CleanLevelSet(keys[0].GetLevelSet())));
+            foreach (var key in keys) {
+                var area = AreaData.Get(key);
+                var name = area.Name;
+                name = name.DialogCleanOrNull() ?? name.SpacedPascalCase();
+                if (key.Mode != AreaMode.Normal || (area.Mode.Length != 1 && area.Mode[1] != null)) {
+                    name += " " + Char.ToString((char)('A' + (int)key.Mode));
+                }
+                AddAreaToggle(name, key);
+            }
         }
 
         private Action<bool> MakeChangeFunc(AreaKey key) {
