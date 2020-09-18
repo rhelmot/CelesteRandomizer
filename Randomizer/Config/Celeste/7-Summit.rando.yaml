@@ -2691,8 +2691,13 @@ ASide:
         - Dashes: one
           Difficulty: hard
     - Collectable: 0  # TODO does this construction prevent you from getting the berry on normal difficulty with one dash from the right
-      ReqBoth:
+      ReqOut:
         Dashes: one
+      ReqIn:
+        Or:
+          - Dashes: two
+          - Dashes: one
+            Difficulty: hard
   - Room: "f-08d"
     Holes:
     - Side: Right

@@ -165,12 +165,14 @@ namespace Celeste.Mod.Randomizer {
                 }
             }
 
+            var defaultBerry = this.Settings.Algorithm == LogicType.Endless ? LinkedNode.LinkedCollectable.LifeBerry : LinkedNode.LinkedCollectable.Strawberry;
+
             while (this.PriorityCollectables.Count != 0) {
                 var spot = this.PriorityCollectables.Last().Item1;
                 var autoBubble = this.PriorityCollectables.Last().Item2;
                 this.PriorityCollectables.RemoveAt(this.PriorityCollectables.Count - 1);
 
-                spot.Node.Collectables[spot.Static] = Tuple.Create(spot.Static.MustFly ? LinkedNode.LinkedCollectable.WingedStrawberry : LinkedNode.LinkedCollectable.Strawberry, autoBubble);
+                spot.Node.Collectables[spot.Static] = Tuple.Create(spot.Static.MustFly ? LinkedNode.LinkedCollectable.WingedStrawberry : defaultBerry, autoBubble);
             }
 
             var targetCount = this.PossibleCollectables.Count / 3 * 2;
@@ -180,7 +182,7 @@ namespace Celeste.Mod.Randomizer {
                 var autoBubble = this.PossibleCollectables.Last().Item2;
                 this.PossibleCollectables.RemoveAt(this.PossibleCollectables.Count - 1);
 
-                spot.Node.Collectables[spot.Static] = Tuple.Create(spot.Static.MustFly ? LinkedNode.LinkedCollectable.WingedStrawberry : LinkedNode.LinkedCollectable.Strawberry, autoBubble);
+                spot.Node.Collectables[spot.Static] = Tuple.Create(spot.Static.MustFly ? LinkedNode.LinkedCollectable.WingedStrawberry : defaultBerry, autoBubble);
             }
         }
 

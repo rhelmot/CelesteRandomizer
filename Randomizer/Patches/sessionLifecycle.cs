@@ -18,6 +18,7 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.AutoSplitterInfo.Update += MainThreadHook;
             On.Celeste.Editor.MapEditor.ctor += MarkSessionUnclean;
             On.Celeste.LevelExit.Begin += HijackExitBegin;
+            On.Celeste.Player.Die += DieInEndless;
             IL.Celeste.SpeedrunTimerDisplay.DrawTime += SetPlatinumColor;
             IL.Celeste.AreaComplete.ctor += SetEndlessTitle;
             
@@ -31,6 +32,7 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.AutoSplitterInfo.Update -= MainThreadHook;
             On.Celeste.Editor.MapEditor.ctor -= MarkSessionUnclean;
             On.Celeste.LevelExit.Begin -= HijackExitBegin;
+            On.Celeste.Player.Die -= DieInEndless;
             IL.Celeste.SpeedrunTimerDisplay.DrawTime -= SetPlatinumColor;
             IL.Celeste.AreaComplete.ctor -= SetEndlessTitle;
             IL.Celeste.AreaComplete.Update -= GotoNextEndless;
@@ -73,16 +75,37 @@ namespace Celeste.Mod.Randomizer {
                 var time = session.Time;
                 var deaths = session.Deaths;
                 var clean = session.SeedCleanRandom();
+                var dynOld = new DynData<Session>(session);
+                var berries = dynOld.Get<Entities.BerrySet>("GrabbedLifeBerries");
                 session = new Session(genTask.Result);
                 session.Time = time;
                 session.Deaths = deaths;
                 session.SeedCleanRandom(clean);
+                var dynNew = new DynData<Session>(session);
+                dynNew.Set("GrabbedLifeBerries", berries);
                 UseSession = session;
                 StartMe = genTask.Result;
                 genTask = null;
                 return true;
             });
             cursor.Emit(Mono.Cecil.Cil.OpCodes.Brtrue, label);
+        }
+
+        private PlayerDeadBody DieInEndless(On.Celeste.Player.orig_Die orig, Player self, Vector2 direction, bool evenifinvincible, bool registerdeathinstats) {
+            var result = orig(self, direction, evenifinvincible, registerdeathinstats);
+            var settings = this.InRandomizerSettings;
+            if (result == null || settings == null || settings.Algorithm != LogicType.Endless) {
+                return result;
+            }
+
+            var dyn = new DynData<Session>(SaveData.Instance.CurrentSession);
+            if (dyn.Get<bool?>("SavedByTheBell") ?? false) {
+                dyn.Set<bool?>("SavedByTheBell", false);
+                return result;
+            }
+
+            result.DeathAction = () => Engine.Scene = (Scene) new LevelExit(LevelExit.Mode.GoldenBerryRestart, SaveData.Instance.CurrentSession);
+            return result;
         }
 
         private void SetEndlessTitle(ILContext il) {
@@ -205,23 +228,25 @@ namespace Celeste.Mod.Randomizer {
                 }
 
                 if (settings.Rules != Ruleset.Custom) {
+                    long submittedValue = settings.Algorithm == LogicType.Endless ? settings.EndlessLevel + 1 : level.Session.Time;
+                    Func<long, bool> betterthan = oldval => settings.Algorithm == LogicType.Endless ? (submittedValue > oldval) : (submittedValue < oldval);
                     if (this.SavedData.BestSetSeedTimes.TryGetValue(settings.Rules, out var prevBestSet)) {
-                        if (level.Session.Time < prevBestSet.Item1) {
+                        if (betterthan(prevBestSet.Item1)) {
                             level.Session.BeatBestTimePlatinum(true);
-                            this.SavedData.BestSetSeedTimes[settings.Rules] = RecordTuple.Create(level.Session.Time, settings.Seed);
+                            this.SavedData.BestSetSeedTimes[settings.Rules] = RecordTuple.Create(submittedValue, settings.Seed);
                         }
                     } else {
-                        this.SavedData.BestSetSeedTimes[settings.Rules] = RecordTuple.Create(level.Session.Time, settings.Seed);
+                        this.SavedData.BestSetSeedTimes[settings.Rules] = RecordTuple.Create(submittedValue, settings.Seed);
                     }
 
                     if (level.Session.SeedCleanRandom()) {
                         if (this.SavedData.BestRandomSeedTimes.TryGetValue(settings.Rules, out var prevBestRand)) {
-                            if (level.Session.Time < prevBestRand.Item1) {
+                            if (betterthan(prevBestRand.Item1)) {
                                 level.Session.BeatBestTimePlatinum(true);
-                                this.SavedData.BestRandomSeedTimes[settings.Rules] = RecordTuple.Create(level.Session.Time, settings.Seed);
+                                this.SavedData.BestRandomSeedTimes[settings.Rules] = RecordTuple.Create(submittedValue, settings.Seed);
                             }
                         } else {
-                            this.SavedData.BestRandomSeedTimes[settings.Rules] = RecordTuple.Create(level.Session.Time, settings.Seed);
+                            this.SavedData.BestRandomSeedTimes[settings.Rules] = RecordTuple.Create(submittedValue, settings.Seed);
                         }
                     }
                 }

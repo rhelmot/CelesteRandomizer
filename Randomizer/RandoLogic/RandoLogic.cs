@@ -272,14 +272,10 @@ namespace Celeste.Mod.Randomizer {
 
         private MapData MakeMap() {
             this.Map = new LinkedMap();
-            switch (this.Settings.Algorithm) {
-                case LogicType.Labyrinth:
-                    this.GenerateLabyrinth();
-                    break;
-                case LogicType.Pathway:
-                case LogicType.Endless:
-                    this.GeneratePathway();
-                    break;
+            if (this.Settings.IsLabyrinth) {
+                this.GenerateLabyrinth();
+            } else {
+                this.GeneratePathway();
             }
 
             var map = new MapData(this.Key);
