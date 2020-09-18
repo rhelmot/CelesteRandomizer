@@ -253,14 +253,11 @@ namespace Celeste.Mod.Randomizer {
         public List<string> CollectableNames = new List<string>();
         public List<RandoMetadataMusic> Music = new List<RandoMetadataMusic>();
         public List<RandoMetadataCampaign> Campaigns = new List<RandoMetadataCampaign>();
-        public RandoMetadataCampaign Campaign;
 
         public void Add(RandoMetadataFile other) {
             this.CollectableNames.AddRange(other.CollectableNames);
             this.Music.AddRange(other.Music);
-            if (other.Campaign != null) {
-                this.Campaigns.Add(other.Campaign);
-            }
+            this.Campaigns.AddRange(other.Campaigns);
         }
         
         public static RandoMetadataFile LoadAll() {
