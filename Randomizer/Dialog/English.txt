@@ -109,8 +109,9 @@ unfair gameplay
     
     MENU_CANTRESTART_HEADER=NO TURNING BACK NOW!
     
-# Endless interlude
+# Endless
     RANDOENDLESS_HEADER=Level {0} Complete!
+    RANDOENDLESS_SCORE=Score:
     
 # Heart texts
     RANDOHEART_FIXED_0=Trans Rights!

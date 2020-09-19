@@ -502,8 +502,13 @@ ASide:
       Kind: inout
     InternalEdges:
     - Collectable: 0
-      ReqBoth:
+      ReqOut:
         Dashes: one
+      ReqIn:
+        Or:
+          - Dashes: two
+          - Dashes: one
+            Difficulty: hard
   - Room: "d-02"
     Holes:
     - Side: Down
@@ -1802,8 +1807,9 @@ ASide:
       Idx: 0
       Kind: in
     - Side: Down
-      Idx: 1
-      Kind: inout
+      Idx: 0
+      Kind: Unknown
+      LowBound: 0
   - Room: "j-09"
     Holes:
     - Side: Right
@@ -1835,6 +1841,9 @@ ASide:
       Idx: 0
       Kind: Unknown
       HighOpen: true
+    - Side: Up
+      Idx: 1
+      Kind: None
   - Room: "j-11"
     Holes:
     - Side: Right

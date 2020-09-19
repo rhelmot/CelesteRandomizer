@@ -150,7 +150,7 @@ namespace Celeste.Mod.Randomizer {
             orig(self, playerIntro, fromLoader);
             // also, set the core mode right
             // if we're transitioning, we already set it correctly via the direction
-            if (settings != null && !self.Transitioning) {
+            if (settings != null && !self.Transitioning && playerIntro != Player.IntroTypes.Respawn) {
                 var leveldata = self.Session.LevelData;
                 var dyn = new DynData<LevelData>(leveldata);
                 RandoConfigCoreMode modes = dyn.Get<RandoConfigCoreMode>("coreModes");
@@ -250,7 +250,12 @@ namespace Celeste.Mod.Randomizer {
                 
                 // set life berries
                 if (isFromLoader && settings.Algorithm == LogicType.Endless) {
-                    Entities.LifeBerry.GrabbedLifeBerries.Carrying = Math.Max(settings.EndlessLives, Entities.LifeBerry.GrabbedLifeBerries.Carrying);
+                    var glb = Entities.LifeBerry.GrabbedLifeBerries;
+                    if (settings.EndlessLevel == 0) {
+                        glb.Carrying = settings.EndlessLives;
+                    } else if (glb.Carrying < settings.EndlessLives) {
+                        glb.Carrying++;
+                    }
                 }
             }
         }

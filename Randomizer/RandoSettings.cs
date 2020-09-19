@@ -88,7 +88,7 @@ namespace Celeste.Mod.Randomizer {
         [YamlIgnore]
         public int EndlessLevel;
 
-        [YamlIgnore] public bool IsLabyrinth => this.Algorithm == LogicType.Labyrinth || this.Algorithm == LogicType.Endless && this.EndlessLevel % 5 == 4;
+        [YamlIgnore] public bool IsLabyrinth => this.Algorithm == LogicType.Labyrinth || (this.Algorithm == LogicType.Endless && this.EndlessLevel % 5 == 4);
 
         public List<AreaKeyNotStupid> IncludedMapsList {
             get => new List<AreaKeyNotStupid>(this.IncludedMaps);

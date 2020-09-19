@@ -2,6 +2,9 @@ using System;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Linq;
+using System.Xml;
+using Celeste.Mod.Meta;
 using Monocle;
 using Microsoft.Xna.Framework;
 using MonoMod.Cil;
@@ -15,6 +18,8 @@ namespace Celeste.Mod.Randomizer {
         private void LoadSessionLifecycle() {
             Everest.Events.Level.OnComplete += OnComplete;
             On.Celeste.AreaComplete.VersionNumberAndVariants += AreaCompleteDrawHash;
+            On.Celeste.SpeedrunTimerDisplay.Render += EndlessShowScore;
+            On.Celeste.AreaComplete.Info += EndlessShowScore2;
             On.Celeste.AutoSplitterInfo.Update += MainThreadHook;
             On.Celeste.Editor.MapEditor.ctor += MarkSessionUnclean;
             On.Celeste.LevelExit.Begin += HijackExitBegin;
@@ -29,13 +34,14 @@ namespace Celeste.Mod.Randomizer {
         private void UnloadSessionLifecycle() {
             Everest.Events.Level.OnComplete -= OnComplete;
             On.Celeste.AreaComplete.VersionNumberAndVariants -= AreaCompleteDrawHash;
+            On.Celeste.SpeedrunTimerDisplay.Render -= EndlessShowScore;
+            On.Celeste.AreaComplete.Info -= EndlessShowScore2;
             On.Celeste.AutoSplitterInfo.Update -= MainThreadHook;
             On.Celeste.Editor.MapEditor.ctor -= MarkSessionUnclean;
             On.Celeste.LevelExit.Begin -= HijackExitBegin;
             On.Celeste.Player.Die -= DieInEndless;
             IL.Celeste.SpeedrunTimerDisplay.DrawTime -= SetPlatinumColor;
             IL.Celeste.AreaComplete.ctor -= SetEndlessTitle;
-            IL.Celeste.AreaComplete.Update -= GotoNextEndless;
             
             foreach (var detour in this.SpecialHooksSession) {
                 detour.Dispose();
@@ -108,10 +114,11 @@ namespace Celeste.Mod.Randomizer {
             return result;
         }
 
+        private StrawberriesCounter strawbs;
         private void SetEndlessTitle(ILContext il) {
             var cursor = new ILCursor(il);
             if (!cursor.TryGotoNext(MoveType.After, instr => instr.MatchCall("Celeste.Dialog", "Clean"))) {
-                throw new Exception("Could not find patch point!");
+                throw new Exception("Could not find patch point 1!");
             }
 
             cursor.EmitDelegate<Func<string, string>>((val) => {
@@ -120,6 +127,24 @@ namespace Celeste.Mod.Randomizer {
                 }
 
                 return val;
+            });
+
+            cursor.Index = 0;
+            if (!cursor.TryGotoNext(MoveType.After, instr => instr.MatchCall<Scene>("Add"))) {
+                throw new Exception("Could not find patch point 2!");
+            }
+            
+            cursor.Emit(Mono.Cecil.Cil.OpCodes.Ldarg_0);
+            cursor.EmitDelegate<Action<AreaComplete>>(self => {
+                if (this.endingSettings != null && this.endingSettings.Algorithm == LogicType.Endless) {
+                    this.strawbs = new StrawberriesCounter(false, Entities.LifeBerry.GrabbedLifeBerries.Carrying) {
+                        Position = new Vector2(70f, 100f),
+                    };
+                    // :/
+                    var e = new Entity();
+                    e.Add(this.strawbs);
+                    self.Add(e);
+                }
             });
         }
 
@@ -152,7 +177,13 @@ namespace Celeste.Mod.Randomizer {
             orig(self);
 
             if (AreaHandoff != null) {
-                AreaData.Areas.Add(AreaHandoff);
+                if (AreaHandoff.ID < AreaData.Areas.Count) {
+                    AreaData.Areas[AreaHandoff.ID] = AreaHandoff;
+                } else if (AreaHandoff.ID == AreaData.Areas.Count) {
+                    AreaData.Areas.Add(AreaHandoff);
+                } else {
+                    throw new Exception("Strange edge case in the randomizer, please report this bug");
+                }
                 var unused = new AreaKey(AreaData.Areas.Count - 1); // does this trigger some extra behavior
                 AreaHandoff = null;
             }
@@ -161,7 +192,7 @@ namespace Celeste.Mod.Randomizer {
                 
                 var area = AreaData.Get(newArea);
                 var dyn = new DynData<AreaData>(area);
-                var settings = dyn.Get<RandoSettings>("RandoSettings");
+                var areaSettings = dyn.Get<RandoSettings>("RandoSettings");
                 Audio.SetMusic(null);
                 Audio.SetAmbience(null);
                 Audio.Play("event:/ui/main/savefile_begin");
@@ -169,7 +200,7 @@ namespace Celeste.Mod.Randomizer {
                 // use the debug file
                 SaveData.InitializeDebugMode();
                 // turn on/off variants mode
-                SaveData.Instance.VariantMode = settings.Variants;
+                SaveData.Instance.VariantMode = areaSettings.Variants;
                 SaveData.Instance.AssistMode = false;
                 // mark as completed to spawn golden berry
                 SaveData.Instance.Areas[newArea.ID].Modes[0].Completed = true;
@@ -201,6 +232,14 @@ namespace Celeste.Mod.Randomizer {
 
                 }*/
             }
+            
+            // update endless mode score
+            var settings = (Engine.Scene is AreaComplete) ? this.endingSettings : this.InRandomizerSettings;
+            if (settings != null && settings.Algorithm == LogicType.Endless) {
+                this.CurrentScore = ComputeScore(settings);
+            } else {
+                this.CurrentScore = -1;
+            }
         }
 
         // when we load the map editor, effectively change to a set seed speedrun
@@ -228,7 +267,7 @@ namespace Celeste.Mod.Randomizer {
                 }
 
                 if (settings.Rules != Ruleset.Custom) {
-                    long submittedValue = settings.Algorithm == LogicType.Endless ? settings.EndlessLevel + 1 : level.Session.Time;
+                    long submittedValue = settings.Algorithm == LogicType.Endless ? this.CurrentScore : level.Session.Time;
                     Func<long, bool> betterthan = oldval => settings.Algorithm == LogicType.Endless ? (submittedValue > oldval) : (submittedValue < oldval);
                     if (this.SavedData.BestSetSeedTimes.TryGetValue(settings.Rules, out var prevBestSet)) {
                         if (betterthan(prevBestSet.Item1)) {
@@ -318,6 +357,63 @@ namespace Celeste.Mod.Randomizer {
 
             cursor.Emit(Mono.Cecil.Cil.OpCodes.Br, afterInstr);
             cursor.MarkLabel(beforeInstr);
+        }
+
+        public int CurrentScore;
+        public static int ComputeScore(RandoSettings settings) {
+            float time = (float)TimeSpan.FromTicks(SaveData.Instance.CurrentSession.Time).TotalSeconds;
+            float berries = Entities.LifeBerry.GrabbedLifeBerries.Carrying;
+            float levels = settings.EndlessLevel + 1;
+            float score;
+
+            // scoring consts
+            // formatted like this in case we want to have per-settings scores
+            float levelBonus = 150f;
+            float berryBonus = 40f;
+            float timeDecay = 0.1f / (60f * 10f);
+            score = levels * levelBonus + berries * berryBonus - time - timeDecay / 2f * time * time;
+            
+            return (int) score;
+        }
+
+        private void EndlessShowScore(On.Celeste.SpeedrunTimerDisplay.orig_Render orig, SpeedrunTimerDisplay self) {
+            var settings = this.InRandomizerSettings;
+            if (settings == null || settings.Algorithm != LogicType.Endless || global::Celeste.Settings.Instance.SpeedrunClock == SpeedrunType.Off) {
+                orig(self);
+                return;
+            }
+            
+            float x = -300f * Ease.CubeIn(1f - self.DrawLerp);
+            var scene = Engine.Scene as Level;
+            var session = scene.Session;
+            var wiggler = (Wiggler)typeof(SpeedrunTimerDisplay).GetField("wiggler", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(self);
+            var bg = (MTexture) typeof(SpeedrunTimerDisplay).GetField("bg", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(self);
+            
+            string timeString = TimeSpan.FromTicks(session.Time).ShortGameplayFormat();
+            string scoreString = Dialog.Clean("RANDOENDLESS_SCORE") + " " + this.CurrentScore;
+            
+            bg.Draw(new Vector2(x, self.Y));
+            SpeedrunTimerDisplay.DrawTime(new Vector2(x + 32f, self.Y + 44f), timeString);
+            Draw.Rect(x, self.Y + 38f, (float) (96 + 2), 22.8f, Color.Black); // ???
+            bg.Draw(new Vector2(x + 96, self.Y + 38f), Vector2.Zero, Color.White, 0.6f);
+            SpeedrunTimerDisplay.DrawTime(new Vector2(x + 32f, (float) ((double) self.Y + 40.0 + 26.400001525878906)), scoreString, (float) ((1.0 + (double) wiggler.Value * 0.15000000596046448) * 0.6000000238418579), session.StartedFromBeginning, scene.Completed, session.BeatBestTime, 0.6f);
+        }
+        
+        private void EndlessShowScore2(On.Celeste.AreaComplete.orig_Info orig, float ease, string speedruntimerchapterstring, string speedruntimerfilestring, string chapterspeedruntext, string versiontext) {
+            var settings = Engine.Scene is AreaComplete ? this.endingSettings : this.InRandomizerSettings;
+            var savedSetting = global::Celeste.Settings.Instance.SpeedrunClock;
+            if (savedSetting != SpeedrunType.Off && settings != null && settings.Algorithm == LogicType.Endless) {
+                global::Celeste.Settings.Instance.SpeedrunClock = SpeedrunType.Chapter;
+            }
+            orig(ease, speedruntimerchapterstring, speedruntimerfilestring, chapterspeedruntext, versiontext);
+            global::Celeste.Settings.Instance.SpeedrunClock = savedSetting;
+
+            if (settings != null && settings.Algorithm == LogicType.Endless) {
+                Vector2 position = new Vector2((float) (80.0 - 300.0 * (1.0 - (double) Ease.CubeOut(ease))), 1000f);
+                var scoreSpeedrunText = Dialog.Clean("RANDOENDLESS_SCORE");
+                ActiveFont.DrawOutline(scoreSpeedrunText, position + new Vector2(0.0f, 40f), new Vector2(0.0f, 1f), Vector2.One * 0.6f, Color.White, 2f, Color.Black);
+                SpeedrunTimerDisplay.DrawTime(position + new Vector2((float) ((double) ActiveFont.Measure(scoreSpeedrunText).X * 0.6000000238418579 + 8.0), 40f), this.CurrentScore.ToString(), 0.6f);
+            }
         }
     }
 
