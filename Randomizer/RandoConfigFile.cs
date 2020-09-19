@@ -18,7 +18,6 @@ namespace Celeste.Mod.Randomizer {
         public List<RandoConfigRoom> ASide { get; set; }
         public List<RandoConfigRoom> BSide { get; set; }
         public List<RandoConfigRoom> CSide { get; set; }
-        public string CustomGroup;
 
         public static RandoConfigFile Load(AreaData area) {
             String fullPath = "Config/" + area.GetSID() + ".rando";
@@ -253,10 +252,12 @@ namespace Celeste.Mod.Randomizer {
     public class RandoMetadataFile {
         public List<string> CollectableNames = new List<string>();
         public List<RandoMetadataMusic> Music = new List<RandoMetadataMusic>();
+        public List<RandoMetadataCampaign> Campaigns = new List<RandoMetadataCampaign>();
 
         public void Add(RandoMetadataFile other) {
             this.CollectableNames.AddRange(other.CollectableNames);
             this.Music.AddRange(other.Music);
+            this.Campaigns.AddRange(other.Campaigns);
         }
         
         public static RandoMetadataFile LoadAll() {
@@ -281,6 +282,18 @@ namespace Celeste.Mod.Randomizer {
     public class RandoMetadataMusic {
         public string Name;
         public float Weight = 1;
+    }
+
+    public class RandoMetadataCampaign
+    {
+        public string Name;
+        public List<RandoMetadataLevelSet> LevelSets;
+    }
+
+    public class RandoMetadataLevelSet
+    {
+        public string Name;
+        public string ID;
     }
 }
 

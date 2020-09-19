@@ -6,34 +6,8 @@ using System.Text.RegularExpressions;
 namespace Celeste.Mod.Randomizer {
     public partial class RandoLogic {
         public static List<StaticRoom> AllRooms = new List<StaticRoom>();
-        public static List<LevelSet> LevelSets = new List <LevelSet>();
-
-        public class LevelSet {
-            public LevelSet(string name) {
-                this.name = name;
-                this.customGroupNames = new List<string>();
-                this.customGroups = new Dictionary<string, List<AreaKey>>();
-                this.ungroupedKeys = new List<AreaKey>();
-            }
-            public string name;
-            public List<string> customGroupNames;
-            public Dictionary<string, List<AreaKey>> customGroups;
-            public List<AreaKey> ungroupedKeys;
-            public void AddAreaKey(AreaKey areaKey, string customGroup = null) {
-                if (customGroup != null) {
-                    if (customGroups.TryGetValue(customGroup, out List<AreaKey> areaKeys)) {
-                        areaKeys.Add(areaKey);
-                    }
-                    else {
-                        customGroupNames.Add(customGroup);
-                        customGroups[customGroup] = new List<AreaKey> { areaKey };
-                    }
-                }
-                else {
-                    ungroupedKeys.Add(areaKey);
-                }
-            }
-        }
+        public static Dictionary<string, List<AreaKey>> LevelSets = new Dictionary<string, List<AreaKey>> ();
+        public static Dictionary<RandoSettings.AreaKeyNotStupid, int> LevelCount = new Dictionary<RandoSettings.AreaKeyNotStupid, int>();
 
         public static List<Hole> FindHoles(LevelData data) {
             List<Hole> result = new List<Hole>();
@@ -164,18 +138,29 @@ namespace Celeste.Mod.Randomizer {
                 }
 
                 RandoLogic.AllRooms.AddRange(RandoLogic.ProcessMap(area.Mode[i].MapData, mapConfig));
-
-                var currentSetName = area.GetLevelSet();
-                LevelSet currentSet;
-                if (RandoLogic.LevelSets.Count == 0 || currentSetName != RandoLogic.LevelSets[RandoLogic.LevelSets.Count - 1].name) {
-                    currentSet = new LevelSet(currentSetName);
-                    RandoLogic.LevelSets.Add(currentSet);
+                // Use SID (minus level name) for levelsets to avoid collisions
+                AreaKey key = new AreaKey(area.ID, (AreaMode)i);
+                string SID = key.SID;
+                string levelSetID = SID.Substring(0, SID.LastIndexOf('/'));
+                if (RandoLogic.LevelSets.TryGetValue(levelSetID, out var keyList)) {
+                    keyList.Add(key);
                 }
                 else {
-                    currentSet = RandoLogic.LevelSets[RandoLogic.LevelSets.Count - 1];
+                    RandoLogic.LevelSets.Add(levelSetID, new List<AreaKey> { key });
                 }
-                var areaKey = new AreaKey(area.ID, (AreaMode)i);
-                currentSet.AddAreaKey(areaKey, config.CustomGroup);
+            }
+        }
+
+        private static void CountRooms() {
+            foreach (var room in RandoLogic.AllRooms)
+            {
+                var notstupid = new RandoSettings.AreaKeyNotStupid(room.Area);
+                if (RandoLogic.LevelCount.TryGetValue(notstupid, out int c)) {
+                    RandoLogic.LevelCount[notstupid] = c + 1;
+                }
+                else {
+                    RandoLogic.LevelCount[notstupid] = 1;
+                }
             }
         }
 
@@ -188,6 +173,8 @@ namespace Celeste.Mod.Randomizer {
             foreach (var area in AreaData.Areas) {
                 RandoLogic.ProcessArea(area);
             }
+
+            RandoLogic.CountRooms();
         }
     }
 }
