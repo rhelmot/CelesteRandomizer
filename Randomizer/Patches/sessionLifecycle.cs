@@ -166,7 +166,15 @@ namespace Celeste.Mod.Randomizer {
             Audio.SetMusic(SFX.music_complete_bside);
             Audio.SetAmbience(null);
 
-            this.genTask = Task.Run(() => RandoLogic.GenerateMap(newSettings));
+            this.genTask = Task.Run(() => {
+                try {
+                    return RandoLogic.GenerateMap(newSettings);
+                } catch (GenerationError e) {
+                    LevelEnterExt.ErrorMessage = e.Message ?? "Failed to generate area";
+                    LevelEnter.Go(new Session(new AreaKey(1).SetSID("")), false);
+                    return AreaKey.None;
+                }
+            });
         }
 
         public static AreaData AreaHandoff;
