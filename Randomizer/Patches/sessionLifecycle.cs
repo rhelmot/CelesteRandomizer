@@ -277,13 +277,16 @@ namespace Celeste.Mod.Randomizer {
                 if (settings.Rules != Ruleset.Custom) {
                     long submittedValue = settings.Algorithm == LogicType.Endless ? this.CurrentScore : level.Session.Time;
                     Func<long, bool> betterthan = oldval => settings.Algorithm == LogicType.Endless ? (submittedValue > oldval) : (submittedValue < oldval);
-                    if (this.SavedData.BestSetSeedTimes.TryGetValue(settings.Rules, out var prevBestSet)) {
-                        if (betterthan(prevBestSet.Item1)) {
-                            level.Session.BeatBestTimePlatinum(true);
+                    if (settings.Algorithm != LogicType.Endless || settings.SeedType != SeedType.Random) {
+                        // unless we're playing endless, allow random seeds to count toward set seed records
+                        if (this.SavedData.BestSetSeedTimes.TryGetValue(settings.Rules, out var prevBestSet)) {
+                            if (betterthan(prevBestSet.Item1)) {
+                                level.Session.BeatBestTimePlatinum(true);
+                                this.SavedData.BestSetSeedTimes[settings.Rules] = RecordTuple.Create(submittedValue, settings.Seed);
+                            }
+                        } else {
                             this.SavedData.BestSetSeedTimes[settings.Rules] = RecordTuple.Create(submittedValue, settings.Seed);
                         }
-                    } else {
-                        this.SavedData.BestSetSeedTimes[settings.Rules] = RecordTuple.Create(submittedValue, settings.Seed);
                     }
 
                     if (level.Session.SeedCleanRandom()) {
@@ -376,9 +379,16 @@ namespace Celeste.Mod.Randomizer {
 
             // scoring consts
             // formatted like this in case we want to have per-settings scores
-            float levelBonus = 150f;
-            float berryBonus = 40f;
-            float timeDecay = 0.1f / (60f * 10f);
+            float levelBonus, berryBonus, timeDecay;
+            if (settings.SeedType == SeedType.Custom) {
+                levelBonus = 150f;
+                berryBonus = 40f;
+                timeDecay = 0.1f / (60f * 10f);
+            } else {
+                levelBonus = 450f;
+                berryBonus = 60f;
+                timeDecay = 0.1f / (60f * 15f);
+            }
             score = levels * levelBonus + berries * berryBonus - time - timeDecay / 2f * time * time;
             
             return (int) score;
