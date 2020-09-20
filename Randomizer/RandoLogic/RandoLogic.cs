@@ -18,10 +18,8 @@ namespace Celeste.Mod.Randomizer {
 
     public partial class RandoLogic {
         public static AreaKey GenerateMap(RandoSettings settings) {
-            var lastarea = AreaData.Areas[AreaData.Areas.Count - 1];
             var newID = AreaData.Areas.Count;
-            bool secondVerseSameAsTheFirst = lastarea.GetSID().StartsWith("randomizer/");
-            if (secondVerseSameAsTheFirst) {
+            if (AreaData.Areas.Last().GetSID().StartsWith("randomizer/")) {
                 newID--;
             }
 
@@ -62,17 +60,15 @@ namespace Celeste.Mod.Randomizer {
             dyn.Set<RandoSettings>("RandoSettings", settings.Copy());
 
             newArea.SetSID($"randomizer/{newArea.Name}");
-            if (secondVerseSameAsTheFirst) {
-                AreaData.Areas[AreaData.Areas.Count - 1] = newArea;
-                // invalidate the MapEditor area key cache, as it will erroniously see a cache hit
-                typeof(Editor.MapEditor).GetField("area", BindingFlags.NonPublic | BindingFlags.Static).SetValue(null, AreaKey.None);
-            } else {
-                // avert race condition
-                RandoModule.AreaHandoff = newArea;
-                while (RandoModule.AreaHandoff != null) {
-                    Thread.Sleep(10);
-                }
+            
+            // avert race condition
+            RandoModule.AreaHandoff = newArea;
+            while (RandoModule.AreaHandoff != null) {
+                Thread.Sleep(10);
             }
+            
+            // invalidate the MapEditor area key cache, as it will erroniously see a cache hit
+            typeof(Editor.MapEditor).GetField("area", BindingFlags.NonPublic | BindingFlags.Static).SetValue(null, AreaKey.None);
 
             var key = new AreaKey(newArea.ID);
 
@@ -272,14 +268,10 @@ namespace Celeste.Mod.Randomizer {
 
         private MapData MakeMap() {
             this.Map = new LinkedMap();
-            switch (this.Settings.Algorithm) {
-                case LogicType.Labyrinth:
-                    this.GenerateLabyrinth();
-                    break;
-                case LogicType.Pathway:
-                case LogicType.Endless:
-                    this.GeneratePathway();
-                    break;
+            if (this.Settings.IsLabyrinth) {
+                this.GenerateLabyrinth();
+            } else {
+                this.GeneratePathway();
             }
 
             var map = new MapData(this.Key);

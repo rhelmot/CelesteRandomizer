@@ -503,6 +503,9 @@ namespace Celeste.Mod.Randomizer {
                         case LinkedNode.LinkedCollectable.Gem6:
                             name = "summitgem";
                             break;
+                        case LinkedNode.LinkedCollectable.LifeBerry:
+                            name = "randomizer/LifeBerry";
+                            break;
                     }
 
                     var e = new EntityData {
@@ -610,6 +613,7 @@ namespace Celeste.Mod.Randomizer {
             Gem4,
             Gem5,
             Gem6,
+            LifeBerry,
         }
 
         public IEnumerable<LinkedNode> Successors(Capabilities capsForward, Capabilities capsReverse, bool onlyInternal = false) {

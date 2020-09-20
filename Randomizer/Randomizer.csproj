@@ -90,6 +90,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\LifeBerry.cs" />
     <Compile Include="RandoModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DeepCopy.cs" />

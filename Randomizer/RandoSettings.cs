@@ -18,6 +18,8 @@ namespace Celeste.Mod.Randomizer {
         D,
         E,
         F,
+        G,
+        H,
         Last
     }
 
@@ -74,6 +76,7 @@ namespace Celeste.Mod.Randomizer {
         public bool SpawnGolden;
         public bool Variants = true;
         public bool RandomDecorations = true;
+        public int EndlessLives = 3;
         public LogicType Algorithm;
         public MapLength Length;
         public NumDashes Dashes = NumDashes.One;
@@ -84,6 +87,8 @@ namespace Celeste.Mod.Randomizer {
         public HashSet<AreaKeyNotStupid> IncludedMaps = new HashSet<AreaKeyNotStupid>();
         [YamlIgnore]
         public int EndlessLevel;
+
+        [YamlIgnore] public bool IsLabyrinth => this.Algorithm == LogicType.Labyrinth || (this.Algorithm == LogicType.Endless && this.EndlessLevel % 5 == 4);
 
         public List<AreaKeyNotStupid> IncludedMapsList {
             get => new List<AreaKeyNotStupid>(this.IncludedMaps);
@@ -175,6 +180,32 @@ namespace Celeste.Mod.Randomizer {
                     this.Difficulty = Difficulty.Hard;
                     this.Lights = ShineLights.Hubs;
                     this.Darkness = Darkness.Never;
+                    break;
+                case Ruleset.G:
+                    this.SetNormalMaps();
+                    this.RepeatRooms = false;
+                    this.EnterUnknown = false;
+                    this.Variants = false;
+                    this.Algorithm = LogicType.Endless;
+                    this.Length = MapLength.Short;
+                    this.Dashes = NumDashes.One;
+                    this.Difficulty = Difficulty.Normal;
+                    this.Lights = ShineLights.On;
+                    this.Darkness = Darkness.Vanilla;
+                    this.EndlessLives = 3;
+                    break;
+                case Ruleset.H:
+                    this.SetNormalMaps();
+                    this.RepeatRooms = false;
+                    this.EnterUnknown = false;
+                    this.Variants = false;
+                    this.Algorithm = LogicType.Endless;
+                    this.Length = MapLength.Short;
+                    this.Dashes = NumDashes.One;
+                    this.Difficulty = Difficulty.Hard;
+                    this.Lights = ShineLights.On;
+                    this.Darkness = Darkness.Vanilla;
+                    this.EndlessLives = 5;
                     break;
             }
         }

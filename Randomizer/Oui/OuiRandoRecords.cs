@@ -90,7 +90,8 @@ namespace Celeste.Mod.Randomizer {
         }
 
         private void AddRecord(Ruleset rules, RecordTuple record) {
-            menu.Add(new TextMenu.Button(Dialog.Clean("MODOPTIONS_RANDOMIZER_RULES_" + rules) + ": " + Dialog.Time(record.Item1) + " (" + record.Item2 + ")").Pressed(() => {
+            string formatted = (rules == Ruleset.G || rules == Ruleset.H) ? record.Item1.ToString() : Dialog.Time(record.Item1);
+            menu.Add(new TextMenu.Button(Dialog.Clean("MODOPTIONS_RANDOMIZER_RULES_" + rules) + ": " + formatted + " (" + record.Item2 + ")").Pressed(() => {
                 Settings.Rules = rules;
                 Settings.SeedType = SeedType.Custom;
                 Settings.Seed = record.Item2;

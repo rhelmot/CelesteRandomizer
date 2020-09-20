@@ -40,6 +40,7 @@ namespace Celeste.Mod.Randomizer {
             LoadMechanics();
             LoadSessionLifecycle();
             LoadMenuLifecycle();
+            Entities.LifeBerry.Load();
         }
 
         public Action ResetExtendedVariants;
@@ -65,6 +66,7 @@ namespace Celeste.Mod.Randomizer {
             UnloadMechanics();
             UnloadSessionLifecycle();
             UnloadMenuLifecycle();
+            Entities.LifeBerry.Unload();
         }
 
         public override void CreateModMenuSection(TextMenu menu, bool inGame, EventInstance snapshot) {

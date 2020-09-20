@@ -78,6 +78,7 @@ namespace Celeste.Mod.Randomizer {
                 this.TriedRooms.Add(receipt.NewRoom.Static);
                 this.AddReceipt(receipt);
                 this.AddNextTask(new TaskPathwayPickEdge(this.Logic, receipt.NewRoom.Nodes["main"]));
+                this.AddLastTask(new TaskPathwayBerryOffshoot(this.Logic, receipt.NewRoom.Nodes["main"]));
 
                 return true;
             }
@@ -141,6 +142,23 @@ namespace Celeste.Mod.Randomizer {
                 foreach (var edge in possibilities) {
                     var result = ConnectAndMapReceipt.Do(this.Logic, this.Edge, edge);
                     if (result != null) {
+                        var defaultBerry = this.Logic.Settings.Algorithm == LogicType.Endless ? LinkedNode.LinkedCollectable.LifeBerry : LinkedNode.LinkedCollectable.Strawberry;
+                        var closure = LinkedNodeSet.Closure(result.EntryNode, caps, caps, true);
+                        var seen = new HashSet<UnlinkedCollectable>();
+                        foreach (var spot in closure.UnlinkedCollectables()) {
+                            seen.Add(spot);
+                            if (!spot.Static.MustFly && this.Logic.Random.Next(5) == 0) {
+                                spot.Node.Collectables[spot.Static] = Tuple.Create(defaultBerry, false);
+                            }
+                        }
+
+                        closure.Extend(caps, null, true);
+                        foreach (var spot in closure.UnlinkedCollectables()) {
+                            if (!seen.Contains(spot) && !spot.Static.MustFly && this.Logic.Random.Next(10) == 0) {
+                                spot.Node.Collectables[spot.Static] = Tuple.Create(defaultBerry, true);
+                            }
+                        }
+                        
                         return result;
                     }
                 }
@@ -181,6 +199,7 @@ namespace Celeste.Mod.Randomizer {
                 if (!this.IsEnd) {
                     var newNode = receipt.Edge.OtherNode(this.Edge.Node);
                     this.AddNextTask(new TaskPathwayPickEdge(this.Logic, newNode));
+                    this.AddLastTask(new TaskPathwayBerryOffshoot(this.Logic, receipt.EntryNode));
                 }
 
                 return true;
@@ -277,6 +296,68 @@ namespace Celeste.Mod.Randomizer {
             public override void Undo() {
                 base.Undo();
                 this.OriginalNode.Room.UsedKeyholes.Remove(this.KeyholeID);
+            }
+        }
+
+        private class TaskPathwayBerryOffshoot : RandoTask {
+            public LinkedNode Node;
+            
+            public TaskPathwayBerryOffshoot(RandoLogic logic, LinkedNode node) : base(logic) {
+                this.Node = node;
+            }
+            public override bool Next() {
+                Logger.Log("DEBUG", $"Thinking about adding berries from {this.Node.Room}");
+                var caps = this.Logic.Caps.WithoutKey();
+                var closure = LinkedNodeSet.Closure(this.Node, caps, caps, true);
+                foreach (var edge in closure.UnlinkedEdges()) {
+                    Logger.Log("DEBUG", $"Considering edge {edge}");
+                    if (!this.Logic.Map.HoleFree(this.Node.Room, edge.Static.HoleTarget)) {
+                        continue;
+                    }
+                    if (this.Logic.Random.Next(5) != 0) {
+                        continue;
+                    }
+
+                    Logger.Log("DEBUG", "... dice says yes!");
+                    var possibilities = this.Logic.AvailableNewEdges(caps, caps, e => e.FromNode.ParentRoom.Collectables.Count != 0);
+                    foreach (var newEdge in possibilities) {
+                        var receipt = ConnectAndMapReceipt.Do(this.Logic, edge, newEdge);
+                        if (receipt == null) {
+                            continue;
+                        }
+
+                        var closure2 = LinkedNodeSet.Closure(receipt.EntryNode, caps, caps, true);
+                        var seen = new HashSet<UnlinkedCollectable>();
+                        var options = new List<Tuple<UnlinkedCollectable, bool>>();
+                        foreach (var spot in closure2.UnlinkedCollectables()) {
+                            seen.Add(spot);
+                            options.Add(Tuple.Create(spot, false));
+                        }
+
+                        closure2.Extend(caps, null, true);
+                        foreach (var spot in closure2.UnlinkedCollectables()) {
+                            if (seen.Contains(spot)) {
+                                continue;
+                            }
+                            options.Add(Tuple.Create(spot, true));
+                        }
+
+                        if (options.Count == 0) {
+                            Logger.Log("DEBUG", "Nowhere to put a berry :(");
+                            receipt.Undo();
+                            continue;
+                        }
+
+                        var pickedSpotTup = options[this.Logic.Random.Next(options.Count)];
+                        var pickedSpot = pickedSpotTup.Item1;
+                        var berry = pickedSpot.Static.MustFly ? LinkedNode.LinkedCollectable.WingedStrawberry : this.Logic.Settings.Algorithm == LogicType.Endless ? LinkedNode.LinkedCollectable.LifeBerry : LinkedNode.LinkedCollectable.Strawberry;
+                        pickedSpot.Node.Collectables[pickedSpot.Static] = Tuple.Create(berry, pickedSpotTup.Item2);
+                        Logger.Log("DEBUG", "placed a berry :)");
+                        break;
+                    }
+                }
+
+                return true;
             }
         }
     }

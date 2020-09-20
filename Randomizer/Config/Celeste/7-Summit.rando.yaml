@@ -94,7 +94,7 @@ ASide:
         Or:
         - Dashes: two
         - Dashes: one
-          Difficulty: hard
+          Difficulty: expert
       ReqIn:
         Dashes: one
     Subrooms:
@@ -1990,6 +1990,11 @@ ASide:
       Y: 56
       Update:
         X: 24
+    - Name: "spawn"
+      X: 24
+      Y: 56
+      Update:
+        Default: true
     - Name: "jumpThru"
       ID: 209
       Update:
@@ -2141,11 +2146,8 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
-    - Side: Up
-      Idx: 0
-      Kind: inout
     InternalEdges:
-    - Split: BottomToTop
+    - To: "top"
       ReqOut:
         Or:
         - Dashes: one
@@ -2153,9 +2155,24 @@ ASide:
           Difficulty: hard
       ReqIn:
         Dashes: two
-    - Collectable: 0
-      ReqBoth:
+    - To: "berry"
+      ReqOut:
+        Dashes: one
+      ReqIn:
         Dashes: two
+    Subrooms:
+      - Room: "top"
+        Holes:
+        - Side: Up
+          Idx: 0
+          Kind: inout
+        InternalEdges:
+          - To: "berry"
+            ReqBoth:
+              Dashes: two
+      - Room: "berry"
+        Collectables:
+          - Idx: 0
     Tweaks:
     - Name: "killbox"
       ID: 523
@@ -2691,8 +2708,13 @@ ASide:
         - Dashes: one
           Difficulty: hard
     - Collectable: 0  # TODO does this construction prevent you from getting the berry on normal difficulty with one dash from the right
-      ReqBoth:
+      ReqOut:
         Dashes: one
+      ReqIn:
+        Or:
+          - Dashes: two
+          - Dashes: one
+            Difficulty: hard
   - Room: "f-08d"
     Holes:
     - Side: Right
@@ -2855,13 +2877,16 @@ ASide:
         - Dashes: two
         - Dashes: one
           Difficulty: hard      # lots of neutrals
+    - Side: Down
+      Idx: 0
+      Kind: in
     - Side: Up
       Idx: 1
       Kind: none
-    - Side: Down
-      Idx: 0
-      Kind: in          # TODO: shorten jumpthru
     - Side: Right
+      Idx: 0
+      Kind: none
+    - Side: Left
       Idx: 0
       Kind: none
   - Room: "g-00b"

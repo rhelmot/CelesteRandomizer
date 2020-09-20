@@ -1041,7 +1041,7 @@ ASide:
           Dashes: one
         ReqIn:
           Dashes: two
-          Difficulty: hard
+          Difficulty: expert  # very precise jumps
     Tweaks:
       - Name: "exitBlock"
         ID: 1080

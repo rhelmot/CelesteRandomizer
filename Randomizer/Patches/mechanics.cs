@@ -80,7 +80,7 @@ namespace Celeste.Mod.Randomizer {
             }
         }
 
-        static IEnumerator AutoBubbleCoroutine(Player player) {
+        public static IEnumerator AutoBubbleCoroutine(Player player) {
             yield return 0.3f;
             if (!player.Dead) {
               Audio.Play("event:/game/general/cassette_bubblereturn", player.SceneAs<Level>().Camera.Position + new Vector2(160f, 90f));
@@ -150,7 +150,7 @@ namespace Celeste.Mod.Randomizer {
             orig(self, playerIntro, fromLoader);
             // also, set the core mode right
             // if we're transitioning, we already set it correctly via the direction
-            if (settings != null && !self.Transitioning) {
+            if (settings != null && !self.Transitioning && playerIntro != Player.IntroTypes.Respawn) {
                 var leveldata = self.Session.LevelData;
                 var dyn = new DynData<LevelData>(leveldata);
                 RandoConfigCoreMode modes = dyn.Get<RandoConfigCoreMode>("coreModes");
@@ -158,7 +158,7 @@ namespace Celeste.Mod.Randomizer {
                 self.Session.CoreMode = self.CoreMode;
             }
 
-            if (settings != null && settings.Algorithm == LogicType.Labyrinth && Everest.Loader.DependencyLoaded(new EverestModuleMetadata() { Name = "BingoUI" })) {
+            if (settings != null && settings.IsLabyrinth && Everest.Loader.DependencyLoaded(new EverestModuleMetadata() { Name = "BingoUI" })) {
                 var ui = LoadGemUI(fromLoader); // must be a separate method or the jit will be very sad :(
                 self.Add(ui); // lord fucking help us
             }
@@ -246,6 +246,16 @@ namespace Celeste.Mod.Randomizer {
                     SaveData.Instance.SummitGems[0] = true;
                     SaveData.Instance.SummitGems[1] = true;
                     SaveData.Instance.SummitGems[2] = true;
+                }
+                
+                // set life berries
+                if (isFromLoader && settings.Algorithm == LogicType.Endless) {
+                    var glb = Entities.LifeBerry.GrabbedLifeBerries;
+                    if (settings.EndlessLevel == 0) {
+                        glb.Carrying = settings.EndlessLives;
+                    } else if (glb.Carrying < settings.EndlessLives) {
+                        glb.Carrying++;
+                    }
                 }
             }
         }

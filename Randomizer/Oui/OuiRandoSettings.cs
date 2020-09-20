@@ -139,6 +139,12 @@ namespace Celeste.Mod.Randomizer {
                 );
             });
             seedbutton.Visible = Settings.SeedType == SeedType.Custom;
+            
+            var endlesslivespicker = new TextMenuExt.IntSlider(Dialog.Clean("MODOPTIONS_RANDOMIZER_LIVES"), 0, 50, Settings.EndlessLives);
+            endlesslivespicker.OnValueChange = i => {
+                Settings.EndlessLives = i;
+            };
+            endlesslivespicker.Visible = Settings.Algorithm == LogicType.Endless;
 
             var seedtypetoggle = new TextMenu.Slider(Dialog.Clean("MODOPTIONS_RANDOMIZER_SEEDTYPE"), (i) => {
                 return Dialog.Clean("MODOPTIONS_RANDOMIZER_SEEDTYPE_" + Enum.GetNames(typeof(SeedType))[i].ToUpperInvariant());
@@ -164,6 +170,7 @@ namespace Celeste.Mod.Randomizer {
                 return Dialog.Clean("MODOPTIONS_RANDOMIZER_LOGIC_" + Enum.GetNames(typeof(LogicType))[i].ToUpperInvariant());
             }, 0, (int)LogicType.Last - 1, (int)Settings.Algorithm).Change((i) => {
                 Settings.Algorithm = (LogicType)i;
+                endlesslivespicker.Visible = Settings.Algorithm == LogicType.Endless;
                 updateHashText();
             });
 
@@ -273,6 +280,8 @@ namespace Celeste.Mod.Randomizer {
                 shinetoggle.Index = (int)Settings.Lights;
                 darktoggle.Index = (int)Settings.Darkness;
                 mapcountlbl.Title = Settings.LevelCount.ToString() + " " + Dialog.Clean("MODOPTIONS_RANDOMIZER_MAPPICKER_LEVELS");
+                endlesslivespicker.Index = Settings.EndlessLives;
+                endlesslivespicker.Visible = Settings.Algorithm == LogicType.Endless;
 
                 var locked = Settings.Rules != Ruleset.Custom;
                 mapbutton.Disabled = locked;
@@ -285,6 +294,7 @@ namespace Celeste.Mod.Randomizer {
                 shinetoggle.Disabled = locked;
                 darktoggle.Disabled = locked;
                 variantstoggle.Disabled = locked;
+                endlesslivespicker.Disabled = locked;
             }
             syncModel();
 
@@ -361,6 +371,7 @@ namespace Celeste.Mod.Randomizer {
             menu.Add(mapbutton);
             menu.Add(mapcountlbl);
             menu.Add(logictoggle);
+            menu.Add(endlesslivespicker);
             menu.Add(lengthtoggle);
             menu.Add(numdashestoggle);
             menu.Add(difficultytoggle);
