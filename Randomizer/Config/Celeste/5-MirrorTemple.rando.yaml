@@ -7,7 +7,7 @@ ASide:
     InternalEdges:
     - Collectable: 0
       ReqBoth:
-        Dashes: one  # TODO: maybe doable with a ceiling pop and zero dashes?
+        Dashes: one
   - Room: "a-00b"
     Holes:
     - Side: Right
@@ -198,8 +198,10 @@ ASide:
       Kind: inout
     InternalEdges:
     - Collectable: 0
-      ReqBoth:
+      ReqOut:
         Dashes: one
+      ReqIn:
+        Dashes: zero
   - Room: "a-07"
     Holes:
     - Side: Right
