@@ -52,7 +52,10 @@ ASide:
       Idx: 0
       Kind: inout
       ReqOut:
-        Dashes: one  # TODO: maybe doable with zero dashes and a ceiling pop
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: expert  # requires a ceiling pop but there's no penalty for failure
     - Side: Right
       Idx: 0
       Kind: inout

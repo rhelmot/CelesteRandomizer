@@ -1867,6 +1867,12 @@ ASide:
     - Side: Down
       Idx: 1
       Kind: None
+    Tweaks:
+      - Name: "fgTiles"
+        X: 4
+        Y: 20
+        Update:
+          Tile: 0
   - Room: "j-12"
     Holes:
     - Side: Right

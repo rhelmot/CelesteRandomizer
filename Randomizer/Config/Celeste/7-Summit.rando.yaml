@@ -3566,6 +3566,12 @@ BSide:
     - Side: Up
       Idx: 1
       Kind: None
+    Tweaks:
+      - Name: "fgTiles"
+        X: 40
+        Y: 20
+        Update:
+          Tile: 0
   - Room: "b-03"
     Holes:
     - Side: Up
