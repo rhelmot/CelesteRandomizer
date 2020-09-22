@@ -234,6 +234,10 @@ namespace Celeste.Mod.Randomizer {
                 if (new DynData<MapData>(level.Session.MapData).Get<bool?>("HasExtendedVariantTriggers") ?? false) {
                     this.ResetExtendedVariants();
                 }
+                // reset variants maybe too
+                if (new DynData<MapData>(level.Session.MapData).Get<bool?>("HasIsaVariantTriggers") ?? false) {
+                    this.ResetIsaVariants();
+                }
             }
         }
 
