@@ -44,8 +44,8 @@ namespace Celeste.Mod.Randomizer {
         }
 
         public Action ResetExtendedVariants;
-
         public Action ResetIsaVariants;
+        
         // Abusing this method as a delayed load thing
         public override void LoadContent(bool firstLoad) {
             var dll = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(asm => asm.FullName.Contains("ExtendedVariant"));

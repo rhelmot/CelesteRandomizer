@@ -490,7 +490,10 @@ ASide:
       ReqOut:
         Dashes: zero
       ReqIn:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: hard
   - Room: "b-01c"
     Holes:
     - Side: Up
@@ -507,7 +510,7 @@ ASide:
       Holes:
       - Side: Up
         Idx: 1
-        Kind: out
+        Kind: inout
       Collectables:
       - Idx: 0
   - Room: "b-01b"
@@ -590,6 +593,7 @@ ASide:
             Difficulty: perfect
       Collectables:
       - Idx: 0
+      # TODO there is no way to represent that this collectable can be gotten from the bottom with two dashes without the generator thinking that you can also get to the top of the room with two dashes
   - Room: "b-05"
     Holes:
     - Side: Left
@@ -736,8 +740,6 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
-      ReqIn:
-        Dashes: one
   - Room: "b-06"
     Holes:
     - Side: Left
@@ -880,12 +882,54 @@ ASide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
-      ReqOut:
-        Dashes: one
+      Kind: inout
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
+    InternalEdges:
+      - Split: LeftToRight
+        ReqBoth:
+          Dashes: one
+    Tweaks:
+      - Name: "fakeBlock"
+        Update:
+          Add: true
+          X: 184
+          Y: 88
+          Width: 24
+          Height: 32
+          Values:
+            tiletype: e
+      - Name: "fgTiles"
+        X: 23
+        Y: 12
+        Update:
+          Tile: 0
+      - Name: "fgTiles"
+        X: 23
+        Y: 13
+        Update:
+          Tile: 0
+      - Name: "fgTiles"
+        X: 24
+        Y: 12
+        Update:
+          Tile: 0
+      - Name: "fgTiles"
+        X: 24
+        Y: 13
+        Update:
+          Tile: 0
+      - Name: "fgTiles"
+        X: 25
+        Y: 12
+        Update:
+          Tile: 0
+      - Name: "fgTiles"
+        X: 25
+        Y: 13
+        Update:
+          Tile: 0
   - Room: "c-01c"
     Holes:
     - Side: Right
@@ -1076,7 +1120,7 @@ ASide:
       Kind: inout
     - Side: Right
       Idx: 2
-      Kind: in
+      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
@@ -1092,7 +1136,7 @@ ASide:
     InternalEdges:
     - To: "bottomleft"  # TODO: can traverse reverse if switch pressed
       ReqIn:
-        Dashes: one
+        Dashes: zero
     Subrooms:
     - Room: "bottomleft"
       Holes:
@@ -1435,7 +1479,10 @@ ASide:
     InternalEdges:
     - Split: RightToLeft
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: hard
     - Collectable: 0
       ReqBoth:
         Key: true
@@ -1766,8 +1813,11 @@ BSide:
           Dashes: two
           Difficulty: perfect
         ReqIn:
-          Dashes: two
-          Difficulty: hard
+          Or:
+          - Dashes: two
+            Difficulty: hard
+          - Dashes: one
+            Difficulty: perfect
     - Room: "right"
       Holes:
       - Side: Right
@@ -1854,8 +1904,10 @@ BSide:
       LowBound: 27
       HighBound: 28
       ReqOut:
-        Dashes: one
-        Difficulty: hard
+        Or:
+        - Dashes: one
+          Difficulty: hard
+        - Dashes: two
     - Side: Left
       Idx: 0
       Kind: out         # TODO: can enter if switch pressed
@@ -2051,7 +2103,10 @@ BSide:
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: expert
     Tweaks:
     - Name: "spawn"
       Update:
@@ -2068,7 +2123,12 @@ BSide:
       Kind: inout
     InternalEdges:
     - Split: LeftToRight
-      ReqBoth:
+      ReqOut:
+        Or:
+          - Dashes: one
+          - Dashes: zero
+            Difficulty: perfect  # fuck seeker manip
+      ReqIn:
         Dashes: one
     Tweaks:
     - Name: "spawn"
@@ -2116,7 +2176,10 @@ BSide:
       Idx: 0
       Kind: out
       ReqOut:
-        Dashes: one
+        Or:
+          - Dashes: one
+          - Dashes: zero
+            Difficulty: hard  # hit the ceiling switch with theo, lol
     - Side: Left
       Idx: 0
       Kind: in

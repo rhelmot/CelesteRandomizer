@@ -1859,11 +1859,12 @@ CSide:
       Kind: inout
     InternalEdges:
     - Split: LeftToRight
-      ReqOut:
-        Dashes: one
-      ReqIn:
-        Dashes: one
-        Difficulty: hard
+      ReqBoth:
+        Or:
+        - Dashes: one
+          Difficulty: hard
+        - Dashes: zero
+          Difficulty: expert
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:

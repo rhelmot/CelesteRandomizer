@@ -2383,9 +2383,6 @@ ASide:
   - Room: "f-00"
     Hub: true
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: None  # TODO: bubble
     - Side: Left
       Idx: 0
       Kind: in
@@ -2400,8 +2397,11 @@ ASide:
       ReqOut:
         Dashes: zero
       ReqIn:
-        Dashes: two
-        Difficulty: hard
+        Or:
+        - Dashes: two
+          Difficulty: hard
+        - Dashes: one
+          Difficulty: perfect
     - Collectable: 0
       ReqBoth:
         Or:
@@ -2414,6 +2414,12 @@ ASide:
       - Side: Right
         Idx: 1
         Kind: inout
+      - Side: Right
+        Idx: 0
+        Kind: in  # TODO: bubble
+        ReqIn:
+          Dashes: two
+          Difficulty: perfect  # diag demo go brrrrr
     Tweaks:
     - Name: "templeGate"
       ID: 606

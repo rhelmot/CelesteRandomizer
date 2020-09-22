@@ -74,7 +74,10 @@ ASide:
       ReqOut:
         Dashes: one
       ReqIn:
-        Dashes: two
+        Or:
+          - Dashes: two
+          - Dashes: one
+            Difficulty: hard
   - Room: "a-02"
     Holes:
     - Side: Right
@@ -185,7 +188,10 @@ ASide:
       ReqOut:
         Dashes: one
       ReqIn:
-        Dashes: two
+        Or:
+          - Dashes: two
+          - Dashes: one
+            Difficulty: expert  # easy demo
   - Room: "b-01"
     Holes:
     - Side: Right
@@ -289,22 +295,34 @@ ASide:
     - Side: Right
       Idx: 0
       Kind: inout
-      ReqOut:
-        Dashes: one
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
     - Side: Up
       Idx: 0
       Kind: None
     - Side: Down
       Idx: 0
       Kind: None
+    InternalEdges:
+      - Split: LeftToRight
+        ReqOut:
+          Dashes: one
+        ReqIn:
+          Dashes: two
+          Difficulty: expert
   - Room: "c-00"
     Holes:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Up
+      Idx: 0
+      Kind: none
+    - Side: Down
+      Idx: 0
+      Kind: unknown
+      HighOpen: true
     InternalEdges:
     - To: "topright"
       ReqOut:
@@ -327,8 +345,14 @@ ASide:
       Holes:
       - Side: Right
         Idx: 1
-        Kind: out
-      # TODO: split right-1 into two holes to match strange ascent capability in farewell
+        Kind: inout
+      - Side: Down
+        New: true
+        LowBound: 0
+        HighBound: 85
+        Kind: unknown
+        ReqIn:
+          Dashes: one
   - Room: "c-00b"
     Holes:
     - Side: Right
@@ -576,6 +600,9 @@ ASide:
               Difficulty: expert
             - Dashes: one
               Difficulty: hard
+      - To: "key"
+        ReqOut:
+          Dashes: one
     Subrooms:
       - Room: "exitUp"
         Holes:
@@ -587,6 +614,9 @@ ASide:
         - Side: Down
           Idx: 1
           Kind: in
+      - Room: "key"
+        Collectables:
+          - Idx: 0
   - Room: "e-00y"
     Holes:
     - Side: Up
@@ -1544,7 +1574,10 @@ ASide:
         - Dashes: one
           Difficulty: hard
       ReqIn:
-        Dashes: two
+        Or:
+          - Dashes: two
+          - Dashes: one
+            Difficulty: hard
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:
