@@ -142,6 +142,9 @@ namespace Celeste.Mod.Randomizer {
         }
 
         private void OnLoadLevelHook(On.Celeste.Level.orig_LoadLevel orig, Level self, Player.IntroTypes playerIntro, bool fromLoader) {
+            // HACK: reset endingSettings in case VersionNumberAndVariants is called from something other than AreaComplete
+            this.endingSettings = null;
+            
             var settings = this.InRandomizerSettings;
             if (fromLoader && settings != null) {
                 // Don't restart the timer on retry
