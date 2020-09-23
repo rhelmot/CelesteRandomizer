@@ -214,6 +214,29 @@ ASide:
       Y: 128
       Update:
         X: 280
+    - Decal: fg
+      X: 24
+      Y: 112
+      Update:
+        Remove: true
+    - Decal: fg
+      X: 40
+      Y: 112
+      Update:
+        Remove: true
+    - Decal: fg
+      Name: "3-resort/gold_railingLeft.png"
+      Update:
+        Add: true
+        X: 48
+        Y: 112
+        ScaleX: 1
+        ScaleY: 1
+    - Decal: bg
+      X: 32
+      Y: 112
+      Update:
+        Remove: true
   - Room: "02-b" # first key detour
     Holes:
     - Side: Right

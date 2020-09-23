@@ -205,6 +205,7 @@ namespace Celeste.Mod.Randomizer {
         public int? ID { get; set; }
         public float? X { get; set; }
         public float? Y { get; set; }
+        public RandoConfigDecalType Decal { get; set; }
         public RandoConfigUpdate Update { get; set; }
     }
 
@@ -217,9 +218,15 @@ namespace Celeste.Mod.Randomizer {
         public float? Y { get; set; }
         public int? Width { get; set; }
         public int? Height { get; set; }
+        public float? ScaleX { get; set; }
+        public float? ScaleY { get; set; }
         public List<RandoConfigNode> Nodes { get; set; }
         public Dictionary<string, string> Values { get; set; }
         public char Tile;
+    }
+
+    public enum RandoConfigDecalType {
+        None, FG, BG,
     }
 
     public class RandoConfigNode {
