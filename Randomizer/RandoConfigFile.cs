@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using YamlDotNet.Core;
 
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
@@ -26,9 +27,12 @@ namespace Celeste.Mod.Randomizer {
                 Logger.Log("randomizer", "...not found");
                 return null;
             } else {
-                // do not catch errors, they should crash on load
                 using (StreamReader reader = new StreamReader(asset.Stream)) {
-                    return YamlHelper.Deserializer.Deserialize<RandoConfigFile>(reader);
+                    try {
+                        return YamlHelper.Deserializer.Deserialize<RandoConfigFile>(reader);
+                    } catch (YamlException e) {
+                        throw new Exception($"Error parsing {area.GetSID()}.rando: {e.Message}");
+                    }
                 }
             }
         }

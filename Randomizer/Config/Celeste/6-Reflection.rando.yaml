@@ -1051,7 +1051,7 @@ ASide:
         ID: 1077
         Update:
           Remove: true
-      - Name: "fakeBlock"
+      - Name: "fakeWall"
         Update:
           Add: true
           X: 360
@@ -1060,7 +1060,7 @@ ASide:
           Height: 72
           Values:
             tiletype: h
-      - Name: "fakeBlock"
+      - Name: "fakeWall"
         Update:
           Add: true
           X: 144

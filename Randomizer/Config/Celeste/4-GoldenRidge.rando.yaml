@@ -81,7 +81,10 @@ ASide:
     InternalEdges:
     - To: "Right"
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: expert
       ReqIn:
         Dashes: zero
     Subrooms:
@@ -95,7 +98,10 @@ ASide:
         ReqOut:
           Dashes: zero
         ReqIn:
-          Dashes: one
+          Or:
+            - Dashes: one
+            - Dashes: zero
+              Difficulty: hard
     - Room: "Berry"
       Collectables:
       - Idx: 0
@@ -273,19 +279,38 @@ ASide:
           Dashes: one
   - Room: "a-08"
     Holes:
-    - Side: Up
-      Idx: 0
-      Kind: inout
-      ReqOut:
-        Dashes: one
-    - Side: Left
-      Idx: 0
-      Kind: inout
-      ReqOut:
-        Dashes: one
-    - Side: Left
-      Idx: 1
-      Kind: inout
+      - Side: Left
+        Idx: 1
+        Kind: inout
+    InternalEdges:
+      - To: "topright"
+        ReqOut:
+          Dashes: one
+        ReqIn:
+          Dashes: zero
+      - To: "topleft"
+        ReqIn:
+          Dashes: zero
+    Subrooms:
+      - Room: "topright"
+        Holes:
+          - Side: Up
+            Idx: 0
+            Kind: inout
+        InternalEdges:
+          - To: "topleft"
+            ReqOut:
+              Or:
+                - Dashes: one
+                - Dashes: zero
+                  Difficulty: hard
+            ReqIn:
+              Dashes: zero
+      - Room: "topleft"
+        Holes:
+          - Side: Left
+            Idx: 0
+            Kind: inout
     Tweaks:
     - Name: "spawn"
       Update:
@@ -750,7 +775,8 @@ ASide:
       Kind: inout
     - Side: Up
       Idx: 0
-      Kind: None  # TODO split this into two half-open holes
+      Kind: Unknown
+      HighOpen: true
     InternalEdges:
     - To: "Right"
       ReqBoth:
@@ -764,9 +790,21 @@ ASide:
       - Side: Right
         Idx: 0
         Kind: inout
+      InternalEdges:
+        - To: "Berry"
+          ReqOut:
+            Dashes: zero
+          ReqIn:
+            Dashes: one
     - Room: "Berry"
       Collectables:
       - Idx: 0
+      Holes:
+        - Side: Up
+          New: true
+          Kind: Unknown
+          HighBound: 80
+          LowBound: 0
     Tweaks:
     - Name: "jumpThru"
       ID: 0

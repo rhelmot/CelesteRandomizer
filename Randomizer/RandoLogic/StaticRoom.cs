@@ -295,6 +295,9 @@ namespace Celeste.Mod.Randomizer {
                     node.WarpConfig.Add(edge);
                     continue;
                 } else if (edge.To != null) {
+                    if (!this.Nodes.ContainsKey(edge.To)) {
+                        throw new Exception($"[{this.Name}.{node.Name}] \"To\" edge says \"{edge.To}\" but no such subroom exists");
+                    }
                     toNode = this.Nodes[edge.To];
                 } else if (edge.CustomWarp) {
                     toNode = null;

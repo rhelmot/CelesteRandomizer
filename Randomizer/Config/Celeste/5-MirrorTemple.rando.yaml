@@ -888,10 +888,13 @@ ASide:
       Kind: inout
     InternalEdges:
       - Split: LeftToRight
-        ReqBoth:
+        ReqOut:
           Dashes: one
+        ReqIn:
+          Dashes: one
+          Difficulty: hard
     Tweaks:
-      - Name: "fakeBlock"
+      - Name: "fakeWall"
         Update:
           Add: true
           X: 184
@@ -900,6 +903,10 @@ ASide:
           Height: 32
           Values:
             tiletype: e
+      - Name: "templeGate"
+        ID: 32
+        Update:
+          Remove: true
       - Name: "fgTiles"
         X: 23
         Y: 12
