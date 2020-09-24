@@ -1150,11 +1150,6 @@ ASide:
     - Side: Right
       Idx: 0
       Kind: inout
-      ReqOut:
-        Or:
-        - Dashes: one
-        - Dashes: zero
-          Difficulty: hard
     - Side: Left
       Idx: 0
       Kind: inout
