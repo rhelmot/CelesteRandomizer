@@ -129,8 +129,11 @@ namespace Celeste.Mod.Randomizer {
             var hasExtendedVariantTriggers = map.Levels.Exists(levelData =>
                 levelData.Triggers.Exists(entityData => extendedVariantsEntities.Contains(entityData.Name)) ||
                 levelData.Entities.Exists(entityData => extendedVariantsEntities.Contains(entityData.Name)));
+            var hasIsaVariantTriggers = map.Levels.Exists(levelData =>
+                levelData.Triggers.Exists(entityData => entityData.Name == "ForceVariantTrigger"));
             var dyn2 = new DynData<MapData>(map);
             dyn2.Set<bool?>("HasExtendedVariantTriggers", hasExtendedVariantTriggers);
+            dyn2.Set<bool?>("HasIsaVariantTriggers", hasIsaVariantTriggers);
         }
 
         public int Count {

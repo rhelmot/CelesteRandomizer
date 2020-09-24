@@ -142,6 +142,9 @@ namespace Celeste.Mod.Randomizer {
         }
 
         private void OnLoadLevelHook(On.Celeste.Level.orig_LoadLevel orig, Level self, Player.IntroTypes playerIntro, bool fromLoader) {
+            // HACK: reset endingSettings in case VersionNumberAndVariants is called from something other than AreaComplete
+            this.endingSettings = null;
+            
             var settings = this.InRandomizerSettings;
             if (fromLoader && settings != null) {
                 // Don't restart the timer on retry
@@ -233,6 +236,10 @@ namespace Celeste.Mod.Randomizer {
                 // reset extended variants... maybe!
                 if (new DynData<MapData>(level.Session.MapData).Get<bool?>("HasExtendedVariantTriggers") ?? false) {
                     this.ResetExtendedVariants();
+                }
+                // reset variants maybe too
+                if (new DynData<MapData>(level.Session.MapData).Get<bool?>("HasIsaVariantTriggers") ?? false) {
+                    this.ResetIsaVariants();
                 }
             }
         }

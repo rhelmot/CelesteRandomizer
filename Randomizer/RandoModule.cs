@@ -44,11 +44,12 @@ namespace Celeste.Mod.Randomizer {
         }
 
         public Action ResetExtendedVariants;
+        public Action ResetIsaVariants;
+        
         // Abusing this method as a delayed load thing
         public override void LoadContent(bool firstLoad) {
-            var listof = AppDomain.CurrentDomain.GetAssemblies().Where(asm => asm.FullName.Contains("ExtendedVariant"));
-            if (listof.Count() != 0) {
-                var dll = listof.First();
+            var dll = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(asm => asm.FullName.Contains("ExtendedVariant"));
+            if (dll != null) {
                 var ty = dll.GetType("ExtendedVariants.Module.ExtendedVariantsModule");
                 var module = ty.GetField("Instance", BindingFlags.Static | BindingFlags.Public).GetValue(null);
                 var method = ty.GetMethod("ResetToDefaultSettings", BindingFlags.Public | BindingFlags.Instance);
@@ -57,6 +58,16 @@ namespace Celeste.Mod.Randomizer {
                 };
             } else {
                 ResetExtendedVariants = () => {};
+            }
+            dll = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(asm => asm.FullName.Contains("IsaMods"));
+            if (dll != null) {
+                var ty = dll.GetType("Celeste.Mod.IsaGrabBag.ForceVariantTrigger");
+                var method = ty.GetMethod("SetVariantsToDefault", BindingFlags.Static | BindingFlags.Public);
+                ResetIsaVariants = () => {
+                    method.Invoke(null, new object[0]);
+                };
+            } else {
+                ResetIsaVariants = () => {};
             }
         }
 

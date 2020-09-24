@@ -1012,6 +1012,16 @@ BSide:
         Values:
           cameraX: -1.0
           cameraY: 0.0
+    - Decal: fg
+      X: 16
+      Y: 152
+      Update:
+        Remove: true
+    - Decal: fg
+      X: 16
+      Y: 160
+      Update:
+        Remove: true
   - Room: "02b"
     Holes:
     - Side: Up
@@ -1055,6 +1065,11 @@ BSide:
         Values:
           cameraX: -1.0
           cameraY: 0.0
+    - Decal: fg
+      X: 24
+      Y: 176
+      Update:
+        X: 32
   - Room: "03"
     Holes:
     - Side: Right
@@ -1087,6 +1102,16 @@ BSide:
         Values:
           cameraX: -1.0
           cameraY: 0.4
+    - Decal: fg
+      X: 24
+      Y: 256
+      Update:
+        Remove: true
+    - Decal: fg
+      X: 24
+      Y: 264
+      Update:
+        Remove: true
   - Room: "04"
     Holes:
     - Side: Up
@@ -1207,6 +1232,16 @@ BSide:
         Values:
           cameraX: -1.0
           cameraY: 0.0
+    - Decal: fg
+      X: 24
+      Y: 160
+      Update:
+        Remove: true
+    - Decal: fg
+      X: 24
+      Y: 168
+      Update:
+        X: 32
   - Room: "06"
     Holes:
     - Side: Right
@@ -1332,6 +1367,11 @@ BSide:
         Values:
           cameraX: -1.0
           cameraY: 0.0
+    - Decal: fg
+      X: 20
+      Y: 168
+      Update:
+        X: 28
   - Room: "09"
     Holes:
     - Side: Right
@@ -1371,6 +1411,11 @@ BSide:
         Values:
           cameraX: 0.0
           cameraY: 1.2
+    - Decal: fg
+      X: 24
+      Y: 368
+      Update:
+        Remove: true
   - Room: "10"
     Holes:
     - Side: Right

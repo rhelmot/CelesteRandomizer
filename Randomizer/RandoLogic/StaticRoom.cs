@@ -205,6 +205,46 @@ namespace Celeste.Mod.Randomizer {
             }
 
             Level.Solids = string.Join("\n", tweakable.Select(line => string.Join("", line)));
+            
+            // peform decal tweaks
+            foreach (var decalList in new[] {Level.FgDecals, Level.BgDecals}) {
+                var removals = new List<DecalData>();
+                foreach (var decal in decalList) {
+                    var fg = object.ReferenceEquals(decalList, Level.FgDecals);
+                    foreach (var tweak in config.Tweaks ?? new List<RandoConfigEdit>()) {
+                        if (tweak.Decal == (fg ? RandoConfigDecalType.FG : RandoConfigDecalType.BG) &&
+                                (tweak.Name == null || tweak.Name == decal.Texture) &&
+                                (tweak.X == null || (int) tweak.X.Value == (int) decal.Position.X) &&
+                                (tweak.Y == null || (int) tweak.Y.Value == (int) decal.Position.Y)) {
+                            if (tweak.Update?.Remove ?? false) {
+                                removals.Add(decal);
+                            } else {
+                                if (tweak.Update?.X != null) decal.Position.X = tweak.Update.X.Value;
+                                if (tweak.Update?.Y != null) decal.Position.Y = tweak.Update.Y.Value;
+                                if (tweak.Update?.ScaleX != null) decal.Position.X = tweak.Update.ScaleX.Value;
+                                if (tweak.Update?.ScaleY != null) decal.Position.Y = tweak.Update.ScaleY.Value;
+                            }
+
+                            break;
+                        }
+                    }
+                }
+
+                foreach (var decal in removals) {
+                    decalList.Remove(decal);
+                }
+            }
+            
+            foreach (var tweak in config.Tweaks ?? new List<RandoConfigEdit>()) {
+                if ((tweak.Update?.Add ?? false) && tweak.Decal != RandoConfigDecalType.None) {
+                    var newDecal = new DecalData {
+                        Texture = tweak.Name,
+                        Position = new Vector2(tweak.Update.X.Value, tweak.Update.Y.Value),
+                        Scale = new Vector2(tweak.Update.ScaleX.Value, tweak.Update.ScaleY.Value),
+                    };
+                    (tweak.Decal == RandoConfigDecalType.BG ? Level.BgDecals : Level.FgDecals).Add(newDecal);
+                }
+            }
         }
 
         private void ProcessSubroom(StaticNode node, RandoConfigRoom config) {
@@ -295,6 +335,9 @@ namespace Celeste.Mod.Randomizer {
                     node.WarpConfig.Add(edge);
                     continue;
                 } else if (edge.To != null) {
+                    if (!this.Nodes.ContainsKey(edge.To)) {
+                        throw new Exception($"[{this.Name}.{node.Name}] \"To\" edge says \"{edge.To}\" but no such subroom exists");
+                    }
                     toNode = this.Nodes[edge.To];
                 } else if (edge.CustomWarp) {
                     toNode = null;

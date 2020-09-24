@@ -1329,9 +1329,12 @@ ASide:
     InternalEdges:
     - Collectable: 0
       ReqOut:
-        Dashes: zero
+        Or:
+          - Dashes: one
+            Difficulty: hard
+          - Dashes: two
       ReqIn:
-        Dashes: one
+        Dashes: zero
   - Room: "d-02"
     Holes:
     - Side: Right
@@ -2383,9 +2386,6 @@ ASide:
   - Room: "f-00"
     Hub: true
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: None  # TODO: bubble
     - Side: Left
       Idx: 0
       Kind: in
@@ -2400,8 +2400,11 @@ ASide:
       ReqOut:
         Dashes: zero
       ReqIn:
-        Dashes: two
-        Difficulty: hard
+        Or:
+        - Dashes: two
+          Difficulty: hard
+        - Dashes: one
+          Difficulty: perfect
     - Collectable: 0
       ReqBoth:
         Or:
@@ -2414,6 +2417,12 @@ ASide:
       - Side: Right
         Idx: 1
         Kind: inout
+      - Side: Right
+        Idx: 0
+        Kind: in  # TODO: bubble
+        ReqIn:
+          Dashes: two
+          Difficulty: perfect  # diag demo go brrrrr
     Tweaks:
     - Name: "templeGate"
       ID: 606
@@ -2507,12 +2516,14 @@ ASide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
-      ReqOut:
-        Dashes: two
+      Kind: inout
     - Side: Down
       Idx: 0
       Kind: inout
+    InternalEdges:
+      - Split: LeftToRight
+        ReqOut:
+          Dashes: two
   - Room: "f-04"
     Holes:
     - Side: Right
@@ -2692,14 +2703,11 @@ ASide:
           cameraY: 0
   - Room: "f-08b"
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
     - Side: Down
       Idx: 0
       Kind: inout
     InternalEdges:
-    - Split: LeftToRight
+    - To: "right"
       ReqOut:
         Dashes: one
       ReqIn:
@@ -2707,14 +2715,21 @@ ASide:
         - Dashes: two
         - Dashes: one
           Difficulty: hard
-    - Collectable: 0  # TODO does this construction prevent you from getting the berry on normal difficulty with one dash from the right
-      ReqOut:
-        Dashes: one
-      ReqIn:
-        Or:
-          - Dashes: two
-          - Dashes: one
-            Difficulty: hard
+    Subrooms:
+      - Room: "right"
+        Holes:
+          - Side: Right
+            Idx: 0
+            Kind: inout
+        InternalEdges:
+          - To: "berry"
+            ReqOut:
+              Dashes: one
+            ReqIn:
+              Dashes: zero
+      - Room: "berry"
+        Collectables:
+          - Idx: 0
   - Room: "f-08d"
     Holes:
     - Side: Right
@@ -3566,6 +3581,12 @@ BSide:
     - Side: Up
       Idx: 1
       Kind: None
+    Tweaks:
+      - Name: "fgTiles"
+        X: 40
+        Y: 20
+        Update:
+          Tile: 0
   - Room: "b-03"
     Holes:
     - Side: Up

@@ -20,13 +20,8 @@ namespace Celeste.Mod.Randomizer {
             this.StartingGemCount = this.Settings.Length == MapLength.Short ? 3 : 0;
 
             void retry() {
-                this.PossibleCollectables.Clear();
-                this.PriorityCollectables.Clear();
-                this.PossibleContinuations.Clear();
-                this.ResetRooms();
-                this.Map.Clear();
+                throw new RetryException();
             }
-            tryagain:
 
             foreach (var room in RandoLogic.AllRooms) {
                 if (room.Name == "Celeste/6-Reflection/A/b-00") {
@@ -39,7 +34,7 @@ namespace Celeste.Mod.Randomizer {
             }
 
             while (this.PossibleContinuations.Count != 0) {
-                Logger.Log("DEBUG", $"status: rooms={this.Map.Count} queue={this.PossibleContinuations.Count}");
+                //Logger.Log("DEBUG", $"status: rooms={this.Map.Count} queue={this.PossibleContinuations.Count}");
                 int idx = this.Random.Next(this.PossibleContinuations.Count);
                 var startEdge = this.PossibleContinuations[idx];
                 this.PossibleContinuations.RemoveAt(idx);
@@ -129,22 +124,19 @@ namespace Celeste.Mod.Randomizer {
             }
 
             if (this.Map.Count < LabyrinthMinimums[(int)this.Settings.Length]) {
-                Logger.Log("DEBUG", "retrying - too short");
+                //Logger.Log("DEBUG", "retrying - too short");
                 retry();
-                goto tryagain;
             }
 
             if (this.PossibleCollectables.Count + this.PriorityCollectables.Count < (6 - this.StartingGemCount)) {
-                Logger.Log("DEBUG", "retrying - not enough spots");
+                //Logger.Log("DEBUG", "retrying - not enough spots");
                 retry();
-                goto tryagain;
             }
 
             for (var gem = LinkedNode.LinkedCollectable.Gem1 + this.StartingGemCount; gem <= LinkedNode.LinkedCollectable.Gem6; gem++) {
                 var collection = this.PriorityCollectables.Count != 0 ? this.PriorityCollectables : this.PossibleCollectables;
                 if (collection.Count == 0) {  // just in case
                     retry();
-                    goto tryagain;
                 }
                 var idx = this.Random.Next(collection.Count);
                 var spot = collection[idx].Item1;
@@ -156,7 +148,7 @@ namespace Celeste.Mod.Randomizer {
                     gem--;
                 } else {
                     spot.Node.Collectables[spot.Static] = Tuple.Create(gem, autoBubble);
-                    Logger.Log("DEBUG", $"Adding gem to {spot.Node.Room.Static.Name}");
+                    //Logger.Log("DEBUG", $"Adding gem to {spot.Node.Room.Static.Name}");
 
                     if (collection == this.PriorityCollectables) {
                         for (int i = 0; i < collection.Count; i++) {

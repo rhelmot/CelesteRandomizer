@@ -306,11 +306,9 @@ namespace Celeste.Mod.Randomizer {
                 this.Node = node;
             }
             public override bool Next() {
-                Logger.Log("DEBUG", $"Thinking about adding berries from {this.Node.Room}");
                 var caps = this.Logic.Caps.WithoutKey();
                 var closure = LinkedNodeSet.Closure(this.Node, caps, caps, true);
                 foreach (var edge in closure.UnlinkedEdges()) {
-                    Logger.Log("DEBUG", $"Considering edge {edge}");
                     if (!this.Logic.Map.HoleFree(this.Node.Room, edge.Static.HoleTarget)) {
                         continue;
                     }
@@ -318,7 +316,6 @@ namespace Celeste.Mod.Randomizer {
                         continue;
                     }
 
-                    Logger.Log("DEBUG", "... dice says yes!");
                     var possibilities = this.Logic.AvailableNewEdges(caps, caps, e => e.FromNode.ParentRoom.Collectables.Count != 0);
                     foreach (var newEdge in possibilities) {
                         var receipt = ConnectAndMapReceipt.Do(this.Logic, edge, newEdge);
@@ -343,7 +340,6 @@ namespace Celeste.Mod.Randomizer {
                         }
 
                         if (options.Count == 0) {
-                            Logger.Log("DEBUG", "Nowhere to put a berry :(");
                             receipt.Undo();
                             continue;
                         }
@@ -352,7 +348,6 @@ namespace Celeste.Mod.Randomizer {
                         var pickedSpot = pickedSpotTup.Item1;
                         var berry = pickedSpot.Static.MustFly ? LinkedNode.LinkedCollectable.WingedStrawberry : this.Logic.Settings.Algorithm == LogicType.Endless ? LinkedNode.LinkedCollectable.LifeBerry : LinkedNode.LinkedCollectable.Strawberry;
                         pickedSpot.Node.Collectables[pickedSpot.Static] = Tuple.Create(berry, pickedSpotTup.Item2);
-                        Logger.Log("DEBUG", "placed a berry :)");
                         break;
                     }
                 }

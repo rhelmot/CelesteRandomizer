@@ -140,7 +140,7 @@ namespace Celeste.Mod.Randomizer {
                 RandoLogic.AllRooms.AddRange(RandoLogic.ProcessMap(area.Mode[i].MapData, mapConfig));
                 // Use SID (minus level name) for levelsets to avoid collisions
                 AreaKey key = new AreaKey(area.ID, (AreaMode)i);
-                string SID = key.SID;
+                string SID = key.GetSID();
                 string levelSetID = SID.Substring(0, SID.LastIndexOf('/'));
                 if (RandoLogic.LevelSets.TryGetValue(levelSetID, out var keyList)) {
                     keyList.Add(key);
