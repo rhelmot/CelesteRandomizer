@@ -69,6 +69,8 @@ namespace Celeste.Mod.Randomizer {
             } else {
                 ResetIsaVariants = () => {};
             }
+            
+            this.DelayedLoadMechanics();
         }
 
 

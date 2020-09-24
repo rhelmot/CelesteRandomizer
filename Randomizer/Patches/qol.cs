@@ -42,7 +42,7 @@ namespace Celeste.Mod.Randomizer {
             SpecialHooksQol.Add(new ILHook(typeof(CS10_Gravestone).GetMethod("BadelineAppears", BindingFlags.Instance | BindingFlags.NonPublic).GetStateMachineTarget(), DontGiveOneDash));
             SpecialHooksQol.Add(new ILHook(typeof(CS10_Gravestone).GetMethod("BadelineRejoin", BindingFlags.Instance | BindingFlags.NonPublic).GetStateMachineTarget(), DontGiveTwoDashes));
             SpecialHooksQol.Add(new ILHook(typeof(EventTrigger).GetNestedType("<>c__DisplayClass10_0", BindingFlags.NonPublic).GetMethod("<OnEnter>b__0", BindingFlags.NonPublic | BindingFlags.Instance), DontGiveOneDash));
-            SpecialHooksQol.Add(new Hook(typeof(EventTrigger).GetNestedType("<>c__DisplayClass10_0", BindingFlags.NonPublic).GetMethod("<OnEnter>b__0", BindingFlags.NonPublic | BindingFlags.Instance), new Action<Action<object>, object>((orig, self) => TransferGoldenBerries(orig, self))));
+            SpecialHooksQol.Add(new Hook(typeof(EventTrigger).GetNestedType("<>c__DisplayClass10_0", BindingFlags.NonPublic).GetMethod("<OnEnter>b__0", BindingFlags.NonPublic | BindingFlags.Instance), new Action<Action<object>, object>(this.TransferGoldenBerries)));
         }
 
         private void UnloadQol() {

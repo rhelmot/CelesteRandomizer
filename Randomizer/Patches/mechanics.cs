@@ -33,6 +33,7 @@ namespace Celeste.Mod.Randomizer {
             SpecialHooksMechanics.Add(new ILHook(typeof(CS06_StarJumpEnd).GetNestedType("<>c__DisplayClass40_0", BindingFlags.NonPublic).GetMethod("<OnEnd>b__1", BindingFlags.NonPublic | BindingFlags.Instance), RestoreBerries));
 
             SpecialHooksMechanics.Add(new ILHook(typeof(EventTrigger).GetNestedType("<>c__DisplayClass10_0", BindingFlags.NonPublic).GetMethod("<OnEnter>b__0", BindingFlags.NonPublic | BindingFlags.Instance), SpecificWarpTarget));
+            On.Celeste.Level.TeleportTo += GenericCutsceneWarp;
 
             On.Celeste.Key.ctor_EntityData_Vector2_EntityID += PatchNewKey;
             On.Celeste.Strawberry.ctor += PatchNewBerry;
@@ -41,6 +42,23 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.Strawberry.OnPlayer += PatchCollectBerry;
             On.Celeste.SummitGem.SmashRoutine += PatchCollectGem;
         }
+
+        private void DelayedLoadMechanics() {
+            var dll = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName.Contains("DJMapHelper"));
+            if (dll != null) {
+                var ty = dll.GetType("Celeste.Mod.DJMapHelper.Cutscenes.CS_Teleport");
+                var meth = ty.GetMethod("OnEnd");
+                this.SpecialHooksMechanics.Add(new Hook(meth, new Action<Action<object, Level>, object, Level>(this.DJCutsceneWarp)));
+            }
+            
+            dll = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName.Contains("LuaCutscenes"));
+            if (dll != null) {
+                var ty = dll.GetType("Celeste.Mod.LuaCutscenes.MethodWrappers");
+                var meth = ty.GetMethod("InstantTeleport", BindingFlags.Static | BindingFlags.Public);
+                this.SpecialHooksMechanics.Add(new Hook(meth, new Action<Action<Scene, Player, string>, Scene, Player, string>(this.LuaInstantTeleport)));
+            }
+        }
+        
         private void UnloadMechanics() {
             Everest.Events.Level.OnTransitionTo -= OnTransition;
             Everest.Events.Level.OnLoadLevel -= OnLoadLevel;
@@ -53,6 +71,7 @@ namespace Celeste.Mod.Randomizer {
             IL.Celeste.CS02_DreamingPhonecall.OnEnd -= CutsceneWarpTarget;
             IL.Celeste.CS04_MirrorPortal.Cutscene -= CutsceneWarpMirrorFakeBSide;
             IL.Celeste.CS06_StarJumpEnd.OnBegin -= StoreBerries;
+            On.Celeste.Level.TeleportTo -= GenericCutsceneWarp;
 
             On.Celeste.Key.ctor_EntityData_Vector2_EntityID -= PatchNewKey;
             On.Celeste.Strawberry.ctor -= PatchNewBerry;
@@ -66,7 +85,7 @@ namespace Celeste.Mod.Randomizer {
             }
             this.SpecialHooksMechanics.Clear();
         }
-        
+
         static void PatchAutoBubble(Entity entity, EntityData data) {
             if (data.Bool("AutoBubble")) {
                 new DynData<Entity>(entity).Set<bool?>("AutoBubble", true);
@@ -359,6 +378,29 @@ namespace Celeste.Mod.Randomizer {
             });
         }
 
+        public static string LookupWarpTarget(string oldTarget) {
+            var session = SaveData.Instance.CurrentSession;
+            var room = session.LevelData;
+            var dyn = new DynData<LevelData>(room);
+            var mapping = dyn.Get<Dictionary<string, string>>("WarpMapping");
+            if (mapping == null) {
+                throw new Exception("Randomizer error: no warp mapping information available");
+            }
+            if (!mapping.TryGetValue(oldTarget, out string newTarget)) {
+                throw new Exception("Randomizer error: no warp mapping target for " + oldTarget);
+            }
+            return newTarget;
+        }
+
+        public static string LookupCustomwarpTarget() {
+            var dyn = new DynData<LevelData>(SaveData.Instance.CurrentSession.LevelData);
+            var newNextLevel = dyn.Get<string>("CustomWarp");
+            if (newNextLevel == null) {
+                throw new Exception("Randomizer error: no target for warp");
+            }
+            return newNextLevel;
+        }
+
         private void CutsceneWarpTarget(ILContext il) {
             var cursor = new ILCursor(il);
             var count = 0;
@@ -367,13 +409,7 @@ namespace Celeste.Mod.Randomizer {
                     if (!this.InRandomizer) {
                         return prevNextLevel;
                     }
-
-                    var dyn = new DynData<LevelData>(SaveData.Instance.CurrentSession.LevelData);
-                    var newNextLevel = dyn.Get<string>("CustomWarp");
-                    if (newNextLevel == null) {
-                        throw new Exception("Randomizer error: no target for warp");
-                    }
-                    return newNextLevel;
+                    return LookupCustomwarpTarget();
                 });
                 cursor.Index++;
                 count++;
@@ -425,17 +461,7 @@ namespace Celeste.Mod.Randomizer {
                     if (!this.InRandomizer) {
                         return oldTarget;
                     }
-                    var session = SaveData.Instance.CurrentSession;
-                    var room = session.LevelData;
-                    var dyn = new DynData<LevelData>(room);
-                    var mapping = dyn.Get<Dictionary<string, string>>("WarpMapping");
-                    if (mapping == null) {
-                        throw new Exception("Randomizer error: no warp mapping information available");
-                    }
-                    if (!mapping.TryGetValue(oldTarget, out string newTarget)) {
-                        throw new Exception("Randomizer error: no warp mapping target for " + oldTarget);
-                    }
-                    return newTarget;
+                    return LookupWarpTarget(oldTarget);
                 });
                 count++;
                 cursor.Index++;
@@ -444,6 +470,35 @@ namespace Celeste.Mod.Randomizer {
             if (count == 0) {
                 throw new Exception("Could not find patch point(s)!");
             }
+        }
+
+        private void DJCutsceneWarp(Action<object, Level> orig, object self, Level level) {
+            if (this.InRandomizer) {
+                var newNextLevel = LookupCustomwarpTarget();
+                var spawn = SaveData.Instance.CurrentSession.MapData.Get(newNextLevel).Spawns[0];
+                
+                var dll = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName.Contains("DJMapHelper"));
+                var ty = dll.GetType("Celeste.Mod.DJMapHelper.Cutscenes.CS_Teleport");
+                ty.GetField("teleportRoom", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(self, newNextLevel);
+                ty.GetField("spawnPoint", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(self, spawn);
+            }
+            orig(self, level);
+        }
+        
+        private void GenericCutsceneWarp(On.Celeste.Level.orig_TeleportTo orig, Level self, Player player, string nextlevel, Player.IntroTypes introtype, Vector2? nearestspawn) {
+            if (this.InRandomizer) {
+                nextlevel = LookupCustomwarpTarget();
+                var levelData = SaveData.Instance.CurrentSession.MapData.Get(nextlevel);
+                nearestspawn = levelData.Spawns[0] - levelData.Position;
+            }
+            orig(self, player, nextlevel, introtype, nearestspawn);
+        }
+
+        private void LuaInstantTeleport(Action<Scene, Player, string> orig, Scene scene, Player player, string nextRoom) {
+            if (this.InRandomizer) {
+                nextRoom = LookupWarpTarget(nextRoom);
+            }
+            orig(scene, player, nextRoom);
         }
 
         private void PatchLoadingThread(On.Celeste.LevelLoader.orig_LoadingThread orig, LevelLoader self) {
