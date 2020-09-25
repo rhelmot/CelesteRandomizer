@@ -46,9 +46,9 @@ namespace Celeste.Mod.Randomizer {
         private void DelayedLoadMechanics() {
             var dll = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName.Contains("DJMapHelper"));
             if (dll != null) {
-                var ty = dll.GetType("Celeste.Mod.DJMapHelper.Cutscenes.CS_Teleport");
-                var meth = ty.GetMethod("OnEnd");
-                this.SpecialHooksMechanics.Add(new Hook(meth, new Action<Action<object, Level>, object, Level>(this.DJCutsceneWarp)));
+                var ty = dll.GetType("Celeste.Mod.DJMapHelper.Triggers.TeleportTrigger");
+                var meth = ty.GetMethod("OnEnter");
+                this.SpecialHooksMechanics.Add(new Hook(meth, new Action<Action<object, Player>, object, Player>(this.DJCutsceneWarp)));
             }
             
             dll = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName.Contains("LuaCutscenes"));
@@ -472,17 +472,19 @@ namespace Celeste.Mod.Randomizer {
             }
         }
 
-        private void DJCutsceneWarp(Action<object, Level> orig, object self, Level level) {
+        private void DJCutsceneWarp(Action<object, Player> orig, object self, Player player) {
             if (this.InRandomizer) {
                 var newNextLevel = LookupCustomwarpTarget();
-                var spawn = SaveData.Instance.CurrentSession.MapData.Get(newNextLevel).Spawns[0];
+                var levelData = SaveData.Instance.CurrentSession.MapData.Get(newNextLevel);
+                var spawn = levelData.Spawns[0] - levelData.Position;
                 
                 var dll = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName.Contains("DJMapHelper"));
-                var ty = dll.GetType("Celeste.Mod.DJMapHelper.Cutscenes.CS_Teleport");
-                ty.GetField("teleportRoom", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(self, newNextLevel);
-                ty.GetField("spawnPoint", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(self, spawn);
+                var ty = dll.GetType("Celeste.Mod.DJMapHelper.Triggers.TeleportTrigger");
+                ty.GetField("room", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(self, newNextLevel);
+                ty.GetField("spawnPointX", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(self, (int)spawn.X);
+                ty.GetField("spawnPointY", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(self, (int)spawn.Y);
             }
-            orig(self, level);
+            orig(self, player);
         }
         
         private void GenericCutsceneWarp(On.Celeste.Level.orig_TeleportTo orig, Level self, Player player, string nextlevel, Player.IntroTypes introtype, Vector2? nearestspawn) {
