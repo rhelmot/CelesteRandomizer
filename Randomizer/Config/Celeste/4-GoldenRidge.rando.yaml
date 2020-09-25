@@ -348,7 +348,10 @@ ASide:
     InternalEdges:
     - Collectable: 0
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: expert
       ReqIn:
         Dashes: zero
     Tweaks:
@@ -845,7 +848,12 @@ ASide:
       Kind: none
     InternalEdges:
     - Collectable: 0
-      ReqBoth:
+      ReqOut:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: hard
+      ReqIn:
         Dashes: one
   - Room: "c-02"
     Holes:
@@ -888,10 +896,16 @@ ASide:
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: expert
       ReqIn:
-        Dashes: two
-        Difficulty: perfect
+        Or:
+        - Dashes: two
+          Difficulty: expert
+        - Dashes: one
+          Difficulty: perfect
     Tweaks:
     - ID: 0
       Name: "jumpThru"
@@ -910,20 +924,25 @@ ASide:
           cameraY: 0.0
   - Room: "c-05"
     Holes:
-    - Side: Up
-      Idx: 1
-      Kind: inout
-    - Side: Left
-      Idx: 0
-      Kind: inout
+      - Side: Left
+        Idx: 0
+        Kind: inout
     InternalEdges:
-    - Split: LeftToRight
-      ReqBoth:
-        Dashes: one
-    - To: "Berry"
+    - To: "top"
       ReqBoth:
         Dashes: one
     Subrooms:
+    - Room: "top"
+      Holes:
+      - Side: Up
+        Idx: 1
+        Kind: inout
+      InternalEdges:
+        - To: "Berry"
+          ReqOut:
+            Dashes: zero
+          ReqIn:
+            Dashes: one
     - Room: "Berry"
       Collectables:
       - Idx: 0
@@ -990,7 +1009,12 @@ ASide:
       Kind: inout
     InternalEdges:
     - Collectable: 0
-      ReqBoth:
+      ReqOut:
+        Or:
+          - Dashes: one
+          - Dashes: zero
+            Difficulty: perfect
+      ReqIn:
         Dashes: one
   - Room: "c-09"  # fwiw this room is doable in two dashes with core mode
     Holes:
@@ -1003,10 +1027,16 @@ ASide:
     InternalEdges:
     - Split: BottomToTop
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: hard
       ReqIn:
-        Dashes: two
-        Difficulty: hard
+        Or:
+        - Dashes: two
+          Difficulty: hard
+        - Dashes: one
+          Difficulty: perfect
     Tweaks:
     - Name: "spawn"
       Update:
@@ -1077,25 +1107,61 @@ ASide:
           cameraY: 0.6
   - Room: "c-08"
     Holes:
-    - Side: Up
-      Idx: 0
-      Kind: inout
-      ReqOut:
-        Dashes: one
-    - Side: Right
-      Idx: 0
-      Kind: inout
-      ReqOut:
-        Dashes: one
-    - Side: Left
-      Idx: 0
-      Kind: inout
-      ReqOut:
-        Dashes: one
+      - Side: Left
+        Idx: 0
+        Kind: inout
     InternalEdges:
-    - Collectable: 0
-      ReqBoth:
-        Dashes: one
+      - To: "right"
+        ReqOut:
+          Or:
+            - Dashes: one
+            - Dashes: zero
+              Difficulty: perfect
+        ReqIn:
+          Dashes: one
+      - To: "top"
+        ReqOut:
+          Dashes: one
+        ReqIn:
+          Dashes: zero
+      - To: "berry"
+        ReqBoth:
+          Dashes: one
+    Subrooms:
+      - Room: "top"
+        Holes:
+        - Side: Up
+          Idx: 0
+          Kind: inout
+          ReqOut:
+            Dashes: one
+        InternalEdges:
+          - To: "right"
+            ReqOut:
+              Dashes: zero
+            ReqIn:
+              Dashes: one
+          - To: "berry"
+            ReqOut:
+              Or:
+                - Dashes: one
+                - Dashes: zero
+                  Difficulty: hard
+            ReqIn:
+              Or:
+                - Dashes: one
+                - Dashes: zero
+                  Difficulty: expert
+      - Room: "right"
+        Holes:
+        - Side: Right
+          Idx: 0
+          Kind: inout
+          ReqOut:
+            Dashes: one
+      - Room: "berry"
+        Collectables:
+          - Idx: 0
     Tweaks:
     - Name: "spawn"
       Update:
@@ -1181,28 +1247,39 @@ ASide:
         Dashes: one
   - Room: "d-01"
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
-      ReqOut:
-        Dashes: one
     - Side: Left
       Idx: 0
       Kind: inout
     InternalEdges:
-    - Collectable: 0
-      ReqBoth:
-        Dashes: one
+      - To: "right"
+        ReqOut:
+          Dashes: one
+        ReqIn:
+          Dashes: zero
+    Subrooms:
+      - Room: "right"
+        Holes:
+        - Side: Right
+          Idx: 0
+          Kind: inout
+        InternalEdges:
+        - Collectable: 0
+          ReqOut:
+            Dashes: zero
+          ReqIn:
+            Dashes: one
   - Room: "d-02"
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
-      ReqOut:
-        Dashes: one
+      Kind: inout
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
+    InternalEdges:
+      - Split: LeftToRight
+        ReqOut:
+          Dashes: zero
   - Room: "d-03"
     Holes:
     - Side: Right
@@ -1211,6 +1288,15 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    InternalEdges:
+      - Split: LeftToRight
+        ReqOut:
+          Or:
+            - Dashes: one
+            - Dashes: zero
+              Difficulty: hard
+        ReqIn:
+          Dashes: zero
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:
@@ -1469,10 +1555,16 @@ BSide:
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect
       ReqIn:
-        Dashes: two
-        Difficulty: expert
+        Or:
+        - Dashes: two
+          Difficulty: expert
+        - Dashes: one
+          Difficulty: perfect
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:
@@ -1548,6 +1640,8 @@ BSide:
         Dashes: one
       ReqIn:
         Or:
+        - Dashes: zero
+          Difficulty: perfect
         - Dashes: one
           Difficulty: hard
         - Dashes: two
@@ -1705,7 +1799,10 @@ BSide:
       Idx: 0
       Kind: out
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: expert
     - Side: Left
       Idx: 0
       Kind: in
@@ -1722,7 +1819,10 @@ BSide:
       ReqOut:
         Dashes: zero
       ReqIn:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: expert
     Tweaks:
     - Name: "spawn"
       Update:
@@ -1809,7 +1909,6 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: inout
-      ReqOut:
     - Side: Up
       Idx: 0
       Kind: none
