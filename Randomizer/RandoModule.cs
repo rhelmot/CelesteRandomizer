@@ -33,9 +33,13 @@ namespace Celeste.Mod.Randomizer {
         public RandoModule() {
             Instance = this;
         }
+        
+        public override void LoadContent(bool firstLoad) {
+        }
 
         public override void Load() {
             Settings = this.SavedData.SavedSettings?.Copy() ?? new RandoSettings();
+            On.Celeste.GameLoader.Begin += LateInitialize;
             LoadQol();
             LoadMechanics();
             LoadSessionLifecycle();
@@ -46,8 +50,8 @@ namespace Celeste.Mod.Randomizer {
         public Action ResetExtendedVariants;
         public Action ResetIsaVariants;
         
-        // Abusing this method as a delayed load thing
-        public override void LoadContent(bool firstLoad) {
+        private void LateInitialize(On.Celeste.GameLoader.orig_Begin orig, GameLoader self) {
+            orig(self);
             var dll = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(asm => asm.FullName.Contains("ExtendedVariant"));
             if (dll != null) {
                 var ty = dll.GetType("ExtendedVariants.Module.ExtendedVariantsModule");
@@ -73,8 +77,8 @@ namespace Celeste.Mod.Randomizer {
             this.DelayedLoadMechanics();
         }
 
-
         public override void Unload() {
+            On.Celeste.GameLoader.Begin -= LateInitialize;
             UnloadQol();
             UnloadMechanics();
             UnloadSessionLifecycle();
