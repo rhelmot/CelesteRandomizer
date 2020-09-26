@@ -254,6 +254,15 @@ ReqBoth:
     Difficulty: hard
 ```
 
+If you specify that something is blocked by a locked door, you should also specify the `KeyholeID` attribute, which is the ID of the lockBlock entity. We remove all unused lock blocks, so in order to know that this block is not unused, we need to know which entity to not remove. This will look something like this:
+
+```
+ReqBoth:
+  Dashes: zero
+  Key: true
+  KeyholeID: 12
+```
+
 ## Collectables
 
 You can specify which subrooms contain which collectables, i.e. keys and berries. The syntax for this is as follows:
