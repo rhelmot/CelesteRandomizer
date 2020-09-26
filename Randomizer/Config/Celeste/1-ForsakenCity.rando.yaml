@@ -704,7 +704,7 @@ ASide:
         Or:
         - Dashes: one
         - Dashes: zero
-          Difficulty: expert
+          Difficulty: perfect
   - Room: "10zb"
     Holes:
     - Side: Right
