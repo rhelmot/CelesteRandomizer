@@ -29,7 +29,7 @@ namespace Celeste.Mod.Randomizer {
         public string VersionString {
             get {
                 var result = this.Metadata.VersionString;
-                if (this.Metadata.PathDirectory != "") {
+                if (!string.IsNullOrEmpty(this.Metadata.PathDirectory)) {
                     result += " (dev)";
                 }
                 return result;
