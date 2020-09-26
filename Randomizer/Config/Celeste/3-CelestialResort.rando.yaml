@@ -157,7 +157,9 @@ ASide:
       ReqBoth:
         Dashes: one
     - Collectable: 0
-      ReqBoth:
+      ReqOut:
+        Dashes: zero
+      ReqIn:
         Dashes: one
     Tweaks:
     - Name: "cameraOffsetTrigger"
@@ -181,6 +183,15 @@ ASide:
       - Side: Up
         Idx: 0
         Kind: inout
+      InternalEdges:
+        - To: "main"
+          ReqOut:
+            Dashes: one
+          ReqIn:
+            Or:
+              - Dashes: one
+              - Dashes: zero
+                Difficulty: hard
     - Room: "right"
       Holes:
       - Side: Right
@@ -357,7 +368,10 @@ ASide:
     InternalEdges:
     - To: "right"
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: expert
       ReqIn:
         Or:
         - Dashes: two
@@ -550,7 +564,10 @@ ASide:
       ReqOut:
         Dashes: zero
       ReqIn:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: expert
     - Collectable: 0
       ReqOut:
         Or:
@@ -903,7 +920,10 @@ ASide:
       ReqOut:
         Dashes: zero
       ReqIn:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect
   - Room: "13-a"  # towels 4
     Holes:
     - Side: Up
@@ -1041,16 +1061,29 @@ ASide:
     - Side: Right
       Idx: 0
       Kind: inout
-    - Side: Left
-      Idx: 0
-      Kind: inout
     - Side: Down
       Idx: 0
       Kind: None
     InternalEdges:
-    - Split: RightToLeft
+    - To: "left"
       ReqBoth:
         Dashes: one
+    - To: "berry"
+      ReqOut:
+        Dashes: zero
+    Subrooms:
+      - Room: "left"
+        Holes:
+        - Side: Left
+          Idx: 0
+          Kind: inout
+        InternalEdges:
+          - To: "berry"
+            ReqBoth:
+              Dashes: one
+      - Room: "berry"
+        Collectables:
+          - Idx: 0
   - Room: "10-d"  # books end
     Holes:
     - Side: Right
@@ -1401,7 +1434,10 @@ ASide:
       Idx: 0
       Kind: inout
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: hard
     - Side: Right
       Idx: 0
       Kind: inout
@@ -1672,6 +1708,17 @@ ASide:
         - Dashes: one
         - Dashes: zero
           Difficulty: expert
+    - Collectable: 0
+      ReqBoth:
+        Dashes: zero
+    - Collectable: 1
+      ReqOut:
+        Dashes: zero
+      ReqIn:
+        Or:
+          - Dashes: one
+          - Dashes: zero
+            Difficulty: expert
     Tweaks:
     - ID: 1             # remove invisible barrier
       Update:
