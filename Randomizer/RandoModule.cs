@@ -7,7 +7,6 @@ using MonoMod.Utils;
 
 namespace Celeste.Mod.Randomizer {
     public partial class RandoModule : EverestModule {
-        public const LevelExit.Mode LEVELEXIT_ENDLESS = (LevelExit.Mode) 56;
         public const Overworld.StartMode STARTMODE_RANDOMIZER = (Overworld.StartMode) 55;
         
         public static RandoModule Instance;
@@ -16,12 +15,22 @@ namespace Celeste.Mod.Randomizer {
         public RandoModuleSettings SavedData {
             get {
                 var result = Instance._Settings as RandoModuleSettings;
-                if (result.CurrentVersion != this.Metadata.VersionString) {
-                    result.CurrentVersion = this.Metadata.VersionString;
+                if (result.CurrentVersion != this.VersionString) {
+                    result.CurrentVersion = this.VersionString;
                     result.BestTimes = new Dictionary<uint, long>();
                     result.BestSetSeedTimes = new Dictionary<Ruleset, RecordTuple>();
                     result.BestRandomSeedTimes = new Dictionary<Ruleset, RecordTuple>();
                     // intentionally do not wipe settings, they should upgrade gracefully
+                }
+                return result;
+            }
+        }
+
+        public string VersionString {
+            get {
+                var result = this.Metadata.VersionString;
+                if (this.Metadata.PathDirectory != "") {
+                    result += " (dev)";
                 }
                 return result;
             }
