@@ -183,16 +183,16 @@ namespace Celeste.Mod.Randomizer {
                     // if either is open on the top, the other must also be open on the top OR it must be sufficiently tall
                     if (this.LowOpen && other.LowOpen) {
                         return alignHigh();
-                    } else if (this.Closed && this.Size > 3) {
+                    } else if (this.Closed && this.Size > 2) {
                         return alignHigh();
-                    } else if (other.Closed && other.Size > 3) {
+                    } else if (other.Closed && other.Size > 2) {
                         return alignHigh();
                     }
                 } else {
                     // only remaining option is both closed. they must be the same size OR sufficiently tall
                     if (this.Size == other.Size) {
                         return alignHigh();
-                    } else if (this.Size > 3 && other.Size > 3) {
+                    } else if (this.Size > 2 && other.Size > 2) {
                         return alignHigh();
                     }
                 }

@@ -1,6 +1,9 @@
 ASide:
   - Room: "s0"
     Holes:
+    - Side: Left
+      Idx: 0
+      Kind: inout
     - Side: Right
       Idx: 0
       Kind: inout
@@ -263,6 +266,8 @@ ASide:
         - Dashes: one
         - Dashes: zero
           Difficulty: hard
+      ReqIn:
+        Dashes: zero
     Subrooms:
     - Room: "out"
       Holes:
@@ -506,9 +511,17 @@ ASide:
         Or:
         - Dashes: one
         - Dashes: zero
-          Difficulty: perfect
+          Difficulty: expert
       ReqIn:
         Dashes: zero
+    - Collectable: 0
+      ReqOut:
+        Dashes: zero
+      ReqIn:
+        Or:
+          - Dashes: one
+          - Dashes: zero
+            Difficulty: expert
     Tweaks:
     - Name: "spawn"
       Update:
@@ -538,6 +551,17 @@ ASide:
         Dashes: zero
       ReqIn:
         Dashes: one
+    - Collectable: 0
+      ReqOut:
+        Or:
+          - Dashes: one
+          - Dashes: zero
+            Difficulty: expert
+      ReqIn:
+        Or:
+          - Dashes: one
+          - Dashes: zero
+            Difficulty: perfect
     Subrooms:
     - Room: "right"
       Holes:
@@ -595,6 +619,10 @@ ASide:
     - Side: Right
       Idx: 0
       Kind: inout
+    InternalEdges:
+      - Collectable: 0
+        ReqBoth:
+          Dashes: one
   - Room: "08-c"  # key loop 3
     Holes:
     - Side: Left

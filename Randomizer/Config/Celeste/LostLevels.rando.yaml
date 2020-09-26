@@ -1844,6 +1844,13 @@ ASide:
       Idx: 0
       Kind: Unknown
       LowBound: 0
+    - Side: Up
+      Idx: 1
+      Kind: None
+    - Side: Up
+      Idx: 2
+      Kind: Unknown
+      LowBound: 47
   - Room: "j-09"
     Holes:
     - Side: Right
