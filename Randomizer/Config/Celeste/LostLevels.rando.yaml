@@ -599,7 +599,7 @@ ASide:
           Or:
             - Dashes: one
               Difficulty: expert
-            - Dashes: one
+            - Dashes: two
               Difficulty: hard
       - To: "key"
         ReqOut:
@@ -618,6 +618,12 @@ ASide:
       - Room: "key"
         Collectables:
           - Idx: 0
+    Tweaks:
+      - Name: "spawn"
+        Update:
+          Add: true
+          X: 288
+          Y: 24
   - Room: "e-00y"
     Holes:
     - Side: Up
@@ -880,7 +886,7 @@ ASide:
     - Side: up
       Idx: 0
       Kind: none
-      Side: up
+    - Side: up
       Idx: 1
       Kind: none
     - Side: Down
