@@ -95,7 +95,7 @@ This hole should be marked up as:
 
 The Launch parameter can be set for any Up or Down hole, though it is only required for Down holes which would otherwise never be used (think: the 7b cassette room).
 
-If you want to edit the boundaries of a hole (for example, if an entity blocks part of it), you can specify the `LowBound` and `HighBound` parameters. These should contain the coordinates/8 (respectively) of the tiles which are the furthest left/top and right/bottom of the hole but still inside the hole, respectively. If you want to mark the hole as being half-open, i.e. it only has one side, you can set `LowBound: 0` to get rid of the left boundary and `HighOpen: true` to get rid of the right boundary.
+If you want to edit the boundaries of a hole (for example, if an entity blocks part of it), you can specify the `LowBound` and `HighBound` parameters. These should contain the coordinates/8 of the tiles which are the furthest left/top and right/bottom of the hole but still inside the hole, respectively. If you want to mark the hole as being half-open, i.e. it only has one side, you can set `LowBound: 0` to get rid of the left boundary and `HighOpen: true` to get rid of the right boundary.
 
 If you want to create a _new_ hole (for example, you took a large hole and made it half-open and you want to make a new hole representing the half-open other side), you can omit the `Idx` parameter and instead specify `New: true`. If you do this, you must specify both `LowBound` and `HighBound`.
 
@@ -195,8 +195,10 @@ The best way to describe it would be as follows:
       Kind: inout
     InternalEdges:
     - To: "left"
-      ReqBoth:
+      ReqOut:
         Dashes: one
+      ReqIn:
+        Dashes: zero
     Subrooms:
     - Room: "left"
       Holes:
@@ -208,7 +210,7 @@ The best way to describe it would be as follows:
         Kind: inout
 ```
 
-A subroom entry is identical to a normal room entry, except that it does not contain any subrooms. We assign the right hole to the main subroom and the two left holes to the left subroom. We then create an InternalEdge linking the main subroom to the left subroom, and say that you need one dash to cross the gap in either direction.
+A subroom entry is identical to a normal room entry, except that it does not contain any subrooms. We assign the right hole to the main subroom and the two left holes to the left subroom. We then create an InternalEdge linking the main subroom to the left subroom, and say that you need one dash to cross the gap to the left, and no dashes to cross it to the right.
 
 This syntax is a bit bulky for simple cases, so there is a simpler mechanism that you can use when a room only has exactly two non-none-kind holes:
 
