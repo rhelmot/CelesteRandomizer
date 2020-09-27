@@ -100,7 +100,6 @@ namespace Celeste.Mod.Randomizer {
             if (char.IsLower(description[0])) {
                 result = result.ToLower();
             }
-            Logger.Log("DEBUG", $"{description} -> {result}");
             return result;
         }
 
@@ -113,7 +112,6 @@ namespace Celeste.Mod.Randomizer {
             var thing = orig("RANDO_" + name);
             var i = 0;
             while (thing.Contains("(RANDO:")) {
-                Logger.Log("DEBUG", $"Processing {thing}");
                 var idx = thing.IndexOf("(RANDO:");
                 var startidx = idx + "(RANDO:".Length;
                 var endidx = thing.IndexOf(')', idx);
@@ -121,7 +119,6 @@ namespace Celeste.Mod.Randomizer {
                 thing = thing.Remove(idx, endidx + 1 - idx).Insert(idx, this.MadlibBlank(description, settings.Hash, name + (i * 55).ToString()));
                 i++;
             }
-            Logger.Log("DEBUG", $"Done: {thing}");
             return thing;
         }
 
