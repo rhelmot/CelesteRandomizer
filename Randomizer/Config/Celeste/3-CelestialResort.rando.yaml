@@ -1718,7 +1718,7 @@ ASide:
         Or:
           - Dashes: one
           - Dashes: zero
-            Difficulty: expert
+            Difficulty: perfect
     Tweaks:
     - ID: 1             # remove invisible barrier
       Update:

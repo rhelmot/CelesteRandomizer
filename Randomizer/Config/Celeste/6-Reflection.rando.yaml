@@ -527,10 +527,6 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
-    - Side: Down
-      Idx: 0
-      Kind: unknown
-      HighOpen: true
     InternalEdges:
     - To: "right"
       ReqOut:
@@ -546,11 +542,20 @@ ASide:
       - Side: Right
         Idx: 0
         Kind: inout
+      # put both the strange holes here to capture the difficulty of ascending on the left side
+      - Side: Down
+        Idx: 0
+        Kind: unknown
+        HighOpen: true
+        ReqIn:
+          Dashes: one
       - Side: Down
         New: true
         Kind: unknown
         LowBound: 0
         HighBound: 36
+        ReqIn:
+          Dashes: one
     Tweaks:
     - Name: "spawn"
       Update:
