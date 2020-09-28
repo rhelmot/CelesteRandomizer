@@ -1791,6 +1791,8 @@ BSide:
         - Dashes: two
         - Dashes: one
           Difficulty: hard
+        - Dashes: zero
+          Difficulty: expert
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:
@@ -1949,8 +1951,10 @@ BSide:
       Kind: inout
     InternalEdges:
     - Split: BottomToTop
-      ReqBoth:
+      ReqOut:
         Dashes: one
+      ReqIn:
+        Dashes: zero
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:
@@ -2174,8 +2178,11 @@ BSide:
       ReqOut:
         Dashes: one
       ReqIn:
-        Dashes: one
-        Difficulty: hard
+        Or:
+        - Dashes: one
+          Difficulty: hard
+        - Dashes: zero
+          Difficulty: expert
     Subrooms:
     - Room: "right"
       Holes:
