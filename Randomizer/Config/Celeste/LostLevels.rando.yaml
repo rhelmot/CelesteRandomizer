@@ -1050,17 +1050,22 @@ ASide:
     - Side: Right
       Idx: 0
       Kind: out
-      ReqOut:
-        Or:
-        - Dashes: two
-        - Dashes: one
-          Difficulty: hard
     - Side: Left
       Idx: 0
       Kind: in
     - Side: Down
       Idx: 0
       Kind: None
+    InternalEdges:
+    - Split: LeftToRight
+      ReqOut:
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: hard
+      ReqIn:
+          Dashes: two
+          Difficulty: expert
   - Room: "f-06"
     Holes:
     - Side: Right
@@ -1770,7 +1775,7 @@ ASide:
       Idx: 0
       Kind: out
       ReqOut:
-        Dashes: one
+        Dashes: zero
     - Side: Left
       Idx: 0
       Kind: in
