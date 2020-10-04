@@ -1197,8 +1197,10 @@ ASide:
     - To: "berry_top"
       ReqIn:
         Dashes: zero
-    - To: "bottomroom"
       ReqOut:
+        Dashes: one
+    - To: "bottomroom"
+      ReqBoth:
         Dashes: zero
     - To: "keyright"
       ReqIn:
@@ -1249,6 +1251,14 @@ ASide:
         Remove: true
     - ID: 2
       Name: "changeRespawnTrigger"
+      Update:
+        Remove: true
+    - ID: 17
+      Name: "crumbleBlock"
+      Update:
+        Remove: true
+    - ID: 77
+      Name: "crumbleBlock"
       Update:
         Remove: true
   - Room: "d-05"
