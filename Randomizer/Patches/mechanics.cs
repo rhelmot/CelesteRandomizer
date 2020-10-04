@@ -593,7 +593,8 @@ namespace Celeste.Mod.Randomizer {
                     if (insert) {
                         int idx = -1;
                         if (basic.AnimationsByName.ContainsKey(name)) {
-                            idx = basic.Animations.IndexOf(basic.AnimationsByName[name]);
+                            var anim = basic.AnimationsByName[name];
+                            idx = anim.ID;
                             basic.AnimationsByName.Remove(name);
                         }
                         basic.Add(
@@ -604,7 +605,10 @@ namespace Celeste.Mod.Randomizer {
                             GFX.Game.GetAtlasSubtextures(el.Attr("path"))
                         );
                         if (idx != -1) {
-                            basic.Animations[idx] = basic.AnimationsByName[name];
+                            var anim = basic.AnimationsByName[name];
+                            anim.ID = idx;
+                            basic.Animations[idx] = anim;
+                            basic.AnimationsByName[name] = anim;
                             basic.Animations.RemoveAt(basic.Animations.Count - 1);
                         }
                     }
