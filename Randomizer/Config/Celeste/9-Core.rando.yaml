@@ -119,6 +119,12 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 1
+      Kind: None
+    - Side: Right
+      Idx: 0
+      Kind: None
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
@@ -724,6 +730,9 @@ ASide:
       Kind: None
     - Side: Right
       Idx: 0
+      Kind: None
+    - Side: Right
+      Idx: 1
       Kind: None
     Tweaks:
     - Name: "spawn"
