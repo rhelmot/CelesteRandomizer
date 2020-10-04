@@ -219,7 +219,8 @@ namespace Celeste.Mod.Randomizer {
         }
 
         private void OnTransition(Level level, LevelData next, Vector2 direction) {
-            if (this.InRandomizer) {
+            var settings = this.InRandomizerSettings;
+            if (settings != null) {
                 // set core mode
                 var extraData = new DynData<LevelData>(next);
                 var coreModes = extraData.Get<RandoConfigCoreMode>("coreModes");
@@ -260,6 +261,11 @@ namespace Celeste.Mod.Randomizer {
                 if (new DynData<MapData>(level.Session.MapData).Get<bool?>("HasIsaVariantTriggers") ?? false) {
                     this.ResetIsaVariants();
                 }
+                
+                // reset inventory
+                SaveData.Instance.CurrentSession.Inventory = settings.Dashes == NumDashes.Zero ? new PlayerInventory(0, true, false, false) :
+                                                             settings.Dashes == NumDashes.One ?  new PlayerInventory(1, true, false, false) :
+                                                                                                 new PlayerInventory(2, true, false, false);
             }
         }
 
