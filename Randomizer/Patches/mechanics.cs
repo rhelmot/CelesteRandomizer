@@ -48,14 +48,22 @@ namespace Celeste.Mod.Randomizer {
             if (dll != null) {
                 var ty = dll.GetType("Celeste.Mod.DJMapHelper.Triggers.TeleportTrigger");
                 var meth = ty.GetMethod("OnEnter");
-                this.SpecialHooksMechanics.Add(new Hook(meth, new Action<Action<object, Player>, object, Player>(this.DJCutsceneWarp)));
+                try {
+                    this.SpecialHooksMechanics.Add(new Hook(meth, new Action<Action<object, Player>, object, Player>(this.DJCutsceneWarp)));
+                } catch (InvalidOperationException) {
+                    Logger.Log("randomizer", "ERROR: DJMapHelper.Triggers.TeleportTrigger.OnEnter signature changed");
+                }
             }
             
             dll = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName.Contains("LuaCutscenes"));
             if (dll != null) {
                 var ty = dll.GetType("Celeste.Mod.LuaCutscenes.MethodWrappers");
                 var meth = ty.GetMethod("InstantTeleport", BindingFlags.Static | BindingFlags.Public);
-                this.SpecialHooksMechanics.Add(new Hook(meth, new Action<Action<Scene, Player, string>, Scene, Player, string>(this.LuaInstantTeleport)));
+                try {
+                    this.SpecialHooksMechanics.Add(new Hook(meth, new Action<Action<Scene, Player, string, bool, float, float>, Scene, Player, string, bool, float, float>(this.LuaInstantTeleport)));
+                } catch (InvalidOperationException) {
+                    Logger.Log("randomizer", "ERROR: LuaCutscenes.MethodWrappers.InstantTeleport signature changed");
+                }
             }
         }
         
@@ -502,16 +510,16 @@ namespace Celeste.Mod.Randomizer {
             orig(self, player, nextlevel, introtype, nearestspawn);
         }
 
-        private void LuaInstantTeleport(Action<Scene, Player, string> orig, Scene scene, Player player, string nextRoom) {
+        private void LuaInstantTeleport(Action<Scene, Player, string, bool, float, float> orig, Scene scene, Player player, string nextRoom, bool sameRelativePosition, float positionX, float positionY) {
             if (this.InRandomizer) {
                 nextRoom = LookupWarpTarget(nextRoom);
             }
-            orig(scene, player, nextRoom);
+            orig(scene, player, nextRoom, sameRelativePosition, positionX, positionY);
         }
 
         private void PatchLoadingThread(On.Celeste.LevelLoader.orig_LoadingThread orig, LevelLoader self) {
             var settings = this.InRandomizerSettings;
-            if (settings != null) {
+            /if (settings != null) {
                 Logger.Log("randomizer", "Mashing up tilesets...");
                 MakeFrankenTilesets(settings);
             }
