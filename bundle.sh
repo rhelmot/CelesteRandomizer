@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash -e
 
 msbuild
 VERSION=$(cat Randomizer/everest.yaml | grep '^  Version' | cut -d' ' -f 4)

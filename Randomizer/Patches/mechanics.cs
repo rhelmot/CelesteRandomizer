@@ -519,7 +519,7 @@ namespace Celeste.Mod.Randomizer {
 
         private void PatchLoadingThread(On.Celeste.LevelLoader.orig_LoadingThread orig, LevelLoader self) {
             var settings = this.InRandomizerSettings;
-            /if (settings != null) {
+            if (settings != null) {
                 Logger.Log("randomizer", "Mashing up tilesets...");
                 MakeFrankenTilesets(settings);
             }
