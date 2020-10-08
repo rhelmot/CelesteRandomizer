@@ -435,7 +435,7 @@ namespace Celeste.Mod.Randomizer {
 
             cursor.Index = 0;
             while (cursor.TryGotoNext(MoveType.Before, instr => instr.MatchStfld("Celeste.Session", "RespawnPoint"))) {
-                cursor.EmitDelegate<Func<Vector2?, Vector2?>>((prevStartPoint) => this.InRandomizer ? null : prevStartPoint);
+                cursor.EmitDelegate<Func<Vector2?, Vector2?>>((prevStartPoint) => this.InRandomizer ? SaveData.Instance.CurrentSession.MapData.Get(LookupCustomwarpTarget()).Spawns[0] : prevStartPoint);
                 cursor.Index++;
             }
         }
