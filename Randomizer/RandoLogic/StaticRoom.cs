@@ -22,6 +22,10 @@ namespace Celeste.Mod.Randomizer {
         public List<Hole> Holes;
         public List<StaticCollectable> Collectables;
 
+        private string TweakedFgTiles;
+        private List<DecalData> TweakedFgDecals, TweakedBgDecals;
+        
+
         public override string ToString() {
             return this.Name;
         }
@@ -204,13 +208,16 @@ namespace Celeste.Mod.Randomizer {
                 }
             }
 
-            Level.Solids = string.Join("\n", tweakable.Select(line => string.Join("", line)));
+            this.TweakedFgTiles = string.Join("\n", tweakable.Select(line => string.Join("", line)));
+
+            var FgDecals = this.TweakedFgDecals = new List<DecalData>(Level.FgDecals);
+            var BgDecals = this.TweakedBgDecals = new List<DecalData>(Level.BgDecals);
             
             // peform decal tweaks
-            foreach (var decalList in new[] {Level.FgDecals, Level.BgDecals}) {
+            foreach (var decalList in new[] {FgDecals, BgDecals}) {
                 var removals = new List<DecalData>();
                 foreach (var decal in decalList) {
-                    var fg = object.ReferenceEquals(decalList, Level.FgDecals);
+                    var fg = object.ReferenceEquals(decalList, FgDecals);
                     foreach (var tweak in config.Tweaks ?? new List<RandoConfigEdit>()) {
                         if (tweak.Decal == (fg ? RandoConfigDecalType.FG : RandoConfigDecalType.BG) &&
                                 (tweak.Name == null || tweak.Name == decal.Texture) &&
@@ -242,7 +249,7 @@ namespace Celeste.Mod.Randomizer {
                         Position = new Vector2(tweak.Update.X.Value, tweak.Update.Y.Value),
                         Scale = new Vector2(tweak.Update.ScaleX.Value, tweak.Update.ScaleY.Value),
                     };
-                    (tweak.Decal == RandoConfigDecalType.BG ? Level.BgDecals : Level.FgDecals).Add(newDecal);
+                    (tweak.Decal == RandoConfigDecalType.BG ? BgDecals : FgDecals).Add(newDecal);
                 }
             }
         }
@@ -534,6 +541,9 @@ namespace Celeste.Mod.Randomizer {
             result.Music = "";
             result.DisableDownTransition = false;
             result.HasCheckpoint = false;
+            result.Solids = this.TweakedFgTiles;
+            result.FgDecals = this.TweakedFgDecals;
+            result.BgDecals = this.TweakedBgDecals;
 
             if (this.CoreModes != null) {
                 var newData = new DynData<LevelData>(result);
