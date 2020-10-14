@@ -109,7 +109,7 @@ namespace Celeste.Mod.Randomizer {
 
         public static IEnumerator AutoBubbleCoroutine(Player player) {
             yield return 0.3f;
-            if (!player.Dead) {
+            if (!player.Dead && player.StateMachine.State != 21) {
               Audio.Play("event:/game/general/cassette_bubblereturn", player.SceneAs<Level>().Camera.Position + new Vector2(160f, 90f));
               var respawn = SaveData.Instance.CurrentSession.RespawnPoint.Value;
               player.StartCassetteFly(respawn, (respawn + player.Position) / 2 - 30 * Vector2.UnitY);
