@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 namespace Celeste.Mod.Randomizer {
+    using FlagSet = Dictionary<string, FlagState>;
 
     public abstract class Requirement : IComparable<Requirement>, IComparable {
         public abstract bool Able(Capabilities state);
@@ -486,7 +487,8 @@ namespace Celeste.Mod.Randomizer {
             if (!(other is KeyRequirement i)) {
                 return false;
             }
-            return true;
+
+            return this.KeyholeID == i.KeyholeID;
         }
 
         public override int GetHashCode() {
@@ -503,7 +505,16 @@ namespace Celeste.Mod.Randomizer {
         }
 
         public override bool Able(Capabilities state) {
-            return state.Flags.Contains(this.Flag) == this.Set;
+            if (state.BypassFlags) {
+                return true;
+            }
+
+            var stateFlag = state.GetFlag(this.Flag);
+            if (this.Set) {
+                return stateFlag == FlagState.Set || stateFlag == FlagState.UnsetToSet || stateFlag == FlagState.Both;
+            } else {
+                return stateFlag == FlagState.Unset || stateFlag == FlagState.SetToUnset || stateFlag == FlagState.Both;
+            }
         }
 
         public override bool Equals(Requirement other) {
@@ -523,19 +534,45 @@ namespace Celeste.Mod.Randomizer {
         public NumDashes RefillDashes;
         public Difficulty PlayerSkill;
 
-        public Hole MatchHole;
         public bool HasKey;
-        public HashSet<string> Flags;
+        public bool BypassFlags;
+        public FlagSet Flags;
 
-        public Capabilities WithoutKey() {
+        public FlagState GetFlag(string name) {
+            return this.Flags.TryGetValue(name, out var result) ? result : FlagState.Unset;
+        }
+
+        public Capabilities Copy() {
             return new Capabilities {
-                Dashes = Dashes,
-                RefillDashes = RefillDashes,
-                PlayerSkill = PlayerSkill,
+                Dashes = this.Dashes,
+                RefillDashes = this.RefillDashes,
+                PlayerSkill = this.PlayerSkill,
 
-                MatchHole = MatchHole,
-                HasKey = false,
+                HasKey = this.HasKey,
+                Flags = this.Flags,
             };
         }
+
+        public Capabilities WithoutKey() {
+            var result = this.Copy();
+            result.HasKey = false;
+            return result;
+        }
+        
+        public Capabilities WithFlags(FlagSet flags) {
+            var result = this.Copy();
+            result.Flags = flags;
+            return result;
+        }
+
+        public Capabilities WithoutFlags() {
+            var result = this.Copy();
+            result.BypassFlags = true;
+            return result;
+        }
+    }
+
+    public enum FlagState {
+        Set, Unset, Both, One, SetToUnset, UnsetToSet,
     }
 }

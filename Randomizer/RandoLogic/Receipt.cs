@@ -240,19 +240,32 @@ namespace Celeste.Mod.Randomizer {
         public class PlaceCollectableReceipt : Receipt {
             private LinkedNode Node;
             private StaticCollectable Place;
+            private int? KeyholeID;
+            private LinkedRoom KeyholeRoom;
 
-            public static PlaceCollectableReceipt Do(LinkedNode node, StaticCollectable place, LinkedNode.LinkedCollectable item, bool autoBubble) {
+            public static PlaceCollectableReceipt Do(LinkedNode node, StaticCollectable place, LinkedCollectable item, bool autoBubble) {
                 Logger.Log("randomizer", $"Placing collectable {item} in {node.Room.Static.Name}:{node.Static.Name}");
                 node.Collectables[place] = Tuple.Create(item, autoBubble);
                 return new PlaceCollectableReceipt {
                     Node = node,
-                    Place = place
+                    Place = place,
                 };
+            }
+
+            public static PlaceCollectableReceipt Do(LinkedNode node, StaticCollectable place, LinkedCollectable item, bool autoBubble, int keyholeID, LinkedRoom keyholeRoom) {
+                var result = Do(node, place, item, autoBubble);
+                keyholeRoom.UsedKeyholes.Add(keyholeID);
+                result.KeyholeID = keyholeID;
+                result.KeyholeRoom = keyholeRoom;
+                return result;
             }
 
             public override void Undo() {
                 Logger.Log("randomizer", $"Undo: Placing collectable in {Node.Room.Static.Name}:{Node.Static.Name}");
                 this.Node.Collectables.Remove(this.Place);
+                if (this.KeyholeID != null) {
+                    this.KeyholeRoom.UsedKeyholes.Remove(this.KeyholeID.Value);
+                }
             }
         }
     }

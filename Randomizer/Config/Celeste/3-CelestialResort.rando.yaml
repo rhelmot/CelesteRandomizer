@@ -154,8 +154,29 @@ ASide:
       Kind: None
     InternalEdges:
     - Split: LeftToRight
-      ReqBoth:
-        Dashes: one
+      ReqOut:
+        Or:
+        - Dashes: one
+          And:
+            - Flag: towels:unset
+            - Flag: books:unset
+            - Flag: boxes:unset
+        - Dashes: one
+          Difficulty: hard
+          Or:
+            - Flag: towels:unset
+            - Flag: books:unset
+            - Flag: boxes:unset
+      ReqIn:
+        Or:
+          - Dashes: one
+            Difficulty: hard
+          - Dashes: two
+          - Dashes: one
+            And:
+              - Flag: towels:unset
+              - Flag: books:unset
+              - Flag: boxes:unset
     - Collectable: 0
       ReqOut:
         Dashes: zero
@@ -291,7 +312,12 @@ ASide:
       Idx: 1
       Kind: inout
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: one
+          Flag: boxes:unset
+        - Dashes: one
+          Difficulty: hard
+        - Dashes: two
     - Side: Right
       Idx: 0
       Kind: inout
@@ -330,7 +356,13 @@ ASide:
       Idx: 0
       Kind: inout
       ReqBoth:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          And:
+            - Flag: books:set
+            - Flag: towels:set
+            - Flag: boxes:set
     - Side: Down
       Idx: 1
       Kind: inout
@@ -476,6 +508,9 @@ ASide:
       ReqBoth:
         Key: true
         KeyholeID: 11
+        Or:
+          - Flag: towels:unset
+          - Flag: boxes:unset
     Subrooms:
     - Room: "right"
       Holes:
@@ -526,6 +561,10 @@ ASide:
         - Dashes: one
         - Dashes: zero
           Difficulty: expert
+          And:
+            - Flag: towels:unset
+            - Flag: books:unset
+            - Flag: boxes:unset
       ReqIn:
         Dashes: zero
     - Collectable: 0
@@ -673,15 +712,48 @@ ASide:
         Difficulty: expert
   - Room: "08-a"  # bridge to huge mess
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
-    - Side: Left
-      Idx: 0
-      Kind: inout
-    - Side: Down
-      Idx: 0
-      Kind: None #TODO clean any -> inout
+      - Side: Left
+        Idx: 0
+        Kind: inout
+    InternalEdges:
+      - To: "right"
+        ReqBoth:
+          Or:
+            - Dashes: zero
+              And:  # TODO you can maybe do this with zero dashes in some combination of these being set
+                - Flag: books:unset
+                - Flag: towels:unset
+                - Flag: boxes:unset
+            - Dashes: one
+              Or:
+                - Flag: books:unset
+                - Flag: towels:unset
+                - Flag: boxes:unset
+            - Dashes: one
+              Difficulty: hard
+      - To: "down"
+        ReqOut:
+          Dashes: zero
+          Or:
+            - Flag: books:set
+            - Flag: towels:set
+            - Flag: boxes:set
+        ReqIn:
+          Dashes: zero
+          Or:
+            - Flag: books:set
+            - Flag: boxes:set
+    Subrooms:
+      - Room: "right"
+        Holes:
+        - Side: Right
+          Idx: 0
+          Kind: inout
+      - Room: "down"
+        Holes:
+        - Side: Down
+          Idx: 0
+          Kind: inout
     Tweaks:
     - ID: 5       # remove exitBlock
       Update:
@@ -705,9 +777,6 @@ ASide:
       Idx: 0
       Kind: inout
     - Side: Down
-      Idx: 0
-      Kind: None #TODO clean any -> in
-    - Side: Down
       Idx: 1
       Kind: inout
     - Side: Down
@@ -718,7 +787,18 @@ ASide:
       ReqBoth:
         Key: true
         KeyholeID: 2
-    - To: "key"  # TODO: all three buttons
+    - To: "key"
+      ReqBoth:
+        And:
+          - Flag: towels:set
+          - Flag: boxes:set
+          - Flag: books:set
+    - To: "bottomentrance"
+      ReqBoth:
+        Or:
+          - Flag: towels:set
+          - Flag: boxes:set
+          - Flag: books:set
     Subrooms:
     - Room: "exit"
       Holes:
@@ -728,6 +808,11 @@ ASide:
     - Room: "key"
       Collectables:
       - Idx: 0
+    - Room: "bottomentrance"
+      Holes:
+        - Side: Down
+          Idx: 0
+          Kind: inout
     Tweaks:
     - ID: 36
       Update:
@@ -756,6 +841,10 @@ ASide:
       Name: "exitBlock"
       Update:
         Remove: true
+    - ID: 22
+      Name: "jumpThru"
+      Update:
+        Width: 16
   - Room: "10-x" # chest 1/end
     Holes:
     - Side: Down
@@ -763,9 +852,13 @@ ASide:
       Kind: inout
     - Side: Up
       Idx: 0
-      Kind: out
-      ReqOut:
-        Dashes: one
+      Kind: inout
+      ReqBoth:
+        Flag: boxes:set
+    InternalEdges:
+      - To: "switch"
+        ReqBoth:
+          Dashes: one
     Subrooms:
     - Room: "elbow"
       Holes:
@@ -775,6 +868,9 @@ ASide:
       - Side: Right
         Idx: 0
         Kind: inout
+    - Room: "switch"
+      Flags:
+        - boxes:set
     Tweaks:
     - Name: "spawn"
       Update:
@@ -794,6 +890,12 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: out
+      ReqOut:
+        Or:
+          - Dashes: zero
+            Flag: boxes:unset
+          - Dashes: one
+            Flag: towels:unset
     Tweaks:
     - ID: 29
       Name: "exitBlock"
@@ -881,7 +983,9 @@ ASide:
       Holes:
       - Side: Up
         Idx: 1
-        Kind: None #TODO clean towels -> inout
+        Kind: inout
+        ReqBoth:
+          Flag: towels:set
       - Side: Right
         Idx: 0
         Kind: inout
@@ -931,7 +1035,9 @@ ASide:
       Kind: inout
     - Side: Left
       Idx: 0
-      Kind: None #TODO clean towels -> inout
+      Kind: inout
+      ReqBoth:
+        Flag: towels:set
     - Side: Down
       Idx: 0
       Kind: out
@@ -968,15 +1074,23 @@ ASide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
-        Dashes: one
+        Flag: towels:set
     - Side: Up
       Idx: 1
       Kind: inout
     - Side: Right
       Idx: 0
       Kind: inout
+    InternalEdges:
+      - To: "switch"
+        ReqBoth:
+          Dashes: one
+    Subrooms:
+      - Room: "switch"
+        Flags:
+          - towels:set
     Tweaks:
     - Name: "spawn"
       Update:
@@ -1091,9 +1205,17 @@ ASide:
       Kind: in
     - Side: Down
       Idx: 0
-      Kind: out
-      ReqOut:
-        Dashes: one
+      Kind: inout
+      ReqBoth:
+        Flag: books:set
+    InternalEdges:
+      - To: "switch"
+        ReqBoth:
+          Dashes: one
+    Subrooms:
+      - Room: "switch"
+        Flags:
+          - books:set
     Tweaks:
     - Name: "spawn"
       Update:
@@ -1109,14 +1231,16 @@ ASide:
       Idx: 0
       Kind: inout
     Subrooms:
-    - Room: "elbow"  # TODO require laundry to be put away
+    - Room: "elbow"
       Holes:
       - Side: Down
         Idx: 1
-        Kind: none
+        Kind: inout
       - Side: Right
         Idx: 0
-        Kind: none
+        Kind: inout
+        ReqBoth:
+          Flag: towels:set
     Tweaks:
     - Name: "jumpThru"
       ID: 34
@@ -1953,8 +2077,14 @@ BSide:
     - Split: BottomToTop
       ReqOut:
         Dashes: one
+        Flag: towels:unset
       ReqIn:
-        Dashes: zero
+        Or:
+        - Dashes: zero
+          Flag: towels:unset
+        - Dashes: one
+          Difficulty: hard
+        - Dashes: two
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:

@@ -131,6 +131,7 @@ namespace Celeste.Mod.Randomizer {
                 Dashes = settings.Dashes,
                 PlayerSkill = settings.Difficulty,
                 HasKey = true,
+                Flags = new Dictionary<string, FlagState>(),
             };
         }
 
