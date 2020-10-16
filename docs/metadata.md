@@ -42,6 +42,9 @@ Collectables:
 ExtraSpace:
 - <rectangle>
 - <rectangle>
+Flags:
+- <flag setter>
+- <flag setter>
 ReqEnd: <ending requirements>
 Hub: {true/false}
 Core: <core mode description>
@@ -135,6 +138,30 @@ If a room requires you to be able to jump above the screen at a certain point or
 ```
 
 These coordinates are in level-space - the easiest way to get them is to make a big dashBlock or similar in ahorn which extends offscreen into the part that needs to be kept clear and copy its coordinates. It doesn't matter if ExtraSpace directives overlap with the main room or with each other.
+
+## Flags
+
+If a room can set a certain session flag which affects the traversability of other rooms, you will want to denote this with a `Flags` entry. For example, the books switch in huge mess is annotated like so:
+
+```
+    Flags:
+      - books:set
+```
+
+This means you can set the flag `books` in this room. If somehow you had a switch which could clutter up the books again, you would mark it as `books:unset`.
+
+Keep in mind that the logic will assume that the flag-setters are "free", i.e. requiring no dashes or difficulty, so if a flag requires a dash, put it in a separate subroom, like so:
+
+```
+    InternalEdges:
+      - To: "switch"
+        ReqBoth:
+          Dashes: one
+    Subrooms:
+      - Room: "switch"
+        Flags:
+          - books:set
+```
 
 ## Hub
 
@@ -241,7 +268,9 @@ Now, let's finally get to the bottom of these ReqIn/ReqOut/ReqBoth directives. A
 Dashes: {zero, one, two (default)}
 Difficulty: {normal (default), hard, expert, perfect}
 Key: {true, false}   # that is, set it to true if the path is blocked by a locked door
+Flag: [flag string]
 Or: [list of sub-requirements]
+And: [list of sub-requirements]
 ```
 
 If two or more of the keys are specified, it means that you need both of those things to traverse the room in that way. So, to put it all together, if you have a room which can be traversed easily with two dashes but only takes one dash if you know some advanced techinques, you would describe it like this:
@@ -261,6 +290,18 @@ ReqBoth:
   Dashes: zero
   Key: true
   KeyholeID: 12
+```
+
+In order to specify that a certain session flag must be set or unset in order to traverse a certain path, use the `Flag` key, specifying that the given flag must be either `set` or `unset`:
+
+```
+ReqOut:
+  Or:
+  - Dashes: one
+    Flag: boxes:unset
+  - Dashes: one
+    Difficulty: hard
+  - Dashes: two
 ```
 
 ## Collectables

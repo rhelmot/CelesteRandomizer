@@ -446,6 +446,18 @@ namespace Celeste.Mod.Randomizer {
                     throw new Exception($"[{this.Name}.{node.Name}] Collectable must specify Idx or X/Y");
                 }
             }
+
+            foreach (var flagStr in config.Flags ?? new List<string>()) {
+                var name = flagStr;
+                var val = true;
+                if (name.Contains(":")) {
+                    var split = flagStr.Split(':');
+                    name = split[0];
+                    var v = split[1].ToLower();
+                    val = v == "on" || v == "set" || v == "true" || v == "yes";
+                }
+                node.FlagSetters.Add(Tuple.Create(name, val));
+            }
         }
 
         private Requirement ProcessReqs(RandoConfigReq config) {
@@ -491,6 +503,18 @@ namespace Celeste.Mod.Randomizer {
 
             if (config.Dashes != null) {
                 conjunction.Add(new DashRequirement(config.Dashes.Value));
+            }
+
+            if (config.Flag != null) {
+                var name = config.Flag;
+                var val = true;
+                if (name.Contains(":")) {
+                    var split = name.Split(':');
+                    name = split[0];
+                    var v = split[1].ToLower();
+                    val = v == "on" || v == "set" || v == "true" || v == "yes";
+                }
+                conjunction.Add(new FlagRequirement(name, val));
             }
 
             // not nullable
@@ -795,6 +819,7 @@ namespace Celeste.Mod.Randomizer {
         public List<StaticCollectable> Collectables = new List<StaticCollectable>();
         public StaticRoom ParentRoom;
         public List<RandoConfigInternalEdge> WarpConfig = new List<RandoConfigInternalEdge>();
+        public List<Tuple<string, bool>> FlagSetters = new List<Tuple<string, bool>>();
 
         public override string ToString() {
             return $"{this.ParentRoom}:{this.Name}";

@@ -1194,11 +1194,6 @@ ASide:
         - Dashes: one
         - Dashes: zero
           Difficulty: expert
-    - To: "berry_top"
-      ReqIn:
-        Dashes: zero
-      ReqOut:
-        Dashes: one
     - To: "bottomroom"
       ReqBoth:
         Dashes: zero
@@ -1232,9 +1227,6 @@ ASide:
         ReqBoth:
           Dashes: one
           Difficulty: hard
-    - Room: "berry_top"
-      Collectables:
-      - Idx: 0
     - Room: "bottomroom"
       Holes:
       - Side: Right
