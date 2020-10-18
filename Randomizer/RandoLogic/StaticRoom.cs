@@ -849,11 +849,11 @@ namespace Celeste.Mod.Randomizer {
 
         public override string ToString() {
             if (this.HoleTarget != null) {
-                return this.HoleTarget.ToString();
+                return $"{this.HoleTarget}@{this.FromNode}";
             } else if (this.CustomWarp) {
-                return "CustomWarp";
+                return $"CustomWarp@{this.FromNode}";
             } else {
-                return $"-> {this.NodeTarget}";
+                return $"{this.FromNode} -> {this.NodeTarget}";
             }
         }
     }
