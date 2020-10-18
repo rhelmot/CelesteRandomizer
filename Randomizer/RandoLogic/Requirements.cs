@@ -32,6 +32,9 @@ namespace Celeste.Mod.Randomizer {
         public abstract bool Equals(Requirement other);
 
         protected static void Normalize(List<Requirement> requirements) {
+            // XXX EXTREMELY IMPORTANT XXX
+            // MAKE SURE GetHashCode NEVER CALLS ANY BASE CLASS GetHashCode
+            // OTHERWISE YOU WILL SEE BEHAVIOR DIVERGENCES BETWEEN C# VERSIONS
             requirements.Sort((Requirement a, Requirement b) => a.GetHashCode().CompareTo(b.GetHashCode()));
             for (int i = 0; i < requirements.Count - 1; ) {
                 var a = requirements[i];
@@ -420,7 +423,7 @@ namespace Celeste.Mod.Randomizer {
         }
 
         public override int GetHashCode() {
-            return 3333 ^ this.Dashes.GetHashCode();
+            return 3333 ^ (int)this.Dashes;
         }
 
         public override bool StrictlyBetterThan(Requirement other) {
@@ -459,7 +462,7 @@ namespace Celeste.Mod.Randomizer {
         }
 
         public override int GetHashCode() {
-            return 4444 ^ this.Difficulty.GetHashCode();
+            return 4444 ^ (int)this.Difficulty;
         }
 
         public override bool StrictlyBetterThan(Requirement other) {
@@ -525,7 +528,14 @@ namespace Celeste.Mod.Randomizer {
         }
 
         public override int GetHashCode() {
-            return 6666 ^ this.Flag.GetHashCode() ^ this.Set.GetHashCode();
+            var result = 6666;
+            foreach (var ch in this.Flag) {
+                result ^= ch;
+                result = (result << 10) | (result >> 22);
+            }
+
+            result ^= this.Set ? 1234 : 5678;
+            return result;
         }
     }
 
