@@ -407,10 +407,11 @@ namespace Celeste.Mod.Randomizer {
         }
 
         public static string LookupCustomwarpTarget() {
-            var dyn = new DynData<LevelData>(SaveData.Instance.CurrentSession.LevelData);
+            var baked = SaveData.Instance.CurrentSession.LevelData;
+            var dyn = new DynData<LevelData>(baked);
             var newNextLevel = dyn.Get<string>("CustomWarp");
             if (newNextLevel == null) {
-                throw new Exception("Randomizer error: no target for warp");
+                throw new Exception($"Randomizer error: no target for warp from {baked.Name}");
             }
             return newNextLevel;
         }
@@ -435,7 +436,7 @@ namespace Celeste.Mod.Randomizer {
 
             cursor.Index = 0;
             while (cursor.TryGotoNext(MoveType.Before, instr => instr.MatchStfld("Celeste.Session", "RespawnPoint"))) {
-                cursor.EmitDelegate<Func<Vector2?, Vector2?>>((prevStartPoint) => this.InRandomizer ? SaveData.Instance.CurrentSession.MapData.Get(LookupCustomwarpTarget()).Spawns[0] : prevStartPoint);
+                cursor.EmitDelegate<Func<Vector2?, Vector2?>>((prevStartPoint) => this.InRandomizer ? SaveData.Instance.CurrentSession.LevelData.Spawns[0] : prevStartPoint);
                 cursor.Index++;
             }
         }
