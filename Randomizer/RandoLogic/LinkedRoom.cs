@@ -168,7 +168,7 @@ namespace Celeste.Mod.Randomizer {
         }
 
         public override string ToString() {
-            return $"{this.Static.Name}({this.Bounds.Left}, {this.Bounds.Top})";
+            return $"{this.Static.Name}@{this.Position}";
         }
 
         public LinkedRoom(StaticRoom Room, Vector2 Position) {
@@ -787,7 +787,7 @@ namespace Celeste.Mod.Randomizer {
         }
 
         public override string ToString() {
-            return $"UnlinkedEdge({this.Static}, {this.Node})";
+            return $"{this.Static}@{this.Node.Room.Position}";
         }
 
         public override bool Equals(object obj) {

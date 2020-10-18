@@ -441,6 +441,7 @@ namespace Celeste.Mod.Randomizer {
                         if (mapped == null) {
                             continue;
                         }
+
                         this.AddReceipt(mapped);
                         this.AddNextTask(new TaskPathwaySatisfyRequirement(this.Logic, mapped.EntryNode, this.Req, this.State, this.OriginalNode, true, this.Tries));
                         return true;
