@@ -1191,10 +1191,6 @@ ASide:
         - Side: Left
           Idx: 0
           Kind: inout
-        InternalEdges:
-          - To: "berry"
-            ReqBoth:
-              Dashes: one
       - Room: "berry"
         Collectables:
           - Idx: 0
