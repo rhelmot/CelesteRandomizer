@@ -83,12 +83,12 @@ namespace Celeste.Mod.Randomizer {
                 this.AddReceipt(receipt);
                 var newNode = receipt.NewRoom.Nodes["main"];
                 var state = new FlagSet();
-                //foreach (var node in LinkedNodeSet.Closure(newNode, this.Logic.Caps.WithFlags(state), null, true).Nodes) {
-                //    foreach (var setter in node.Static.FlagSetters) {
-                //        TaskPathwayPickRoom.UpdateState(state, setter.Item1, setter.Item2);
-                //        newNode = node;
-                //    }
-                //}
+                foreach (var node in LinkedNodeSet.Closure(newNode, this.Logic.Caps.WithFlags(state), null, true).Nodes) {
+                    foreach (var setter in node.Static.FlagSetters) {
+                        TaskPathwayPickRoom.UpdateState(state, setter.Item1, setter.Item2);
+                        newNode = node;
+                    }
+                }
                 this.AddNextTask(new TaskPathwayPickEdge(this.Logic, newNode, state));
                 this.AddLastTask(new TaskPathwayBerryOffshoot(this.Logic, newNode, state));
 
