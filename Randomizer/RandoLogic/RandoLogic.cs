@@ -622,37 +622,50 @@ namespace Celeste.Mod.Randomizer {
         private void RandomizeDialog() {
             RandomDialogMappings.Clear();
             // Shuffle spoken and nonspoken dialog separately for better results
-            List<string> spokenDialogIDs = GetDialogIDs(spoken: true);
-            List<string> nonspokenDialogIDs = GetDialogIDs(spoken: false);
-            AddRandomDialogMappings(spokenDialogIDs);
-            AddRandomDialogMappings(nonspokenDialogIDs);
+            List<string> spokenDialogIDs = GetSortedDialogIDs(spoken: true);
+            List<string> nonspokenDialogIDs = GetSortedDialogIDs(spoken: false);
+            List<string> shuffledSpokenDialogIDs = ShuffleDialogIDsByLength(spokenDialogIDs);
+            List<string> shuffledNonspokenDialogIDs = ShuffleDialogIDsByLength(nonspokenDialogIDs);
+            for (int i = 0; i < spokenDialogIDs.Count; i++)
+            {
+                RandomDialogMappings[spokenDialogIDs[i].ToLower()] = shuffledSpokenDialogIDs[i].ToLower();
+            }
+            for (int i = 0; i < nonspokenDialogIDs.Count; i++)
+            {
+                RandomDialogMappings[nonspokenDialogIDs[i].ToLower()] = shuffledNonspokenDialogIDs[i].ToLower();
+            }
         }
 
-        private List<string> GetDialogIDs(bool spoken)
-        {
+        private List<string> GetSortedDialogIDs(bool spoken) {
             List<string> dialogIDs = new List<string>(Dialog.Language.Dialog.Keys);
             // Don't touch poem names or mad lib templates
             dialogIDs.RemoveAll((id) => id.StartsWith("POEM_", StringComparison.InvariantCultureIgnoreCase));
             dialogIDs.RemoveAll((id) => id.StartsWith("RANDO_", StringComparison.InvariantCultureIgnoreCase));
             // Quick, naive way to distinguish spoken dialog
-            if (spoken)
-            {
-                dialogIDs.RemoveAll((id) => !Dialog.Language.Dialog[id].Contains("portrait"));
-            } else
-            {
-                dialogIDs.RemoveAll((id) => Dialog.Language.Dialog[id].Contains("portrait"));
+            if (spoken) {
+                dialogIDs.RemoveAll((id) => !Dialog.Get(id).Contains("portrait"));
+            } else {
+                dialogIDs.RemoveAll((id) => Dialog.Get(id).Contains("portrait"));
             }
+            dialogIDs.Sort((s1, s2) => Dialog.Get(s1).Length.CompareTo(Dialog.Get(s2).Length));
             return dialogIDs;
         }
 
-        private void AddRandomDialogMappings(List<string> dialogIDs)
-        {
+        // The idea here is to have our results be random, but reasonably close to the same length
+        // ~10% of the list gets shuffled with itself at a time (irregular segment at the end)
+        static List<string> ShuffleDialogIDsByLength(List<string> sortedIDs) {
             Random rng = new Random();
-            List<string> shuffledIDs = dialogIDs.OrderBy(x => rng.Next()).ToList();
-            for (int i = 0; i < dialogIDs.Count; i++)
-            {
-                RandomDialogMappings[dialogIDs[i].ToLower()] = shuffledIDs[i].ToLower();
+            List<string> shuffledIDs = new List<string>(sortedIDs);
+            int segments = 10;
+            int segSize = shuffledIDs.Count / segments;
+            for (int i = shuffledIDs.Count - 1; i > 0; i--) {
+                int start = (i / segSize) * segSize;
+                int swapIndex = rng.Next(start, i + 1);
+                string tmp = shuffledIDs[i];
+                shuffledIDs[i] = shuffledIDs[swapIndex];
+                shuffledIDs[swapIndex] = tmp;
             }
+            return shuffledIDs;
         }
 
         private List<StaticEdge> AvailableNewEdges(Capabilities capsIn, Capabilities capsOut, Func<StaticEdge, bool> filter=null) {
