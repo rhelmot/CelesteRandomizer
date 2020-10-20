@@ -320,7 +320,7 @@ namespace Celeste.Mod.Randomizer {
                 }
 
                 text += "\n#" + settings.Hash;
-                text += "\nrando " + this.Metadata.VersionString;
+                text += "\nrando " + this.VersionString;
                 var variants = SaveData.Instance?.VariantMode ?? false;
                 ActiveFont.DrawOutline(text, new Vector2(1820f + 300f * (1f - Ease.CubeOut(ease)), variants ? 810f : 894f), new Vector2(0.5f, 0f), Vector2.One * 0.5f, settings.SpawnGolden ? Calc.HexToColor("fad768") : Color.White, 2f, Color.Black);
             }

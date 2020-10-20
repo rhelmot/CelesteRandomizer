@@ -701,7 +701,10 @@ ASide:
       ReqOut:
         Dashes: zero
       ReqIn:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect
   - Room: "10zb"
     Holes:
     - Side: Right

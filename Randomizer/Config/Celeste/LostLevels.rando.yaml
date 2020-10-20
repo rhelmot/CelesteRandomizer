@@ -310,8 +310,11 @@ ASide:
         ReqOut:
           Dashes: one
         ReqIn:
-          Dashes: two
-          Difficulty: expert
+          Or:
+            - Dashes: two
+              Difficulty: expert
+            - Dashes: one
+              Flag: poweroff:set
   - Room: "c-00"
     Holes:
     - Side: Left
@@ -467,35 +470,52 @@ ASide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: out
-      ReqOut:
+      Kind: inout
+      ReqBoth:
         Dashes: one
     - Side: Up
       Idx: 1
-      Kind: out
+      Kind: inout
       ReqOut:
-        Dashes: two
+        Dashes: one
+        Flag: poweroff:set
+      ReqIn:
+        Flag: poweroff:set
     - Side: Up
       Idx: 2
-      Kind: none
-    - Side: Right
-      Idx: 0
       Kind: out
       ReqOut:
-        Dashes: two
+        And:
+          - Key: true
+            KeyholeID: 471
+          - Key: true
+            KeyholeID: 145
+          - Key: true
+            KeyholeID: 144
+          - Key: true
+            KeyholeID: 142
+          - Key: true
+            KeyholeID: 197
+    - Side: Right
+      Idx: 0
+      Kind: inout
+      ReqBoth:
+        Flag: poweroff:set
     - Side: Right
       Idx: 1
       Kind: inout
       ReqIn:
-        Dashes: two
+        Or:
+        - Dashes: two
+        - Flag: poweroff:set
     - Side: Left
       Idx: 0
-      Kind: out
-      ReqOut:
-        Dashes: two
+      Kind: inout
+      ReqBoth:
+        Flag: poweroff:set
     - Side: Down
       Idx: 1
-      Kind: in
+      Kind: inout
     - Side: Down
       Idx: 0
       Kind: none
@@ -505,10 +525,20 @@ ASide:
     - Side: Down
       Idx: 3
       Kind: none
+    Subrooms:
+      - Room: "box"
+        Flags:
+          - poweroff:set
+    InternalEdges:
+      - To: "box"
+        ReqOut:
+          Dashes: two
+        ReqIn:
+          Dashes: zero
     Tweaks:
     - Name: "spawn"
       X: 528
-      Y: 608
+      Y: 512
       Update:
         Default: true
     - ID: 276
@@ -520,6 +550,24 @@ ASide:
       Name: "changeRespawnTrigger"
       Update:
         Remove: true
+    - ID: 140
+      Name: "jumpThru"
+      Update:
+        Width: 16
+    - Name: "spawn"
+      X: 528
+      Y: 608
+      Update:
+        X: 520
+    - Name: "eventTrigger"
+      ID: 11
+      Update:
+        Remove: true
+    - Name: "booster"
+      ID: 146
+      Update:
+        Values:
+          ch9_hub_booster: false
   - Room: "d-01"
     Holes:
     - Side: Right
@@ -546,12 +594,13 @@ ASide:
       Idx: 0
       Kind: none
     InternalEdges:
-    - Collectable: 0  # TODO this is only doable when the electricity is off
-      #ReqBoth:
-      #  Dashes: one
+    - Collectable: 0
+      ReqOut:
+        Dashes: one
+        Flag: poweroff:set
   - Room: "d-03"
     Holes:
-    - Side: Left  # TODO power source flag
+    - Side: Left
       Idx: 0
       Kind: inout
     - Side: Up
@@ -565,8 +614,9 @@ ASide:
       Kind: none
     InternalEdges:
     - Collectable: 0
-      #ReqBoth:
-      #  Dashes: one
+      ReqOut:
+        Dashes: one
+        Flag: poweroff:set
   - Room: "d-04"
     Holes:
     - Side: Left
@@ -580,7 +630,7 @@ ASide:
       Kind: None
     InternalEdges:
     - Collectable: 0
-      ReqBoth:
+      ReqOut:
         Dashes: one
   - Room: "d-05"
     Holes:
@@ -599,7 +649,7 @@ ASide:
           Or:
             - Dashes: one
               Difficulty: expert
-            - Dashes: one
+            - Dashes: two
               Difficulty: hard
       - To: "key"
         ReqOut:
@@ -618,6 +668,12 @@ ASide:
       - Room: "key"
         Collectables:
           - Idx: 0
+    Tweaks:
+      - Name: "spawn"
+        Update:
+          Add: true
+          X: 288
+          Y: 24
   - Room: "e-00y"
     Holes:
     - Side: Up
@@ -880,7 +936,7 @@ ASide:
     - Side: up
       Idx: 0
       Kind: none
-      Side: up
+    - Side: up
       Idx: 1
       Kind: none
     - Side: Down
@@ -1044,17 +1100,25 @@ ASide:
     - Side: Right
       Idx: 0
       Kind: out
-      ReqOut:
-        Or:
-        - Dashes: two
-        - Dashes: one
-          Difficulty: hard
     - Side: Left
       Idx: 0
       Kind: in
     - Side: Down
       Idx: 0
       Kind: None
+    InternalEdges:
+    - Split: LeftToRight
+      ReqOut:
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: hard
+      ReqIn:
+        Or:
+          - Dashes: two
+            Difficulty: expert
+          - Dashes: one
+            Difficulty: perfect
   - Room: "f-06"
     Holes:
     - Side: Right
@@ -1132,7 +1196,7 @@ ASide:
         Difficulty: hard
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: in  # TODO make inout
     - Side: left
       Idx: 0
       Kind: None
@@ -1151,7 +1215,7 @@ ASide:
           Difficulty: hard
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: in  # TODO make inout
     - Side: Left
       Idx: 0
       Kind: None
@@ -1249,12 +1313,17 @@ ASide:
       Kind: inout
     - Side: Right
       Idx: 0
-      Kind: out
-      ReqOut:
-        Dashes: one
+      Kind: inout
     - Side: Down
       Idx: 0
       Kind: None
+    InternalEdges:
+      - Split: LeftToRight
+        ReqOut:
+          Dashes: one
+        ReqIn:
+          Dashes: two
+          Difficulty: perfect
   - Room: "h-01"
     Holes:
     - Side: Up
@@ -1500,15 +1569,10 @@ ASide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
-      ReqOut:
-        Or:
-        - Dashes: two
-        - Dashes: one
-          Difficulty: hard
+      Kind: inout
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
     - Side: Left
       Idx: 1
       Kind: none
@@ -1521,6 +1585,16 @@ ASide:
     - Side: Up
       Idx: 1
       Kind: None
+    InternalEdges:
+      - Split: LeftToRight
+        ReqOut:
+          Or:
+            - Dashes: two
+            - Dashes: one
+              Difficulty: hard
+        ReqIn:
+          Dashes: two
+          Difficulty: perfect
   - Room: "i-01"
     Holes:
     - Side: Left
@@ -1764,7 +1838,7 @@ ASide:
       Idx: 0
       Kind: out
       ReqOut:
-        Dashes: one
+        Dashes: zero
     - Side: Left
       Idx: 0
       Kind: in
@@ -1801,7 +1875,10 @@ ASide:
       ReqOut:
         Dashes: one
       ReqIn:
-        Dashes: two
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: hard
     Subrooms:
     - Room: "right"
       Holes:
@@ -1844,6 +1921,13 @@ ASide:
       Idx: 0
       Kind: Unknown
       LowBound: 0
+    - Side: Up
+      Idx: 1
+      Kind: None
+    - Side: Up
+      Idx: 2
+      Kind: Unknown
+      LowBound: 47
   - Room: "j-09"
     Holes:
     - Side: Right

@@ -18,6 +18,8 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.BadelineOldsite.Added += PlayBadelineCutscene;
             On.Celeste.Player.SummitLaunchUpdate += SummitLaunchReset;
             On.Celeste.Player.Added += DontMoveOnWakeup;
+            On.Celeste.Dialog.Clean += PlayMadlibs1;
+            On.Celeste.Dialog.Get += PlayMadlibs2;
             IL.Celeste.Level.EnforceBounds += DontBlockOnTheo;
             IL.Celeste.TheoCrystal.Update += BeGracefulOnTransitions;
             IL.Celeste.SummitGem.OnPlayer += GemRefillsDashes;
@@ -52,6 +54,8 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.BadelineOldsite.Added -= PlayBadelineCutscene;
             On.Celeste.Player.SummitLaunchUpdate -= SummitLaunchReset;
             On.Celeste.Player.Added -= DontMoveOnWakeup;
+            On.Celeste.Dialog.Clean -= PlayMadlibs1;
+            On.Celeste.Dialog.Get -= PlayMadlibs2;
             IL.Celeste.Level.EnforceBounds -= DontBlockOnTheo;
             IL.Celeste.TheoCrystal.Update -= BeGracefulOnTransitions;
             IL.Celeste.SummitGem.OnPlayer -= GemRefillsDashes;
@@ -75,6 +79,55 @@ namespace Celeste.Mod.Randomizer {
                 detour.Dispose();
             }
             this.SpecialHooksQol.Clear();
+        }
+
+        private string MadlibBlank(string description, string hash, string seed) {
+            if (description.Contains(":")) {
+                var split = description.Split(':');
+                description = split[0];
+                seed = split[1];
+            }
+
+            int count;
+            try {
+                count = int.Parse(Dialog.Get("RANDOHEART_" + description + "_COUNT"));
+            } catch (FormatException) {
+                throw new Exception("Bad key: RANDOHEART_" + description + "_COUNT");
+            }
+            var r = new Random((int)RandoSettings.djb2(hash + seed));
+            var picked = r.Next(count);
+            var result = Dialog.Get("RANDOHEART_" + description + "_" + picked.ToString());
+            if (char.IsLower(description[0])) {
+                result = result.ToLower();
+            }
+            return result;
+        }
+
+        private string PlayMadlibs(Func<string, string> orig, string name) {
+            RandoSettings settings;
+            if (!Dialog.Has("RANDO_" + name) || (settings = this.InRandomizerSettings) == null) {
+                return orig(name);
+            }
+
+            var thing = orig("RANDO_" + name);
+            var i = 0;
+            while (thing.Contains("(RANDO:")) {
+                var idx = thing.IndexOf("(RANDO:");
+                var startidx = idx + "(RANDO:".Length;
+                var endidx = thing.IndexOf(')', idx);
+                var description = thing.Substring(startidx, endidx - startidx);
+                thing = thing.Remove(idx, endidx + 1 - idx).Insert(idx, this.MadlibBlank(description, settings.Hash, name + (i * 55).ToString()));
+                i++;
+            }
+            return thing;
+        }
+
+        private string PlayMadlibs2(On.Celeste.Dialog.orig_Get orig, string name, Language language) {
+            return PlayMadlibs(s => orig(s, language), name);
+        }
+
+        private string PlayMadlibs1(On.Celeste.Dialog.orig_Clean orig, string name, Language language) {
+            return PlayMadlibs(s => orig(s, language), name);
         }
 
         private void DisableMenuMovement(On.Celeste.TextMenu.orig_MoveSelection orig, TextMenu self, int direction, bool wiggle = false) {

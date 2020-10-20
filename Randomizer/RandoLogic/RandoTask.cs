@@ -17,6 +17,8 @@ namespace Celeste.Mod.Randomizer {
 
             public abstract bool Next();
 
+            public virtual void Reset() { }
+
             protected void AddNextTask(RandoTask toPush) {
                 this.Logic.Tasks.AddToFront(toPush);
                 this.FrontCount++;

@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Monocle;
 
 namespace Celeste.Mod.Randomizer {
+    using FlagSet = Dictionary<string, FlagState>;
+    
     public partial class RandoLogic {
         private Deque<RandoTask> Tasks = new Deque<RandoTask>();
         private Stack<RandoTask> CompletedTasks = new Stack<RandoTask>();
@@ -19,6 +22,7 @@ namespace Celeste.Mod.Randomizer {
 
             while (this.Tasks.Count != 0) {
                 var nextTask = this.Tasks.RemoveFromFront();
+                nextTask.Reset();
 
                 while (!nextTask.Next()) {
                     backtracks++;
@@ -77,8 +81,16 @@ namespace Celeste.Mod.Randomizer {
 
                 this.TriedRooms.Add(receipt.NewRoom.Static);
                 this.AddReceipt(receipt);
-                this.AddNextTask(new TaskPathwayPickEdge(this.Logic, receipt.NewRoom.Nodes["main"]));
-                this.AddLastTask(new TaskPathwayBerryOffshoot(this.Logic, receipt.NewRoom.Nodes["main"]));
+                var newNode = receipt.NewRoom.Nodes["main"];
+                var state = new FlagSet();
+                foreach (var node in LinkedNodeSet.Closure(newNode, this.Logic.Caps.WithFlags(state), null, true).Nodes) {
+                    foreach (var setter in node.Static.FlagSetters) {
+                        TaskPathwayPickRoom.UpdateState(state, setter.Item1, setter.Item2);
+                        newNode = node;
+                    }
+                }
+                this.AddNextTask(new TaskPathwayPickEdge(this.Logic, newNode, state));
+                this.AddLastTask(new TaskPathwayBerryOffshoot(this.Logic, newNode, state));
 
                 return true;
             }
@@ -87,14 +99,17 @@ namespace Celeste.Mod.Randomizer {
         private class TaskPathwayPickEdge : RandoTask {
             private LinkedNode Node;
             private HashSet<StaticEdge> TriedEdges = new HashSet<StaticEdge>();
+            private FlagSet State;
 
-            public TaskPathwayPickEdge(RandoLogic logic, LinkedNode node) : base(logic) {
+            public TaskPathwayPickEdge(RandoLogic logic, LinkedNode node, FlagSet state) : base(logic) {
                 // TODO: advance forward through any obligatory edges
                 this.Node = node;
+                this.State = state;
             }
 
             public override bool Next() {
-                var closure = LinkedNodeSet.Closure(this.Node, this.Logic.Caps, null, true);
+                var caps = this.Logic.Caps.WithoutFlags();
+                var closure = LinkedNodeSet.Closure(this.Node, caps, null, true);
                 var available = closure.UnlinkedEdges((UnlinkedEdge u) => !this.TriedEdges.Contains(u.Static) && (u.Static.HoleTarget == null || this.Logic.Map.HoleFree(this.Node.Room, u.Static.HoleTarget)));
                 if (available.Count == 0) {
                     Logger.Log("randomizer", $"Failure: No edges out of {Node.Room.Static.Name}:{Node.Static.Name}");
@@ -102,20 +117,60 @@ namespace Celeste.Mod.Randomizer {
                 }
 
                 var picked = available[this.Logic.Random.Next(available.Count)];
-                this.AddNextTask(new TaskPathwayPickRoom(this.Logic, picked));
+                var state = new FlagSet(this.State);
+                this.AddNextTask(new TaskPathwayPickRoom(this.Logic, picked, state));
                 this.TriedEdges.Add(picked.Static);
 
-                var reqNeeded = LinkedNodeSet.TraversalRequires(this.Node, this.Logic.Caps.WithoutKey(), true, picked);
-                if (reqNeeded is Possible) {
-                    // nothing needed
-                } else if (reqNeeded is KeyRequirement keyReq) {
-                    Logger.Log("randomizer", $"Need to place a key from {Node.Room.Static.Name}:{Node.Static.Name} to get out of {picked.Static.HoleTarget}");
-                    this.AddNextTask(new TaskPathwayPlaceKey(this.Logic, this.Node, keyReq.KeyholeID));
-                } else {
-                    throw new Exception("why does this happen? this should not happen");
+                var reqNeeded = LinkedNodeSet.TraversalRequires(this.Node, this.Logic.Caps.WithoutKey().WithFlags(this.State), true, picked);
+                this.HandleRequirements(reqNeeded, state, this.State);
+                var reversible = LinkedNodeSet.Closure(this.Node, null, this.Logic.Caps.WithFlags(state), true).UnlinkedEdges().Contains(picked);
+                if (!reversible) {
+                    CrystallizeState(state);
                 }
-
+                // WE NEED TO DO TWO THINGS
+                // 1) Update the flags state in the upcoming pickroom task based on the flags we decide we need to handle. CHECK
+                // 2) check if this is traversable in reverse. if it's not, update the flags in the upcoming pickroom task. CHECK
+                // 3) ummm forgot about this. if we happen to place a room with a switch reachable, update the state
+                // BONUS 4) in the requirement satisfying task, add a reachability check to get back to startnode with the new flag set
                 return true;
+            }
+
+            private void HandleRequirements(Requirement r, FlagSet mutState, FlagSet immState) {
+                switch (r) {
+                    case Possible _:
+                        return;
+                    case Conjunction rc: {
+                        foreach (var sr in rc.Children) {
+                            this.HandleRequirements(sr, mutState, immState);
+                        }
+                        break;
+                    }
+                    case Disjunction rd: {
+                        // maybe this could be handled by having a TaskSatisfyDisjunction which tries to add the children one at a time?
+                        var sr = rd.Children[this.Logic.Random.Next(rd.Children.Count)];
+                        this.HandleRequirements(sr, mutState, immState);
+                        break;
+                    }
+                    default: {
+                        if (r is FlagRequirement fr) {
+                            mutState[fr.Flag] = fr.Set ? FlagState.Set : FlagState.Unset;
+                        }
+                        this.AddNextTask(new TaskPathwaySatisfyRequirement(this.Logic, this.Node, r, immState));
+                        break;
+                    }
+                }
+            }
+
+            private static void CrystallizeState(FlagSet state) {
+                foreach (var kv in new FlagSet(state)) {
+                    switch (kv.Value) {
+                        case FlagState.Both:
+                        case FlagState.SetToUnset:
+                        case FlagState.UnsetToSet:
+                            state[kv.Key] = FlagState.One;
+                            break;
+                    }
+                }
             }
         }
 
@@ -123,16 +178,18 @@ namespace Celeste.Mod.Randomizer {
             private UnlinkedEdge Edge;
             private HashSet<StaticRoom> TriedRooms = new HashSet<StaticRoom>();
             private bool IsEnd;
+            private FlagSet State;
 
-            public TaskPathwayPickRoom(RandoLogic Logic, UnlinkedEdge edge) : base(Logic) {
+            public TaskPathwayPickRoom(RandoLogic Logic, UnlinkedEdge edge, FlagSet state) : base(Logic) {
                 this.Edge = edge;
+                this.State = state;
 
                 float progress = (Logic.Map.Worth - PathwayMinimums[(int)Logic.Settings.Length]) / PathwayRanges[(int)Logic.Settings.Length];
                 this.IsEnd = progress > Math.Sqrt(Logic.Random.NextFloat());
             }
 
             private ConnectAndMapReceipt WorkingPossibility() {
-                var caps = this.Logic.Caps.WithoutKey(); // don't try to enter a door locked from the other side
+                var caps = this.Logic.Caps.WithFlags(this.State).WithoutKey(); // don't try to enter a door locked from the other side
                 var possibilities = this.Logic.AvailableNewEdges(caps, null, e => RoomFilter(e.FromNode.ParentRoom));
 
                 if (possibilities.Count == 0 && this.IsEnd) {
@@ -142,7 +199,7 @@ namespace Celeste.Mod.Randomizer {
                 foreach (var edge in possibilities) {
                     var result = ConnectAndMapReceipt.Do(this.Logic, this.Edge, edge);
                     if (result != null) {
-                        var defaultBerry = this.Logic.Settings.Algorithm == LogicType.Endless ? LinkedNode.LinkedCollectable.LifeBerry : LinkedNode.LinkedCollectable.Strawberry;
+                        var defaultBerry = this.Logic.Settings.Algorithm == LogicType.Endless ? LinkedCollectable.LifeBerry : LinkedCollectable.Strawberry;
                         var closure = LinkedNodeSet.Closure(result.EntryNode, caps, caps, true);
                         var seen = new HashSet<UnlinkedCollectable>();
                         foreach (var spot in closure.UnlinkedCollectables()) {
@@ -198,33 +255,64 @@ namespace Celeste.Mod.Randomizer {
                 this.TriedRooms.Add(receipt.NewRoom.Static);
                 if (!this.IsEnd) {
                     var newNode = receipt.Edge.OtherNode(this.Edge.Node);
-                    this.AddNextTask(new TaskPathwayPickEdge(this.Logic, newNode));
-                    this.AddLastTask(new TaskPathwayBerryOffshoot(this.Logic, receipt.EntryNode));
+                    var state = new FlagSet(this.State);
+                    foreach (var node in LinkedNodeSet.Closure(newNode, this.Logic.Caps.WithFlags(this.State), null, true).Nodes) {
+                        foreach (var setter in node.Static.FlagSetters) {
+                            UpdateState(state, setter.Item1, setter.Item2);
+                            newNode = node;
+                        }
+                    }
+                    this.AddNextTask(new TaskPathwayPickEdge(this.Logic, newNode, state));
+                    this.AddLastTask(new TaskPathwayBerryOffshoot(this.Logic, newNode, state));
                 }
 
                 return true;
             }
+
+            public static void UpdateState(FlagSet state, string name, bool set) {
+                var orig = state.TryGetValue(name, out var x) ? x : FlagState.Unset;
+                if (set) {
+                    if (orig == FlagState.One || orig == FlagState.Unset) {
+                        state[name] = FlagState.UnsetToSet;
+                    } else if (orig == FlagState.SetToUnset) {
+                        state[name] = FlagState.Both;
+                    }
+                }
+                else {
+                    if (orig == FlagState.One || orig == FlagState.Set) {
+                        state[name] = FlagState.SetToUnset;
+                    } else if (orig == FlagState.UnsetToSet) {
+                        state[name] = FlagState.Both;
+                    }
+                }
+            }
         }
 
-        private class TaskPathwayPlaceKey : RandoTask {
+        private class TaskPathwaySatisfyRequirement : RandoTask {
             private LinkedNode Node;
+            private int BaseTries;
             private int Tries;
-            private int KeyholeID;
+            private Requirement Req;
             private LinkedNode OriginalNode;
             private bool InternalOnly;
+            private FlagSet State;
 
-            public TaskPathwayPlaceKey(RandoLogic logic, LinkedNode node, int keyholeID, LinkedNode originalNode=null, bool internalOnly=false, int tries=0) : base(logic) {
-                // TODO: advance forward through any obligatory edges
+            public TaskPathwaySatisfyRequirement(RandoLogic logic, LinkedNode node, Requirement req, FlagSet state, LinkedNode originalNode=null, bool internalOnly=false, int tries=0) : base(logic) {
                 this.Node = node;
                 this.InternalOnly = internalOnly;
-                this.KeyholeID = keyholeID;
+                this.Req = req;
                 this.OriginalNode = originalNode ?? node;
-                this.Tries = tries;
+                this.Tries = this.BaseTries = tries;
+                this.State = state;
+            }
+            
+            public override void Reset() {
+                this.Tries = this.BaseTries;
             }
 
             public override bool Next() {
                 if (this.Tries >= 5) {
-                    Logger.Log("randomizer", $"Failure: took too many tries to place key from {Node.Room.Static.Name}:{Node.Static.Name}");
+                    Logger.Log("randomizer", $"Failure: took too many tries to satisfy {this.Req} from {Node.Room.Static.Name}:{Node.Static.Name}");
                     return false;
                 }
 
@@ -233,43 +321,113 @@ namespace Celeste.Mod.Randomizer {
                 bool extendingMap = roll > this.Tries;
                 this.Tries++;
 
-                var caps = this.Logic.Caps.WithoutKey();
+                var caps = this.Logic.Caps.WithoutKey().WithFlags(this.State);
                 int maxSteps = 99999;
                 if (!InternalOnly) {
-                    maxSteps = this.Logic.Random.Next(6, 20);
+                    maxSteps = this.Logic.Random.Next(1, 20);
                 }
                 var closure = LinkedNodeSet.Closure(this.Node, caps, caps, this.InternalOnly, maxSteps);
                 closure.Shuffle(this.Logic.Random);
 
-                if (!extendingMap) {
-                    // just try to place a key
-                    foreach (var spot in closure.UnlinkedCollectables()) {
-                        if (spot.Static.MustFly) {
-                            continue;
-                        }
-                        if (spot.Node.Room == this.OriginalNode.Room) {
-                            // don't be boring!
-                            continue;
-                        }
-                        this.AddReceipt(PlaceCollectableReceipt.Do(spot.Node, spot.Static, LinkedNode.LinkedCollectable.Key, false));
-                        this.OriginalNode.Room.UsedKeyholes.Add(this.KeyholeID);
+                if (this.Req is FlagRequirement fr) {
+                    var curval = this.State.TryGetValue(fr.Flag, out var x) ? x : FlagState.Unset;
+                    if (fr.Set && (curval == FlagState.Both || curval == FlagState.Set || curval == FlagState.UnsetToSet)) {
                         return true;
                     }
-
-                    // try again for things that we need to bubble back from
-                    var newClosure = new LinkedNodeSet(closure);
-                    newClosure.Extend(caps, null, true);
-                    foreach (var spot in newClosure.UnlinkedCollectables()) {
-                        if (spot.Static.MustFly) {
-                            continue;
-                        }
-                        if (spot.Node.Room == this.OriginalNode.Room) {
-                            // don't be boring!
-                            continue;
-                        }
-                        this.AddReceipt(PlaceCollectableReceipt.Do(spot.Node, spot.Static, LinkedNode.LinkedCollectable.Key, true));
-                        this.OriginalNode.Room.UsedKeyholes.Add(this.KeyholeID);
+                    if (!fr.Set && (curval == FlagState.Both || curval == FlagState.Unset || curval == FlagState.SetToUnset)) {
                         return true;
+                    }
+                }
+
+                if (!extendingMap) {
+                    switch (this.Req) {
+                        case KeyRequirement keyReq: {
+                            // just try to place a key
+                            foreach (var spot in closure.UnlinkedCollectables()) {
+                                if (spot.Static.MustFly) {
+                                    continue;
+                                }
+                                if (spot.Node.Room == this.OriginalNode.Room) {
+                                    // don't be boring!
+                                    continue;
+                                }
+                                this.AddReceipt(PlaceCollectableReceipt.Do(spot.Node, spot.Static, LinkedCollectable.Key, false, keyReq.KeyholeID, this.OriginalNode.Room));
+                                return true;
+                            }
+
+                            // try again for things that we need to bubble back from
+                            var newClosure = new LinkedNodeSet(closure);
+                            newClosure.Extend(caps, null, true);
+                            foreach (var spot in newClosure.UnlinkedCollectables()) {
+                                if (spot.Static.MustFly) {
+                                    continue;
+                                }
+                                if (spot.Node.Room == this.OriginalNode.Room) {
+                                    // don't be boring!
+                                    continue;
+                                }
+                                this.AddReceipt(PlaceCollectableReceipt.Do(spot.Node, spot.Static, LinkedCollectable.Key, true, keyReq.KeyholeID, this.OriginalNode.Room));
+                                return true;
+                            }
+
+                            // third try: place a room which has a reachable spot
+                            var appropriateNodes = this.Logic.RemainingRooms
+                                .SelectMany(r => r.Nodes.Values)
+                                .Where(n => n.Collectables.Count(c => !c.MustFly) != 0)
+                                .ToList();
+                            appropriateNodes.Shuffle(this.Logic.Random);
+                            foreach (var n in appropriateNodes) {
+                                // hack: make a linkednode for each staticnode so that the closure methods can work on it...
+                                var edges = LinkedNodeSet
+                                    .Closure(new LinkedRoom(n.ParentRoom, Vector2.Zero).Nodes[n.Name], caps, caps, true)
+                                    .Shuffle(this.Logic.Random)
+                                    .UnlinkedEdges()
+                                    .Select(e => e.Static);
+                                foreach (var edge in edges) {
+                                    foreach (var startEdge in closure.UnlinkedEdges()) {
+                                        var receipt = ConnectAndMapReceipt.Do(this.Logic, startEdge, edge, true);
+                                        if (receipt != null) {
+                                            this.AddReceipt(receipt);
+                                            var cols = n.Collectables.Where(c => !c.MustFly).ToList();
+                                            cols.Shuffle(this.Logic.Random);
+                                            this.AddReceipt(PlaceCollectableReceipt.Do(receipt.NewRoom.Nodes[n.Name], cols[this.Logic.Random.Next(cols.Count)], LinkedCollectable.Key, false, keyReq.KeyholeID, this.OriginalNode.Room));
+                                            return true;
+                                        }
+                                    }
+                                }
+                            }
+
+                            break;
+                        }
+                        case FlagRequirement flagReq: {
+                            var appropriateNodes = this.Logic.RemainingRooms
+                                .SelectMany(r => r.Nodes.Values)
+                                .Where(n => n.FlagSetters.Any(s => s.Item1 == flagReq.Flag && s.Item2 == flagReq.Set))
+                                .ToList();
+                            appropriateNodes.Shuffle(this.Logic.Random);
+                            foreach (var n in appropriateNodes) {
+                                // hack: make a linkednode for each staticnode so that the closure methods can work on it...
+                                var edges = LinkedNodeSet
+                                    .Closure(new LinkedRoom(n.ParentRoom, Vector2.Zero).Nodes[n.Name], caps, caps, true)
+                                    .Shuffle(this.Logic.Random)
+                                    .UnlinkedEdges()
+                                    .Select(e => e.Static);
+                                foreach (var edge in edges) {
+                                    foreach (var startEdge in closure.UnlinkedEdges()) {
+                                        var receipt = ConnectAndMapReceipt.Do(this.Logic, startEdge, edge, true);
+                                        if (receipt != null) {
+                                            this.AddReceipt(receipt);
+                                            // TODO: check for reverse traversability back to orig node
+                                            return true;
+                                        }
+                                    }
+                                }
+                            }
+                            break;
+                        }
+                        default: {
+                            throw new Exception($"Don't know how to satisfy {this.Req}. What?");
+                        }
                     }
                 }
 
@@ -283,30 +441,33 @@ namespace Celeste.Mod.Randomizer {
                         if (mapped == null) {
                             continue;
                         }
+
                         this.AddReceipt(mapped);
-                        this.AddNextTask(new TaskPathwayPlaceKey(this.Logic, mapped.EntryNode, this.KeyholeID, this.OriginalNode, true, this.Tries));
+                        this.AddNextTask(new TaskPathwaySatisfyRequirement(this.Logic, mapped.EntryNode, this.Req, this.State, this.OriginalNode, true, this.Tries));
                         return true;
                     }
+                }
+
+                // if we failed to both extend the map or place the capability at the same time, we're fucked!
+                if (!extendingMap) {
+                    return false;
                 }
 
                 // try again
                 return this.Next();
             }
-
-            public override void Undo() {
-                base.Undo();
-                this.OriginalNode.Room.UsedKeyholes.Remove(this.KeyholeID);
-            }
         }
 
         private class TaskPathwayBerryOffshoot : RandoTask {
             public LinkedNode Node;
+            private FlagSet State;
             
-            public TaskPathwayBerryOffshoot(RandoLogic logic, LinkedNode node) : base(logic) {
+            public TaskPathwayBerryOffshoot(RandoLogic logic, LinkedNode node, FlagSet state) : base(logic) {
                 this.Node = node;
+                this.State = state;
             }
             public override bool Next() {
-                var caps = this.Logic.Caps.WithoutKey();
+                var caps = this.Logic.Caps.WithFlags(this.State).WithoutKey();
                 var closure = LinkedNodeSet.Closure(this.Node, caps, caps, true);
                 foreach (var edge in closure.UnlinkedEdges()) {
                     if (!this.Logic.Map.HoleFree(this.Node.Room, edge.Static.HoleTarget)) {
@@ -346,7 +507,7 @@ namespace Celeste.Mod.Randomizer {
 
                         var pickedSpotTup = options[this.Logic.Random.Next(options.Count)];
                         var pickedSpot = pickedSpotTup.Item1;
-                        var berry = pickedSpot.Static.MustFly ? LinkedNode.LinkedCollectable.WingedStrawberry : this.Logic.Settings.Algorithm == LogicType.Endless ? LinkedNode.LinkedCollectable.LifeBerry : LinkedNode.LinkedCollectable.Strawberry;
+                        var berry = pickedSpot.Static.MustFly ? LinkedCollectable.WingedStrawberry : this.Logic.Settings.Algorithm == LogicType.Endless ? LinkedCollectable.LifeBerry : LinkedCollectable.Strawberry;
                         pickedSpot.Node.Collectables[pickedSpot.Static] = Tuple.Create(berry, pickedSpotTup.Item2);
                         break;
                     }

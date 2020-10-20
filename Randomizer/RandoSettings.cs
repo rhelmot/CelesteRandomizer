@@ -258,14 +258,7 @@ namespace Celeste.Mod.Randomizer {
 
         [YamlIgnore]
         public string Hash {
-            get {
-                // djb2 impl
-                uint h = 5381;
-                foreach (var i in this.HashParts()) {
-                    h = ((h << 5) + h) + i;
-                }
-                return h.ToString();
-            }
+            get => djb2(this.HashParts()).ToString();
         }
 
         [YamlIgnore]
@@ -285,13 +278,20 @@ namespace Celeste.Mod.Randomizer {
                     }
                 }
 
-                // djb2 impl
-                uint h = 5381;
-                foreach (var i in this.Seed) {
-                    h = ((h << 5) + h) + i;
-                }
-                return h;
+                return djb2(this.Seed);
             }
+        }
+
+        public static uint djb2(IEnumerable<uint> parts) {
+            uint h = 5381;
+            foreach (var i in parts) {
+                h = ((h << 5) + h) + i;
+            }
+            return h;
+        }
+
+        public static uint djb2(string parts) {
+            return djb2(parts.Select(c => (uint) c));
         }
 
         [YamlIgnore]

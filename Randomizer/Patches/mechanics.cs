@@ -46,16 +46,24 @@ namespace Celeste.Mod.Randomizer {
         private void DelayedLoadMechanics() {
             var dll = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName.Contains("DJMapHelper"));
             if (dll != null) {
-                var ty = dll.GetType("Celeste.Mod.DJMapHelper.Cutscenes.CS_Teleport");
-                var meth = ty.GetMethod("OnEnd");
-                this.SpecialHooksMechanics.Add(new Hook(meth, new Action<Action<object, Level>, object, Level>(this.DJCutsceneWarp)));
+                var ty = dll.GetType("Celeste.Mod.DJMapHelper.Triggers.TeleportTrigger");
+                var meth = ty.GetMethod("OnEnter");
+                try {
+                    this.SpecialHooksMechanics.Add(new Hook(meth, new Action<Action<object, Player>, object, Player>(this.DJCutsceneWarp)));
+                } catch (InvalidOperationException) {
+                    Logger.Log("randomizer", "ERROR: DJMapHelper.Triggers.TeleportTrigger.OnEnter signature changed");
+                }
             }
             
             dll = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName.Contains("LuaCutscenes"));
             if (dll != null) {
                 var ty = dll.GetType("Celeste.Mod.LuaCutscenes.MethodWrappers");
                 var meth = ty.GetMethod("InstantTeleport", BindingFlags.Static | BindingFlags.Public);
-                this.SpecialHooksMechanics.Add(new Hook(meth, new Action<Action<Scene, Player, string>, Scene, Player, string>(this.LuaInstantTeleport)));
+                try {
+                    this.SpecialHooksMechanics.Add(new Hook(meth, new Action<Action<Scene, Player, string, bool, float, float>, Scene, Player, string, bool, float, float>(this.LuaInstantTeleport)));
+                } catch (InvalidOperationException) {
+                    Logger.Log("randomizer", "ERROR: LuaCutscenes.MethodWrappers.InstantTeleport signature changed");
+                }
             }
         }
         
@@ -101,7 +109,7 @@ namespace Celeste.Mod.Randomizer {
 
         public static IEnumerator AutoBubbleCoroutine(Player player) {
             yield return 0.3f;
-            if (!player.Dead) {
+            if (!player.Dead && player.StateMachine.State != 21) {
               Audio.Play("event:/game/general/cassette_bubblereturn", player.SceneAs<Level>().Camera.Position + new Vector2(160f, 90f));
               var respawn = SaveData.Instance.CurrentSession.RespawnPoint.Value;
               player.StartCassetteFly(respawn, (respawn + player.Position) / 2 - 30 * Vector2.UnitY);
@@ -219,7 +227,8 @@ namespace Celeste.Mod.Randomizer {
         }
 
         private void OnTransition(Level level, LevelData next, Vector2 direction) {
-            if (this.InRandomizer) {
+            var settings = this.InRandomizerSettings;
+            if (settings != null) {
                 // set core mode
                 var extraData = new DynData<LevelData>(next);
                 var coreModes = extraData.Get<RandoConfigCoreMode>("coreModes");
@@ -260,6 +269,11 @@ namespace Celeste.Mod.Randomizer {
                 if (new DynData<MapData>(level.Session.MapData).Get<bool?>("HasIsaVariantTriggers") ?? false) {
                     this.ResetIsaVariants();
                 }
+                
+                // reset inventory
+                SaveData.Instance.CurrentSession.Inventory = settings.Dashes == NumDashes.Zero ? new PlayerInventory(0, true, false, false) :
+                                                             settings.Dashes == NumDashes.One ?  new PlayerInventory(1, true, false, false) :
+                                                                                                 new PlayerInventory(2, true, false, false);
             }
         }
 
@@ -393,10 +407,11 @@ namespace Celeste.Mod.Randomizer {
         }
 
         public static string LookupCustomwarpTarget() {
-            var dyn = new DynData<LevelData>(SaveData.Instance.CurrentSession.LevelData);
+            var baked = SaveData.Instance.CurrentSession.LevelData;
+            var dyn = new DynData<LevelData>(baked);
             var newNextLevel = dyn.Get<string>("CustomWarp");
             if (newNextLevel == null) {
-                throw new Exception("Randomizer error: no target for warp");
+                throw new Exception($"Randomizer error: no target for warp from {baked.Name}");
             }
             return newNextLevel;
         }
@@ -421,7 +436,7 @@ namespace Celeste.Mod.Randomizer {
 
             cursor.Index = 0;
             while (cursor.TryGotoNext(MoveType.Before, instr => instr.MatchStfld("Celeste.Session", "RespawnPoint"))) {
-                cursor.EmitDelegate<Func<Vector2?, Vector2?>>((prevStartPoint) => this.InRandomizer ? null : prevStartPoint);
+                cursor.EmitDelegate<Func<Vector2?, Vector2?>>((prevStartPoint) => this.InRandomizer ? SaveData.Instance.CurrentSession.LevelData.Spawns[0] : prevStartPoint);
                 cursor.Index++;
             }
         }
@@ -472,17 +487,19 @@ namespace Celeste.Mod.Randomizer {
             }
         }
 
-        private void DJCutsceneWarp(Action<object, Level> orig, object self, Level level) {
+        private void DJCutsceneWarp(Action<object, Player> orig, object self, Player player) {
             if (this.InRandomizer) {
                 var newNextLevel = LookupCustomwarpTarget();
-                var spawn = SaveData.Instance.CurrentSession.MapData.Get(newNextLevel).Spawns[0];
+                var levelData = SaveData.Instance.CurrentSession.MapData.Get(newNextLevel);
+                var spawn = levelData.Spawns[0] - levelData.Position;
                 
                 var dll = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName.Contains("DJMapHelper"));
-                var ty = dll.GetType("Celeste.Mod.DJMapHelper.Cutscenes.CS_Teleport");
-                ty.GetField("teleportRoom", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(self, newNextLevel);
-                ty.GetField("spawnPoint", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(self, spawn);
+                var ty = dll.GetType("Celeste.Mod.DJMapHelper.Triggers.TeleportTrigger");
+                ty.GetField("room", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(self, newNextLevel);
+                ty.GetField("spawnPointX", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(self, (int)spawn.X);
+                ty.GetField("spawnPointY", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(self, (int)spawn.Y);
             }
-            orig(self, level);
+            orig(self, player);
         }
         
         private void GenericCutsceneWarp(On.Celeste.Level.orig_TeleportTo orig, Level self, Player player, string nextlevel, Player.IntroTypes introtype, Vector2? nearestspawn) {
@@ -494,11 +511,11 @@ namespace Celeste.Mod.Randomizer {
             orig(self, player, nextlevel, introtype, nearestspawn);
         }
 
-        private void LuaInstantTeleport(Action<Scene, Player, string> orig, Scene scene, Player player, string nextRoom) {
+        private void LuaInstantTeleport(Action<Scene, Player, string, bool, float, float> orig, Scene scene, Player player, string nextRoom, bool sameRelativePosition, float positionX, float positionY) {
             if (this.InRandomizer) {
                 nextRoom = LookupWarpTarget(nextRoom);
             }
-            orig(scene, player, nextRoom);
+            orig(scene, player, nextRoom, sameRelativePosition, positionX, positionY);
         }
 
         private void PatchLoadingThread(On.Celeste.LevelLoader.orig_LoadingThread orig, LevelLoader self) {
@@ -591,7 +608,8 @@ namespace Celeste.Mod.Randomizer {
                     if (insert) {
                         int idx = -1;
                         if (basic.AnimationsByName.ContainsKey(name)) {
-                            idx = basic.Animations.IndexOf(basic.AnimationsByName[name]);
+                            var anim = basic.AnimationsByName[name];
+                            idx = anim.ID;
                             basic.AnimationsByName.Remove(name);
                         }
                         basic.Add(
@@ -602,7 +620,10 @@ namespace Celeste.Mod.Randomizer {
                             GFX.Game.GetAtlasSubtextures(el.Attr("path"))
                         );
                         if (idx != -1) {
-                            basic.Animations[idx] = basic.AnimationsByName[name];
+                            var anim = basic.AnimationsByName[name];
+                            anim.ID = idx;
+                            basic.Animations[idx] = anim;
+                            basic.AnimationsByName[name] = anim;
                             basic.Animations.RemoveAt(basic.Animations.Count - 1);
                         }
                     }

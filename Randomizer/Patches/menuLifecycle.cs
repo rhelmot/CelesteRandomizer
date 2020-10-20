@@ -94,7 +94,7 @@ namespace Celeste.Mod.Randomizer {
 
         private void EnterToRandoMenu(On.Celeste.OverworldLoader.orig_ctor orig, OverworldLoader self, Overworld.StartMode startMode, HiresSnow snow) {
             if ((startMode == Overworld.StartMode.MainMenu || startMode == Overworld.StartMode.AreaComplete) && this.InRandomizer) {
-                startMode = (Overworld.StartMode)55;
+                startMode = RandoModule.STARTMODE_RANDOMIZER;
             }
             orig(self, startMode, snow);
         }

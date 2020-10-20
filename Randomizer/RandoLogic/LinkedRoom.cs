@@ -6,6 +6,8 @@ using Monocle;
 using MonoMod.Utils;
 
 namespace Celeste.Mod.Randomizer {
+    using FlagSet = Dictionary<string, FlagState>;
+    
     public class LinkedMap {
         private List<LinkedRoom> Rooms = new List<LinkedRoom>();
         private LinkedRoom CachedHit;
@@ -166,7 +168,7 @@ namespace Celeste.Mod.Randomizer {
         }
 
         public override string ToString() {
-            return $"{this.Static.Name}({this.Bounds.Left}, {this.Bounds.Top})";
+            return $"{this.Static.Name}@{this.Position}";
         }
 
         public LinkedRoom(StaticRoom Room, Vector2 Position) {
@@ -491,22 +493,22 @@ namespace Celeste.Mod.Randomizer {
                     string name = null;
                     var col = kv.Value.Item1;
                     switch (col) {
-                        case LinkedNode.LinkedCollectable.Key:
+                        case LinkedCollectable.Key:
                             name = "key";
                             break;
-                        case LinkedNode.LinkedCollectable.Strawberry:
-                        case LinkedNode.LinkedCollectable.WingedStrawberry:
+                        case LinkedCollectable.Strawberry:
+                        case LinkedCollectable.WingedStrawberry:
                             name = "strawberry";
                             break;
-                        case LinkedNode.LinkedCollectable.Gem1:
-                        case LinkedNode.LinkedCollectable.Gem2:
-                        case LinkedNode.LinkedCollectable.Gem3:
-                        case LinkedNode.LinkedCollectable.Gem4:
-                        case LinkedNode.LinkedCollectable.Gem5:
-                        case LinkedNode.LinkedCollectable.Gem6:
+                        case LinkedCollectable.Gem1:
+                        case LinkedCollectable.Gem2:
+                        case LinkedCollectable.Gem3:
+                        case LinkedCollectable.Gem4:
+                        case LinkedCollectable.Gem5:
+                        case LinkedCollectable.Gem6:
                             name = "summitgem";
                             break;
-                        case LinkedNode.LinkedCollectable.LifeBerry:
+                        case LinkedCollectable.LifeBerry:
                             name = "randomizer/LifeBerry";
                             break;
                     }
@@ -521,11 +523,11 @@ namespace Celeste.Mod.Randomizer {
                     if (kv.Value.Item2) {
                         e.Values["AutoBubble"] = true;
                     }
-                    if (col == LinkedNode.LinkedCollectable.WingedStrawberry) {
+                    if (col == LinkedCollectable.WingedStrawberry) {
                         e.Values["winged"] = "true";
                     }
-                    if (col >= LinkedNode.LinkedCollectable.Gem1 &&col <= LinkedNode.LinkedCollectable.Gem6) {
-                        e.Values["gem"] = (col - LinkedNode.LinkedCollectable.Gem1).ToString();
+                    if (col >= LinkedCollectable.Gem1 &&col <= LinkedCollectable.Gem6) {
+                        e.Values["gem"] = (col - LinkedCollectable.Gem1).ToString();
                     }
                     result.Entities.Add(e);
                 }
@@ -604,19 +606,6 @@ namespace Celeste.Mod.Randomizer {
                 throw new ArgumentException("Must compare LinkedNode to LinkedNode");
             }
             return this.CompareTo(other);
-        }
-
-        public enum LinkedCollectable {
-            Strawberry,
-            WingedStrawberry,
-            Key,
-            Gem1,
-            Gem2,
-            Gem3,
-            Gem4,
-            Gem5,
-            Gem6,
-            LifeBerry,
         }
 
         public IEnumerable<LinkedNode> Successors(Capabilities capsForward, Capabilities capsReverse, bool onlyInternal = false) {
@@ -719,29 +708,97 @@ namespace Celeste.Mod.Randomizer {
         }
     }
 
+    public enum LinkedCollectable {
+        Strawberry,
+        WingedStrawberry,
+        Key,
+        Gem1,
+        Gem2,
+        Gem3,
+        Gem4,
+        Gem5,
+        Gem6,
+        LifeBerry,
+    }
+
     public class LinkedEdge {
         public StaticEdge StaticA, StaticB;
         public LinkedNode NodeA, NodeB;
+        public Requirement ExtraReqsToA, ExtraReqsToB;
 
         public LinkedNode OtherNode(LinkedNode One) {
-            return One == NodeA ? NodeB : One == NodeB ? NodeA : null;
+            return One == NodeA ? NodeB : One == NodeB ? NodeA : throw new Exception("Misplaced LinkedEdge call");
         }
 
         public StaticEdge CorrespondingEdge(LinkedNode One) {
-            return One == NodeA ? StaticA : One == NodeB ? StaticB : null;
+            return One == NodeA ? StaticA : One == NodeB ? StaticB : throw new Exception("Misplaced LinkedEdge call");
         }
 
         public StaticEdge OtherEdge(LinkedNode One) {
-            return One == NodeA ? StaticB : One == NodeB ? StaticA : null;
+            return One == NodeA ? StaticB : One == NodeB ? StaticA : throw new Exception("Misplaced LinkedEdge call");
+        }
+
+        public ref Requirement ExtraReqsFrom(LinkedNode One) {
+            if (One == this.NodeA) {
+                return ref this.ExtraReqsToB;
+            } else if (One == this.NodeB) {
+                return ref this.ExtraReqsToA;
+            }
+            throw new Exception("Misplaced LinkedEdge call");
+        }
+
+        public ref Requirement ExtraReqsTo(LinkedNode One) {
+            if (One == this.NodeA) {
+                return ref this.ExtraReqsToA;
+            } else if (One == this.NodeB) {
+                return ref this.ExtraReqsToB;
+            }
+            throw new Exception("Misplaced LinkedEdge call");
+        }
+
+        public Requirement ReqsFrom(LinkedNode one) {
+            var extra = this.ExtraReqsTo(one);
+            var total = new List<Requirement> {
+                this.CorrespondingEdge(one).ReqOut,
+                this.OtherEdge(one).ReqIn,
+            };
+            if (extra != null) total.Add(extra);
+            return Requirement.And(total);
+        }
+
+        public Requirement ReqsTo(LinkedNode one) {
+            var extra = this.ExtraReqsFrom(one);
+            var total = new List<Requirement> {
+                this.CorrespondingEdge(one).ReqIn,
+                this.OtherEdge(one).ReqOut,
+            };
+            if (extra != null) total.Add(extra);
+            return Requirement.And(total);
         }
     }
 
     public class UnlinkedEdge {
-        public StaticEdge Static;
-        public LinkedNode Node;
+        public readonly StaticEdge Static;
+        public readonly LinkedNode Node;
+
+        public UnlinkedEdge(LinkedNode node, StaticEdge edge) {
+            this.Static = edge;
+            this.Node = node;
+        }
 
         public override string ToString() {
-            return $"UnlinkedEdge({this.Static}, {this.Node})";
+            return $"{this.Static}@{this.Node.Room.Position}";
+        }
+
+        public override bool Equals(object obj) {
+            if (!(obj is UnlinkedEdge e)) {
+                return false;
+            }
+            return this.Static == e.Static && this.Node == e.Node;
+        }
+
+        public override int GetHashCode() {
+            return 1234 ^ this.Static.GetHashCode() ^ this.Node.GetHashCode();
         }
     }
 
@@ -762,7 +819,7 @@ namespace Celeste.Mod.Randomizer {
     }
 
     public class LinkedNodeSet {
-        private List<LinkedNode> Nodes;
+        public List<LinkedNode> Nodes;
         private Capabilities CapsForward;
         private Capabilities CapsReverse;
         private Random Random;
@@ -870,7 +927,7 @@ namespace Celeste.Mod.Randomizer {
             var result = new List<UnlinkedEdge>();
             foreach (var node in this.Nodes) {
                 foreach (var edge in node.UnlinkedEdges(this.CapsForward, this.CapsReverse)) {
-                    var uEdge = new UnlinkedEdge { Node = node, Static = edge };
+                    var uEdge = new UnlinkedEdge(node, edge);
                     if (filter != null && !filter(uEdge)) {
                         continue;
                     }

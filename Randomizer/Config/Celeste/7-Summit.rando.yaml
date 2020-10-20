@@ -712,7 +712,13 @@ ASide:
           Difficulty: expert
     - Collectable: 0
       ReqBoth:
-        Dashes: one
+        ReqOut:
+          Dashes: one
+        ReqIn:
+          Or:
+          - Dashes: two
+          - Dashes: one
+            Difficulty: expert
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:
@@ -1936,10 +1942,8 @@ ASide:
         Kind: inout
       InternalEdges:
         - To: "berry"
-          ReqOut:
+          ReqBoth:
             Dashes: zero
-          ReqIn:
-            Dashes: one
     - Room: "berry"
       Collectables:
       - Idx: 0
@@ -2411,6 +2415,8 @@ ASide:
         - Dashes: two
         - Dashes: one
           Difficulty: hard
+        - Dashes: zero
+          Difficulty: expert
     Subrooms:
     - Room: "right"
       Holes:
@@ -2839,7 +2845,7 @@ ASide:
         Or:
         - Dashes: two
         - Dashes: one
-          Difficulty: hard
+          Difficulty: perfect
       ReqIn:
         Dashes: two
         Difficulty: expert
@@ -4096,18 +4102,29 @@ CSide:
       Kind: None
   - Room: "02"
     Holes:
-    - Side: Up
-      Idx: 0
-      Kind: out
-      Launch: 85
-      ReqOut:
-        Or:
-        - Dashes: two
-        - Dashes: one
-          Difficulty: perfect
-    - Side: Down
-      Idx: 0
-      Kind: in
+      - Side: Down
+        Idx: 0
+        Kind: in
+        HighOpen: true
+    InternalEdges:
+      - To: "out"
+        ReqOut:
+          Or:
+            - Dashes: two
+            - Dashes: one
+              Difficulty: perfect
+    Subrooms:
+      - Room: "out"
+        Holes:
+          - Side: Up
+            Idx: 0
+            Kind: out
+            Launch: 85
+          - Side: Down
+            New: true
+            Kind: Unknown
+            LowBound: 0
+            HighBound: 89
   - Room: "03"
     ReqEnd:
       Dashes: two

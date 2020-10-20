@@ -126,6 +126,7 @@ namespace Celeste.Mod.Randomizer {
         public List<RandoConfigRectangle> ExtraSpace { get; set; }
         public float? Worth;
         public bool SpinnersShatter;
+        public List<string> Flags;
     }
 
     public class RandoConfigRectangle {
@@ -198,6 +199,7 @@ namespace Celeste.Mod.Randomizer {
         public NumDashes? Dashes { get; set; }
         public bool Key;
         public int? KeyholeID;
+        public string Flag;
     }
 
     public class RandoConfigEdit {

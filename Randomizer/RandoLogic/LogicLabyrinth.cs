@@ -110,7 +110,7 @@ namespace Celeste.Mod.Randomizer {
                                 var otherNode = edge.OtherNode(node);
                                 var otherEdge = edge.OtherEdge(node);
                                 otherNode.Edges.Remove(edge);
-                                this.PossibleContinuations.Add(new UnlinkedEdge() { Static = otherEdge, Node = otherNode });
+                                this.PossibleContinuations.Add(new UnlinkedEdge(otherNode, otherEdge));
                             }
                         }
                         this.Map.RemoveRoom(startEdge.Node.Room);
@@ -133,7 +133,7 @@ namespace Celeste.Mod.Randomizer {
                 retry();
             }
 
-            for (var gem = LinkedNode.LinkedCollectable.Gem1 + this.StartingGemCount; gem <= LinkedNode.LinkedCollectable.Gem6; gem++) {
+            for (var gem = LinkedCollectable.Gem1 + this.StartingGemCount; gem <= LinkedCollectable.Gem6; gem++) {
                 var collection = this.PriorityCollectables.Count != 0 ? this.PriorityCollectables : this.PossibleCollectables;
                 if (collection.Count == 0) {  // just in case
                     retry();
@@ -144,7 +144,7 @@ namespace Celeste.Mod.Randomizer {
                 collection.RemoveAt(idx);
 
                 if (spot.Static.MustFly) {
-                    spot.Node.Collectables[spot.Static] = Tuple.Create(LinkedNode.LinkedCollectable.WingedStrawberry, autoBubble);
+                    spot.Node.Collectables[spot.Static] = Tuple.Create(LinkedCollectable.WingedStrawberry, autoBubble);
                     gem--;
                 } else {
                     spot.Node.Collectables[spot.Static] = Tuple.Create(gem, autoBubble);
@@ -161,14 +161,14 @@ namespace Celeste.Mod.Randomizer {
                 }
             }
 
-            var defaultBerry = this.Settings.Algorithm == LogicType.Endless ? LinkedNode.LinkedCollectable.LifeBerry : LinkedNode.LinkedCollectable.Strawberry;
+            var defaultBerry = this.Settings.Algorithm == LogicType.Endless ? LinkedCollectable.LifeBerry : LinkedCollectable.Strawberry;
 
             while (this.PriorityCollectables.Count != 0) {
                 var spot = this.PriorityCollectables.Last().Item1;
                 var autoBubble = this.PriorityCollectables.Last().Item2;
                 this.PriorityCollectables.RemoveAt(this.PriorityCollectables.Count - 1);
 
-                spot.Node.Collectables[spot.Static] = Tuple.Create(spot.Static.MustFly ? LinkedNode.LinkedCollectable.WingedStrawberry : defaultBerry, autoBubble);
+                spot.Node.Collectables[spot.Static] = Tuple.Create(spot.Static.MustFly ? LinkedCollectable.WingedStrawberry : defaultBerry, autoBubble);
             }
 
             var targetCount = this.PossibleCollectables.Count / 3 * 2;
@@ -178,7 +178,7 @@ namespace Celeste.Mod.Randomizer {
                 var autoBubble = this.PossibleCollectables.Last().Item2;
                 this.PossibleCollectables.RemoveAt(this.PossibleCollectables.Count - 1);
 
-                spot.Node.Collectables[spot.Static] = Tuple.Create(spot.Static.MustFly ? LinkedNode.LinkedCollectable.WingedStrawberry : defaultBerry, autoBubble);
+                spot.Node.Collectables[spot.Static] = Tuple.Create(spot.Static.MustFly ? LinkedCollectable.WingedStrawberry : defaultBerry, autoBubble);
             }
         }
 

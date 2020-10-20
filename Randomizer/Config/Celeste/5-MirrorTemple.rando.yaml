@@ -1194,11 +1194,8 @@ ASide:
         - Dashes: one
         - Dashes: zero
           Difficulty: expert
-    - To: "berry_top"
-      ReqIn:
-        Dashes: zero
     - To: "bottomroom"
-      ReqOut:
+      ReqBoth:
         Dashes: zero
     - To: "keyright"
       ReqIn:
@@ -1230,9 +1227,6 @@ ASide:
         ReqBoth:
           Dashes: one
           Difficulty: hard
-    - Room: "berry_top"
-      Collectables:
-      - Idx: 0
     - Room: "bottomroom"
       Holes:
       - Side: Right
@@ -1249,6 +1243,14 @@ ASide:
         Remove: true
     - ID: 2
       Name: "changeRespawnTrigger"
+      Update:
+        Remove: true
+    - ID: 17
+      Name: "crumbleBlock"
+      Update:
+        Remove: true
+    - ID: 77
+      Name: "crumbleBlock"
       Update:
         Remove: true
   - Room: "d-05"

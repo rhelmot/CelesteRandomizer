@@ -70,7 +70,7 @@ namespace Celeste.Mod.Randomizer {
         }
 
         public override bool IsStart(Overworld overworld, Overworld.StartMode start) {
-            if (start == (Overworld.StartMode)55) {
+            if (start == RandoModule.STARTMODE_RANDOMIZER) {
                 this.Add((Component)new Coroutine(this.Enter((Oui)null), true));
                 return true;
             }
@@ -117,7 +117,7 @@ namespace Celeste.Mod.Randomizer {
                 Offset = new Vector2(30, -5),
             };
             void updateHashText() {
-                hashtext.Title = "v" + RandoModule.Instance.Metadata.VersionString;
+                hashtext.Title = "v" + RandoModule.Instance.VersionString;
                 if (Settings.SeedType == SeedType.Custom) {
                     hashtext.Title += " #" + Settings.Hash.ToString();
                 }
