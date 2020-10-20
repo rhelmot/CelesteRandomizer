@@ -1075,7 +1075,7 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: inout
-      ReqOut:
+      ReqBoth:
         Flag: towels:set
     - Side: Up
       Idx: 1
@@ -1554,10 +1554,7 @@ ASide:
       Idx: 0
       Kind: inout
       ReqOut:
-        Or:
-        - Dashes: one
-        - Dashes: zero
-          Difficulty: hard
+        Dashes: one
     - Side: Right
       Idx: 0
       Kind: inout

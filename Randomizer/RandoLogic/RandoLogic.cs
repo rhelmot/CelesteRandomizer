@@ -620,18 +620,38 @@ namespace Celeste.Mod.Randomizer {
         }
 
         private void RandomizeDialog() {
-            // If the random is used later, we don't want the number of mods to affect anything but the dialog
-            Random dialogRandom = new Random(Random.Next());
             RandomDialogMappings.Clear();
-            List<string> dialogIDs = new List<string>(Dialog.Language.Dialog.Keys);
-            // Don't randomize poem names with the rest of the dialog
-            dialogIDs.RemoveAll((id) => id.StartsWith("POEM_", StringComparison.InvariantCultureIgnoreCase));
-            List<string> sortedDialogIDs = new List<string>(dialogIDs);
-            sortedDialogIDs.Sort((s1, s2) => Dialog.Get(s1).Length.CompareTo(Dialog.Get(s2).Length));
+            // Shuffle spoken and nonspoken dialog separately for better results
+            List<string> spokenDialogIDs = GetDialogIDs(spoken: true);
+            List<string> nonspokenDialogIDs = GetDialogIDs(spoken: false);
+            AddRandomDialogMappings(spokenDialogIDs);
+            AddRandomDialogMappings(nonspokenDialogIDs);
+        }
 
-            for(int i = 0; i < dialogIDs.Count; i++) {
-                int rand = dialogRandom.Next(-40, 40);
-                RandomDialogMappings[sortedDialogIDs[i].ToLower()] = sortedDialogIDs[Calc.Clamp(i + (rand == 0 ? 1 : rand), 0, sortedDialogIDs.Count-1)].ToLower();
+        private List<string> GetDialogIDs(bool spoken)
+        {
+            List<string> dialogIDs = new List<string>(Dialog.Language.Dialog.Keys);
+            // Don't touch poem names or mad lib templates
+            dialogIDs.RemoveAll((id) => id.StartsWith("POEM_", StringComparison.InvariantCultureIgnoreCase));
+            dialogIDs.RemoveAll((id) => id.StartsWith("RANDO_", StringComparison.InvariantCultureIgnoreCase));
+            // Quick, naive way to distinguish spoken dialog
+            if (spoken)
+            {
+                dialogIDs.RemoveAll((id) => !Dialog.Language.Dialog[id].Contains("portrait"));
+            } else
+            {
+                dialogIDs.RemoveAll((id) => Dialog.Language.Dialog[id].Contains("portrait"));
+            }
+            return dialogIDs;
+        }
+
+        private void AddRandomDialogMappings(List<string> dialogIDs)
+        {
+            Random rng = new Random();
+            List<string> shuffledIDs = dialogIDs.OrderBy(x => rng.Next()).ToList();
+            for (int i = 0; i < dialogIDs.Count; i++)
+            {
+                RandomDialogMappings[dialogIDs[i].ToLower()] = shuffledIDs[i].ToLower();
             }
         }
 
