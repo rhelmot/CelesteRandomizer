@@ -294,7 +294,12 @@ namespace Celeste.Mod.Randomizer {
 
     public class RandoMetadataMusic {
         public string Name;
-        public float Weight = 1;
+        private float weight = 1;
+
+        public float Weight {
+            get => this.weight;
+            set => this.weight = (value >= 0 && value <= 3) ? value : 1f;
+        }
     }
 
     public class RandoMetadataCampaign
