@@ -514,8 +514,13 @@ ASide:
       - Side: Down
         Idx: 1
         Kind: inout
-        ReqBoth:
+        ReqIn:
           Dashes: one
+        ReqOut:
+          Or:
+            - Dashes: one
+            - Dashes: zero
+              Difficulty: perfect
       - Side: Down
         Idx: 2
         Kind: in

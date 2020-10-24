@@ -2317,10 +2317,10 @@ ASide:
       Kind: out
       ReqOut:
         Dashes: two
-      InternalEdges:
-      - Collectable: 0
-        ReqOut:
-          Dashes: two
+    InternalEdges:
+    - Collectable: 0
+      ReqOut:
+        Dashes: two
   - Room: "e-10b"
     Holes:
     - Side: Right
