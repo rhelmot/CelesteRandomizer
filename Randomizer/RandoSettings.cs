@@ -95,6 +95,10 @@ namespace Celeste.Mod.Randomizer {
             set => this.IncludedMaps = new HashSet<AreaKeyNotStupid>(value);
         }
 
+        public void PruneMaps() {
+            this.IncludedMaps.RemoveWhere(a => a.ID == -1);
+        }
+
         public void Enforce() {
             if (this.SeedType == SeedType.Random) {
                 this.Seed = "";
