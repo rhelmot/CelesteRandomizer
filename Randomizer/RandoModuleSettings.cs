@@ -7,10 +7,10 @@ namespace Celeste.Mod.Randomizer {
         public Dictionary<uint, long> BestTimes { get; set; }
 
         [SettingIgnore]
-        public Dictionary<Ruleset, RecordTuple> BestSetSeedTimes { get; set; }
+        public Dictionary<string, RecordTuple> BestSetSeedTimes { get; set; }
 
         [SettingIgnore]
-        public Dictionary<Ruleset, RecordTuple> BestRandomSeedTimes { get; set; }
+        public Dictionary<string, RecordTuple> BestRandomSeedTimes { get; set; }
 
         [SettingIgnore]
         public string CurrentVersion { get; set; }

@@ -66,3 +66,40 @@ Music:
   - Name: "event:/music/remix/06_reflection"
   - Name: "event:/music/remix/07_summit"
   - Name: "event:/music/remix/09_core"
+Rulesets:
+  - Name: A
+    Algorithm: Pathway
+    Darkness: Never
+  - Name: B
+    Algorithm: Pathway
+    Dashes: Two
+    Length: Medium
+    Darkness: Never
+  - Name: C
+    Algorithm: Pathway
+    Difficulty: Expert
+    Length: Medium
+  - Name: D
+    Algorithm: Pathway
+    Difficulty: Expert
+    Dashes: Two
+    Length: Long
+  - Name: E
+    Algorithm: Labyrinth
+    Length: Medium
+    Darkness: Never
+  - Name: F
+    Algorithm: Labyrinth
+    Length: Medium
+    Dashes: Two
+    Difficulty: Hard
+    Darkness: Never
+  - Name: G
+    Algorithm: Endless
+    EndlessLives: 3
+    Lights: On
+  - Name: H
+    Algorithm: Endless
+    EndlessLives: 5
+    Difficulty: Hard
+    Lights: On

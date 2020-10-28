@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using YamlDotNet.Core;
+using YamlDotNet.Serialization;
 
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
@@ -192,11 +193,11 @@ namespace Celeste.Mod.Randomizer {
     }
 
     public class RandoConfigReq {
-        public List<RandoConfigReq> And { get; set; }
-        public List<RandoConfigReq> Or { get; set; }
+        public List<RandoConfigReq> And;
+        public List<RandoConfigReq> Or;
 
-        public Difficulty Difficulty { get; set; }
-        public NumDashes? Dashes { get; set; }
+        public Difficulty Difficulty = Difficulty.Normal;
+        public NumDashes? Dashes;
         public bool Key;
         public int? KeyholeID;
         public string Flag;
@@ -267,10 +268,28 @@ namespace Celeste.Mod.Randomizer {
         public List<RandoMetadataMusic> Music = new List<RandoMetadataMusic>();
         public List<RandoMetadataCampaign> Campaigns = new List<RandoMetadataCampaign>();
 
+        [YamlIgnore] public Dictionary<string, RandoMetadataRuleset> RulesetsDict = new Dictionary<string, RandoMetadataRuleset>();
+
+        public List<RandoMetadataRuleset> Rulesets {
+            get => new List<RandoMetadataRuleset>(this.RulesetsDict.Values);
+            set {
+                foreach (var r in value) {
+                    if (String.IsNullOrEmpty(r.Name)) {
+                        throw new Exception("Rulesets must have Name specified");
+                    }
+                    if (this.RulesetsDict.ContainsKey(r.Name)) {
+                        throw new Exception($"Ruleset name '{r.Name}' is duplicated");
+                    }
+                    this.RulesetsDict[r.Name] = r;
+                }
+            }
+        }
+
         public void Add(RandoMetadataFile other) {
             this.CollectableNames.AddRange(other.CollectableNames);
             this.Music.AddRange(other.Music);
             this.Campaigns.AddRange(other.Campaigns);
+            this.Rulesets = other.Rulesets; // rely on setter behavior to use this as an updater
         }
         
         public static RandoMetadataFile LoadAll() {
@@ -302,16 +321,36 @@ namespace Celeste.Mod.Randomizer {
         }
     }
 
-    public class RandoMetadataCampaign
-    {
+    public class RandoMetadataCampaign {
         public string Name;
         public List<RandoMetadataLevelSet> LevelSets;
     }
 
-    public class RandoMetadataLevelSet
-    {
+    public class RandoMetadataLevelSet {
         public string Name;
         public string ID;
+    }
+
+    public class RandoMetadataRuleset {
+        public string Name;
+        private string longName;
+
+        public string LongName {
+            get => this.longName ?? "Ruleset " + this.Name;
+            set => this.longName = value;
+        }
+
+        public List<RandoSettings.AreaKeyNotStupid> EnabledMaps = null;
+        public bool RepeatRooms = false;
+        public bool EnterUnknown = false;
+        public bool Variants = false;
+        public ShineLights Lights = ShineLights.Hubs;
+        public Darkness Darkness = Darkness.Never;
+        
+        public LogicType Algorithm = LogicType.Pathway;
+        public MapLength Length = MapLength.Short;
+        public NumDashes Dashes = NumDashes.One;
+        public Difficulty Difficulty = Difficulty.Normal;
     }
 }
 

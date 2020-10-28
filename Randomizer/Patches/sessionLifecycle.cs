@@ -274,7 +274,7 @@ namespace Celeste.Mod.Randomizer {
                     this.SavedData.BestTimes[hash] = level.Session.Time;
                 }
 
-                if (settings.Rules != Ruleset.Custom) {
+                if (!String.IsNullOrEmpty(settings.Rules)) {
                     long submittedValue = settings.Algorithm == LogicType.Endless ? this.CurrentScore : level.Session.Time;
                     Func<long, bool> betterthan = oldval => settings.Algorithm == LogicType.Endless ? (submittedValue > oldval) : (submittedValue < oldval);
                     if (settings.Algorithm != LogicType.Endless || settings.SeedType != SeedType.Random) {
@@ -312,8 +312,8 @@ namespace Celeste.Mod.Randomizer {
             var session = SaveData.Instance?.CurrentSession;
             if (settings != null) {
                 var text = settings.Seed;
-                if (settings.Rules != Ruleset.Custom) {
-                    text += " " + settings.Rules.ToString();
+                if (!string.IsNullOrEmpty(settings.Rules)) {
+                    text += " " + settings.Rules;
                     if (session?.SeedCleanRandom() ?? false) {
                         text += "!";
                     }

@@ -91,6 +91,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\LifeBerry.cs" />
+    <Compile Include="Oui\GenericOui.cs" />
+    <Compile Include="Oui\OuiRandoDifficulty.cs" />
+    <Compile Include="Oui\OuiRandoMode.cs" />
     <Compile Include="RandoModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DeepCopy.cs" />
@@ -100,7 +103,6 @@
     <Compile Include="PriorityQueue.cs" />
     <Compile Include="RandoModuleSettings.cs" />
     <Compile Include="Oui/OuiRandoSettings.cs" />
-    <Compile Include="Oui/OuiMapPicker.cs" />
     <Compile Include="Oui/OuiRandoRecords.cs" />
     <Compile Include="RandoLogic\LogicPathway.cs" />
     <Compile Include="RandoLogic\LinkedRoom.cs" />
@@ -143,8 +145,23 @@
       <LogicalName>Content\Dialog\English.txt</LogicalName>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Graphics\Atlases\Gui\menu\poemArrow.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Graphics\Atlases\Gui\menu\randomizer.png">
       <LogicalName>Content\Graphics\Atlases\Gui\menu\randomizer.png</LogicalName>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Graphics\Atlases\Gui\menu\pathway_icon.png">
+      <LogicalName>Content\Graphics\Atlases\Gui\menu\pathway_icon.png</LogicalName>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Graphics\Atlases\Gui\menu\labyrinth_icon.png">
+      <LogicalName>Content\Graphics\Atlases\Gui\menu\labyrinth_icon.png</LogicalName>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Graphics\Atlases\Gui\menu\endless_icon.png">
+      <LogicalName>Content\Graphics\Atlases\Gui\menu\endless_icon.png</LogicalName>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Config\Celeste\2-OldSite.rando.yaml">
@@ -185,6 +202,24 @@
     </Content>
     <Content Include="Config\Celeste\rando.yaml">
       <LogicalName>Content\Config\Celeste\rando.yaml</LogicalName>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Graphics\Atlases\Gui\menu\skulls\skullBlue.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Graphics\Atlases\Gui\menu\skulls\skullGold.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Graphics\Atlases\Gui\menu\skulls\skullOrange.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Graphics\Atlases\Gui\menu\skulls\skullPurple.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Graphics\Atlases\Gui\menu\skulls\skullRed.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Graphics\Atlases\Gui\menu\skulls\strawberry.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

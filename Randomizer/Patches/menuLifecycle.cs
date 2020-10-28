@@ -1,6 +1,7 @@
 using System;
 using Monocle;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 
 namespace Celeste.Mod.Randomizer {
     public partial class RandoModule : EverestModule {
@@ -30,7 +31,11 @@ namespace Celeste.Mod.Randomizer {
             MainMenuSmallButton btn = new MainMenuSmallButton("MODOPTIONS_RANDOMIZER_TOPMENU", "menu/randomizer", menu, Vector2.Zero, Vector2.Zero, () => {
                 Audio.Play(SFX.ui_main_button_select);
                 Audio.Play(SFX.ui_main_whoosh_large_in);
-                menu.Overworld.Goto<OuiRandoSettings>();
+                if (Input.MenuJournal.Check || MInput.Keyboard.Check(Keys.LeftShift)) {
+                    menu.Overworld.Goto<OuiRandoSettings>();
+                } else {
+                    menu.Overworld.Goto<OuiRandoMode>();
+                }
             });
             buttons.Insert(1, btn);
         }
@@ -151,9 +156,9 @@ namespace Celeste.Mod.Randomizer {
 
         private void InitRandoData(On.Celeste.AreaData.orig_Load orig) {
             orig();
-            this.Settings.PruneMaps();
             this.MetaConfig = RandoMetadataFile.LoadAll();
             RandoLogic.ProcessAreas();
+            this.Settings.PruneMaps();
             if (SavedData.SavedSettings == null) {
                 Settings.SetNormalMaps();
             }

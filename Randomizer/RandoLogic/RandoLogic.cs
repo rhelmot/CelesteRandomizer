@@ -242,7 +242,11 @@ namespace Celeste.Mod.Randomizer {
             uint seed = this.Settings.IntSeed;
             tryagain:
             // ensure different rulesets of the same seed have different end screens
-            switch ((seed + (int)this.Settings.Rules) % 8) {
+            var rulesInt = 0;
+            foreach (var ch in this.Settings.Rules) {
+                rulesInt += ch;
+            }
+            switch ((seed + rulesInt) % 8) {
                 case 0:
                     return AreaData.Areas[1].CompleteScreenName;
                 case 1:

@@ -10,19 +10,6 @@ namespace Celeste.Mod.Randomizer {
         Last
     }
 
-    public enum Ruleset {
-        Custom,
-        A,
-        B,
-        C,
-        D,
-        E,
-        F,
-        G,
-        H,
-        Last
-    }
-
     public enum LogicType {
         Pathway,
         Labyrinth,
@@ -46,9 +33,11 @@ namespace Celeste.Mod.Randomizer {
     }
 
     public enum Difficulty {
+        Easy,
         Normal,
         Hard,
         Expert,
+        Master,
         Perfect,
         Last
     }
@@ -70,7 +59,17 @@ namespace Celeste.Mod.Randomizer {
     public class RandoSettings {
         public SeedType SeedType;
         public string Seed = "achene";
-        public Ruleset Rules;
+        public string Rules = "";
+        [YamlIgnore]
+        public RandoMetadataRuleset Ruleset {
+            get {
+                if (RandoModule.Instance.MetaConfig.RulesetsDict.TryGetValue(this.Rules, out var result)) {
+                    return result;
+                }
+                this.Rules = "";
+                return null;
+            }
+        }
         public bool RepeatRooms;
         public bool EnterUnknown;
         public bool SpawnGolden;
@@ -97,14 +96,19 @@ namespace Celeste.Mod.Randomizer {
 
         public void PruneMaps() {
             this.IncludedMaps.RemoveWhere(a => a.ID == -1);
+            Logger.Log("DEBUG", "Remaining maps");
+            foreach (var m in this.IncludedMaps) {
+                
+            }
+            this.Enforce();
         }
 
         public void Enforce() {
             if (this.SeedType == SeedType.Random) {
                 this.Seed = "";
-                var r = new Random();
+                var ra = new Random();
                 for (int i = 0; i < 6; i++) {
-                    var val = r.Next(36);
+                    var val = ra.Next(36);
                     if (val < 10) {
                         this.Seed += ((char)('0' + val)).ToString();
                     } else {
@@ -112,105 +116,24 @@ namespace Celeste.Mod.Randomizer {
                     }
                 }
             }
-            switch (this.Rules) {
-                case Ruleset.A:
+
+            var r = this.Ruleset;
+            if (r != null) {
+                if (r.EnabledMaps == null) {
                     this.SetNormalMaps();
-                    this.RepeatRooms = false;
-                    this.EnterUnknown = false;
-                    this.Variants = false;
-                    this.Algorithm = LogicType.Pathway;
-                    this.Length = MapLength.Short;
-                    this.Dashes = NumDashes.One;
-                    this.Difficulty = Difficulty.Normal;
-                    this.Lights = ShineLights.Hubs;
-                    this.Darkness = Darkness.Never;
-                    break;
-                case Ruleset.B:
-                    this.SetNormalMaps();
-                    this.RepeatRooms = false;
-                    this.EnterUnknown = false;
-                    this.Variants = false;
-                    this.Algorithm = LogicType.Pathway;
-                    this.Length = MapLength.Medium;
-                    this.Dashes = NumDashes.Two;
-                    this.Difficulty = Difficulty.Normal;
-                    this.Lights = ShineLights.Hubs;
-                    this.Darkness = Darkness.Never;
-                    break;
-                case Ruleset.C:
-                    this.SetNormalMaps();
-                    this.RepeatRooms = false;
-                    this.EnterUnknown = false;
-                    this.Variants = false;
-                    this.Algorithm = LogicType.Pathway;
-                    this.Length = MapLength.Medium;
-                    this.Dashes = NumDashes.One;
-                    this.Difficulty = Difficulty.Expert;
-                    this.Lights = ShineLights.Hubs;
-                    this.Darkness = Darkness.Vanilla;
-                    break;
-                case Ruleset.D:
-                    this.SetNormalMaps();
-                    this.RepeatRooms = false;
-                    this.EnterUnknown = false;
-                    this.Variants = false;
-                    this.Algorithm = LogicType.Pathway;
-                    this.Length = MapLength.Long;
-                    this.Dashes = NumDashes.Two;
-                    this.Difficulty = Difficulty.Expert;
-                    this.Lights = ShineLights.Hubs;
-                    this.Darkness = Darkness.Vanilla;
-                    break;
-                case Ruleset.E:
-                    this.SetNormalMaps();
-                    this.RepeatRooms = false;
-                    this.EnterUnknown = false;
-                    this.Variants = false;
-                    this.Algorithm = LogicType.Labyrinth;
-                    this.Length = MapLength.Medium;
-                    this.Dashes = NumDashes.One;
-                    this.Difficulty = Difficulty.Normal;
-                    this.Lights = ShineLights.Hubs;
-                    this.Darkness = Darkness.Never;
-                    break;
-                case Ruleset.F:
-                    this.SetNormalMaps();
-                    this.RepeatRooms = false;
-                    this.EnterUnknown = false;
-                    this.Variants = false;
-                    this.Algorithm = LogicType.Labyrinth;
-                    this.Length = MapLength.Medium;
-                    this.Dashes = NumDashes.Two;
-                    this.Difficulty = Difficulty.Hard;
-                    this.Lights = ShineLights.Hubs;
-                    this.Darkness = Darkness.Never;
-                    break;
-                case Ruleset.G:
-                    this.SetNormalMaps();
-                    this.RepeatRooms = false;
-                    this.EnterUnknown = false;
-                    this.Variants = false;
-                    this.Algorithm = LogicType.Endless;
-                    this.Length = MapLength.Short;
-                    this.Dashes = NumDashes.One;
-                    this.Difficulty = Difficulty.Normal;
-                    this.Lights = ShineLights.On;
-                    this.Darkness = Darkness.Vanilla;
-                    this.EndlessLives = 3;
-                    break;
-                case Ruleset.H:
-                    this.SetNormalMaps();
-                    this.RepeatRooms = false;
-                    this.EnterUnknown = false;
-                    this.Variants = false;
-                    this.Algorithm = LogicType.Endless;
-                    this.Length = MapLength.Short;
-                    this.Dashes = NumDashes.One;
-                    this.Difficulty = Difficulty.Hard;
-                    this.Lights = ShineLights.On;
-                    this.Darkness = Darkness.Vanilla;
-                    this.EndlessLives = 5;
-                    break;
+                } else {
+                    this.IncludedMaps = new HashSet<AreaKeyNotStupid>(r.EnabledMaps);
+                }
+
+                this.RepeatRooms = r.RepeatRooms;
+                this.EnterUnknown = r.EnterUnknown;
+                this.Variants = r.Variants;
+                this.Algorithm = r.Algorithm;
+                this.Length = r.Length;
+                this.Dashes = r.Dashes;
+                this.Difficulty = r.Difficulty;
+                this.Lights = r.Lights;
+                this.Darkness = r.Darkness;
             }
         }
 
