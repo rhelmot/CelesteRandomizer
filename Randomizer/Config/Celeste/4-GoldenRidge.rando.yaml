@@ -903,7 +903,7 @@ ASide:
       ReqIn:
         Or:
         - Dashes: two
-          Difficulty: expert
+          Difficulty: master
         - Dashes: one
           Difficulty: perfect
     Tweaks:
@@ -1475,7 +1475,8 @@ ASide:
           cameraX: -1.0
           cameraY: 0.0
   - Room: "d-10"
-    End: true
+    ReqEnd:
+      Difficulty: easy
     Holes:
     - Side: Left
       Idx: 1
@@ -1564,7 +1565,7 @@ BSide:
         - Dashes: two
           Difficulty: expert
         - Dashes: one
-          Difficulty: perfect
+          Difficulty: master
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:
@@ -1880,6 +1881,10 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: inout
+    InternalEdges:
+      - Split: LeftToRight
+        ReqBoth:
+          Difficulty: Normal
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:

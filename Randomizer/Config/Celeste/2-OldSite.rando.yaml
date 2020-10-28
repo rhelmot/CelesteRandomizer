@@ -1070,7 +1070,8 @@ ASide:
           cameraX: -0.8
           cameraY: 0.0
   - Room: "end_6"
-    End: true
+    ReqEnd:
+      Difficulty: easy
     Holes:
     - Side: Left
       Idx: 0

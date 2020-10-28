@@ -1091,7 +1091,8 @@ ASide:
         Dashes: two
         Difficulty: perfect
   - Room: "space"
-    End: true
+    ReqEnd:
+      Difficulty: easy
     Holes:
     - Side: Left
       Idx: 0

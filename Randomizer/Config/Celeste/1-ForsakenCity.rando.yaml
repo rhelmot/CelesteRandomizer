@@ -237,6 +237,12 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: inout
+      ReqOut:
+        Or:
+        - Dashes: one
+          Difficulty: easy
+        - Dashes: zero
+          Difficulty: hard
     - Side: Right
       Idx: 0
       Kind: inout
@@ -906,6 +912,8 @@ ASide:
           cameraX: 0
           cameraY: 1
   - Room: "end"
+    ReqEnd:
+      Difficulty: easy
     Holes:
     - Side: Down
       Idx: 0
@@ -913,7 +921,6 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
-    End: true
 
 BSide:
   - Room: "00"

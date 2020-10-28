@@ -1628,7 +1628,8 @@ ASide:
       Idx: 0
       Kind: in
   - Room: "after-02"
-    End: true
+    ReqEnd:
+      Difficulty: easy
     Holes:
     - Side: Down
       Idx: 0

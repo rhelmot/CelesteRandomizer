@@ -709,7 +709,7 @@ ASide:
           Difficulty: perfect
       ReqIn:
         Dashes: two
-        Difficulty: expert
+        Difficulty: master
   - Room: "08-a"  # bridge to huge mess
     Holes:
       - Side: Left
@@ -906,13 +906,20 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: inout
-    - Side: Right
-      Idx: 0
-      Kind: inout
-    - Side: Down
-      Idx: 0
-      Kind: inout
-      Launch: -1
+    InternalEdges:
+      - To: "bottom"
+        ReqBoth:
+          Difficulty: normal
+    Subrooms:
+      - Room: "bottom"
+        Holes:
+          - Side: Right
+            Idx: 0
+            Kind: inout
+          - Side: Down
+            Idx: 0
+            Kind: inout
+            Launch: -1
   - Room: "12-y"  # chest 3 secret
     Holes:
     - Side: Left
@@ -1380,7 +1387,7 @@ ASide:
         Difficulty: expert
       ReqIn:
         Dashes: two
-        Difficulty: perfect
+        Difficulty: master
     - To: "right"
       ReqBoth:
         Dashes: one
@@ -1856,7 +1863,8 @@ ASide:
           cameraX: -1.0
           cameraY: 0.0
   - Room: "roof07"
-    End: true
+    ReqEnd:
+      Difficulty: easy
     Holes:
     - Side: Left
       Idx: 0
@@ -2339,6 +2347,10 @@ BSide:
       Idx: 0
       Kind: inout
       HighBound: 19
+    InternalEdges:
+      - Split: LeftToRight
+        ReqBoth:
+          Difficulty: Normal
     Tweaks:
     - ID: 183             # remove invisible barrier
       Update:
@@ -2525,7 +2537,7 @@ CSide:
         - Dashes: two
           Difficulty: hard
         - Dashes: one
-          Difficulty: expert
+          Difficulty: master
     Tweaks:
     - ID: 23
       Update:

@@ -754,7 +754,7 @@ ASide:
         - Dashes: zero
           Difficulty: perfect
         - Dashes: one
-          Difficulty: expert
+          Difficulty: master
         - Dashes: two
     - To: "right"
       ReqBoth:
@@ -1082,7 +1082,7 @@ ASide:
           Or:
           - Dashes: two
           - Dashes: one
-            Difficulty: expert
+            Difficulty: master
         ReqIn:
           Or:
           - Dashes: two
@@ -1106,7 +1106,7 @@ ASide:
           Or:
           - Dashes: two
           - Dashes: one
-            Difficulty: expert
+            Difficulty: master
     Tweaks:
     - Name: "spawn"
       Update:
@@ -1549,6 +1549,8 @@ ASide:
     - Side: Right
       Idx: 0
       Kind: out
+      ReqOut:
+        Difficulty: normal
     - Side: Down
       Idx: 0
       Kind: in
@@ -1655,7 +1657,8 @@ ASide:
       Idx: 0
       Kind: in
   - Room: "e-11"
-    End: true
+    ReqEnd:
+      Difficulty: easy
     Holes:
     - Side: Left
       Idx: 0
@@ -1799,7 +1802,7 @@ BSide:
         Dashes: one
       ReqIn:
         Dashes: two
-        Difficulty: expert
+        Difficulty: master
     - To: "right"
       ReqOut:
         Or:
@@ -1809,7 +1812,7 @@ BSide:
           Difficulty: expert
       ReqIn:
         Dashes: two
-        Difficulty: expert
+        Difficulty: master
     Subrooms:
     - Room: "up"
       Holes:
@@ -1929,7 +1932,7 @@ BSide:
       ReqOut:
         Or:
         - Dashes: one
-          Difficulty: perfect
+          Difficulty: master
         - Dashes: two
     Subrooms:
     - Room: "right"
@@ -2108,7 +2111,7 @@ BSide:
       Kind: inout
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
@@ -2116,12 +2119,23 @@ BSide:
         - Dashes: one
         - Dashes: zero
           Difficulty: expert
+      ReqIn:
+        Dashes: two
+        Difficulty: expert
     Tweaks:
     - Name: "spawn"
       Update:
         Add: true
         X: 640
         Y: 144
+    - Name: "templeGate"
+      ID: 168
+      Update:
+        Remove: true
+    - Name: "templeGate"
+      ID: 155
+      Update:
+        Remove: true
   - Room: "c-04"
     Holes:
     - Side: Up
@@ -2176,6 +2190,8 @@ BSide:
     - Side: Right
       Idx: 0
       Kind: out
+      ReqOut:
+        Difficulty: normal
     - Side: Left
       Idx: 0
       Kind: in
