@@ -84,7 +84,6 @@ namespace Celeste.Mod.Randomizer {
                     RandoModule.MAX_SEED_CHARS
                 );
             });
-            seedbutton.Visible = Settings.SeedType == SeedType.Custom;
             pages[1].Add(seedbutton);
 
             var seedtypetoggle = new TextMenu.Slider(Dialog.Clean("MODOPTIONS_RANDOMIZER_SEEDTYPE"), (i) => {
@@ -230,6 +229,7 @@ namespace Celeste.Mod.Randomizer {
                     i++;
                 }
                 endlesslivespicker.Visible &= Settings.Algorithm == LogicType.Endless;
+                seedbutton.Visible &= Settings.SeedType == SeedType.Custom;
                 enterunknowntext.Visible = false;
 
                 foreach (var kv in rulestoggles) {
