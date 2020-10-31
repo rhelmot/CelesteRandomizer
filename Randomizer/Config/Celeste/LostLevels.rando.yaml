@@ -1817,8 +1817,7 @@ ASide:
       Kind: None
     - Side: Down
       Idx: 1
-      Kind: Unknown
-      HighOpen: true
+      Kind: None
   - Room: "j-04"
     Holes:
     - Side: Right
