@@ -24,6 +24,7 @@ ASide:
       ReqBoth:          # both directions dashless require a double jump
         Or:
         - Dashes: one
+          Difficulty: easy
         - Dashes: zero
           Difficulty: hard
     InternalEdges:
@@ -48,6 +49,7 @@ ASide:
       ReqOut:          # traversing upward dashless requires a double jump
         Or:
         - Dashes: one
+          Difficulty: easy
         - Dashes: zero
           Difficulty: hard
     - Side: Down
@@ -75,9 +77,11 @@ ASide:
     - Split: BottomToTop
       ReqOut:
         Dashes: zero
+        Difficulty: easy
       ReqIn:
         Or:
         - Dashes: one
+          Difficulty: easy
         - Dashes: zero
           Difficulty: perfect  # ceiling pop?
     Tweaks:
@@ -119,6 +123,7 @@ ASide:
       Kind: inout
       ReqOut:
         Dashes: one
+        Difficulty: easy
     - Side: Left
       Idx: 0
       Kind: inout
@@ -190,6 +195,7 @@ ASide:
       ReqBoth:           # traversing the room dashless requires a corner boost or something?
         Or:
         - Dashes: one
+          Difficulty: easy
         - Dashes: zero
           Difficulty: expert
     Subrooms:
@@ -202,6 +208,7 @@ ASide:
       - Collectable: 0
         ReqBoth:
           Dashes: one
+          Difficulty: easy
     Tweaks:
     - ID: 0
       Update:
@@ -221,8 +228,10 @@ ASide:
     - To: "left"
       ReqOut:
         Dashes: one
+        Difficulty: easy
       ReqIn:
         Dashes: zero
+        Difficulty: easy
     Subrooms:
     - Room: "left"
       Holes:
@@ -307,6 +316,7 @@ ASide:
       ReqOut:                    # coffee shop jump
         Or:
         - Dashes: one
+          Difficulty: easy
         - Dashes: zero
           Difficulty: expert
       ReqIn:
@@ -374,6 +384,7 @@ ASide:
   - Room: "s1"
     ReqEnd:
       Dashes: one
+      Difficulty: hard
     Holes:
     - Side: Right
       Idx: 0
@@ -388,6 +399,7 @@ ASide:
       Kind: inout
       ReqOut:
         Dashes: one
+        Difficulty: easy
     - Side: Left
       Idx: 1
       Kind: inout
@@ -436,6 +448,7 @@ ASide:
       Kind: inout
       ReqOut:
         Dashes: one
+        Difficulty: easy
     - Side: Right
       Idx: 0
       Kind: inout
@@ -482,11 +495,20 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
-      ReqOut:
-        Or:
-        - Dashes: one
-        - Dashes: zero
-          Difficulty: expert
+    InternalEdges:
+      - Split: LeftToRight
+        ReqOut:
+          Or:
+            - Dashes: zero
+              Difficulty: normal
+            - Dashes: one
+              Difficulty: easy
+        ReqIn:
+          Or:
+            - Dashes: one
+              Difficulty: easy
+            - Dashes: zero
+              Difficulty: hard
   - Room: "8"
     Hub: true
     Holes:
@@ -501,11 +523,13 @@ ASide:
       ReqOut:
         Or:
         - Dashes: one
+          Difficulty: easy
         - Dashes: zero
           Difficulty: expert
       ReqIn:
         Or:
         - Dashes: one
+          Difficulty: easy
         - Dashes: zero
           Difficulty: hard
     Subrooms:
@@ -523,9 +547,11 @@ ASide:
         Launch: -1
         ReqIn:
           Dashes: one
+          Difficulty: easy
         ReqOut:
           Or:
             - Dashes: one
+              Difficulty: easy
             - Dashes: zero
               Difficulty: perfect
       - Side: Down
@@ -565,11 +591,13 @@ ASide:
     - Split: LeftToRight
       ReqOut:
         Dashes: zero
+        Difficulty: easy
       ReqIn:
         Or:
         - Difficulty: expert
           Dashes: zero
         - Dashes: one
+          Difficulty: easy
     Tweaks:
     - Name: "spawn"
       Update:
@@ -588,12 +616,14 @@ ASide:
       ReqIn:
         Or:
         - Dashes: one
+          Difficulty: easy
         - Dashes: zero
           Difficulty: expert
     - Collectable: 0
       ReqBoth:
         Or:
         - Dashes: one
+          Difficulty: easy
         - Dashes: zero
           Difficulty: hard
     Subrooms:
@@ -620,8 +650,10 @@ ASide:
     - To: "right"
       ReqIn:
         Dashes: one
+        Difficulty: easy
       ReqOut:
         Dashes: zero
+        Difficulty: easy
     Subrooms:
     - Room: "right"
       Holes:
@@ -635,8 +667,10 @@ ASide:
       - Collectable: 0
         ReqOut:
           Dashes: one
+          Difficulty: easy
         ReqIn:
           Dashes: zero
+          Difficulty: easy
     Tweaks:
     - ID: 0
       Name: "changeRespawnTrigger"
@@ -655,6 +689,7 @@ ASide:
       Kind: inout
       ReqOut:
         Dashes: one
+        Difficulty: easy
     - Side: Up
       Idx: 1
       Kind: in              # tweak crumble block for inout?
@@ -712,9 +747,11 @@ ASide:
     - Split: RightToLeft
       ReqOut:
         Dashes: zero
+        Difficulty: easy
       ReqIn:
         Or:
         - Dashes: one
+          Difficulty: easy
         - Dashes: zero
           Difficulty: perfect
   - Room: "10zb"
@@ -730,6 +767,7 @@ ASide:
       ReqBoth:
         Or:
         - Dashes: one
+          Difficulty: normal
         - Dashes: zero
           Difficulty: expert
     - Side: Down
@@ -747,19 +785,18 @@ ASide:
     - Side: Down
       Idx: 2
       Kind: inout
+    - Side: Up
+      Idx: 0
+      Kind: inout
     InternalEdges:
-    - To: "exit"
+    - Split: BottomToTop
       ReqBoth:
         Or:
         - Dashes: one
+          Difficulty: easy
         - Dashes: zero
           Difficulty: expert
     Subrooms:
-    - Room: "exit"
-      Holes:
-      - Side: Up
-        Idx: 0
-        Kind: inout
     - Room: "secret"
       Holes:
       - Side: Left
@@ -767,6 +804,7 @@ ASide:
         Kind: inout
         ReqOut:
           Dashes: one
+          Difficulty: easy
       - Side: Down
         Idx: 0
         Kind: inout
@@ -774,9 +812,11 @@ ASide:
       - To: "secretRight"
         ReqOut:
           Dashes: one
+          Difficulty: easy
         ReqIn:
           Or:
           - Dashes: one
+            Difficulty: easy
           - Dashes: zero
             Difficulty: expert
     - Room: "secretRight"
@@ -834,11 +874,13 @@ ASide:
       ReqBoth:
         Or:
         - Dashes: one
+          Difficulty: easy
         - Dashes: zero
           Difficulty: expert
     - To: "top"
       ReqBoth:
         Dashes: zero
+        Difficulty: easy
     Subrooms:
     - Room: "top"
       Holes:
@@ -880,6 +922,7 @@ ASide:
       ReqBoth:
         Or:
         - Dashes: one
+          Difficulty: easy
         - Dashes: zero
           Difficulty: perfect
   - Room: "12a"
@@ -890,6 +933,7 @@ ASide:
       ReqOut:
         Or:
         - Dashes: one
+          Difficulty: easy
         - Dashes: zero
           Difficulty: expert
     - Side: Left
