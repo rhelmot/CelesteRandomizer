@@ -29,6 +29,7 @@ namespace Celeste.Mod.Randomizer {
             menu.Add(perfect);
             menu.Add(explain);
             menu.Selection = (int) this.Settings.Difficulty + 1;
+            menu.Current.OnEnter();
 
             menu.OnCancel += () => {
                 Audio.Play(SFX.ui_main_button_back);
