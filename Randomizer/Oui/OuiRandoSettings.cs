@@ -233,7 +233,7 @@ namespace Celeste.Mod.Randomizer {
                 enterunknowntext.Visible = false;
 
                 foreach (var kv in rulestoggles) {
-                    kv.Value.Visible &= kv.Key == "" || RandoModule.Instance.MetaConfig.RulesetsDict[kv.Key].Algorithm == this.Settings.Algorithm;
+                    //kv.Value.Visible &= kv.Key == "" || RandoModule.Instance.MetaConfig.RulesetsDict[kv.Key].Algorithm == this.Settings.Algorithm;
                     kv.Value.Icon = kv.Key == this.Settings.Rules ? "menu/poemarrow" : "";
                 }
 

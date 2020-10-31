@@ -68,37 +68,45 @@ Music:
   - Name: "event:/music/remix/09_core"
 Rulesets:
   - Name: A
+    LongName: "Default (A)"
     Algorithm: Pathway
     Darkness: Never
   - Name: B
+    LongName: "2dash (B)"
     Algorithm: Pathway
     Dashes: Two
     Length: Medium
     Darkness: Never
   - Name: C
+    LongName: "Expert (C)"
     Algorithm: Pathway
     Difficulty: Expert
     Length: Medium
   - Name: D
+    LongName: "Expert 2dash (D)"
     Algorithm: Pathway
     Difficulty: Expert
     Dashes: Two
     Length: Long
   - Name: E
+    LongName: "Standard Labyrinth (E)"
     Algorithm: Labyrinth
     Length: Medium
     Darkness: Never
   - Name: F
+    LongName: "Hard Labyrinth (F)"
     Algorithm: Labyrinth
     Length: Medium
     Dashes: Two
     Difficulty: Hard
     Darkness: Never
   - Name: G
+    LongName: "Standard Endless (G)"
     Algorithm: Endless
     EndlessLives: 3
     Lights: On
   - Name: H
+    LongName: "Hard Endless (H)"
     Algorithm: Endless
     EndlessLives: 5
     Difficulty: Hard
