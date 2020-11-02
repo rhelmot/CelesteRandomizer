@@ -461,12 +461,168 @@ rooms through places that don't make sense
     RANDOHEART_TROUBLEINPARADISE_10=What The Heck?
     RANDOHEART_TROUBLEINPARADISE_COUNT=11
     
+    RANDOHEART_BADELINE1_0=Have you ever stopped to think about tiny dogs?
+    RANDOHEART_BADELINE2_0=Like, they are SO angry
+    RANDOHEART_BADELINE3_0=How do you even fit that much angry in that little dog?
+    RANDOHEART_BADELINE1_1=I find a lot of frustration in the concept of shoes.
+    RANDOHEART_BADELINE2_1=You put them on. You take them off. Repeat forever.
+    RANDOHEART_BADELINE3_1=Can I just leave my feet to rest for once?
+    RANDOHEART_BADELINE1_2=lol, I was explaining to my roommate what being trans was like
+    RANDOHEART_BADELINE2_2=and I just flippantly said "yeah I've just thought my whole life that girls were better than boys"
+    RANDOHEART_BADELINE3_2=and this just hit me like a train??? like how did I not realize I was a girl sooner omfg
+    RANDOHEART_BADELINE1_3=Summer is my favorite season but not for any of the normal reasons
+    RANDOHEART_BADELINE2_3=I will kill a bitch for a good juicy peach
+    RANDOHEART_BADELINE3_3=I LOVE FRUIT SO MUCH OKAY
+    RANDOHEART_BADELINE1_4=obtuse rubber goose green moose guava juice
+    RANDOHEART_BADELINE2_4=giant snake birthday cake
+    RANDOHEART_BADELINE3_4=large fries chocolate shake
+    RANDOHEART_BADELINE1_5=Are there any psychoactive ingredients in tea leaves??
+    RANDOHEART_BADELINE2_5=Any drugs besides caffeine
+    RANDOHEART_BADELINE3_5=I got bored and ate 3 bags of tea and now I'm convulsing randomly??
+    RANDOHEART_BADELINE1_6=I think that halloween candy counts as a fruit.
+    RANDOHEART_BADELINE2_6=Like think about it. It's seasonal. Different pieces are different quality.
+    RANDOHEART_BADELINE3_6=I will die on this hill!
+    RANDOHEART_BADELINE1_7=Being in your 20s is like
+    RANDOHEART_BADELINE2_7=The recognition that a plate of loaded nachos can be dinner
+    RANDOHEART_BADELINE3_7=But only if you make it yourself!
+    RANDOHEART_BADELINE1_8=Cinnamon toothpaste is good!!!
+    RANDOHEART_BADELINE2_8=If you disagree you're either an alcoholic or have terrible taste
+    RANDOHEART_BADELINE3_8=Or both!
+    RANDOHEART_BADELINE1_9=I am such a sucker for old games with prerendered sprites
+    RANDOHEART_BADELINE2_9=like donkey kong country, sonic 3d blast, etc
+    RANDOHEART_BADELINE3_9=so pretty
+    RANDOHEART_BADELINE1_10=To the airline lady who "ma'am"ed me
+    RANDOHEART_BADELINE2_10=And then said "sorry, sir" after I said a single word:
+    RANDOHEART_BADELINE3_10=die.
+    RANDOHEART_BADELINE1_11=What does it mean when you crack your neck
+    RANDOHEART_BADELINE2_11=and you recognize the pattern of pops
+    RANDOHEART_BADELINE3_11=as the opening percussion to a Front Bottoms song
+    RANDOHEART_BADELINE1_12=What if we kissed... on the gdq intermission screen?
+    RANDOHEART_BADELINE2_12=haha just kidding.
+    RANDOHEART_BADELINE3_12=unless...?
+    RANDOHEART_BADELINE1_13=I got an amazingly good batch of mangos this week!
+    RANDOHEART_BADELINE2_13=I would go so far as to say they were life-changingly good,
+    RANDOHEART_BADELINE3_13=but everything is life-changing. life is a constant state of change
+    RANDOHEART_BADELINE1_14=Kissing someone is basically just the prisoners dilemma!
+    RANDOHEART_BADELINE2_14=You and your partner both have the choice of whether to kiss or bite!
+    RANDOHEART_BADELINE3_14=The incentive structures here are simply not a stable game!
+    RANDOHEART_BADELINE1_15=Never let two autistic enbies have at a thousand piece puzzle
+    RANDOHEART_BADELINE2_15=they WILL hyperfocus and complete it in 4 hours
+    RANDOHEART_BADELINE3_15=Or do, I'm not a cop!
+    RANDOHEART_BADELINE1_16=The most significant difference between California and Arizona DMVs
+    RANDOHEART_BADELINE2_16=is that the Arizona one doesn’t have signs everywhere
+    RANDOHEART_BADELINE3_16=explaining that it’s illegal to assault DMV employees
+    RANDOHEART_BADELINE1_17=I wonder if cats could choose to get their ears pierced if they would.
+    RANDOHEART_BADELINE2_17=They definitely wouldn't get dangly earrings. Maybe an industiral.
+    RANDOHEART_BADELINE3_17=Oh some furries have definitely come up with that idea
+    RANDOHEART_BADELINE1_18=The two genders are:
+    RANDOHEART_BADELINE2_18=whether your third person object pronoun ends with an r or an m
+    RANDOHEART_BADELINE3_18=shout out to "thon" for being the only true nonbinary pronoun
+    RANDOHEART_BADELINE1_19=Eating a sexy radish
+    RANDOHEART_BADELINE2_19=Call that...
+    RANDOHEART_BADELINE3_19=daikon dyke action
+    RANDOHEART_BADELINE1_COUNT=20
+    RANDOHEART_BADELINE2_COUNT=20
+    RANDOHEART_BADELINE3_COUNT=20
+    
+    RANDOHEART_THEO_0=kool-aid lemonade tastes like what getting murdered by a clown live on stage at a circus would feel like
+    RANDOHEART_THEO_1=I’m basically just a traumatized regression algorithm that loves women and fruit
+    RANDOHEART_THEO_2=I rlly love that I can share anecdotes that start “my girlfriend’s girlfriend’s girlfriend”. love 2 b part of a polycule
+    RANDOHEART_THEO_3=I would describe my political leanings as anarcho-librarianism
+    RANDOHEART_THEO_4=I will not be accepting constructive criticism
+    RANDOHEART_THEO_5=“Hey, it’s your gay stepsister” is a great way to start a text to me
+    RANDOHEART_THEO_6=What is the protocol on convincing yourself that you don’t actually have a crush on a twitch streamer
+    RANDOHEART_THEO_7=when someone sends you a thumbs up emoji and you give it a thumbs up react. digital echolalia
+    RANDOHEART_THEO_8=we r all one race. the cumin race.
+    RANDOHEART_THEO_9=all emotions have been replaced with the knife emoji.
+    RANDOHEART_THEO_10=The secret to my success is that before I say a word out loud I pronounce it with all of silent letters loud in my head so I don’t feel Unbalanced by the strange word
+    RANDOHEART_THEO_11=You are what you yeet
+    RANDOHEART_THEO_12=I need to hug someone for 30 seconds straight or I’m gonna die of touch starved gay bitch
+    RANDOHEART_THEO_13=buy a basil plant, name him Basil, make basil chicken pasta
+    RANDOHEART_THEO_14=sound of spraying a can of whipped cream onto a bowl of cereal
+    RANDOHEART_THEO_15=People really don’t like it when you call their animal onesie a “normie fursuit” huh
+    RANDOHEART_THEO_16=oh my GOD. I may have hooked up with a girl who buys cheese wheels
+    RANDOHEART_THEO_17=I’m listening through kesha’s discography for the first time and I’m growing more bisexual by the moment
+    RANDOHEART_THEO_18=is it at all hot to describe myself as “kind of an ontological disaster” in my tinder bio y/n?
+    RANDOHEART_THEO_19=Most one direction songs, despite being absolute bangers, are kind of weird when you try putting them on playlists intended for platonic friends
+    RANDOHEART_THEO_20=Self care is impulse buying a half gallon of blueberry lemonade and then chugging it in the parking lot
+    RANDOHEART_THEO_21=Food is a social construction and "cooking" is performative
+    RANDOHEART_THEO_22=Tetris Attack (1995) is marxist propaganda because Yoshi and the ordinary enemies he fights in Yoshi’s Island (1995) are the “good guys” while the "bad guys" are the bosses from said game.
+    RANDOHEART_THEO_23=If you eat so much bread that it becomes your gender do you become naan-binary?
+    RANDOHEART_THEO_24=the major seventh chord is trans. sorry cis people, that’s just the way it is.
+    RANDOHEART_THEO_25=welcome to late-stage capitalism, where everything’s unethical and the points don’t matter
+    RANDOHEART_THEO_COUNT=25
+    
 # Madlibs sets
+
+    RANDO_CH6_BOSS_TIRED_A=
+        [BADELINE right angry]
+        (RANDO:BADELINE1:4)
+
+    RANDO_CH6_BOSS_TIRED_B=
+        [BADELINE right yell]
+        (RANDO:BADELINE2:4)
+
+    RANDO_CH6_BOSS_TIRED_C=
+        [BADELINE right yell]
+        {*}(RANDO:BADELINE3:4){/*}
 
 	RANDO_MEMORIAL=
 		-- CELESTE MOUNTAIN --
 		This (RANDO:noun) dedicated to those
 		Who (RANDO:verbed) (RANDO:preposition) the (RANDO:noun)
+		
+    RANDO_CH5_THEO_SAVING_LIFT=
+        [THEO left thinking]
+        (RANDO:THEO)
+
+    RANDO_CH5_THEO_SAVING_A=
+        [THEO left excited]
+        (RANDO:THEO)
+
+    RANDO_CH5_THEO_SAVING_NICE=
+        [THEO left thinking]
+        (RANDO:THEO)
+
+    RANDO_CH5_THEO_SAVING_B=
+        [THEO left worried]
+        (RANDO:THEO)
+
+    RANDO_CH5_THEO_SAVING_C=
+        [THEO left worried]
+        (RANDO:THEO)
+
+    RANDO_CH5_THEO_SAVING_SWITCH=
+        [THEO left thinking]
+        (RANDO:THEO)
+
+    RANDO_CH5_THEO_SAVING_DUNK=
+        [THEO left nailedit]
+        (RANDO:THEO)
+
+    RANDO_CH5_THEO_SAVING_REALLY=
+        [THEO left thinking]
+        (RANDO:THEO)
+
+    RANDO_CH5_THEO_SAVING_D=
+        [THEO left excited]
+        (RANDO:THEO)
+
+    RANDO_CH5_THEO_SAVING_E=
+        [THEO left worried]
+        (RANDO:THEO)
+
+    RANDO_CH5_BSIDE_THEO_A=
+        [THEO left excited]
+        (RANDO:THEO)
+
+    RANDO_CH5_BSIDE_THEO_B=
+        [THEO left wtf]
+        (RANDO:THEO)
+
+    RANDO_CH5_BSIDE_THEO_C=
+        [THEO left wtf]
+        (RANDO:THEO)
 
 	RANDO_WAVEDASH_DESKTOP_MYPC=			My (RANDO:NOUN)
 	RANDO_WAVEDASH_DESKTOP_POWERPOINT=	(RANDO:FILENAME).(RANDO:FILEEXTENSION)
