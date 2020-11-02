@@ -409,7 +409,7 @@ namespace Celeste.Mod.Randomizer {
                 return new Possible();
             }
 
-            if (state.Dashes == NumDashes.Zero) {
+            if (state.Dashes == NumDashes.Zero || true) { // TODO actually think about this
                 return new Impossible();
             }
             return this;
