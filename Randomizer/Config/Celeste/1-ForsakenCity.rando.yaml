@@ -1090,6 +1090,9 @@ BSide:
     - Side: Down
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 1
+      Kind: None  # TODO split hole and make unknown
     InternalEdges:
     - Split: BottomToTop
       ReqOut:

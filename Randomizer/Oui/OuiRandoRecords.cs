@@ -39,7 +39,7 @@ namespace Celeste.Mod.Randomizer {
 
         private void AddRecord(TextMenu menu, string rules, RecordTuple record, bool isEndless) {
             string formatted = isEndless ? record.Item1.ToString() : Dialog.Time(record.Item1);
-            menu.Add(new TextMenu.Button(Dialog.Clean("MODOPTIONS_RANDOMIZER_RULES_" + rules) + ": " + formatted + " (" + record.Item2 + ")").Pressed(() => {
+            menu.Add(new TextMenu.Button(rules + ": " + formatted + " (" + record.Item2 + ")").Pressed(() => {
                 Settings.Rules = rules;
                 Settings.SeedType = SeedType.Custom;
                 Settings.Seed = record.Item2;
