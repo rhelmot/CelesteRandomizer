@@ -412,7 +412,7 @@ rooms through places that don't make sense
     RANDOHEART_WAVEDASHING_39=Spironolactone
     RANDOHEART_WAVEDASHING_40=Guillotines
     RANDOHEART_WAVEDASHING_41=Pleasant Shades of Cyan
-    RANDOHEART_WAVEDASHING_COUNT=41
+    RANDOHEART_WAVEDASHING_COUNT=42
     
     RANDOHEART_CATCHINGBIRDSINSPACE_0=catching birds in space
     RANDOHEART_CATCHINGBIRDSINSPACE_1=brushing your teeth on time
