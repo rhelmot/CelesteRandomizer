@@ -1207,6 +1207,7 @@ ASide:
         X: 152
         Width: 24
   - Room: "d-01"
+    Hub: true
     Holes:
     - Side: Right
       Idx: 0
@@ -3163,6 +3164,10 @@ ASide:
     - Side: Right
       Idx: 0
       Kind: inout
+    - Side: Up
+      Idx: 0
+      Kind: Unknown
+      LowBound: 48
     Tweaks:
     - Name: "spawn"
       Update:

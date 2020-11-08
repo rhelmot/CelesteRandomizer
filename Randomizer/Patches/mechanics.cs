@@ -52,6 +52,8 @@ namespace Celeste.Mod.Randomizer {
                     this.SpecialHooksMechanics.Add(new Hook(meth, new Action<Action<object, Player>, object, Player>(this.DJCutsceneWarp)));
                 } catch (InvalidOperationException) {
                     Logger.Log("randomizer", "ERROR: DJMapHelper.Triggers.TeleportTrigger.OnEnter signature changed");
+                } catch (NullReferenceException) {
+                    Logger.Log("randomizer", "ERROR: DJMapHelper.Triggers.TeleportTrigger.OnEnter signature changed");
                 }
             }
             
@@ -62,6 +64,8 @@ namespace Celeste.Mod.Randomizer {
                 try {
                     this.SpecialHooksMechanics.Add(new Hook(meth, new Action<Action<Scene, Player, string, bool, float, float>, Scene, Player, string, bool, float, float>(this.LuaInstantTeleport)));
                 } catch (InvalidOperationException) {
+                    Logger.Log("randomizer", "ERROR: LuaCutscenes.MethodWrappers.InstantTeleport signature changed");
+                } catch (NullReferenceException) {
                     Logger.Log("randomizer", "ERROR: LuaCutscenes.MethodWrappers.InstantTeleport signature changed");
                 }
             }

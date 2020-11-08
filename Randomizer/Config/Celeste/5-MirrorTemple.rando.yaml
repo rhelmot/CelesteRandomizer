@@ -1188,6 +1188,9 @@ ASide:
       Idx: 0
       Kind: inout
     InternalEdges:
+    - Collectable: 0
+      ReqBoth:
+        Dashes: one
     - To: "keyleft_top"
       ReqBoth:
         Or:
