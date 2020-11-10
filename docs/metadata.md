@@ -349,6 +349,25 @@ Campaigns:
     LevelSets:
       - "ID of levelset"
       - "ID of levelset"
+Rulesets:
+- Name: example
+  LongName: Example A # name that shows up on the rulesets menu
+  RepeatRooms: {true/false}
+  EnterUnknown: {true/false}
+  Variants: {true/false}
+  Lights: {On/Hubs/Off}
+  Darkness: {Never/Vanilla/Always}
+  Algorithm: {Pathway/Labyrinth/Endless}
+  Length: {Short/Medium/Long/Enormous}
+  Dashes: {Zero/One/Two}
+  Difficulty {Easy/Normal/Hard/Expert/Master/Perfect}
+  EnabledMaps:
+  - SID: "SID of level"
+    Mode: 0 # A-Side
+  - SID: "SID of level"
+    Mode: 1 # B-Side
+  - SID: "SID of level"
+    Mode: 2 # C-Side
 ```
 
 The CollectableNames are the names of the entities which should be considered as collectables, i.e. valid places to put strawberries, keys, gems. The music tracks are fmod event names, for example `"event:/music/lvl1/main"`.
