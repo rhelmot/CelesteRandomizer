@@ -360,7 +360,7 @@ Rulesets:
   Algorithm: {Pathway/Labyrinth/Endless}
   Length: {Short/Medium/Long/Enormous}
   Dashes: {Zero/One/Two}
-  Difficulty {Easy/Normal/Hard/Expert/Master/Perfect}
+  Difficulty: {Easy/Normal/Hard/Expert/Master/Perfect}
   EnabledMaps:
   - SID: "SID of level"
     Mode: 0 # A-Side
