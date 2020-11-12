@@ -1649,8 +1649,11 @@ CSide:
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
-        Dashes: one
-        Difficulty: hard
+        Or:
+        - Dashes: one
+          Difficulty: hard
+        - Dashes: zero
+          Difficulty: master
       ReqIn:
         Or:
         - Dashes: two
