@@ -2834,14 +2834,11 @@ ASide:
           Width: 24
   - Room: "f-10b"
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
     InternalEdges:
-    - Split: LeftToRight
+    - To: "right"
       ReqOut:
         Or:
         - Dashes: two
@@ -2850,6 +2847,20 @@ ASide:
       ReqIn:
         Dashes: two
         Difficulty: expert
+    Subrooms:
+      - Room: "right"
+        Holes:
+        - Side: Right
+          Idx: 0
+          Kind: inout
+        - Side: Down
+          Idx: 1
+          Kind: unknown
+          ReqIn:
+            Or:
+              - Dashes: two
+              - Dashes: one
+                Difficulty: master
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:
@@ -2861,6 +2872,11 @@ ASide:
         Values:
           cameraX: -1
           cameraY: 0
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 392
+        Y: 184
   - Room: "f-11"
     Holes:
     - Side: Up

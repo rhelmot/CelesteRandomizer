@@ -452,6 +452,17 @@ ASide:
     - Side: Right
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - Collectable: 0
+      ReqOut:
+        Or:
+        - Dashes: one
+          Difficulty: easy
+        - Dashes: zero
+          Difficulty: normal
+      ReqIn:
+        Dashes: one
+        Difficulty: easy
     Tweaks:
     - Name: "spawn"
       Update:
@@ -1649,14 +1660,17 @@ CSide:
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
-        Dashes: one
-        Difficulty: hard
+        Or:
+        - Dashes: one
+          Difficulty: hard
+        - Dashes: zero
+          Difficulty: master
       ReqIn:
         Or:
         - Dashes: two
           Difficulty: hard
         - Dashes: one
-          Difficulty: perfect
+          Difficulty: master
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:
