@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework;
+using Monocle;
 using MonoMod.Utils;
 
 namespace Celeste.Mod.Randomizer {
@@ -22,7 +23,7 @@ namespace Celeste.Mod.Randomizer {
         public List<Hole> Holes;
         public List<StaticCollectable> Collectables;
 
-        private string TweakedFgTiles;
+        private string TweakedFgTiles, TweakedObjTiles;
         private List<DecalData> TweakedFgDecals, TweakedBgDecals;
         
 
@@ -204,7 +205,7 @@ namespace Celeste.Mod.Randomizer {
 
             foreach (var tweak in config.Tweaks ?? new List<RandoConfigEdit>()) {
                 if (tweak.Name == "fgTiles") {
-                    setTile((int)tweak.X, (int)tweak.Y, tweak.Update.Tile);
+                    setTile((int)tweak.X, (int)tweak.Y, tweak.Update.Tile[0]);
                 }
             }
 
@@ -252,6 +253,15 @@ namespace Celeste.Mod.Randomizer {
                     (tweak.Decal == RandoConfigDecalType.BG ? BgDecals : FgDecals).Add(newDecal);
                 }
             }
+            
+            // objtile tweaks
+            var tilesMap = Calc.ReadCSVIntGrid(Level.ObjTiles, Level.Bounds.Width / 8, Level.Bounds.Height / 8);
+            foreach (var tweak in config.Tweaks ?? new List<RandoConfigEdit>()) {
+                if (tweak.Name == "objTiles") {
+                    tilesMap[(int)tweak.X, (int)tweak.Y] = int.Parse(tweak.Update.Tile);
+                }
+            }
+            this.TweakedObjTiles = Calc.IntGridToCSV(tilesMap);
         }
 
         private void ProcessSubroom(StaticNode node, RandoConfigRoom config) {
@@ -568,6 +578,7 @@ namespace Celeste.Mod.Randomizer {
             result.Solids = this.TweakedFgTiles;
             result.FgDecals = this.TweakedFgDecals;
             result.BgDecals = this.TweakedBgDecals;
+            result.ObjTiles = this.TweakedObjTiles;
 
             if (this.CoreModes != null) {
                 var newData = new DynData<LevelData>(result);

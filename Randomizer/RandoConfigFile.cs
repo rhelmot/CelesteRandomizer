@@ -225,7 +225,7 @@ namespace Celeste.Mod.Randomizer {
         public float? ScaleY { get; set; }
         public List<RandoConfigNode> Nodes { get; set; }
         public Dictionary<string, string> Values { get; set; }
-        public char Tile;
+        public string Tile;
     }
 
     public enum RandoConfigDecalType {

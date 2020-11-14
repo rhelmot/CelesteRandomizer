@@ -937,6 +937,16 @@ ASide:
         Y: 13
         Update:
           Tile: 0
+      - Name: "objTiles"
+        X: 25
+        Y: 12
+        Update:
+          Tile: 25
+      - Name: "objTiles"
+        X: 25
+        Y: 13
+        Update:
+          Tile: 89
   - Room: "c-01c"
     Holes:
     - Side: Right
