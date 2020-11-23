@@ -84,10 +84,6 @@
       <HintPath>..\packages\Celeste.Mod.mm.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="BingoUI">
-      <HintPath>..\packages\BingoUI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\LifeBerry.cs" />

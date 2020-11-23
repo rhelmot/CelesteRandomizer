@@ -3362,7 +3362,7 @@ BSide:
         Or:
         - Dashes: two
         - Dashes: one
-          Difficulty: hard
+          Difficulty: expert
     - Side: Up
       Idx: 6
       Kind: none
