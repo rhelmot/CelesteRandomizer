@@ -140,6 +140,14 @@ namespace Celeste.Mod.Randomizer {
             });
             pages[1].Add(difficultytoggle);
 
+            var difficultycurvetoggle = new TextMenu.Slider(Dialog.Clean("MODOPTIONS_RANDOMIZER_DIFFICULTYCURVE"), i => {
+                return Dialog.Clean("MODOPTIONS_RANDOMIZER_DIFFICULTYCURVE_" + Enum.GetNames(typeof(DifficultyEagerness))[i].ToUpperInvariant());
+            }, 0, (int) DifficultyEagerness.Last - 1, (int) Settings.DifficultyEagerness).Change(i => {
+                Settings.DifficultyEagerness = (DifficultyEagerness) i;
+                updateHashText();
+            });
+            pages[3].Add(difficultycurvetoggle);
+
             var repeatroomstoggle = new TextMenu.OnOff(Dialog.Clean("MODOPTIONS_RANDOMIZER_REPEATROOMS"), Settings.RepeatRooms).Change((val) => {
                 Settings.RepeatRooms = val;
                 updateHashText();
@@ -201,6 +209,7 @@ namespace Celeste.Mod.Randomizer {
                 lengthtoggle.Index = (int)Settings.Length;
                 numdashestoggle.Index = (int)Settings.Dashes;
                 difficultytoggle.Index = (int)Settings.Difficulty;
+                difficultycurvetoggle.Index = (int)Settings.DifficultyEagerness;
                 shinetoggle.Index = (int)Settings.Lights;
                 darktoggle.Index = (int)Settings.Darkness;
                 endlesslivespicker.Index = Settings.EndlessLives;
@@ -215,6 +224,7 @@ namespace Celeste.Mod.Randomizer {
                 lengthtoggle.Disabled = locked;
                 numdashestoggle.Disabled = locked;
                 difficultytoggle.Disabled = locked;
+                difficultycurvetoggle.Disabled = locked;
                 shinetoggle.Disabled = locked;
                 darktoggle.Disabled = locked;
                 variantstoggle.Disabled = locked;

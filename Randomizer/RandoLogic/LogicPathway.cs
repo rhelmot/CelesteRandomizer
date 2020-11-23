@@ -7,6 +7,7 @@ using Monocle;
 namespace Celeste.Mod.Randomizer {
     using FlagSet = Dictionary<string, FlagState>;
     
+    
     public partial class RandoLogic {
         private Deque<RandoTask> Tasks = new Deque<RandoTask>();
         private Stack<RandoTask> CompletedTasks = new Stack<RandoTask>();
@@ -110,13 +111,50 @@ namespace Celeste.Mod.Randomizer {
             public override bool Next() {
                 var caps = this.Logic.Caps.WithoutFlags();
                 var closure = LinkedNodeSet.Closure(this.Node, caps, null, true);
-                var available = closure.UnlinkedEdges((UnlinkedEdge u) => !this.TriedEdges.Contains(u.Static) && (u.Static.HoleTarget == null || this.Logic.Map.HoleFree(this.Node.Room, u.Static.HoleTarget)));
+                var available = closure.UnlinkedEdges(u => !this.TriedEdges.Contains(u.Static) && (u.Static.HoleTarget == null || this.Logic.Map.HoleFree(this.Node.Room, u.Static.HoleTarget)));
                 if (available.Count == 0) {
                     Logger.Log("randomizer", $"Failure: No edges out of {Node.Room.Static.Name}:{Node.Static.Name}");
                     return false;
                 }
 
+                // stochastic difficulty control
                 var picked = available[this.Logic.Random.Next(available.Count)];
+                var caps2 = caps.Copy();
+                for (int i = 0; ; i++, picked = available[this.Logic.Random.Next(available.Count)]){
+                    if (this.Logic.Settings.DifficultyEagerness == DifficultyEagerness.None || this.Logic.Settings.Difficulty == Difficulty.Easy) {
+                        break;
+                    }
+                    if (i == 4) {
+                        return false;
+                    }
+                    
+                    // pick a lower difficulty level - if we have a higher eagerness it should be more likely we pick a difficulty closer to the current one
+                    // to facilitate this we pick a [0,1] sample which biases toward zero as eagerness increases
+                    var sample = this.Logic.Random.NextDouble();
+                    switch (this.Logic.Settings.DifficultyEagerness) {
+                        case DifficultyEagerness.Medium:
+                            sample = Math.Pow(sample, 4);
+                            break;
+                        case DifficultyEagerness.High:
+                            sample = Math.Pow(sample, 8);
+                            break;
+                    }
+
+                    // the off-by-ones here are devious. we want to select a number of steps down which will always step at least once and may step down to one step below easy.
+                    sample *= (int) this.Logic.Settings.Difficulty + 1;
+                    Logger.Log("DEBUG", $"Permissiveness sample: {(int) sample} / {(int) this.Logic.Settings.Difficulty}");
+                    caps2.PlayerSkill = this.Logic.Settings.Difficulty - ((int) sample + 1);
+                    if (caps2.PlayerSkill < 0) {
+                        break;
+                    }
+
+                    // if the target edge is NOT present in the closure with the lower difficulty, it is hard enough. otherwise, it is too easy.
+                    if (!LinkedNodeSet.Closure(this.Node, caps2, null, true).UnlinkedEdges().Contains(picked)) {
+                        break;
+                    }
+                    Logger.Log("DEBUG", "...rejecting edge, too easy");
+                }
+                    
                 var state = new FlagSet(this.State);
                 this.AddNextTask(new TaskPathwayPickRoom(this.Logic, picked, state));
                 this.TriedEdges.Add(picked.Static);

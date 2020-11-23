@@ -42,6 +42,14 @@ namespace Celeste.Mod.Randomizer {
         Last
     }
 
+    public enum DifficultyEagerness {
+        None,
+        Low,
+        Medium,
+        High,
+        Last
+    }
+
     public enum ShineLights {
         Off,
         Hubs,
@@ -80,6 +88,7 @@ namespace Celeste.Mod.Randomizer {
         public MapLength Length;
         public NumDashes Dashes = NumDashes.One;
         public Difficulty Difficulty;
+        public DifficultyEagerness DifficultyEagerness = DifficultyEagerness.Low;
         public ShineLights Lights = ShineLights.Hubs;
         public Darkness Darkness = Darkness.Vanilla;
         [YamlIgnore]
@@ -132,6 +141,7 @@ namespace Celeste.Mod.Randomizer {
                 this.Length = r.Length;
                 this.Dashes = r.Dashes;
                 this.Difficulty = r.Difficulty;
+                this.DifficultyEagerness = r.DifficultyEagerness;
                 this.Lights = r.Lights;
                 this.Darkness = r.Darkness;
             }
@@ -155,6 +165,7 @@ namespace Celeste.Mod.Randomizer {
             yield return (uint)Length;
             yield return (uint)Dashes;
             yield return (uint)Difficulty;
+            yield return (uint)DifficultyEagerness;
             yield return (uint)Lights;
             yield return (uint)Darkness;
 

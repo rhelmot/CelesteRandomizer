@@ -351,6 +351,7 @@ namespace Celeste.Mod.Randomizer {
         public MapLength Length = MapLength.Short;
         public NumDashes Dashes = NumDashes.One;
         public Difficulty Difficulty = Difficulty.Normal;
+        public DifficultyEagerness DifficultyEagerness = DifficultyEagerness.Medium;
     }
 }
 
