@@ -44,6 +44,16 @@ ASide:
       Kind: in
       Launch: 68
       HighOpen: true
+    Tweaks:
+      - Name: "eventTrigger"
+        ID: 7
+        Update:
+          Remove: true
+      - Name: "bird"
+        ID: 1245
+        Update:
+          Values:
+            mode: FlyAway
   - Room: "a-00"
     Holes:
     - Side: Right
