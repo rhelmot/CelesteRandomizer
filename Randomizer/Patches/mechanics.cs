@@ -251,16 +251,8 @@ namespace Celeste.Mod.Randomizer {
                 level.CoreMode = newMode;
                 level.Session.CoreMode = newMode;
 
-                // clear summit flags
-                var toRemove = new System.Collections.Generic.List<string>();
-                foreach (var flag in level.Session.Flags) {
-                    if (flag.StartsWith("summit_checkpoint_")) {
-                        toRemove.Add(flag);
-                    }
-                }
-                foreach (var flag in toRemove) {
-                    level.Session.Flags.Remove(flag);
-                }
+                // clear session flags
+                level.Session.Flags.RemoveWhere(flag => flag.StartsWith("summit_checkpoint_") || flag == "MissTheBird");
 
                 // reset camera (should hopefully fix badeline issues)
                 level.CameraUpwardMaxY = level.Camera.Y + 1000f;

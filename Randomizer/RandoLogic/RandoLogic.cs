@@ -643,6 +643,9 @@ namespace Celeste.Mod.Randomizer {
             // Don't touch poem names or mad lib templates
             dialogIDs.RemoveAll((id) => id.StartsWith("POEM_", StringComparison.InvariantCultureIgnoreCase));
             dialogIDs.RemoveAll((id) => id.StartsWith("RANDO_", StringComparison.InvariantCultureIgnoreCase));
+            dialogIDs.RemoveAll((id) => id.StartsWith("RANDOHEART_", StringComparison.InvariantCultureIgnoreCase));
+            // Don't touch anything which is madlib-randomized
+            dialogIDs.RemoveAll((id) => Dialog.Has("RANDO_" + id));
             // Quick, naive way to distinguish spoken dialog
             if (spoken) {
                 dialogIDs.RemoveAll((id) => !Dialog.Get(id).Contains("portrait"));

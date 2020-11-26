@@ -142,7 +142,7 @@ namespace Celeste.Mod.Randomizer {
 
                     // the off-by-ones here are devious. we want to select a number of steps down which will always step at least once and may step down to one step below easy.
                     sample *= (int) this.Logic.Settings.Difficulty + 1;
-                    Logger.Log("DEBUG", $"Permissiveness sample: {(int) sample} / {(int) this.Logic.Settings.Difficulty}");
+                    //Logger.Log("DEBUG", $"Permissiveness sample: {(int) sample} / {(int) this.Logic.Settings.Difficulty}");
                     caps2.PlayerSkill = this.Logic.Settings.Difficulty - ((int) sample + 1);
                     if (caps2.PlayerSkill < 0) {
                         break;
@@ -152,7 +152,7 @@ namespace Celeste.Mod.Randomizer {
                     if (!LinkedNodeSet.Closure(this.Node, caps2, null, true).UnlinkedEdges().Contains(picked)) {
                         break;
                     }
-                    Logger.Log("DEBUG", "...rejecting edge, too easy");
+                    //Logger.Log("DEBUG", "...rejecting edge, too easy");
                 }
                     
                 var state = new FlagSet(this.State);

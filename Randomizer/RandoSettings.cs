@@ -105,11 +105,6 @@ namespace Celeste.Mod.Randomizer {
 
         public void PruneMaps() {
             this.IncludedMaps.RemoveWhere(a => a.ID == -1);
-            Logger.Log("DEBUG", "Remaining maps");
-            foreach (var m in this.IncludedMaps) {
-                
-            }
-            this.Enforce();
         }
 
         public void Enforce() {
