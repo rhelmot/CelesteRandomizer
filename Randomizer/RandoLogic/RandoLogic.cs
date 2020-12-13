@@ -2,7 +2,9 @@
 using System.Threading;
 using System.Reflection;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using Microsoft.Xna.Framework;
 using Monocle;
 using MonoMod.Utils;
@@ -18,6 +20,10 @@ namespace Celeste.Mod.Randomizer {
 
     public partial class RandoLogic {
         public static AreaKey GenerateMap(RandoSettings settings) {
+            StringWriter builder = new StringWriter();
+            builder.Write("Generating map with settings:\n");
+            YamlHelper.Serializer.Serialize(builder, settings);
+            Logger.Log("randomizer", builder.ToString());
             var newID = AreaData.Areas.Count;
             if (AreaData.Areas.Last().GetSID().StartsWith("randomizer/")) {
                 newID--;
