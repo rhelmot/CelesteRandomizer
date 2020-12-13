@@ -515,7 +515,7 @@ namespace Celeste.Mod.Randomizer {
                         continue;
                     }
 
-                    var possibilities = this.Logic.AvailableNewEdges(caps, caps, e => e.FromNode.ParentRoom.Collectables.Count != 0);
+                    var possibilities = this.Logic.AvailableNewEdges(caps, caps, e => e.FromNode.ParentRoom.Collectables.Count != 0 && e.FromNode.ParentRoom.ReqEnd is Impossible);
                     foreach (var newEdge in possibilities) {
                         var receipt = ConnectAndMapReceipt.Do(this.Logic, edge, newEdge);
                         if (receipt == null) {
