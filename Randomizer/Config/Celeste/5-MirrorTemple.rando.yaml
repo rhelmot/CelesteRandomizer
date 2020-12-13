@@ -1190,10 +1190,13 @@ ASide:
       Idx: 0
       Kind: inout
   - Room: "d-04"
+    Hub: true
     Holes:
     - Side: Up
       Idx: 0
-      Kind: in
+      Kind: inout
+      ReqOut:
+        Dashes: one
     - Side: Right
       Idx: 0
       Kind: inout

@@ -1968,6 +1968,9 @@ CSide:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 3
+      Kind: None
     InternalEdges:
     - Split: LeftToRight
       ReqOut:

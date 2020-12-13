@@ -393,6 +393,9 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: None
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
@@ -917,6 +920,9 @@ ASide:
       Idx: 0
       Kind: inout
     - Side: Down
+      Idx: 0
+      Kind: None
+    - Side: Up
       Idx: 0
       Kind: None
     InternalEdges:

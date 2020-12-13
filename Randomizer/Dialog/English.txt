@@ -622,13 +622,13 @@ rooms through places that don't make sense
     RANDOHEART_THEO_33=I'm drinking la croix out of a can of la croix
     RANDOHEART_THEO_34=There are websites about Seattle horses but nothing about the oppression of Seattle horses so my only conclusion is that horses roam wild and free in the Seattle streets.
     RANDOHEART_THEO_35=What's your favorite gender? Mine is cats and alcohol.
-    RANDOHEART_THEO_35=Have you ever considered lurking out in an alley in a trenchcoat selling genders to kids as a career path?
     RANDOHEART_THEO_36=Dog emoji is like a heart emoji but for the feeling when you see a dog!
     RANDOHEART_THEO_37=Sometimes the joy of living is deepthroating a spatula to get the meringue crumbs off it. Don't judge.
     RANDOHEART_THEO_38=Dril is too passé. I'll keep being funny on my own.
     RANDOHEART_THEO_39=Now I know we're all friends here, but I think everyone should fight to the death every once in a while.
     RANDOHEART_THEO_40=If I'm not able to get the seeds out of cherries then that's on me for having a repetitive stress injury :(
-    RANDOHEART_THEO_COUNT=41
+    RANDOHEART_THEO_41=Have you ever considered lurking out in an alley in a trenchcoat selling genders to kids as a career path?
+    RANDOHEART_THEO_COUNT=42
     
 # Madlibs sets
 
