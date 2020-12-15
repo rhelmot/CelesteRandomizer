@@ -361,6 +361,7 @@ Rulesets:
   Length: {Short/Medium/Long/Enormous}
   Dashes: {Zero/One/Two}
   Difficulty: {Easy/Normal/Hard/Expert/Master/Perfect}
+  DifficultyEagerness: {None/Low/Medium/High}
   EnabledMaps:
   - SID: "SID of level"
     Mode: 0 # A-Side
