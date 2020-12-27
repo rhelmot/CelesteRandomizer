@@ -1176,13 +1176,13 @@ BSide:
         Or:
         - Dashes: two
         - Dashes: zero
-          Difficulty: expert
+          Difficulty: master
       ReqIn:
         Or:
         - Dashes: one
           Difficulty: perfect
         - Dashes: two
-          Difficulty: expert
+          Difficulty: master
   - Room: "a-02"
     Core:
       All: hot
@@ -1429,6 +1429,9 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: none
     Tweaks:
     - Name: "coreModeToggle"
       ID: 742
