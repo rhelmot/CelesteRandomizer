@@ -113,7 +113,9 @@ rooms through places that don't make sense
     RANDOHEART_FIXED_0=Trans Rights!
     RANDOHEART_FIXED_1=First Try
     RANDOHEART_FIXED_2=Big Yeet
-    RANDOHEART_FIXED_COUNT=3
+    RANDOHEART_FIXED_3=Got Em!
+    RANDOHEART_FIXED_4=Sorry About That
+    RANDOHEART_FIXED_COUNT=5
 
     RANDOHEART_ADJ_NOUN={0} {1}
 
@@ -162,7 +164,7 @@ rooms through places that don't make sense
     RANDOHEART_ADJ_42=Hard
     RANDOHEART_ADJ_43=Tempting
     RANDOHEART_ADJ_COUNT=44
-    
+
     RANDOHEART_NOUN_0=Mess
     RANDOHEART_NOUN_1=Carpet
     RANDOHEART_NOUN_2=Potato
@@ -192,7 +194,7 @@ rooms through places that don't make sense
     RANDOHEART_NOUN_26=Master
     RANDOHEART_NOUN_27=Other Half
     RANDOHEART_NOUN_28=Pear
-    RANDOHEART_NOUN_29=Season
+    RANDOHEART_NOUN_29=Month
     RANDOHEART_NOUN_30=Something-Or-Other
     RANDOHEART_NOUN_31=Star
     RANDOHEART_NOUN_32=Trash
@@ -205,7 +207,7 @@ rooms through places that don't make sense
     RANDOHEART_NOUN_39=Destiny
     RANDOHEART_NOUN_40=Puppy
     RANDOHEART_NOUN_COUNT=41
-    
+
     RANDOHEART_PLURALNOUN_0=Messes
     RANDOHEART_PLURALNOUN_1=Carpets
     RANDOHEART_PLURALNOUN_2=Potatoes
@@ -248,7 +250,7 @@ rooms through places that don't make sense
     RANDOHEART_PLURALNOUN_39=Destinies
     RANDOHEART_PLURALNOUN_40=Puppies
     RANDOHEART_PLURALNOUN_COUNT=41
-    
+
     RANDOHEART_VERB_0=Catch
     RANDOHEART_VERB_1=Fly
     RANDOHEART_VERB_2=Get
@@ -261,7 +263,7 @@ rooms through places that don't make sense
     RANDOHEART_VERB_9=Smack
     RANDOHEART_VERB_10=Press
     RANDOHEART_VERB_11=Lift
-    RANDOHEART_VERB_12=Season
+    RANDOHEART_VERB_12=See
     RANDOHEART_VERB_13=Fry
     RANDOHEART_VERB_14=Love
     RANDOHEART_VERB_15=Absorb
@@ -269,8 +271,16 @@ rooms through places that don't make sense
     RANDOHEART_VERB_17=Speak
     RANDOHEART_VERB_18=Steal
     RANDOHEART_VERB_19=Switch
-    RANDOHEART_VERB_COUNT=20
-    
+    RANDOHEART_VERB_20=Eat
+    RANDOHEART_VERB_21=Entertain
+    RANDOHEART_VERB_22=Dump
+    RANDOHEART_VERB_23=Tweet
+    RANDOHEART_VERB_24=Harass
+    RANDOHEART_VERB_25=Fight
+    RANDOHEART_VERB_26=Critique
+    RANDOHEART_VERB_27=Dispute
+    RANDOHEART_VERB_COUNT=28
+
     RANDOHEART_VERBED_0=Caught
     RANDOHEART_VERBED_1=Flew
     RANDOHEART_VERBED_2=Got
@@ -283,7 +293,7 @@ rooms through places that don't make sense
     RANDOHEART_VERBED_9=Smacked
     RANDOHEART_VERBED_10=Pressed
     RANDOHEART_VERBED_11=Lifted
-    RANDOHEART_VERBED_12=Seasoned
+    RANDOHEART_VERBED_12=Saw
     RANDOHEART_VERBED_13=Fried
     RANDOHEART_VERBED_14=Loved
     RANDOHEART_VERBED_15=Absorbed
@@ -291,8 +301,16 @@ rooms through places that don't make sense
     RANDOHEART_VERBED_17=Spoke
     RANDOHEART_VERBED_18=Stole
     RANDOHEART_VERBED_19=Switched
-    RANDOHEART_VERBED_COUNT=20
-    
+    RANDOHEART_VERBED_20=Ate
+    RANDOHEART_VERBED_21=Entertained
+    RANDOHEART_VERBED_22=Dumped
+    RANDOHEART_VERBED_23=Tweeted
+    RANDOHEART_VERBED_24=Harassed
+    RANDOHEART_VERBED_25=Fought
+    RANDOHEART_VERBED_26=Critiqued
+    RANDOHEART_VERBED_27=Disputed
+    RANDOHEART_VERBED_COUNT=28
+
     RANDOHEART_ADVERB_0=Far
     RANDOHEART_ADVERB_1=Quickly
     RANDOHEART_ADVERB_2=Slowly
@@ -313,7 +331,7 @@ rooms through places that don't make sense
     RANDOHEART_ADVERB_17=Solemnly
     RANDOHEART_ADVERB_18=Silently
     RANDOHEART_ADVERB_COUNT=19
-    
+
     RANDOHEART_PREPOSITION_0=To
     RANDOHEART_PREPOSITION_1=From
     RANDOHEART_PREPOSITION_2=On
@@ -325,8 +343,10 @@ rooms through places that don't make sense
     RANDOHEART_PREPOSITION_8=Sans
     RANDOHEART_PREPOSITION_9=Unto
     RANDOHEART_PREPOSITION_10=Upon
-    RANDOHEART_PREPOSITION_COUNT=11
-    
+    RANDOHEART_PREPOSITION_11=Toward
+    RANDOHEART_PREPOSITION_12=Above
+    RANDOHEART_PREPOSITION_COUNT=13
+
     RANDOHEART_INTERJECTION_0=Wow
     RANDOHEART_INTERJECTION_1=Nice
     RANDOHEART_INTERJECTION_2=Ugh
@@ -335,13 +355,14 @@ rooms through places that don't make sense
     RANDOHEART_INTERJECTION_5=Also
     RANDOHEART_INTERJECTION_6=Cool
     RANDOHEART_INTERJECTION_7=Yikes
-    RANDOHEART_INTERJECTION_8=Shit
+    RANDOHEART_INTERJECTION_8=Shoot
     RANDOHEART_INTERJECTION_9=Ouch
     RANDOHEART_INTERJECTION_10=Duh
     RANDOHEART_INTERJECTION_11=Oof
     RANDOHEART_INTERJECTION_12=YEET
-    RANDOHEART_INTERJECTION_COUNT=13
-    
+    RANDOHEART_INTERJECTION_13=Bruh
+    RANDOHEART_INTERJECTION_COUNT=14
+
     RANDOHEART_FILENAME_0=wavedash
     RANDOHEART_FILENAME_1=Celeste
     RANDOHEART_FILENAME_2=iloveyou
@@ -352,7 +373,7 @@ rooms through places that don't make sense
     RANDOHEART_FILENAME_7=secrets
     RANDOHEART_FILENAME_8=lies
     RANDOHEART_FILENAME_COUNT=9
-    
+
     RANDOHEART_FILEEXTENSION_0=ppt
     RANDOHEART_FILEEXTENSION_1=exe
     RANDOHEART_FILEEXTENSION_2=vbs
@@ -363,7 +384,7 @@ rooms through places that don't make sense
     RANDOHEART_FILEEXTENSION_7=gov
     RANDOHEART_FILEEXTENSION_8=jar
     RANDOHEART_FILEEXTENSION_COUNT=9
-    
+
     RANDOHEART_FRUIT_0=Berry
     RANDOHEART_FRUIT_1=Cherry
     RANDOHEART_FRUIT_2=Melon
@@ -374,9 +395,9 @@ rooms through places that don't make sense
     RANDOHEART_FRUIT_7=Lemon
     RANDOHEART_FRUIT_8=Lime
     RANDOHEART_FRUIT_COUNT=9
-    
+
     RANDOHEART_WAVEDASHING_0=Wavedashing
-    RANDOHEART_WAVEDASHING_1=Circumcision
+    RANDOHEART_WAVEDASHING_1=Oedipus Complex
     RANDOHEART_WAVEDASHING_2=Trepanning
     RANDOHEART_WAVEDASHING_3=Demohypering
     RANDOHEART_WAVEDASHING_4=Baking
@@ -395,7 +416,7 @@ rooms through places that don't make sense
     RANDOHEART_WAVEDASHING_17=Making Friends
     RANDOHEART_WAVEDASHING_18=Motion Controls
     RANDOHEART_WAVEDASHING_19=Tinfoil Hats
-    RANDOHEART_WAVEDASHING_20=Commodity Feitishism
+    RANDOHEART_WAVEDASHING_20=Security Through Obscurity
     RANDOHEART_WAVEDASHING_21=Pixel Art
     RANDOHEART_WAVEDASHING_22=50lb Dry Pinto Beans
     RANDOHEART_WAVEDASHING_23=Grandmaster Heartside
@@ -403,22 +424,22 @@ rooms through places that don't make sense
     RANDOHEART_WAVEDASHING_25=Fried Challah
     RANDOHEART_WAVEDASHING_26=The Wachowski Sisters
     RANDOHEART_WAVEDASHING_27=Texting Your Ex
-    RANDOHEART_WAVEDASHING_28=Homoeroticism
+    RANDOHEART_WAVEDASHING_28=Homophobia
     RANDOHEART_WAVEDASHING_29=Troubleshooting Drivers
     RANDOHEART_WAVEDASHING_30=Academia
-    RANDOHEART_WAVEDASHING_31=Maddy Thorston
+    RANDOHEART_WAVEDASHING_31=Maddy Thorson
     RANDOHEART_WAVEDASHING_32=Noel Berry
     RANDOHEART_WAVEDASHING_33=Kevin Regamey
     RANDOHEART_WAVEDASHING_34=Lena Raine
     RANDOHEART_WAVEDASHING_35=Pedro Medeiros
     RANDOHEART_WAVEDASHING_36=Amora Bettany
-    RANDOHEART_WAVEDASHING_37=Hookup Culture
+    RANDOHEART_WAVEDASHING_37=Homemade Kimchi
     RANDOHEART_WAVEDASHING_38=Learning Rust
     RANDOHEART_WAVEDASHING_39=Spironolactone
     RANDOHEART_WAVEDASHING_40=Guillotines
     RANDOHEART_WAVEDASHING_41=Pleasant Shades of Cyan
     RANDOHEART_WAVEDASHING_COUNT=42
-    
+
     RANDOHEART_CATCHINGBIRDSINSPACE_0=catching birds in space
     RANDOHEART_CATCHINGBIRDSINSPACE_1=brushing your teeth on time
     RANDOHEART_CATCHINGBIRDSINSPACE_2=playing cool video games
@@ -442,7 +463,7 @@ rooms through places that don't make sense
     RANDOHEART_CATCHINGBIRDSINSPACE_20=planning a surprise party for your landlord
     RANDOHEART_CATCHINGBIRDSINSPACE_21=convincing yourself the nightmares aren't real
     RANDOHEART_CATCHINGBIRDSINSPACE_22=tolerating the taste of alcohol
-    RANDOHEART_CATCHINGBIRDSINSPACE_23=buffering a spike jump
+    RANDOHEART_CATCHINGBIRDSINSPACE_23=buffering an ultra dash (1.3.3.6 exclusive)
     RANDOHEART_CATCHINGBIRDSINSPACE_24=snoozing your alarm for the fifth time
     RANDOHEART_CATCHINGBIRDSINSPACE_25=taking care of your hardwood floors
     RANDOHEART_CATCHINGBIRDSINSPACE_26=practicing mindfulness. HAHA who are we kidding
@@ -461,8 +482,12 @@ rooms through places that don't make sense
     RANDOHEART_CATCHINGBIRDSINSPACE_39=getting on a government watchlist
     RANDOHEART_CATCHINGBIRDSINSPACE_40=picking out the good peaches at the store
     RANDOHEART_CATCHINGBIRDSINSPACE_41=getting hired by Buzzfeed
-    RANDOHEART_CATCHINGBIRDSINSPACE_COUNT=42
-    
+    RANDOHEART_CATCHINGBIRDSINSPACE_42=reverse engineering random number generators
+    RANDOHEART_CATCHINGBIRDSINSPACE_43=saying the word "homoeroticism" live on stream
+    RANDOHEART_CATCHINGBIRDSINSPACE_44=reading Marx and learning about the commodity feitish
+    RANDOHEART_CATCHINGBIRDSINSPACE_45=helping Celeste climb Mt. Madeline
+    RANDOHEART_CATCHINGBIRDSINSPACE_COUNT=46
+
     RANDOHEART_PRONOUNSUBJECTCONTRACTION_0=He's
     RANDOHEART_PRONOUNSUBJECTCONTRACTION_1=She's
     RANDOHEART_PRONOUNSUBJECTCONTRACTION_2=They're
@@ -472,14 +497,14 @@ rooms through places that don't make sense
     RANDOHEART_PRONOUNSUBJECTCONTRACTION_6=Ne's
     RANDOHEART_PRONOUNSUBJECTCONTRACTION_7=Ze's
     RANDOHEART_PRONOUNSUBJECTCONTRACTION_COUNT=8
-    
+
     RANDOHEART_WORST_0=the worst
     RANDOHEART_WORST_1=the best
     RANDOHEART_WORST_2=alright
     RANDOHEART_WORST_3=questionable at best
     RANDOHEART_WORST_4=a problem
     RANDOHEART_WORST_5=always right
-    RANDOHEART_WORST_6=very sexy
+    RANDOHEART_WORST_6=inexplicable
     RANDOHEART_WORST_7=dynamite!
     RANDOHEART_WORST_8=awesome as heck
     RANDOHEART_WORST_9=bothersome
@@ -493,8 +518,13 @@ rooms through places that don't make sense
     RANDOHEART_WORST_17=a lot.
     RANDOHEART_WORST_18=uh, yikes
     RANDOHEART_WORST_19=going through a lot
-    RANDOHEART_WORST_COUNT=20
-    
+    RANDOHEART_WORST_20=confusing
+    RANDOHEART_WORST_21=got bad options about how to order a burrito
+    RANDOHEART_WORST_22=kind of problematic :/
+    RANDOHEART_WORST_23=got that look in her eyes again
+    RANDOHEART_WORST_24=looking at me kind of funny
+    RANDOHEART_WORST_COUNT=25
+
     RANDOHEART_IMPOSSIBLE_0=IMPOSSIBLE
     RANDOHEART_IMPOSSIBLE_1=WHAT THE HECK
     RANDOHEART_IMPOSSIBLE_2=OH NO
@@ -504,8 +534,10 @@ rooms through places that don't make sense
     RANDOHEART_IMPOSSIBLE_6=SERIOUSLY
     RANDOHEART_IMPOSSIBLE_7=??????????
     RANDOHEART_IMPOSSIBLE_8=BUT WHY THO
-    RANDOHEART_IMPOSSIBLE_COUNT=9
-    
+    RANDOHEART_IMPOSSIBLE_9=THAT'S A BUMMER
+    RANDOHEART_IMPOSSIBLE_10=AAAARRRGHHHH
+    RANDOHEART_IMPOSSIBLE_COUNT=11
+
     RANDOHEART_TROUBLEINPARADISE_0=Trouble in Paradise?
     RANDOHEART_TROUBLEINPARADISE_1=What's Wrong With You?
     RANDOHEART_TROUBLEINPARADISE_2=How Can A Loving God Cause Such Suffering?
@@ -518,7 +550,7 @@ rooms through places that don't make sense
     RANDOHEART_TROUBLEINPARADISE_9=oh noooooooooooooooo
     RANDOHEART_TROUBLEINPARADISE_10=What The Heck?
     RANDOHEART_TROUBLEINPARADISE_COUNT=11
-    
+
     RANDOHEART_BADELINE1_0=Have you ever stopped to think about tiny dogs?
     RANDOHEART_BADELINE2_0=Like, they are SO angry
     RANDOHEART_BADELINE3_0=How do you even fit that much angry in that little dog?
@@ -576,16 +608,13 @@ rooms through places that don't make sense
     RANDOHEART_BADELINE1_18=The two genders are:
     RANDOHEART_BADELINE2_18=whether your third person object pronoun ends with an r or an m
     RANDOHEART_BADELINE3_18=shout out to "thon" for being the only true nonbinary pronoun
-    RANDOHEART_BADELINE1_19=Eating a sexy radish
-    RANDOHEART_BADELINE2_19=Call that...
-    RANDOHEART_BADELINE3_19=daikon dyke action
-    RANDOHEART_BADELINE1_20=I feel like a plot of land farmed in ways that deplete the soul
-    RANDOHEART_BADELINE2_20=*soil
-    RANDOHEART_BADELINE3_20=Autocorrect performs the rare feat of literary analysis
-    RANDOHEART_BADELINE1_COUNT=21
-    RANDOHEART_BADELINE2_COUNT=21
-    RANDOHEART_BADELINE3_COUNT=21
-    
+    RANDOHEART_BADELINE1_19=I feel like a plot of land farmed in ways that deplete the soul
+    RANDOHEART_BADELINE2_19=*soil
+    RANDOHEART_BADELINE3_19=Autocorrect performs the rare feat of literary analysis
+    RANDOHEART_BADELINE1_COUNT=20
+    RANDOHEART_BADELINE2_COUNT=20
+    RANDOHEART_BADELINE3_COUNT=20
+
     RANDOHEART_THEO_0=kool-aid lemonade tastes like what getting murdered by a clown live on stage at a circus would feel like
     RANDOHEART_THEO_1=I’m basically just a traumatized regression algorithm that loves women and fruit
     RANDOHEART_THEO_2=I rlly love that I can share anecdotes that start “my girlfriend’s girlfriend’s girlfriend”. love 2 b part of a polycule
@@ -614,7 +643,7 @@ rooms through places that don't make sense
     RANDOHEART_THEO_25=welcome to late-stage capitalism, where everything’s unethical and the points don’t matter
     RANDOHEART_THEO_26=meows at you and lays on top of your computer
     RANDOHEART_THEO_27=I know this is the pot calling the kettle black but you feitishize suffering and perfectionism too much
-    RANDOHEART_THEO_28=Can philosophy please kinkshame me out of having a conscience
+    RANDOHEART_THEO_28=Can philosophy explain why I feel perpetually fear the pain of living or do I need to turn to religion for that? maybe psychiatry actually?
     RANDOHEART_THEO_29=Okay. Like I'm gonna take life advice from a scorpio, lmao
     RANDOHEART_THEO_30=Meow. Meow meow. Meow. Meow? Meow meow. BIG meow. Meow meow meow meow meow!
     RANDOHEART_THEO_31=...hold up. you just implied that the lyrics to alt j songs are real words in real sentences which makes me think it is YOU who is the fake fan
@@ -623,12 +652,14 @@ rooms through places that don't make sense
     RANDOHEART_THEO_34=There are websites about Seattle horses but nothing about the oppression of Seattle horses so my only conclusion is that horses roam wild and free in the Seattle streets.
     RANDOHEART_THEO_35=What's your favorite gender? Mine is cats and alcohol.
     RANDOHEART_THEO_36=Dog emoji is like a heart emoji but for the feeling when you see a dog!
-    RANDOHEART_THEO_37=Sometimes the joy of living is deepthroating a spatula to get the meringue crumbs off it. Don't judge.
+    RANDOHEART_THEO_37="don't stick the entire spatula in your mouth we have guests over" EXCUSE YOU I will do whatever I want to partake in the joy of life, which happens to be meringue crumbs.
     RANDOHEART_THEO_38=Dril is too passé. I'll keep being funny on my own.
     RANDOHEART_THEO_39=Now I know we're all friends here, but I think everyone should fight to the death every once in a while.
     RANDOHEART_THEO_40=If I'm not able to get the seeds out of cherries then that's on me for having a repetitive stress injury :(
     RANDOHEART_THEO_41=Have you ever considered lurking out in an alley in a trenchcoat selling genders to kids as a career path?
-    RANDOHEART_THEO_COUNT=42
+    RANDOHEART_THEO_42=I can't stand cheap fast food that all tastes the same and is all the same color. I prefer my food to span multiple palettes.
+    RANDOHEART_THEO_43=listening to American Idiot while grading computer science homework seems a little heavy-handed
+    RANDOHEART_THEO_COUNT=44
     
 # Madlibs sets
 
