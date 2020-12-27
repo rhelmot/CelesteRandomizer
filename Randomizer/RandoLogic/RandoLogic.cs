@@ -88,6 +88,8 @@ namespace Celeste.Mod.Randomizer {
                     newArea.CompleteScreenName = r.PickCompleteScreen();
                     newArea.CassetteSong = r.PickCassetteAudio();
                     newArea.Mode[0].AudioState = new AudioState(r.PickMusicAudio(), r.PickAmbienceAudio());
+                    newArea.BloomBase = (float)Math.Pow(r.Random.NextFloat(), 3);
+                    newArea.ColorGrade = r.PickColorGrade();
                     r.RandomizeDialog();
                     break;
                 } catch (RetryException) {
@@ -275,6 +277,14 @@ namespace Celeste.Mod.Randomizer {
                     }
                     return AreaData.Areas[9].CompleteScreenName;
             }
+        }
+
+        private string PickColorGrade() {
+            if (this.Random.Next(10) != 0) {
+                return "none";
+            }
+
+            return this.Random.Choose("cold", "credits", "feelingdown", "golden", "hot", "oldsite", "panicattack", "reflection", "templevoid");
         }
 
         private MapData MakeMap() {

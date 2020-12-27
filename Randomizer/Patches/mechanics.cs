@@ -199,7 +199,7 @@ namespace Celeste.Mod.Randomizer {
 
             if (settings != null && playerIntro == Player.IntroTypes.Transition) {
                 // reset color grading
-                self.NextColorGrade("", 2f);
+                self.NextColorGrade(AreaData.Get(self.Session).ColorGrade, 2f);
             }
         }
 
