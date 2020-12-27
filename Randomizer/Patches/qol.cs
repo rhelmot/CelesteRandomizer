@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using Monocle;
 using Microsoft.Xna.Framework;
 using MonoMod.Cil;
@@ -81,7 +83,7 @@ namespace Celeste.Mod.Randomizer {
             this.SpecialHooksQol.Clear();
         }
 
-        private string MadlibBlank(string description, string hash, string seed) {
+        private static string MadlibBlank(string description, string hash, string seed) {
             if (description.Contains(":")) {
                 var split = description.Split(':');
                 description = split[0];
@@ -116,7 +118,7 @@ namespace Celeste.Mod.Randomizer {
                 var startidx = idx + "(RANDO:".Length;
                 var endidx = thing.IndexOf(')', idx);
                 var description = thing.Substring(startidx, endidx - startidx);
-                thing = thing.Remove(idx, endidx + 1 - idx).Insert(idx, this.MadlibBlank(description, settings.Hash, name + (i * 55).ToString()));
+                thing = thing.Remove(idx, endidx + 1 - idx).Insert(idx, MadlibBlank(description, settings.Hash, name + (i * 55).ToString()));
                 i++;
             }
             return thing;
@@ -432,6 +434,20 @@ namespace Celeste.Mod.Randomizer {
             }
             cursor.Emit(Mono.Cecil.Cil.OpCodes.Ldc_I4, 32);
             cursor.Emit(Mono.Cecil.Cil.OpCodes.Add);
+        }
+        
+        [Command("madlibs_stats", "run statistical tests on the madlibs")]
+        public static void MadlibsStats(string blank = "WAVEDASHING", int runs = 100000) {
+            var map = new Dictionary<string, int>();
+            var seed = "1";
+            for (int i = 0; i < runs; i++) {
+                var result = MadlibBlank(blank, new Random().Next().ToString(), seed);
+                map[result] = (map.TryGetValue(result, out int j) ? j : 0) + 1;
+            }
+
+            foreach (var kv in map.OrderBy(x => x.Value)) {
+                Engine.Commands.Log($"{kv.Value} {kv.Key}");
+            }
         }
     }
 
