@@ -22,6 +22,7 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.Player.Added += DontMoveOnWakeup;
             On.Celeste.Dialog.Clean += PlayMadlibs1;
             On.Celeste.Dialog.Get += PlayMadlibs2;
+            On.Celeste.Spikes.Render += TentacleOutline;
             IL.Celeste.Level.EnforceBounds += DontBlockOnTheo;
             IL.Celeste.TheoCrystal.Update += BeGracefulOnTransitions;
             IL.Celeste.SummitGem.OnPlayer += GemRefillsDashes;
@@ -58,6 +59,7 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.Player.Added -= DontMoveOnWakeup;
             On.Celeste.Dialog.Clean -= PlayMadlibs1;
             On.Celeste.Dialog.Get -= PlayMadlibs2;
+            On.Celeste.Spikes.Render -= TentacleOutline;
             IL.Celeste.Level.EnforceBounds -= DontBlockOnTheo;
             IL.Celeste.TheoCrystal.Update -= BeGracefulOnTransitions;
             IL.Celeste.SummitGem.OnPlayer -= GemRefillsDashes;
@@ -81,6 +83,25 @@ namespace Celeste.Mod.Randomizer {
                 detour.Dispose();
             }
             this.SpecialHooksQol.Clear();
+        }
+
+        private void TentacleOutline(On.Celeste.Spikes.orig_Render orig, Spikes self) {
+            if (this.InRandomizer && (string)typeof(Spikes).GetField("spikeType", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(self) == "tentacles") {
+                self.SetSpikeColor(Color.Black);
+                var onShake = typeof(Spikes).GetMethod("OnShake", BindingFlags.Instance | BindingFlags.NonPublic);
+                onShake.Invoke(self, new object[] {new Vector2(1, 0)});
+                orig(self);
+                onShake.Invoke(self, new object[] {new Vector2(-1, 1)});
+                orig(self);
+                onShake.Invoke(self, new object[] {new Vector2(-1, -1)});
+                orig(self);
+                onShake.Invoke(self, new object[] {new Vector2(1, -1)});
+                orig(self);
+                onShake.Invoke(self, new object[] {new Vector2(0, 1)});
+                self.SetSpikeColor(Color.White);
+            }
+
+            orig(self);
         }
 
         private static string MadlibBlank(string description, string hash, string seed) {
