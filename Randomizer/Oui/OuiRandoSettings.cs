@@ -97,7 +97,9 @@ namespace Celeste.Mod.Randomizer {
             });
             pages[1].Add(seedtypetoggle);
             
-            var endlesslivespicker = new TextMenuExt.IntSlider(Dialog.Clean("MODOPTIONS_RANDOMIZER_LIVES"), 0, 50, Settings.EndlessLives);
+            var endlesslivespicker = new TextMenu.Slider(Dialog.Clean("MODOPTIONS_RANDOMIZER_LIVES"), i => {
+                return i == 0 ? Dialog.Clean("MODOPTIONS_RANDOMIZER_LIVES_INFINITE") : i.ToString();
+            }, 0, 50, Settings.EndlessLives);
             endlesslivespicker.OnValueChange = i => {
                 Settings.EndlessLives = i;
             };

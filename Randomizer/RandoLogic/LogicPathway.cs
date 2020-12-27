@@ -237,7 +237,7 @@ namespace Celeste.Mod.Randomizer {
                 foreach (var edge in possibilities) {
                     var result = ConnectAndMapReceipt.Do(this.Logic, this.Edge, edge);
                     if (result != null) {
-                        var defaultBerry = this.Logic.Settings.Algorithm == LogicType.Endless ? LinkedCollectable.LifeBerry : LinkedCollectable.Strawberry;
+                        var defaultBerry = this.Logic.Settings.HasLives ? LinkedCollectable.LifeBerry : LinkedCollectable.Strawberry;
                         var closure = LinkedNodeSet.Closure(result.EntryNode, caps, caps, true);
                         var seen = new HashSet<UnlinkedCollectable>();
                         foreach (var spot in closure.UnlinkedCollectables()) {
@@ -545,7 +545,7 @@ namespace Celeste.Mod.Randomizer {
 
                         var pickedSpotTup = options[this.Logic.Random.Next(options.Count)];
                         var pickedSpot = pickedSpotTup.Item1;
-                        var berry = pickedSpot.Static.MustFly ? LinkedCollectable.WingedStrawberry : this.Logic.Settings.Algorithm == LogicType.Endless ? LinkedCollectable.LifeBerry : LinkedCollectable.Strawberry;
+                        var berry = pickedSpot.Static.MustFly ? LinkedCollectable.WingedStrawberry : this.Logic.Settings.HasLives ? LinkedCollectable.LifeBerry : LinkedCollectable.Strawberry;
                         pickedSpot.Node.Collectables[pickedSpot.Static] = Tuple.Create(berry, pickedSpotTup.Item2);
                         break;
                     }

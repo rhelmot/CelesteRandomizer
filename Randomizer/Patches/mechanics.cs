@@ -285,7 +285,7 @@ namespace Celeste.Mod.Randomizer {
                 }
                 
                 // set life berries
-                if (isFromLoader && settings.Algorithm == LogicType.Endless) {
+                if (isFromLoader && settings.HasLives) {
                     var glb = Entities.LifeBerry.GrabbedLifeBerries;
                     if (settings.EndlessLevel == 0) {
                         glb.Carrying = settings.EndlessLives;

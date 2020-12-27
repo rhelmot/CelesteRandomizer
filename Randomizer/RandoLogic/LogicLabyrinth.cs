@@ -163,7 +163,7 @@ namespace Celeste.Mod.Randomizer {
                 }
             }
 
-            var defaultBerry = this.Settings.Algorithm == LogicType.Endless ? LinkedCollectable.LifeBerry : LinkedCollectable.Strawberry;
+            var defaultBerry = this.Settings.HasLives ? LinkedCollectable.LifeBerry : LinkedCollectable.Strawberry;
 
             while (this.PriorityCollectables.Count != 0) {
                 var spot = this.PriorityCollectables.Last().Item1;

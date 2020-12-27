@@ -100,7 +100,7 @@ namespace Celeste.Mod.Randomizer {
         private PlayerDeadBody DieInEndless(On.Celeste.Player.orig_Die orig, Player self, Vector2 direction, bool evenifinvincible, bool registerdeathinstats) {
             var result = orig(self, direction, evenifinvincible, registerdeathinstats);
             var settings = this.InRandomizerSettings;
-            if (result == null || settings == null || settings.Algorithm != LogicType.Endless) {
+            if (result == null || settings == null || !settings.HasLives) {
                 return result;
             }
 
@@ -136,7 +136,7 @@ namespace Celeste.Mod.Randomizer {
             
             cursor.Emit(Mono.Cecil.Cil.OpCodes.Ldarg_0);
             cursor.EmitDelegate<Action<AreaComplete>>(self => {
-                if (this.endingSettings != null && this.endingSettings.Algorithm == LogicType.Endless) {
+                if (this.endingSettings != null && this.endingSettings.HasLives) {
                     this.strawbs = new StrawberriesCounter(false, Entities.LifeBerry.GrabbedLifeBerries.Carrying) {
                         Position = new Vector2(70f, 100f),
                     };
