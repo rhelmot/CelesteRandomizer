@@ -33,9 +33,6 @@
     MODOPTIONS_RANDOMIZER_MAPPICKER_RESET=Reset To Default
     MODOPTIONS_RANDOMIZER_REPEATROOMS=Repeat Rooms
     MODOPTIONS_RANDOMIZER_ENTERUNKNOWN=Enter Strange Holes
-    MODOPTIONS_RANDOMIZER_ENTERUNKNOWN_EXPLAIN=
-With this enabled, you will be able to enter
-rooms through places that don't make sense
     MODOPTIONS_RANDOMIZER_LOGIC=Gameplay
     MODOPTIONS_RANDOMIZER_LOGIC_PATHWAY=Pathway
     MODOPTIONS_RANDOMIZER_LOGIC_LABYRINTH=Labyrinth
@@ -109,6 +106,24 @@ rooms through places that don't make sense
 # Endless
     RANDOENDLESS_HEADER=Level {0} Complete!
     RANDOENDLESS_SCORE=Score:
+    
+# Postcards
+    RANDOCARD_0=
+        Randomizer tip!{n}{n}Sometimes, the generator will make small puzzles for you to solve. If it looks like the way forward is blocked, see if there's another path elsewhere!
+    RANDOCARD_1=
+        Randomizer tip!{n}{n}The {# F94A4A}Enter Strange Holes{#} setting will allow you to enter rooms through gaps in the terrain that aren't normally used for traversal.
+    RANDOCARD_2=
+        Randomizer tip!{n}{n}The {# F94A4A}Difficulty{#} setting only controls whether rooms are allowed to appear in game. the {# F94A4A}Difficulty Eagerness{#} setting controls how biased the generator is toward difficult rooms.
+    RANDOCARD_3=
+        Randomizer tip!{n}{n}The {# F94A4A}Illuminate Path{#} setting will shine lights to show you where you can go. On the {# F94A4A}Hub Rooms Only{#} setting, it will only work in rooms with {# F94A4A}4 exits{#} or {# F94A4A}2 downward exits{#}.
+    RANDOCARD_4=
+        Randomizer tip!{n}{n}Need some help? Want to show off something cool you've done? Drop by the {# F94A4A}#randomizer{#} channel of {# 1515F0}https://discord.gg/celeste{#}!
+    RANDOCARD_5=
+        Randomizer tip!{n}{n}It is possible to clip downwards through one-way platforms using a {# DBB33F}feather{#} or {# 1515F0}crusher block{#}.
+    RANDOCARD_6=
+        Randomizer tip!{n}{n}Do not play on {# 9B3FB5}Perfect{#} difficulty.
+    RANDOCARD_7=
+        Randomizer tip!{n}{n}To easily share a seed and its settings, look in {# F94A4A}log.txt{#}. The full settings are written there when you generate a map!
     
 # Word bank
     RANDOHEART_FIXED_0=Trans Rights!

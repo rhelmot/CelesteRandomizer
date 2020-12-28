@@ -75,7 +75,6 @@ namespace Celeste.Mod.Randomizer {
                     typeof(AreaComplete).GetField("canConfirm", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(Engine.Scene, true);
                     return true;
                 }
-
                 
                 var session = SaveData.Instance.CurrentSession;
                 var time = session.Time;
@@ -211,7 +210,8 @@ namespace Celeste.Mod.Randomizer {
                 SaveData.Instance.VariantMode = areaSettings.Variants;
                 SaveData.Instance.AssistMode = false;
                 // mark as completed to spawn golden berry
-                SaveData.Instance.Areas[newArea.ID].Modes[0].Completed = true;
+                // but only if we actually want the golden berry so otherwise we can see postcards
+                SaveData.Instance.Areas[newArea.ID].Modes[0].Completed = areaSettings.SpawnGolden;
                 // mark heart as not collected
                 SaveData.Instance.Areas[newArea.ID].Modes[0].HeartGem = false;
                 Entering = true;
@@ -228,10 +228,35 @@ namespace Celeste.Mod.Randomizer {
                         };
                         session.SeedCleanRandom(Settings.SeedType == SeedType.Random);
                     }
+
+                    var showPostcard = areaSettings.EndlessLevel == 0 && !areaSettings.SpawnGolden;
+                    string postcard = null;
+                    if (showPostcard) {
+                        int count = this.SavedData.StartCounter;
+                        if (count % 3 == 0) {
+                            int postnum = count / 3;
+                            if (Dialog.Has("RANDOCARD_" + postnum)) {
+                                postcard = Dialog.Language.Dialog["RANDOCARD_" + postnum];
+                                count++;
+                            }
+                        } else {
+                            count++;
+                        }
+
+                        this.SavedData.StartCounter = count;
+                        this.SaveSettings();
+                    }
+
+                    if (postcard != null) {
+                        Dialog.Language.Dialog[area.Name + "_postcard"] = postcard;
+                    } else {
+                        Dialog.Language.Dialog.Remove(area.Name + "_postcard");
+                    }
+
                     SaveData.Instance.StartSession(session);    // need to set this earlier than we would get otherwise
                     StartMe = null;
                     Entering = false;
-                    LevelEnter.Go(session, true);
+                    LevelEnter.Go(session, false);
                 });
 
                 /*foreach (AreaData area in AreaData.Areas) {

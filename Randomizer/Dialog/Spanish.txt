@@ -40,9 +40,6 @@
     MODOPTIONS_RANDOMIZER_MAPPICKER_RESET=Restaurar a Valores Predeterminados
     MODOPTIONS_RANDOMIZER_REPEATROOMS=Repetir Cuartos
     MODOPTIONS_RANDOMIZER_ENTERUNKNOWN=Entrar por Agujeros Extraños
-    MODOPTIONS_RANDOMIZER_ENTERUNKNOWN_EXPLAIN=
-Si activas esta opción, podrás entrar a
-cuartos por entradas que no tienen sentido. 
     MODOPTIONS_RANDOMIZER_LOGIC=Tipo de Juego
     MODOPTIONS_RANDOMIZER_LOGIC_PATHWAY=Lineal
     MODOPTIONS_RANDOMIZER_LOGIC_LABYRINTH=Laberinto

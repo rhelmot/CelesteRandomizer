@@ -4,6 +4,9 @@ using System.Collections.Generic;
 namespace Celeste.Mod.Randomizer {
     public class RandoModuleSettings : EverestModuleSettings {
         [SettingIgnore]
+        public int StartCounter { get; set; }
+        
+        [SettingIgnore]
         public Dictionary<uint, long> BestTimes { get; set; }
 
         [SettingIgnore]
