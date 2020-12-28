@@ -23,6 +23,7 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.Dialog.Clean += PlayMadlibs1;
             On.Celeste.Dialog.Get += PlayMadlibs2;
             On.Celeste.Spikes.Render += TentacleOutline;
+            On.Celeste.Achievements.Register += NoAchievements;
             IL.Celeste.Level.EnforceBounds += DontBlockOnTheo;
             IL.Celeste.TheoCrystal.Update += BeGracefulOnTransitions;
             IL.Celeste.SummitGem.OnPlayer += GemRefillsDashes;
@@ -60,6 +61,7 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.Dialog.Clean -= PlayMadlibs1;
             On.Celeste.Dialog.Get -= PlayMadlibs2;
             On.Celeste.Spikes.Render -= TentacleOutline;
+            On.Celeste.Achievements.Register -= NoAchievements;
             IL.Celeste.Level.EnforceBounds -= DontBlockOnTheo;
             IL.Celeste.TheoCrystal.Update -= BeGracefulOnTransitions;
             IL.Celeste.SummitGem.OnPlayer -= GemRefillsDashes;
@@ -83,6 +85,12 @@ namespace Celeste.Mod.Randomizer {
                 detour.Dispose();
             }
             this.SpecialHooksQol.Clear();
+        }
+
+        private void NoAchievements(On.Celeste.Achievements.orig_Register orig, Achievement achievement) {
+            if (!this.InRandomizer) {
+                orig(achievement);
+            }
         }
 
         private void TentacleOutline(On.Celeste.Spikes.orig_Render orig, Spikes self) {
