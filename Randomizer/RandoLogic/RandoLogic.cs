@@ -88,7 +88,7 @@ namespace Celeste.Mod.Randomizer {
                     newArea.CompleteScreenName = r.PickCompleteScreen();
                     newArea.CassetteSong = r.PickCassetteAudio();
                     newArea.Mode[0].AudioState = new AudioState(r.PickMusicAudio(), r.PickAmbienceAudio());
-                    newArea.BloomBase = (float)Math.Pow(r.Random.NextFloat(), 3);
+                    newArea.BloomBase = (float)Math.Pow(r.Random.NextFloat(), 4);
                     newArea.ColorGrade = r.PickColorGrade();
                     r.RandomizeDialog();
                     break;
