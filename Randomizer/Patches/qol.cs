@@ -23,7 +23,7 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.Dialog.Clean += PlayMadlibs1;
             On.Celeste.Dialog.Get += PlayMadlibs2;
             On.Celeste.Spikes.Render += TentacleOutline;
-            On.Celeste.Achievements.Register += NoAchievements;
+            //On.Celeste.Achievements.Register += NoAchievements;
             IL.Celeste.Level.EnforceBounds += DontBlockOnTheo;
             IL.Celeste.TheoCrystal.Update += BeGracefulOnTransitions;
             IL.Celeste.SummitGem.OnPlayer += GemRefillsDashes;
@@ -61,7 +61,7 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.Dialog.Clean -= PlayMadlibs1;
             On.Celeste.Dialog.Get -= PlayMadlibs2;
             On.Celeste.Spikes.Render -= TentacleOutline;
-            On.Celeste.Achievements.Register -= NoAchievements;
+            //On.Celeste.Achievements.Register -= NoAchievements;
             IL.Celeste.Level.EnforceBounds -= DontBlockOnTheo;
             IL.Celeste.TheoCrystal.Update -= BeGracefulOnTransitions;
             IL.Celeste.SummitGem.OnPlayer -= GemRefillsDashes;
@@ -88,9 +88,12 @@ namespace Celeste.Mod.Randomizer {
         }
 
         private void NoAchievements(On.Celeste.Achievements.orig_Register orig, Achievement achievement) {
-            if (!this.InRandomizer) {
-                orig(achievement);
-            }
+            Logger.Log("DEBUG", $"Trying to register, {achievement}");
+            orig(achievement);
+            //if (!this.InRandomizer) {
+            //    Logger.Log("DEBUG", "okay");
+            //}
+            //Logger.Log("DEBUG", "done");
         }
 
         private void TentacleOutline(On.Celeste.Spikes.orig_Render orig, Spikes self) {
