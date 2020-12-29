@@ -96,27 +96,6 @@ namespace Celeste.Mod.Randomizer {
                 updateHashText();
             });
             pages[1].Add(seedtypetoggle);
-            
-            var endlesslivespicker = new TextMenu.Slider(Dialog.Clean("MODOPTIONS_RANDOMIZER_LIVES"), i => {
-                return i == 0 ? Dialog.Clean("MODOPTIONS_RANDOMIZER_LIVES_INFINITE") : i.ToString();
-            }, 0, 50, Settings.EndlessLives);
-            endlesslivespicker.OnValueChange = i => {
-                Settings.EndlessLives = i;
-            };
-            endlesslivespicker.Visible = Settings.Algorithm == LogicType.Endless;
-            pages[1].Add(endlesslivespicker);
-
-            var mapinfo = this.MakeMapPicker(updateHashText);
-            pages[2].AddRange(mapinfo.Item1);
-
-            var logictoggle = new TextMenu.Slider(Dialog.Clean("MODOPTIONS_RANDOMIZER_LOGIC"), (i) => {
-                return Dialog.Clean("MODOPTIONS_RANDOMIZER_LOGIC_" + Enum.GetNames(typeof(LogicType))[i].ToUpperInvariant());
-            }, 0, (int)LogicType.Last - 1, (int)Settings.Algorithm).Change((i) => {
-                Settings.Algorithm = (LogicType)i;
-                endlesslivespicker.Visible = Settings.Algorithm == LogicType.Endless;
-                updateHashText();
-            });
-            pages[1].Add(logictoggle);
 
             var lengthtoggle = new TextMenu.Slider(Dialog.Clean("MODOPTIONS_RANDOMIZER_LENGTH"), (i) => {
                 return Dialog.Clean("MODOPTIONS_RANDOMIZER_LENGTH_" + Enum.GetNames(typeof(MapLength))[i].ToUpperInvariant());
@@ -133,6 +112,24 @@ namespace Celeste.Mod.Randomizer {
                 updateHashText();
             });
             pages[1].Add(numdashestoggle);
+            
+            var endlesslivespicker = new TextMenu.Slider(Dialog.Clean("MODOPTIONS_RANDOMIZER_LIVES"), i => {
+                return i == 0 ? Dialog.Clean("MODOPTIONS_RANDOMIZER_LIVES_INFINITE") : i.ToString();
+            }, 0, 50, Settings.EndlessLives);
+            endlesslivespicker.OnValueChange = i => {
+                Settings.EndlessLives = i;
+            };
+            endlesslivespicker.Visible = Settings.Algorithm == LogicType.Endless;
+
+            var logictoggle = new TextMenu.Slider(Dialog.Clean("MODOPTIONS_RANDOMIZER_LOGIC"), (i) => {
+                return Dialog.Clean("MODOPTIONS_RANDOMIZER_LOGIC_" + Enum.GetNames(typeof(LogicType))[i].ToUpperInvariant());
+            }, 0, (int)LogicType.Last - 1, (int)Settings.Algorithm).Change((i) => {
+                Settings.Algorithm = (LogicType)i;
+                endlesslivespicker.Visible = Settings.Algorithm == LogicType.Endless;
+                updateHashText();
+            });
+            pages[1].Add(logictoggle);
+            pages[1].Add(endlesslivespicker);
 
             var difficultytoggle = new TextMenu.Slider(Dialog.Clean("MODOPTIONS_RANDOMIZER_DIFFICULTY"), (i) => {
                 return Dialog.Clean("MODOPTIONS_RANDOMIZER_DIFFICULTY_" + Enum.GetNames(typeof(Difficulty))[i].ToUpperInvariant());
@@ -141,6 +138,9 @@ namespace Celeste.Mod.Randomizer {
                 updateHashText();
             });
             pages[1].Add(difficultytoggle);
+            
+            var mapinfo = this.MakeMapPicker(updateHashText);
+            pages[2].AddRange(mapinfo.Item1);
 
             var difficultycurvetoggle = new TextMenu.Slider(Dialog.Clean("MODOPTIONS_RANDOMIZER_DIFFICULTYCURVE"), i => {
                 return Dialog.Clean("MODOPTIONS_RANDOMIZER_DIFFICULTYCURVE_" + Enum.GetNames(typeof(DifficultyEagerness))[i].ToUpperInvariant());
@@ -162,6 +162,16 @@ namespace Celeste.Mod.Randomizer {
             });
             pages[3].Add(enterunknowntoggle);
 
+            var goldentoggle = new TextMenu.OnOff(Dialog.Clean("MODOPTIONS_RANDOMIZER_GOLDENBERRY"), Settings.SpawnGolden).Change((val) => {
+                Settings.SpawnGolden = val;
+            });
+            pages[3].Add(goldentoggle);
+
+            var variantstoggle = new TextMenu.OnOff(Dialog.Clean("MODOPTIONS_RANDOMIZER_VARIANTS"), Settings.Variants).Change((val) => {
+                Settings.Variants = val;
+            });
+            pages[3].Add(variantstoggle);
+
             var shinetoggle = new TextMenu.Slider(Dialog.Clean("MODOPTIONS_RANDOMIZER_SHINE"), (i) => {
                 return Dialog.Clean("MODOPTIONS_RANDOMIZER_SHINE_" + Enum.GetNames(typeof(ShineLights))[i].ToUpperInvariant());
             }, 0, (int)ShineLights.Last - 1, (int)Settings.Lights).Change((i) => {
@@ -177,16 +187,6 @@ namespace Celeste.Mod.Randomizer {
                 updateHashText();
             });
             pages[4].Add(darktoggle);
-
-            var goldentoggle = new TextMenu.OnOff(Dialog.Clean("MODOPTIONS_RANDOMIZER_GOLDENBERRY"), Settings.SpawnGolden).Change((val) => {
-                Settings.SpawnGolden = val;
-            });
-            pages[3].Add(goldentoggle);
-
-            var variantstoggle = new TextMenu.OnOff(Dialog.Clean("MODOPTIONS_RANDOMIZER_VARIANTS"), Settings.Variants).Change((val) => {
-                Settings.Variants = val;
-            });
-            pages[3].Add(variantstoggle);
 
             var decorationstoggle = new TextMenu.OnOff(Dialog.Clean("MODOPTIONS_RANDOMIZER_DECORATIONS"), Settings.RandomDecorations).Change((val) => {
                 Settings.RandomDecorations = val;

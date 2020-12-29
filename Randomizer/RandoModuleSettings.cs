@@ -20,6 +20,8 @@ namespace Celeste.Mod.Randomizer {
 
         [SettingIgnore]
         public RandoSettings SavedSettings { get; set; }
+
+        public bool FastMenu { get; set; }
     }
 
     public struct RecordTuple {

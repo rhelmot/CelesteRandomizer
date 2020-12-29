@@ -96,8 +96,9 @@ namespace Celeste.Mod.Randomizer {
         }
 
         public override void CreateModMenuSection(TextMenu menu, bool inGame, EventInstance snapshot) {
-            // uncomment this when we have actual options to control
-            //base.CreateModMenuSection(menu, inGame, snapshot);
+            if (!inGame) {
+                base.CreateModMenuSection(menu, inGame, snapshot);
+            }
         }
 
         public RandoSettings InRandomizerSettings {

@@ -31,7 +31,7 @@ namespace Celeste.Mod.Randomizer {
             MainMenuSmallButton btn = new MainMenuSmallButton("MODOPTIONS_RANDOMIZER_TOPMENU", "menu/randomizer", menu, Vector2.Zero, Vector2.Zero, () => {
                 Audio.Play(SFX.ui_main_button_select);
                 Audio.Play(SFX.ui_main_whoosh_large_in);
-                if (Input.MenuJournal.Check || MInput.Keyboard.Check(Keys.LeftShift)) {
+                if (this.SavedData.FastMenu ^ (Input.MenuJournal.Check || MInput.Keyboard.Check(Keys.LeftShift))) {
                     menu.Overworld.Goto<OuiRandoSettings>();
                 } else {
                     menu.Overworld.Goto<OuiRandoMode>();

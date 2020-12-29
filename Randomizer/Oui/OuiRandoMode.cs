@@ -27,7 +27,7 @@ namespace Celeste.Mod.Randomizer {
             };
             menu.OnPause += () => {
                 Audio.Play(SFX.ui_main_button_select);
-                Overworld.Goto<OuiRandoSettings>();
+                Overworld.Goto<OuiMainMenu>();
             };
             return menu;
         }
