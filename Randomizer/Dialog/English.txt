@@ -77,6 +77,7 @@
     MODOPTIONS_RANDOMIZER_DARK_ALWAYS=Always
     MODOPTIONS_RANDOMIZER_VARIANTS=Variants
     MODOPTIONS_RANDOMIZER_DECORATIONS=Randomize Decorations
+    MODOPTIONS_RANDOMIZER_COLORS=Randomize Ambient Color
     MODOPTIONS_RANDOMIZER_OPTIONS=Options
     MODOPTIONS_RANDOMIZER_OPTIONS_RULESET=Competitive Play
     MODOPTIONS_RANDOMIZER_OPTIONS_BASIC=Basic Gameplay
@@ -535,7 +536,7 @@
     RANDOHEART_WORST_18=uh, yikes
     RANDOHEART_WORST_19=going through a lot
     RANDOHEART_WORST_20=confusing
-    RANDOHEART_WORST_21=got bad options about how to order a burrito
+    RANDOHEART_WORST_21=got a controversial burrito order
     RANDOHEART_WORST_22=kind of problematic :/
     RANDOHEART_WORST_23=got that look in her eyes again
     RANDOHEART_WORST_24=looking at me kind of funny

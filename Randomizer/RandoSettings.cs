@@ -83,6 +83,7 @@ namespace Celeste.Mod.Randomizer {
         public bool SpawnGolden;
         public bool Variants = true;
         public bool RandomDecorations = true;
+        public bool RandomColors = true;
         public int EndlessLives = 3;
         public LogicType Algorithm;
         public MapLength Length;
