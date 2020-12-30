@@ -236,7 +236,7 @@ namespace Celeste.Mod.Randomizer {
                         if (count % 3 == 0) {
                             int postnum = count / 3;
                             if (Dialog.Has("RANDOCARD_" + postnum)) {
-                                postcard = Dialog.Language.Dialog["RANDOCARD_" + postnum];
+                                postcard = Dialog.Get("RANDOCARD_" + postnum);
                                 count++;
                             }
                         } else {
