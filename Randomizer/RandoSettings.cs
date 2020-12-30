@@ -64,6 +64,13 @@ namespace Celeste.Mod.Randomizer {
         Last,
     }
 
+    public enum StrawberryDensity {
+        None,
+        Low,
+        High,
+        Last,
+    }
+
     public class RandoSettings {
         public SeedType SeedType;
         public string Seed = "achene";
@@ -92,6 +99,7 @@ namespace Celeste.Mod.Randomizer {
         public DifficultyEagerness DifficultyEagerness = DifficultyEagerness.Low;
         public ShineLights Lights = ShineLights.Hubs;
         public Darkness Darkness = Darkness.Vanilla;
+        public StrawberryDensity Strawberries = StrawberryDensity.Low;
         [YamlIgnore]
         public HashSet<AreaKeyNotStupid> IncludedMaps = new HashSet<AreaKeyNotStupid>();
         [YamlIgnore]

@@ -146,7 +146,9 @@ namespace Celeste.Mod.Randomizer {
                 collection.RemoveAt(idx);
 
                 if (spot.Static.MustFly) {
-                    spot.Node.Collectables[spot.Static] = Tuple.Create(LinkedCollectable.WingedStrawberry, autoBubble);
+                    if (this.Settings.Strawberries != StrawberryDensity.None) {
+                        spot.Node.Collectables[spot.Static] = Tuple.Create(LinkedCollectable.WingedStrawberry, autoBubble);
+                    }
                     gem--;
                 } else {
                     spot.Node.Collectables[spot.Static] = Tuple.Create(gem, autoBubble);
@@ -165,7 +167,7 @@ namespace Celeste.Mod.Randomizer {
 
             var defaultBerry = this.Settings.HasLives ? LinkedCollectable.LifeBerry : LinkedCollectable.Strawberry;
 
-            while (this.PriorityCollectables.Count != 0) {
+            while (this.Settings.Strawberries != StrawberryDensity.None && this.PriorityCollectables.Count != 0) {
                 var spot = this.PriorityCollectables.Last().Item1;
                 var autoBubble = this.PriorityCollectables.Last().Item2;
                 this.PriorityCollectables.RemoveAt(this.PriorityCollectables.Count - 1);
@@ -173,7 +175,18 @@ namespace Celeste.Mod.Randomizer {
                 spot.Node.Collectables[spot.Static] = Tuple.Create(spot.Static.MustFly ? LinkedCollectable.WingedStrawberry : defaultBerry, autoBubble);
             }
 
-            var targetCount = this.PossibleCollectables.Count / 3 * 2;
+            int targetCount = 0;
+            switch (this.Settings.Strawberries) {
+                case StrawberryDensity.High:
+                    targetCount = 0;
+                    break;
+                case StrawberryDensity.Low:
+                    targetCount = this.PossibleCollectables.Count / 3 * 2;
+                    break;
+                case StrawberryDensity.None:
+                    targetCount = this.PossibleCollectables.Count;
+                    break;
+            }
             this.PossibleCollectables.Shuffle(this.Random);
             while (this.PossibleCollectables.Count > targetCount) {
                 var spot = this.PossibleCollectables.Last().Item1;

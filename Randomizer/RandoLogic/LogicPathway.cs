@@ -237,23 +237,6 @@ namespace Celeste.Mod.Randomizer {
                 foreach (var edge in possibilities) {
                     var result = ConnectAndMapReceipt.Do(this.Logic, this.Edge, edge);
                     if (result != null) {
-                        var defaultBerry = this.Logic.Settings.HasLives ? LinkedCollectable.LifeBerry : LinkedCollectable.Strawberry;
-                        var closure = LinkedNodeSet.Closure(result.EntryNode, caps, caps, true);
-                        var seen = new HashSet<UnlinkedCollectable>();
-                        foreach (var spot in closure.UnlinkedCollectables()) {
-                            seen.Add(spot);
-                            if (!spot.Static.MustFly && this.Logic.Random.Next(5) == 0) {
-                                spot.Node.Collectables[spot.Static] = Tuple.Create(defaultBerry, false);
-                            }
-                        }
-
-                        closure.Extend(caps, null, true);
-                        foreach (var spot in closure.UnlinkedCollectables()) {
-                            if (!seen.Contains(spot) && !spot.Static.MustFly && this.Logic.Random.Next(10) == 0) {
-                                spot.Node.Collectables[spot.Static] = Tuple.Create(defaultBerry, true);
-                            }
-                        }
-                        
                         return result;
                     }
                 }
@@ -301,7 +284,9 @@ namespace Celeste.Mod.Randomizer {
                         }
                     }
                     this.AddNextTask(new TaskPathwayPickEdge(this.Logic, newNode, state));
-                    this.AddLastTask(new TaskPathwayBerryOffshoot(this.Logic, newNode, state));
+                    if (this.Logic.Settings.Strawberries != StrawberryDensity.None) {
+                        this.AddLastTask(new TaskPathwayBerryOffshoot(this.Logic, newNode, state));
+                    }
                 }
 
                 return true;
@@ -506,12 +491,14 @@ namespace Celeste.Mod.Randomizer {
             }
             public override bool Next() {
                 var caps = this.Logic.Caps.WithFlags(this.State).WithoutKey();
+                var defaultBerry = this.Logic.Settings.HasLives ? LinkedCollectable.LifeBerry : LinkedCollectable.Strawberry;
                 var closure = LinkedNodeSet.Closure(this.Node, caps, caps, true);
                 foreach (var edge in closure.UnlinkedEdges()) {
                     if (!this.Logic.Map.HoleFree(this.Node.Room, edge.Static.HoleTarget)) {
                         continue;
                     }
-                    if (this.Logic.Random.Next(5) != 0) {
+
+                    if (this.Logic.Settings.Strawberries == StrawberryDensity.Low && this.Logic.Random.Next(5) != 0) {
                         continue;
                     }
 
@@ -535,6 +522,7 @@ namespace Celeste.Mod.Randomizer {
                             if (seen.Contains(spot)) {
                                 continue;
                             }
+
                             options.Add(Tuple.Create(spot, true));
                         }
 
@@ -545,11 +533,29 @@ namespace Celeste.Mod.Randomizer {
 
                         var pickedSpotTup = options[this.Logic.Random.Next(options.Count)];
                         var pickedSpot = pickedSpotTup.Item1;
-                        var berry = pickedSpot.Static.MustFly ? LinkedCollectable.WingedStrawberry : this.Logic.Settings.HasLives ? LinkedCollectable.LifeBerry : LinkedCollectable.Strawberry;
+                        var berry = pickedSpot.Static.MustFly ? LinkedCollectable.WingedStrawberry : defaultBerry;
                         pickedSpot.Node.Collectables[pickedSpot.Static] = Tuple.Create(berry, pickedSpotTup.Item2);
                         break;
                     }
                 }
+
+                {
+                    var seen = new HashSet<UnlinkedCollectable>();
+                    foreach (var spot in closure.UnlinkedCollectables()) {
+                        seen.Add(spot);
+                        if (this.Logic.Settings.Strawberries == StrawberryDensity.High || this.Logic.Random.Next(5) == 0) {
+                            spot.Node.Collectables[spot.Static] = Tuple.Create(spot.Static.MustFly ? LinkedCollectable.WingedStrawberry : defaultBerry, false);
+                        }
+                    }
+
+                    closure.Extend(caps, null, true);
+                    foreach (var spot in closure.UnlinkedCollectables()) {
+                        if (!seen.Contains(spot) && (this.Logic.Settings.Strawberries == StrawberryDensity.High || this.Logic.Random.Next(5) == 0)) {
+                            spot.Node.Collectables[spot.Static] = Tuple.Create(spot.Static.MustFly ? LinkedCollectable.WingedStrawberry : defaultBerry, true);
+                        }
+                    }
+                }
+
 
                 return true;
             }

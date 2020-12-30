@@ -352,6 +352,7 @@ namespace Celeste.Mod.Randomizer {
         public NumDashes Dashes = NumDashes.One;
         public Difficulty Difficulty = Difficulty.Normal;
         public DifficultyEagerness DifficultyEagerness = DifficultyEagerness.Medium;
+        public StrawberryDensity Strawberries = StrawberryDensity.None;
     }
 }
 

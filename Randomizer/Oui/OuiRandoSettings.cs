@@ -141,6 +141,14 @@ namespace Celeste.Mod.Randomizer {
             
             var mapinfo = this.MakeMapPicker(updateHashText);
             pages[2].AddRange(mapinfo.Item1);
+            
+            var strawberriestoggle = new TextMenu.Slider(Dialog.Clean("MODOPTIONS_RANDOMIZER_STRAWBERRIES"), i => {
+                return Dialog.Clean("MODOPTIONS_RANDOMIZER_STRAWBERRIES_" + Enum.GetNames(typeof(StrawberryDensity))[i].ToUpperInvariant());
+            }, 0, (int) StrawberryDensity.Last - 1, (int) Settings.Strawberries).Change(i => {
+                Settings.Strawberries = (StrawberryDensity) i;
+                updateHashText();
+            });
+            pages[3].Add(strawberriestoggle);
 
             var difficultycurvetoggle = new TextMenu.Slider(Dialog.Clean("MODOPTIONS_RANDOMIZER_DIFFICULTYCURVE"), i => {
                 return Dialog.Clean("MODOPTIONS_RANDOMIZER_DIFFICULTYCURVE_" + Enum.GetNames(typeof(DifficultyEagerness))[i].ToUpperInvariant());
@@ -212,6 +220,7 @@ namespace Celeste.Mod.Randomizer {
                 shinetoggle.Index = (int)Settings.Lights;
                 darktoggle.Index = (int)Settings.Darkness;
                 endlesslivespicker.Index = Settings.EndlessLives;
+                strawberriestoggle.Index = (int)Settings.Strawberries;
 
                 var locked = !String.IsNullOrEmpty(Settings.Rules);
                 foreach (var item in pages[2]) {
@@ -228,6 +237,7 @@ namespace Celeste.Mod.Randomizer {
                 darktoggle.Disabled = locked;
                 variantstoggle.Disabled = locked;
                 endlesslivespicker.Disabled = locked;
+                strawberriestoggle.Disabled = locked;
 
                 var i = (OptionsPages) 0;
                 foreach (var page in pages) {
