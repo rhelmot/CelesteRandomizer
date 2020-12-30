@@ -84,6 +84,7 @@ namespace Celeste.Mod.Randomizer {
             }
             
             this.DelayedLoadMechanics();
+            this.DelayedLoadQol();
         }
 
         public override void Unload() {

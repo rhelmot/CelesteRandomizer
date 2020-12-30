@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Sprites>
+
+    <Randomizer_HeartEasy path="collectables/RecoloredHearts/">
+        <Center />
+
+        <Loop id="idle" path="easy" frames="0" />
+        <Loop id="spin" path="easy" frames="0*10,1-13" delay="0.1"/>
+        <Loop id="fastspin" path="easy" delay="0.1"/>
+    </Randomizer_HeartEasy>
+
+    <Randomizer_HeartMaster path="collectables/RecoloredHearts/">
+        <Center />
+
+        <Loop id="idle" path="expert" frames="0" />  <!-- haha! misnomer -->
+        <Loop id="spin" path="expert" frames="0*10,1-13" delay="0.1"/>
+        <Loop id="fastspin" path="expert" delay="0.1"/>
+    </Randomizer_HeartMaster>
+    
+    <Randomizer_HeartPerfect path="collectables/RecoloredHearts/">
+        <Center />
+
+        <Loop id="idle" path="perfect" frames="0" />
+        <Loop id="spin" path="perfect" frames="0*10,1-13" delay="0.1"/>
+        <Loop id="fastspin" path="perfect" delay="0.1"/>
+    </Randomizer_HeartPerfect>
+    
+</Sprites>

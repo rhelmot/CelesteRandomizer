@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using Monocle;
 using Microsoft.Xna.Framework;
+using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using MonoMod.Utils;
 using MonoMod.RuntimeDetour;
@@ -23,6 +24,7 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.Dialog.Clean += PlayMadlibs1;
             On.Celeste.Dialog.Get += PlayMadlibs2;
             On.Celeste.Spikes.Render += TentacleOutline;
+            On.Celeste.Poem.ctor += PoemColor;
             IL.Celeste.Level.EnforceBounds += DontBlockOnTheo;
             IL.Celeste.TheoCrystal.Update += BeGracefulOnTransitions;
             IL.Celeste.SummitGem.OnPlayer += GemRefillsDashes;
@@ -58,6 +60,12 @@ namespace Celeste.Mod.Randomizer {
             SpecialHooksQol.Add(new ILHook(typeof(CS10_Gravestone).GetMethod("BadelineRejoin", BindingFlags.Instance | BindingFlags.NonPublic).GetStateMachineTarget(), DontGiveTwoDashes));
             SpecialHooksQol.Add(new ILHook(typeof(EventTrigger).GetNestedType("<>c__DisplayClass10_0", BindingFlags.NonPublic).GetMethod("<OnEnter>b__0", BindingFlags.NonPublic | BindingFlags.Instance), DontGiveOneDash));
             SpecialHooksQol.Add(new Hook(typeof(EventTrigger).GetNestedType("<>c__DisplayClass10_0", BindingFlags.NonPublic).GetMethod("<OnEnter>b__0", BindingFlags.NonPublic | BindingFlags.Instance), new Action<Action<object>, object>(this.TransferGoldenBerries)));
+            SpecialHooksQol.Add(new ILHook(typeof(HeartGem).GetMethod("CollectRoutine", BindingFlags.Instance | BindingFlags.NonPublic).GetStateMachineTarget(), HeartSfx));
+        }
+
+        private void DelayedLoadQol() {
+            // needs to be delayed so we patch AFTER pridehearts
+            IL.Celeste.HeartGem.Awake += SpecialHeartColors;
         }
 
         private void UnloadQol() {
@@ -70,6 +78,7 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.Dialog.Clean -= PlayMadlibs1;
             On.Celeste.Dialog.Get -= PlayMadlibs2;
             On.Celeste.Spikes.Render -= TentacleOutline;
+            On.Celeste.Poem.ctor -= PoemColor;
             IL.Celeste.Level.EnforceBounds -= DontBlockOnTheo;
             IL.Celeste.TheoCrystal.Update -= BeGracefulOnTransitions;
             IL.Celeste.SummitGem.OnPlayer -= GemRefillsDashes;
@@ -88,11 +97,137 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.CS06_Campfire.OnBegin -= FuckUpEvenLess;
             IL.Celeste.CS06_Campfire.OnEnd -= FuckUpWayLess;
             IL.Celeste.LightningRenderer.Track -= TrackExtraSpace;
+            IL.Celeste.HeartGem.Awake -= SpecialHeartColors;
             
             foreach (var detour in this.SpecialHooksQol) {
                 detour.Dispose();
             }
             this.SpecialHooksQol.Clear();
+        }
+
+        private void HeartSfx(ILContext il) {
+            var cursor = new ILCursor(il);
+            if (!cursor.TryGotoNext(MoveType.After, instr => instr.MatchLdstr("event:/game/general/crystalheart_blue_get"))) {
+                throw new Exception("Could not find patch point");
+            }
+
+            cursor.EmitDelegate<Func<string, string>>(sfx => {
+                var settings = this.InRandomizerSettings;
+                if (settings == null) {
+                    return sfx;
+                }
+
+                switch (settings.Difficulty) {
+                    case Difficulty.Easy:
+                    case Difficulty.Normal:
+                    case Difficulty.Hard:
+                        sfx = "event:/game/general/crystalheart_blue_get";
+                        break;
+                    case Difficulty.Expert:
+                    case Difficulty.Master:
+                        sfx = "event:/game/general/crystalheart_red_get";
+                        break;
+                    case Difficulty.Perfect:
+                        sfx = "event:/game/general/crystalheart_gold_get";
+                        break;
+                }
+
+                return sfx;
+            });
+        }
+
+        private void PoemColor(On.Celeste.Poem.orig_ctor orig, Poem self, string text, int heartindex, float heartalpha) {
+            orig(self, text, heartindex, heartalpha);
+
+            var settings = this.InRandomizerSettings;
+            if (heartindex == 3 || settings == null) {
+                return;
+            }
+            
+            Color color = Color.White;
+            string guiSprite = "";
+            switch (settings.Difficulty) {
+                case Difficulty.Easy:
+                    color = Calc.HexToColor("20c020");
+                    guiSprite = "heartgem0";
+                    break;
+                case Difficulty.Normal:
+                    color = Calc.HexToColor("8cc7fa");
+                    guiSprite = "heartgem0";
+                    break;
+                case Difficulty.Hard:
+                    color = Calc.HexToColor("ff668a");
+                    guiSprite = "heartgem1";
+                    break;
+                case Difficulty.Expert:
+                    color = Calc.HexToColor("fffc24");
+                    guiSprite = "heartgem2";
+                    break;
+                case Difficulty.Master:
+                    color = Calc.HexToColor("ff5024");
+                    guiSprite = "Randomizer_HeartMaster";
+                    break;
+                case Difficulty.Perfect:
+                    color = Calc.HexToColor("9B3FB5");
+                    guiSprite = "Randomizer_HeartPerfect";
+                    break;
+            }
+
+            typeof(Poem).GetProperty("Color").SetValue(self, color);
+            
+            self.Heart = GFX.GuiSpriteBank.Create(guiSprite);
+            self.Heart.Play("spin");
+            self.Heart.Position = new Vector2(1920f, 1080f) * 0.5f;
+            self.Heart.Color = Color.White * heartalpha;
+        }
+
+        private void SpecialHeartColors(ILContext il) {
+            // this code copied from pridehearts, of course
+            VariableDefinition someString = null;
+            foreach (VariableDefinition variable in il.Body.Variables) {
+                if (variable.VariableType.FullName == typeof(string).FullName) {
+                    someString = variable;
+                    break;
+                }
+            }
+
+            if (someString == null) {
+                throw new Exception("Could not find variable defn to patch!");
+            }
+
+            var cursor = new ILCursor (il);
+            while (cursor.TryGotoNext (MoveType.After, instr => instr.MatchLdloc(someString.Index) )) {
+                cursor.EmitDelegate<Func<string, string>>(id => {
+                    var settings = this.InRandomizerSettings;
+                    if (id == "heartgem3" || settings == null) {
+                        return id;
+                    }
+                    
+                    var prideMode = AppDomain.CurrentDomain.GetAssemblies().Any(asm => asm.FullName.Contains("PrideHearts"));
+
+                    switch (settings.Difficulty) {
+                        case Difficulty.Easy:
+                            id = prideMode ? "heartgem0" : "Randomizer_HeartEasy";
+                            break;
+                        case Difficulty.Normal:
+                            id = "heartgem0";
+                            break;
+                        case Difficulty.Hard:
+                            id = "heartgem1";
+                            break;
+                        case Difficulty.Expert:
+                            id = "heartgem2";
+                            break;
+                        case Difficulty.Master:
+                            id = prideMode ? "heartgem3" : "Randomizer_HeartMaster";
+                            break;
+                        case Difficulty.Perfect:
+                            id = prideMode ? "heartGemGhost" : "Randomizer_HeartPerfect";
+                            break;
+                    }
+                    return id;
+                });
+            }
         }
 
         private void NoAchievements(On.Celeste.Achievements.orig_Register orig, Achievement achievement) {
