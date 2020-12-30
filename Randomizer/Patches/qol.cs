@@ -23,7 +23,6 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.Dialog.Clean += PlayMadlibs1;
             On.Celeste.Dialog.Get += PlayMadlibs2;
             On.Celeste.Spikes.Render += TentacleOutline;
-            //On.Celeste.Achievements.Register += NoAchievements;
             IL.Celeste.Level.EnforceBounds += DontBlockOnTheo;
             IL.Celeste.TheoCrystal.Update += BeGracefulOnTransitions;
             IL.Celeste.SummitGem.OnPlayer += GemRefillsDashes;
@@ -43,6 +42,16 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.CS06_Campfire.OnBegin += FuckUpEvenLess;
             IL.Celeste.CS06_Campfire.OnEnd += FuckUpWayLess;
             IL.Celeste.LightningRenderer.Track += TrackExtraSpace;
+            
+            // https://github.com/EverestAPI/CelesteTAS-EverestInterop/blob/master/CelesteTAS-EverestInterop/EverestInterop/DisableAchievements.cs
+            // Before hooking Achievements.Register, check the size of the method.
+            // If it is 4 instructions long, hooking it is unnecessary and even causes issues.
+            using (DynamicMethodDefinition statsDMD = new DynamicMethodDefinition(typeof(Achievements).GetMethod("Register"))) {
+                int instructionCount = statsDMD.Definition.Body.Instructions.Count;
+                if (instructionCount > 4) {
+                    On.Celeste.Achievements.Register += NoAchievements;
+                }
+            }
 
             SpecialHooksQol.Add(new ILHook(typeof(CS10_MoonIntro).GetMethod("BadelineAppears", BindingFlags.Instance | BindingFlags.NonPublic).GetStateMachineTarget(), DontGiveOneDash));
             SpecialHooksQol.Add(new ILHook(typeof(CS10_Gravestone).GetMethod("BadelineAppears", BindingFlags.Instance | BindingFlags.NonPublic).GetStateMachineTarget(), DontGiveOneDash));
@@ -80,16 +89,6 @@ namespace Celeste.Mod.Randomizer {
             IL.Celeste.CS06_Campfire.OnEnd -= FuckUpWayLess;
             IL.Celeste.LightningRenderer.Track -= TrackExtraSpace;
             
-            // https://github.com/EverestAPI/CelesteTAS-EverestInterop/blob/master/CelesteTAS-EverestInterop/EverestInterop/DisableAchievements.cs
-            // Before hooking Achievements.Register, check the size of the method.
-            // If it is 4 instructions long, hooking it is unnecessary and even causes issues.
-            using (DynamicMethodDefinition statsDMD = new DynamicMethodDefinition(typeof(Achievements).GetMethod("Register"))) {
-                int instructionCount = statsDMD.Definition.Body.Instructions.Count;
-                if (instructionCount > 4) {
-                    On.Celeste.Achievements.Register += NoAchievements;
-                }
-            }
-
             foreach (var detour in this.SpecialHooksQol) {
                 detour.Dispose();
             }
