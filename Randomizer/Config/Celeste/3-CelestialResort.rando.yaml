@@ -828,6 +828,11 @@ ASide:
         Add: true
         X: 32
         Y: 56
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 136
+        Y: 352
     - Name: "jumpThru"
       ID: 353
       Update:
