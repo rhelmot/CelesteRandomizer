@@ -147,29 +147,40 @@ namespace Celeste.Mod.Randomizer {
         }
 
         private Action<Scene, bool, Action> PickWipe() {
-            switch (this.Random.Next(10)) {
+            return (scene, wipeIn, onComplete) => {
+                switch (new Random().Next(10)) {
                 case 0:
-                default:
-                    return (scene, wipeIn, onComplete) => new CurtainWipe(scene, wipeIn, onComplete);
+                    new CurtainWipe(scene, wipeIn, onComplete);
+                    break;
                 case 1:
-                    return (scene, wipeIn, onComplete) => new AngledWipe(scene, wipeIn, onComplete);
+                    new AngledWipe(scene, wipeIn, onComplete);
+                    break;
                 case 2:
-                    return (scene, wipeIn, onComplete) => new DropWipe(scene, wipeIn, onComplete);
+                    new DropWipe(scene, wipeIn, onComplete);
+                    break;
                 case 3:
-                    return (scene, wipeIn, onComplete) => new DreamWipe(scene, wipeIn, onComplete);
+                    new DreamWipe(scene, wipeIn, onComplete);
+                    break;
                 case 4:
-                    return (scene, wipeIn, onComplete) => new WindWipe(scene, wipeIn, onComplete);
+                    new WindWipe(scene, wipeIn, onComplete);
+                    break;
                 case 5:
-                    return (scene, wipeIn, onComplete) => new FallWipe(scene, wipeIn, onComplete);
+                    new FallWipe(scene, wipeIn, onComplete);
+                    break;
                 case 6:
-                    return (scene, wipeIn, onComplete) => new HeartWipe(scene, wipeIn, onComplete);
+                    new HeartWipe(scene, wipeIn, onComplete);
+                    break;
                 case 7:
-                    return (scene, wipeIn, onComplete) => new KeyDoorWipe(scene, wipeIn, onComplete);
+                    new KeyDoorWipe(scene, wipeIn, onComplete);
+                    break;
                 case 8:
-                    return (scene, wipeIn, onComplete) => new MountainWipe(scene, wipeIn, onComplete);
+                    new MountainWipe(scene, wipeIn, onComplete);
+                    break;
                 case 9:
-                    return (scene, wipeIn, onComplete) => new StarfieldWipe(scene, wipeIn, onComplete);
-            }
+                    new StarfieldWipe(scene, wipeIn, onComplete);
+                    break;
+                }
+            };
         }
 
         private string PickMusicAudio() {
