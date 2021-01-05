@@ -428,6 +428,9 @@ namespace Celeste.Mod.Randomizer {
             
             float x = -300f * Ease.CubeIn(1f - self.DrawLerp);
             var scene = Engine.Scene as Level;
+            if (scene == null) {
+                return;
+            }
             var session = scene.Session;
             var wiggler = (Wiggler)typeof(SpeedrunTimerDisplay).GetField("wiggler", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(self);
             var bg = (MTexture) typeof(SpeedrunTimerDisplay).GetField("bg", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(self);
@@ -451,7 +454,7 @@ namespace Celeste.Mod.Randomizer {
             orig(ease, speedruntimerchapterstring, speedruntimerfilestring, chapterspeedruntext, versiontext);
             global::Celeste.Settings.Instance.SpeedrunClock = savedSetting;
 
-            if (settings != null && settings.Algorithm == LogicType.Endless) {
+            if (settings != null && settings.Algorithm == LogicType.Endless && savedSetting != SpeedrunType.Off) {
                 Vector2 position = new Vector2((float) (80.0 - 300.0 * (1.0 - (double) Ease.CubeOut(ease))), 1000f);
                 var scoreSpeedrunText = Dialog.Clean("RANDOENDLESS_SCORE");
                 ActiveFont.DrawOutline(scoreSpeedrunText, position + new Vector2(0.0f, 40f), new Vector2(0.0f, 1f), Vector2.One * 0.6f, Color.White, 2f, Color.Black);
