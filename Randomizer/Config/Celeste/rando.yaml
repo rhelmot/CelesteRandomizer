@@ -66,6 +66,108 @@ Music:
   - Name: "event:/music/remix/06_reflection"
   - Name: "event:/music/remix/07_summit"
   - Name: "event:/music/remix/09_core"
+Backgrounds:
+  - Texture: "bgs/07/bg0"
+    Opaque: true
+    LoopY: true
+  - Texture: "bgs/06/plateau/bg0"
+    Opaque: true
+    LoopX: false
+    ScrollFactorX: 0
+    ScrollFactorY: 0
+  - Texture: "bgs/06/bg0"
+    Opaque: true
+    LoopY: true
+  - Texture: "bgs/10/sky"
+    Opaque: true
+    LoopY: true
+  - Texture: "bgs/10/skybrighter"
+    Opaque: true
+    LoopY: true
+  - Effect: "stars"
+    Opaque: true
+  - Effect: "northernlights"
+    Opaque: true
+  - Effect: "blackhole"
+    Opaque: true
+  - Texture: "bgs/07/00/bg1"
+    CoverBottom: 18
+  - Texture: "bgs/07/00/bg2"
+    CoverBottom: 28
+  - Texture: "bgs/07/01/bg1"
+    CoverBottom: 50
+  - Texture: "bgs/07/01/bg2"
+    CoverBottom: 12
+  - Texture: "bgs/07/01/bg3"
+    CoverBottom: 33
+  - Texture: "bgs/07/02/bg1"
+    CoverBottom: 51
+  - Texture: "bgs/07/02/bg2"
+    CoverBottom: 45
+  - Texture: "bgs/07/02/bg3"
+    CoverBottom: 24
+  - Texture: "bgs/06/bg1"
+    LoopY: true
+    NeedsColor: true
+  - Texture: "bgs/06/bg2"
+    LoopY: true
+    NeedsColor: true
+  - Texture: "bgs/05/temple/bg3"
+    LoopY: true
+    NeedsColor: true
+  - Texture: "bgs/05/mirror/bg4"
+    LoopY: true
+BgEffects:
+  - Effect: "snowBg"
+  - Effect: "dreamstars"
+  - Effect: "planets"
+    AndThen:
+      Effect: "planets"
+      OffX: 20
+      OffY: 7
+      ScrollFactorX: 1.3
+      ScrollFactorY: 1.2
+  - Effect: "starfield"
+    AndThen:
+      Effect: "starfield"
+      OffX: 20
+      OffY: 7
+      ScrollFactorX: 1.3
+      ScrollFactorY: 1.2
+  - Texture: "mist"
+    LoopY: true
+FgEffects:
+  - Effect: "stardust"
+    ProvidesWind: true
+  - Effect: "windsnow"
+    ProvidesWind: true
+  - Effect: "rain"
+  - Effect: "snowFg"
+  - Effect: "mirrorFg"
+  - Effect: "reflectionFg"
+  - Effect: "petals"
+  - Effect: "godrays"
+  - Texture: "mist"
+    LoopY: true
+    SpeedX: 16
+    SpeedY: 8
+    Alpha: 0.6
+    BlendMode: "additive"
+    AndThen:
+      Texture: "mist"
+      LoopY: true
+      SpeedX: 4
+      SpeedY: 4
+      ScrollFactorX: 0.5
+      ScrollFactorY: 0.5
+      Alpha: 0.6
+      BlendMode: "additive"
+  - Texture: "purplesunset"
+    LoopY: true
+    SpeedX: 4
+    SpeedY: 4
+    Alpha: 0.25
+    BlendMode: "additive"
 Rulesets:
   - Name: A
     LongName: "Default (A)"

@@ -205,6 +205,11 @@ namespace Celeste.Mod.Randomizer {
                 Settings.RandomColors = val;
             });
             pages[4].Add(colorstoggle);
+            
+            var bgstoggle = new TextMenu.OnOff(Dialog.Clean("MODOPTIONS_RANDOMIZER_BACKGROUNDS"), Settings.RandomBackgrounds).Change((val) => {
+                Settings.RandomBackgrounds = val;
+            });
+            pages[4].Add(bgstoggle);
 
             var rulestoggles = new Dictionary<String, TextMenuExt.ButtonExt>();
             

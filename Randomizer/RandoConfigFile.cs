@@ -267,6 +267,9 @@ namespace Celeste.Mod.Randomizer {
         public List<string> CollectableNames = new List<string>();
         public List<RandoMetadataMusic> Music = new List<RandoMetadataMusic>();
         public List<RandoMetadataCampaign> Campaigns = new List<RandoMetadataCampaign>();
+        public List<RandoMetadataBackground> Backgrounds = new List<RandoMetadataBackground>();
+        public List<RandoMetadataBackground> BgEffects = new List<RandoMetadataBackground>();
+        public List<RandoMetadataBackground> FgEffects = new List<RandoMetadataBackground>();
 
         [YamlIgnore] public Dictionary<string, RandoMetadataRuleset> RulesetsDict = new Dictionary<string, RandoMetadataRuleset>();
 
@@ -289,6 +292,9 @@ namespace Celeste.Mod.Randomizer {
             this.CollectableNames.AddRange(other.CollectableNames);
             this.Music.AddRange(other.Music);
             this.Campaigns.AddRange(other.Campaigns);
+            this.Backgrounds.AddRange(other.Backgrounds);
+            this.BgEffects.AddRange(other.BgEffects);
+            this.FgEffects.AddRange(other.FgEffects);
             this.Rulesets = other.Rulesets; // rely on setter behavior to use this as an updater
         }
         
@@ -353,6 +359,25 @@ namespace Celeste.Mod.Randomizer {
         public Difficulty Difficulty = Difficulty.Normal;
         public DifficultyEagerness DifficultyEagerness = DifficultyEagerness.Medium;
         public StrawberryDensity Strawberries = StrawberryDensity.None;
+    }
+
+    public class RandoMetadataBackground {
+        public string Texture;
+        public string Effect;
+        public int CoverTop;
+        public int CoverBottom;
+        public bool Opaque;
+        public bool LoopX = true, LoopY;
+        public bool FlipX, FlipY;
+        public bool NeedsColor;
+        public float ScrollFactorX = 1f, ScrollFactorY = 1f;
+        public bool ProvidesWind;
+        public float Alpha = 1f;
+        public float SpeedX, SpeedY;
+        public int OffX, OffY;
+        public string BlendMode = "alphablend";
+
+        public RandoMetadataBackground AndThen;
     }
 }
 

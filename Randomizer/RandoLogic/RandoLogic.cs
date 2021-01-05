@@ -343,58 +343,26 @@ namespace Celeste.Mod.Randomizer {
         }
 
         private void SetForeground(MapData map) {
-            string fgName = null;
-            bool needsWind = true;
-            switch (this.Random.Next(15)) {
-                case 0:
-                    fgName = "stardust";
-                    needsWind = false;
-                    break;
-                case 1:
-                    fgName = "windsnow";
-                    needsWind = false;
-                    break;
-                case 2:
-                    fgName = "rain";
-                    break;
-                case 3:
-                case 4:
-                    fgName = "snowFg";
-                    break;
-                case 5:
-                    fgName = "mirrorFg";
-                    break;
-                case 6:
-                    fgName = "reflectionFg";
-                    break;
-                case 7:
-                    fgName = "petals";
-                    break;
-                case 8:
-                    fgName = "godrays";
-                    break;
-            }
-            if (!this.Settings.RandomDecorations) {
-                fgName = null;
-                needsWind = true;
-            }
-
             map.Foreground = new BinaryPacker.Element{ Children = new List<BinaryPacker.Element>() };
-            if (fgName != null) {
-                map.Foreground.Children.Add(new BinaryPacker.Element { Name = fgName });
+            var effect = this.Random.Choose(RandoModule.Instance.MetaConfig.FgEffects);
+            if (!this.Settings.RandomBackgrounds) {
+                effect = RandoModule.Instance.MetaConfig.FgEffects.First(x => x.Effect == "stardust");
             }
-            if (needsWind) {
-                fgName = this.Random.Next(2) == 0 ? "stardust" : "windsnow";
+            map.Foreground.Children.AddRange(this.Styleground(effect));
+
+            var windyOnly = string.Join(",", this.FindWindyLevels(map));
+            if (!effect.ProvidesWind && !string.IsNullOrEmpty(windyOnly)) {
                 map.Foreground.Children.Add(new BinaryPacker.Element {
-                    Name = fgName,
+                    Name = "stardust",
                     Attributes = new Dictionary<string, object> {
-                        {"only", string.Join(",", this.FindWindyLevels(map))}
+                        {"only", windyOnly}
                     }
                 });
             }
+            
             // this cutscene hardcodes a reference to a windsnow fg
             // the level should only ever be last on the list, right?
-            if (fgName != "windsnow" && map.Levels[map.Levels.Count - 1].Name.StartsWith("Celeste/4-GoldenRidge/A/d-10")) {
+            if (effect.Effect != "windsnow" && map.Levels[map.Levels.Count - 1].Name.StartsWith("Celeste/4-GoldenRidge/A/d-10")) {
                 map.Foreground.Children.Add(new BinaryPacker.Element {
                     Name = "windsnow",
                     Attributes = new Dictionary<string, object> {
@@ -413,180 +381,124 @@ namespace Celeste.Mod.Randomizer {
             return possibleColors[this.Random.Next(possibleColors.Count)];
         }
 
+        private IEnumerable<BinaryPacker.Element> Styleground(RandoMetadataBackground element,
+                float scrollX=0.3f, float scrollY=0.3f, int y=0) {
+
+            var color = this.RandomColor();
+            if (!string.IsNullOrEmpty(element.Texture)) {
+                yield return new BinaryPacker.Element {
+                    Name = "parallax", Attributes = new Dictionary<string, object> {
+                        {"texture", element.Texture},
+                        {"blendMode", element.BlendMode},
+                        {"loopx", element.LoopX}, {"loopy", element.LoopY},
+                        {"flipx", element.FlipX}, {"flipy", element.FlipY},
+                        {"speedx", element.SpeedX}, {"speedy", element.SpeedY},
+                        {"scrollx", scrollX * element.ScrollFactorY}, {"scrolly", scrollY * element.ScrollFactorY},
+                        {"x", element.OffX}, {"y", y + element.OffY},
+                        {"color", $"{color.R:X2}{color.G:X2}{color.B:X2}"},
+                        {"alpha", element.Alpha},
+                    }
+                };
+            } else if (!string.IsNullOrEmpty(element.Effect)) {
+                yield return new BinaryPacker.Element {
+                    Name = element.Effect, Attributes = new Dictionary<string, object> {
+                        {"scrollx", scrollX * element.ScrollFactorY}, {"scrolly", scrollY * element.ScrollFactorY},
+                        {"color", $"{color.R:X2}{color.G:X2}{color.B:X2}"},
+                    },
+                };
+            } else {
+                throw new Exception("Config error: styleground without Texture or Effect");
+            }
+            
+            if (element.NeedsColor) {
+                var color2 = this.RandomColor(c => (int) c.R + (int) c.G + (int) c.B > 128 * 3);
+                yield return new BinaryPacker.Element {
+                    Name = "parallax", Attributes = new Dictionary<string, object> {
+                        {"texture", "bgs/06/fx0"},
+                        {"blendMode", "additive"},
+                        {"loopx", true}, {"loopy", true},
+                        {"scrolly", 0.3f},
+                        {"scrollx", 0.3f},
+                        {"color", $"{color2.R:X2}{color2.G:X2}{color2.B:X2}"},
+                        {"alpha", 0.15f},
+                    }
+                };
+            }
+
+            if (element.AndThen != null) {
+                foreach (var e in this.Styleground(element.AndThen, scrollX, scrollY, y)) {
+                    yield return e;
+                }
+            }
+        }
+
         private void SetBackground(MapData map) {
-            map.BackgroundColor = RandomColor();
-            
-            map.Background = new BinaryPacker.Element { Children = new List<BinaryPacker.Element>() };
-            int totalCoverage = 0;
-            for (int i = 0; i < 5; i++) {
-                string parallax = null;
-                int coverage = 0;
-                switch (this.Random.Next(15)) {
-                    case 0:
-                    default:
-                        parallax = "bgs/07/bg0";
-                        coverage = 180;
-                        break;
-                    case 1:
-                        parallax = "bgs/07/00/bg1";
-                        coverage = 180 - 162;
-                        break;
-                    case 2:
-                        parallax = "bgs/07/00/bg2";
-                        coverage = 180 - 152;
-                        break;
-                    case 3:
-                        parallax = "bgs/07/01/bg1";
-                        coverage = 180 - 130;
-                        break;
-                    case 4:
-                        parallax = "bgs/07/01/bg2";
-                        coverage = 180 - 168;
-                        break;
-                    case 5:
-                        parallax = "bgs/07/01/bg3";
-                        coverage = 180 - 147;
-                        break;
-                    case 6:
-                        parallax = "bgs/07/02/bg1";
-                        coverage = 180 - 129;
-                        break;
-                    case 7:
-                        parallax = "bgs/07/02/bg2";
-                        coverage = 180 - 135;
-                        break;
-                    case 8:
-                        parallax = "bgs/07/02/bg3";
-                        coverage = 180 - 156;
-                        break;
-                    case 9:
-                        parallax = "bgs/06/plateau/bg0";
-                        coverage = 180;
-                        break;
-                    case 10:
-                        parallax = "bgs/06/bg0";
-                        coverage = 180;
-                        break;
-                    case 11:
-                        parallax = "bgs/06/bg1";
-                        coverage = 0;
-                        break;
-                    case 12:
-                        parallax = "bgs/06/bg2";
-                        coverage = 0;
-                        break;
-                    case 13:
-                        parallax = "bgs/05/temple/bg3";
-                        coverage = 0;
-                        break;
-                    case 14:
-                        parallax = "bgs/05/mirror/bg4";
-                        coverage = 0;
-                        break;
+            map.BackgroundColor = this.RandomColor();
+
+            int maxY = map.Bounds.Bottom - 180;
+
+            map.Background = new BinaryPacker.Element {Children = new List<BinaryPacker.Element>()};
+            const int layers = 5;
+            for (int i = 0; i < layers; i++) {
+                var picked = this.Random.Choose(RandoModule.Instance.MetaConfig.Backgrounds);
+
+                if (picked.CoverTop != 0 && !picked.LoopY) {
+                    i--;
+                    continue;
                 }
 
-                switch (parallax) {
-                    case "bgs/06/bg1":
-                    case "bgs/06/bg2":
-                    case "bgs/05/temple/bg3":
-                        var color2 = this.RandomColor(c => (int) c.R + (int) c.G + (int) c.B > 128*3);
-                        map.Background.Children.Insert(0, new BinaryPacker.Element { Name = "parallax", Attributes = new Dictionary<string, object> {
-                            {"texture", "bgs/06/fx0"},
-                            {"blendMode", "additive"},
+                if (picked.Opaque && this.Random.Next(layers) > i) {
+                    // bias not picking opaque backgrounds until we've already added a few
+                    i--;
+                    continue;
+                }
+                
+                Logger.Log("DEBUG", $"Picked texture={picked.Texture} effect={picked.Effect}");
+
+                float scrollX = new[] {0.3f, 0.25f, 0.2f, 0.1f, 0.05f}[i];
+                float scrollY = new[] {0.1f, 0.05f, 0.03f, 0.02f, 0.01f}[i];
+                int y = 0;
+                if (picked.Texture != null && !(picked.Opaque && !picked.LoopY)) {
+                    int height = GFX.Game[picked.Texture].Height;
+                    y = (int) Math.Ceiling(maxY * scrollY + 180 - height);
+
+                    if (picked.CoverBottom != 0) {
+                        maxY = (int) ((180 - height + picked.CoverBottom - y) / -scrollY);
+                    }
+                }
+
+                map.Background.Children.InsertRange(0, this.Styleground(picked, scrollX, scrollY, y));
+
+                if (picked.Opaque) {
+                    break;
+                }
+            }
+
+            var effect = this.Random.Choose(RandoModule.Instance.MetaConfig.BgEffects);
+            map.Background.Children.AddRange(this.Styleground(effect));
+
+            if (!this.Settings.RandomBackgrounds) {
+                map.Background.Children = new List<BinaryPacker.Element> {
+                    new BinaryPacker.Element {
+                        Name = "parallax",
+                        Attributes = new Dictionary<string, object> {
+                            {"texture", "bgs/10/sky"},
                             {"loopx", true}, {"loopy", true},
-                            {"scrolly", 0.3f},
-                            {"scrollx", 0.3f},
-                            {"color", $"{color2.R:X2}{color2.G:X2}{color2.B:X2}"},
-                            {"alpha", 0.15f},
-                        }});
-                        break;
-                }
-                var color = this.RandomColor();
-                map.Background.Children.Insert(0, new BinaryPacker.Element { Name = "parallax", Attributes = new Dictionary<string, object> {
-                    {"texture", parallax},
-                    {"blendMode", "alphablend"},
-                    {"loopx", true},
-                    {"scrolly", 0f},
-                    {"scrollx", parallax == "bgs/06/plateau/bg0" ? 0f : new [] {0.3f, 0.25f, 0.2f, 0.1f, 0f}[i]},
-                    {"y", coverage == 0 ? this.Random.Next(180) : -totalCoverage},
-                    {"color", $"{color.R:X2}{color.G:X2}{color.B:X2}"},
-                }});
-
-                totalCoverage += coverage;
-                if (coverage >= 180) {
-                    break;
-                }
-            }
-
-            string bgEffect = null;
-            switch (this.Random.Next(15)) {
-                case 0:
-                    // old site starfield
-                    bgEffect = "stars";
-                    break;
-                case 1:
-                    // starjump aurora
-                    bgEffect = "northernlights";
-                    break;
-                case 2:
-                case 3:
-                case 4:
-                    // like the city fg but in the bg
-                    bgEffect = "snowBg";
-                    break;
-                case 5:
-                case 6:
-                case 7:
-                    // Unused square bubbling effect
-                    bgEffect = "dreamstars";
-                    break;
-                case 8:
-                case 9:
-                case 10:
-                    // the purple and green stars from farewell
-                    bgEffect = "planets";
-                    break;
-                case 11:
-                case 12:
-                case 13:
-                    bgEffect = "starfield";
-                    break;
-                case 14:
-                    bgEffect = "blackhole";
-                    break;
-            }
-
-            if (!this.Settings.RandomDecorations) {
-                bgEffect = "stars";
-            }
-            
-            if (bgEffect != null) {
-                map.Background.Children.Add(new BinaryPacker.Element { Name = bgEffect, Attributes = new Dictionary<string, object> {
-                    {"scrollx", 0.3f},
-                    {"scrolly", 0.3f},
-                }});
-                if (bgEffect == "planets" || bgEffect == "starfield") {
-                    map.Background.Children.Add(new BinaryPacker.Element { Name = bgEffect, Attributes = new Dictionary<string, object> {
-                        {"scrollx", 0.4f},
-                        {"scrolly", 0.4f},
-                        {"speed", 1.75f},
-                    }});
-                }
+                            {"scrollx", 0.3f}, {"scrolly", 0.3f},
+                        }
+                    }
+                };
             }
 
             // starjump cutscene requires a northernlights bg
-            // TODO maybe only do one bg for all instances of the room?
-            if (bgEffect != "northernlights") {
-                foreach (var room in map.Levels) {
-                    if (room.Name.StartsWith("Celeste/6-Reflection/A/start")) {
-                        map.Background.Children.Add(new BinaryPacker.Element {
-                            Name = "northernlights",
-                            Attributes = new Dictionary<string, object> {
-                                { "only", room.Name }
-                            }
-                        });
+            var lightsOnly = string.Join(",", map.Levels.Where(room => room.Name.StartsWith("Celeste/6-Reflection/A/start")));
+            if (map.Background.Children.All(elem => elem.Name != "northernlights") && !string.IsNullOrEmpty("lightsOnly")) {
+                map.Background.Children.Insert(0, new BinaryPacker.Element {
+                    Name = "northernlights",
+                    Attributes = new Dictionary<string, object> {
+                        {"only", lightsOnly}
                     }
-                }
+                });
             }
         }
 
