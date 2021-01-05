@@ -452,8 +452,6 @@ namespace Celeste.Mod.Randomizer {
                     i--;
                     continue;
                 }
-                
-                Logger.Log("DEBUG", $"Picked texture={picked.Texture} effect={picked.Effect}");
 
                 float scrollX = new[] {0.3f, 0.25f, 0.2f, 0.1f, 0.05f}[i];
                 float scrollY = new[] {0.1f, 0.05f, 0.03f, 0.02f, 0.01f}[i];
