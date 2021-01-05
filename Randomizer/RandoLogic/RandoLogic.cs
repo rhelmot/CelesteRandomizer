@@ -89,8 +89,8 @@ namespace Celeste.Mod.Randomizer {
                     newArea.CassetteSong = r.PickCassetteAudio();
                     newArea.Mode[0].AudioState = new AudioState(r.PickMusicAudio(), r.PickAmbienceAudio());
                     if (settings.RandomColors) {
-                        newArea.BloomBase = (float)Math.Pow(r.Random.NextFloat(), 7);
-                        newArea.DarknessAlpha = r.Random.NextFloat() * (float) Math.Pow(r.Random.NextFloat(), 2) * 0.4f;
+                        newArea.BloomBase = (float)Math.Pow(r.Random.NextFloat(), 5) * r.Random.NextFloat();
+                        newArea.DarknessAlpha = r.Random.NextFloat() * (float) Math.Pow(r.Random.NextFloat(), 0.5) * (float) Math.Pow(r.Random.NextFloat(), 2) * 0.35f;
                         newArea.ColorGrade = r.PickColorGrade();
                     }
                     r.RandomizeDialog();
