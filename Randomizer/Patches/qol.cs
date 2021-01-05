@@ -290,7 +290,7 @@ namespace Celeste.Mod.Randomizer {
                 var startidx = idx + "(RANDO:".Length;
                 var endidx = thing.IndexOf(')', idx);
                 var description = thing.Substring(startidx, endidx - startidx);
-                thing = thing.Remove(idx, endidx + 1 - idx).Insert(idx, MadlibBlank(description, settings.Hash, name + (i * 55).ToString()));
+                thing = thing.Remove(idx, endidx + 1 - idx).Insert(idx, MadlibBlank(description, settings.Hash + settings.EndlessLevel, name + (i * 55).ToString()));
                 i++;
             }
             return thing;
