@@ -80,10 +80,6 @@
       <HintPath>..\packages\MonoMod.RuntimeDetour.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Celeste.Mod.mm">
-      <HintPath>..\packages\Celeste.Mod.mm.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\LifeBerry.cs" />

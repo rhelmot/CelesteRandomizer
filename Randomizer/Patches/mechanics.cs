@@ -527,12 +527,14 @@ namespace Celeste.Mod.Randomizer {
             var fgPaths = new List<string>();
             var bgPaths = new List<string>();
             var atPaths = new List<string>();
+            var spPaths = new List<string>();
 
             foreach (var map in settings.EnabledMaps) {
                 var meta = AreaData.Get(map).GetMeta();
                 var fgPath = meta?.ForegroundTiles;
                 var bgPath = meta?.BackgroundTiles;
                 var atPath = meta?.AnimatedTiles;
+                var spPath = meta?.Sprites;
                 if (!string.IsNullOrEmpty(fgPath) && !fgPaths.Contains(fgPath)) {
                     fgPaths.Add(fgPath);
                 }
@@ -542,11 +544,15 @@ namespace Celeste.Mod.Randomizer {
                 if (!string.IsNullOrEmpty(atPath) && !atPaths.Contains(atPath)) {
                     atPaths.Add(atPath);
                 }
+                if (!string.IsNullOrEmpty(spPath) && !spPaths.Contains(spPath)) {
+                    spPaths.Add(spPath);
+                }
             }
 
             CombineAutotilers(GFX.FGAutotiler, fgPaths, settings);
             CombineAutotilers(GFX.BGAutotiler, bgPaths, settings);
             CombineAnimatedTiles(GFX.AnimatedTilesBank, atPaths, settings);
+            CombineSprites(GFX.SpriteBank, spPaths, settings);
         }
 
         private static void CombineAutotilers(Autotiler basic, List<string> additions, RandoSettings settings) {
@@ -624,6 +630,41 @@ namespace Celeste.Mod.Randomizer {
                         }
                     }
                 }
+            }
+        }
+
+        private static void CombineSprites(SpriteBank bankOrig, List<string> additions, RandoSettings settings) {
+            var counts = new Dictionary<string, int>();
+            foreach (var key in bankOrig.SpriteData.Keys) {
+                counts[key] = 1;
+            }
+            var r = new Random((int)settings.IntSeed);
+            foreach (var addition in additions) {
+                var bankMod = new SpriteBank(GFX.Game, addition);
+                
+                foreach (KeyValuePair<string, SpriteData> kvpBank in bankMod.SpriteData) {
+                    string key = kvpBank.Key;
+                    SpriteData valueMod = kvpBank.Value;
+
+                    if (bankOrig.SpriteData.TryGetValue(key, out SpriteData valueOrig)) {
+                        IDictionary animsOrig = valueOrig.Sprite.GetAnimations();
+                        IDictionary animsMod = valueMod.Sprite.GetAnimations();
+                        foreach (DictionaryEntry kvpAnim in animsMod) {
+                            animsOrig[kvpAnim.Key] = kvpAnim.Value;
+                        }
+
+                        valueOrig.Sources.AddRange(valueMod.Sources);
+
+                        // replay the starting animation to be sure it is referring to the new sprite.
+                        valueOrig.Sprite.Stop();
+                        if (valueMod.Sprite.CurrentAnimationID != "") {
+                            valueOrig.Sprite.Play(valueMod.Sprite.CurrentAnimationID);
+                        }
+                    } else {
+                        bankOrig.SpriteData[key] = valueMod;
+                    }
+                }
+
             }
         }
     }
