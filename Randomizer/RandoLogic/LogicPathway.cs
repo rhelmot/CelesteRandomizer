@@ -91,7 +91,9 @@ namespace Celeste.Mod.Randomizer {
                     }
                 }
                 this.AddNextTask(new TaskPathwayPickEdge(this.Logic, newNode, state));
-                this.AddLastTask(new TaskPathwayBerryOffshoot(this.Logic, newNode, state));
+                if (this.Logic.Settings.Strawberries != StrawberryDensity.None) {
+                    this.AddLastTask(new TaskPathwayBerryOffshoot(this.Logic, newNode, state));
+                }
 
                 return true;
             }
