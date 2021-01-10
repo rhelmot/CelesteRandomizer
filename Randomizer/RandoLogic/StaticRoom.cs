@@ -593,19 +593,21 @@ namespace Celeste.Mod.Randomizer {
             var toRemoveTriggers = new List<EntityData>();
             var toRemoveSpawns = new List<Vector2>();
             void processEntity(EntityData entity, List<EntityData> removals) {
+                if (RandoModule.Instance.MetaConfig.CollectableNames.Contains(entity.Name)) {
+                    removals.Add(entity);
+                    return;
+                }
+
                 switch (entity.Name.ToLower()) {
                     case "goldenberry":
                     case "musictrigger":
                     case "musicfadetrigger":
                     case "norefilltrigger":
                     case "checkpoint":
-                    case "strawberry":
-                    case "key":
                     case "lightbeam":
                     case "detachfollowerstrigger":
                     case "lightfadetrigger":
                     case "bloomfadetrigger":
-                    case "summitgem":
                     case "picoconsole":
                     case "acidhelper/advancedmusiclayerfadetrigger":
                         removals.Add(entity);
