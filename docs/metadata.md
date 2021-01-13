@@ -265,13 +265,15 @@ The Split directive on the internal edge will cause one of the holes to be broke
 Now, let's finally get to the bottom of these ReqIn/ReqOut/ReqBoth directives. A requirement directive can contain any of the following keys:
 
 ```
-Dashes: {zero, one, two (default)}
-Difficulty: {normal (default), hard, expert, perfect}
-Key: {true, false}   # that is, set it to true if the path is blocked by a locked door
+Dashes: {zero/one/two} # two is default
+Difficulty: {easy/normal/hard/expert/master/perfect} # easy is default
+Key: {true/false} # that is, set it to true if the path is blocked by a locked door
 Flag: [flag string]
 Or: [list of sub-requirements]
 And: [list of sub-requirements]
 ```
+
+If no requirements are specified, the randomizer will automatically assume a given route is possible with 0 dashes and on easy difficulty.
 
 If two or more of the keys are specified, it means that you need both of those things to traverse the room in that way. So, to put it all together, if you have a room which can be traversed easily with two dashes but only takes one dash if you know some advanced techinques, you would describe it like this:
 
@@ -362,6 +364,7 @@ Rulesets:
   Dashes: {Zero/One/Two}
   Difficulty: {Easy/Normal/Hard/Expert/Master/Perfect}
   DifficultyEagerness: {None/Low/Medium/High}
+  If no requirements are specified, the randomizer will automatically assume a given route is possible with 0 dashes and on easy difficulty.
   EnabledMaps:
   - SID: "SID of level"
     Mode: 0 # A-Side
