@@ -364,7 +364,7 @@ Rulesets:
   Dashes: {Zero/One/Two}
   Difficulty: {Easy/Normal/Hard/Expert/Master/Perfect}
   DifficultyEagerness: {None/Low/Medium/High}
-  If no requirements are specified, the randomizer will automatically assume a given route is possible with 0 dashes and on easy difficulty.
+  Strawberries: {None/Low/High}
   EnabledMaps:
   - SID: "SID of level"
     Mode: 0 # A-Side
