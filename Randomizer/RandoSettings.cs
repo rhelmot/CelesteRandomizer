@@ -150,6 +150,7 @@ namespace Celeste.Mod.Randomizer {
                 this.DifficultyEagerness = r.DifficultyEagerness;
                 this.Lights = r.Lights;
                 this.Darkness = r.Darkness;
+                this.Strawberries = r.Strawberries;
             }
         }
 
