@@ -397,6 +397,7 @@ namespace Celeste.Mod.Randomizer {
 
                             // third try: place a room which has a reachable spot
                             var appropriateNodes = this.Logic.RemainingRooms
+                                .Where(x => x.ReqEnd is Impossible)
                                 .SelectMany(r => r.Nodes.Values)
                                 .Where(n => n.Collectables.Count(c => !c.MustFly) != 0)
                                 .ToList();
