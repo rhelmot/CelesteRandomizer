@@ -144,7 +144,7 @@ ASide:
     InternalEdges:
     - Collectable: 0
       ReqOut:
-        Dashes: zero
+        Dashes: one
       ReqIn:
         Dashes: one
   - Room: "a-04"

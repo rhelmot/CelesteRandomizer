@@ -370,6 +370,12 @@ ASide:
         Kind: unknown
         ReqIn:
           Dashes: one
+    Tweaks:
+      - Name: "spawn"
+        Update:
+          Add: true
+          X: 256
+          Y: 488
   - Room: "c-00b"
     Holes:
     - Side: Right
@@ -1671,7 +1677,7 @@ ASide:
         Or:
           - Dashes: two
           - Dashes: one
-            Difficulty: hard
+            Difficulty: expert
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:

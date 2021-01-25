@@ -2411,13 +2411,18 @@ ASide:
         - Dashes: one
           Difficulty: perfect
     - Collectable: 0
-      ReqBoth:
+      ReqOut:
         Or:
         - Dashes: two
         - Dashes: one
           Difficulty: hard
         - Dashes: zero
           Difficulty: expert
+      ReqIn:
+        Or:
+          - Dashes: two
+          - Dashes: one
+            Difficulty: hard
     Subrooms:
     - Room: "right"
       Holes:

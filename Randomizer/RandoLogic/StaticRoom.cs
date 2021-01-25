@@ -634,6 +634,7 @@ namespace Celeste.Mod.Randomizer {
 
                 foreach (var econfig in this.Tweaks) {
                     if (!(econfig.Update?.Add ?? false) &&
+                        econfig.Decal == RandoConfigDecalType.None &&
                         (econfig.ID == null || econfig.ID == entity.ID) &&
                         (econfig.Name == null || econfig.Name.ToLower() == entity.Name.ToLower()) &&
                         (econfig.X == null || nearlyEqual(econfig.X.Value, entity.Position.X)) &&

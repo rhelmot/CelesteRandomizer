@@ -683,7 +683,8 @@
     RANDOHEART_THEO_41=Have you ever considered lurking out in an alley in a trenchcoat selling genders to kids as a career path?
     RANDOHEART_THEO_42=I can't stand cheap fast food that all tastes the same and is all the same color. I prefer my food to span multiple palettes.
     RANDOHEART_THEO_43=listening to American Idiot while grading computer science homework seems a little heavy-handed
-    RANDOHEART_THEO_COUNT=44
+    RANDOHEART_THEO_44=You must have forgotten to buffer your climbjump when I fell for you
+    RANDOHEART_THEO_COUNT=45
     
 # Madlibs sets
 

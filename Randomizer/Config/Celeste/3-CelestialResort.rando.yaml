@@ -1028,9 +1028,6 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: inout
-    Collectables:
-    - Idx: 0
-      MustFly: true
     InternalEdges:
     - Split: TopToBottom
       ReqOut:
@@ -1040,6 +1037,19 @@ ASide:
         - Dashes: one
         - Dashes: zero
           Difficulty: perfect
+    - To: "berry"
+      ReqOut:
+        Dashes: one
+        Difficulty: easy
+      ReqIn:
+        Dashes: zero
+        Difficulty: easy
+    Subrooms:
+      - Room: "berry"
+        Collectables:
+          - Idx: 0
+            MustFly: true
+        
   - Room: "13-a"  # towels 4
     Holes:
     - Side: Up
