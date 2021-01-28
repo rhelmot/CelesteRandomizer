@@ -847,10 +847,23 @@ ASide:
         X: 280
         Width: 24
   - Room: "d9"
+    ReqEnd:
+      Dashes: one
+      Difficulty: easy
     Holes:
     - Side: Up
       Idx: 0
       Kind: inout
+    Tweaks:
+      - ID: 41
+        Name: "cassette"
+        Update:
+          Remove: true
+      - Name: "blackGem"
+        Update:
+          Add: true
+          X: 56
+          Y: 104
   - Room: "end_0"
     Holes:
     - Side: Up
@@ -1503,12 +1516,6 @@ BSide:
     - Side: Down
       Idx: 0
       Kind: in
-    - Side: Left
-      Idx: 0
-      Kind: inout
-    - Side: Right
-      Idx: 0
-      Kind: inout
     Tweaks:
     - Name: "spawn"
       Update:

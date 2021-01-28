@@ -875,10 +875,23 @@ ASide:
           cameraX: 1
           cameraY: 0.6
   - Room: "11z"
+    ReqEnd:
+      Dashes: zero
+      Difficulty: easy
     Holes:
     - Side: Right
       Idx: 0
       Kind: inout
+    Tweaks:
+      - ID: 12
+        Name: "cassette"
+        Update:
+          Remove: true
+      - Name: "blackGem"
+        Update:
+          Add: true
+          X: 232
+          Y: 32
   - Room: "12"
     Holes:
     - Side: Down

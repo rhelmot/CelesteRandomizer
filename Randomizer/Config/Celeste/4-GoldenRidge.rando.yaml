@@ -366,10 +366,28 @@ ASide:
           cameraX: 0.0
           cameraY: 1.0
   - Room: "a-11"
+    ReqEnd:
+      Or:
+        - Dashes: zero
+          Difficulty: hard
+        - Dashes: one
+          Difficulty: normal
+        - Dashes: two
+          Difficulty: easy
     Holes:
     - Side: Right
       Idx: 0
       Kind: inout
+    Tweaks:
+      - ID: 16
+        Name: "cassette"
+        Update:
+          Remove: true
+      - Name: "blackGem"
+        Update:
+          Add: true
+          X: 40
+          Y: 128
   - Room: "b-00"
     Hub: true
     Holes:
@@ -674,9 +692,7 @@ ASide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: inout
-      ReqOut:
-        Dashes: one
+      Kind: None  # pretend this doesn't exist to balance the end room pool
     - Side: Left
       Idx: 0
       Kind: inout
@@ -706,6 +722,7 @@ ASide:
           Difficulty: hard
       ReqIn:
         Dashes: one
+        Difficulty: master  # very hard for master. requires either a diag demo or a ceiling pop
     Tweaks:
     - Name: "spawn"
       Update:

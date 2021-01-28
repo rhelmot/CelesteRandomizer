@@ -1155,14 +1155,33 @@ ASide:
       Idx: 0
       Kind: inout
     Subrooms:
-    - Room: "heart" # TODO only this node ends lvl
+    - Room: "heart"
       Holes:
       - Side: Down
         Idx: 1
-        Kind: None
+        Kind: inout
       - Side: Down
         Idx: 0
-        Kind: None
+        Kind: inout
+    Tweaks:
+      - ID: 29
+        Name: "blackGem"
+        Update:
+          Remove: true
+      - Name: "spawn"
+        Update:
+          Add: true
+          X: 64
+          Y: 168
+      - Name: "spawn"
+        X: 272
+        Y: 168
+        Update:
+          X: 256
+      - Name: "jumpThru"
+        ID: 52
+        Update:
+          Remove: true
   - Room: "12-c"  # books 3
     Holes:
     - Side: Up
@@ -1501,6 +1520,14 @@ ASide:
         Idx: 0
         Kind: inout
   - Room: "01-c"  # cassette room
+    ReqEnd:
+      Or:
+        - Dashes: zero
+          Difficulty: hard
+        - Dashes: one
+          Dificulty: normal
+        - Dashes: two
+          Difficulty: easy
     Holes:
     - Side: Right
       Idx: 0
@@ -1508,6 +1535,16 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: None
+    Tweaks:
+      - ID: 42
+        Name: "cassette"
+        Update:
+          Remove: true
+      - Name: "blackGem"
+        Update:
+          Add: true
+          X: 24
+          Y: 80
   - Room: "03-b"  # double berry room
     Holes:
     - Side: Up

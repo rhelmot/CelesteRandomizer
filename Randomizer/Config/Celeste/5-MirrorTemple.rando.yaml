@@ -735,11 +735,29 @@ ASide:
         Kind: inout
       Collectables:
       - Idx: 0
-  - Room: "b-22"  # TODO cassette
+  - Room: "b-22"
+    ReqEnd:
+      Or:
+        - Dashes: zero
+          Difficulty: expert
+        - Dashes: one
+          Difficulty: normal
+        - Dashes: two
+          Difficulty: easy
     Holes:
     - Side: Left
       Idx: 0
       Kind: inout
+    Tweaks:
+      - ID: 69
+        Name: "cassette"
+        Update:
+          Remove: true
+      - Name: "blackGem"
+        Update:
+          Add: true
+          X: 168
+          Y: 40
   - Room: "b-06"
     Holes:
     - Side: Left

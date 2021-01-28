@@ -261,6 +261,16 @@ ASide:
     - Side: Right
       Idx: 0
       Kind: inout
+    Tweaks:
+      - ID: 1
+        Name: "cassette"
+        Update:
+          Remove: true
+      - Name: "blackGem"
+        Update:
+          Add: true
+          X: 48
+          Y: 96
   - Room: "05"
     Holes:
     - Side: Right

@@ -1440,14 +1440,40 @@ ASide:
         Values:
           cameraX: -0.5
           cameraY: 0
-  - Room: "d-03b"  # TODO cassette
+  - Room: "d-03b"
+    ReqEnd:
+      Or:
+        - Dashes: two
+          Difficulty: normal
+        - Dashes: one
+          Difficulty: expert
     Holes:
     - Side: Down
       Idx: 0
-      Kind: out
+      Kind: in
     - Side: Down
       Idx: 1
       Kind: in
+    Tweaks:
+      - ID: 384
+        Name: "cassette"
+        Update:
+          Remove: true
+      - ID: 560
+        Name: "crumbleBlock"
+        Update:
+          Remove: true
+      - Name: "jumpThru"
+        Update:
+          Add: true
+          X: 24
+          Y: 168
+          Width: 32
+      - Name: "blackGem"
+        Update:
+          Add: true
+          X: 1056
+          Y: 40
   - Room: "d-04"
     Holes:
     - Side: Left
