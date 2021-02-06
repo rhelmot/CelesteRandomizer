@@ -121,7 +121,7 @@
     RANDOCARD_1=
         Randomizer tip!{n}{n}The {# F94A4A}Enter Strange Holes{#} setting will allow you to enter rooms through gaps in the terrain that aren't normally used for traversal.
     RANDOCARD_2=
-        Randomizer tip!{n}{n}The {# F94A4A}Difficulty{#} setting only controls whether rooms are allowed to appear in game. the {# F94A4A}Difficulty Eagerness{#} setting controls how biased the generator is toward difficult rooms.
+        Randomizer tip!{n}{n}The {# F94A4A}Difficulty{#} setting only controls whether rooms are allowed to appear in game. The {# F94A4A}Difficulty Eagerness{#} setting controls how biased the generator is toward difficult rooms.
     RANDOCARD_3=
         Randomizer tip!{n}{n}The {# F94A4A}Illuminate Path{#} setting will shine lights to show you where you can go. On the {# F94A4A}Hub Rooms Only{#} setting, it will only work in rooms with {# F94A4A}4 exits{#} or {# F94A4A}2 downward exits{#}.
     RANDOCARD_4=
