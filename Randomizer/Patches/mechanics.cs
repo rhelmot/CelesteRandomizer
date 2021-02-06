@@ -211,11 +211,49 @@ namespace Celeste.Mod.Randomizer {
             Engine.TimeRate = 1f;
             player.Depth = 0;
             Glitch.Value = 0f;
-            var m = level.Tracker.GetEntity<CassetteBlockManager>();  // does teleportTo not... actually... unload the previous room?
-            m?.RemoveSelf();
             level.Session.Audio.Music.Event = SFX.music_farewell_intermission_heartgroove;
-            level.Session.Audio.Apply();
-            level.OnEndOfFrame += () => level.TeleportTo(player, level.Session.Level, Player.IntroTypes.Transition, targetLevel.Spawns[0]);
+            level.OnEndOfFrame += () => {
+                // most of this is copied from Level.TransitionRoutine
+                List<Entity> toRemove = level.GetEntitiesExcludingTagMask((int) Tags.Persistent | (int) Tags.Global);
+                List<Component> transitionOut = level.Tracker.GetComponentsCopy<TransitionListener>();
+                player.CleanUpTriggers();
+                foreach (SoundSource component in level.Tracker.GetComponents<SoundSource>()) {
+                  if (component.DisposeOnTransition)
+                    component.Stop();
+                }
+                
+                level.TeleportTo(player, level.Session.Level, Player.IntroTypes.Transition, targetLevel.Spawns[0]);
+                
+                Audio.SetParameter(Audio.CurrentAmbienceEventInstance, "has_conveyors", level.Tracker.GetEntities<WallBooster>().Count > 0 ? 1f : 0.0f);
+                List<Component> transitionIn = level.Tracker.GetComponentsCopy<TransitionListener>();
+                transitionIn.RemoveAll((Predicate<Component>) (c => transitionOut.Contains(c)));
+                level.CameraUpwardMaxY = level.Session.LevelData.Bounds.Bottom;
+                Vector2 cameraTo = level.GetFullCameraTargetAt(player, player.Position);
+                Vector2 position = player.Position;
+                var windController = (WindController)typeof(Level).GetField("windController", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(level);
+                foreach (Entity entity in player.CollideAll<WindTrigger>()) {
+                  if (!toRemove.Contains(entity)) {
+                    windController.SetPattern((entity as WindTrigger).Pattern);
+                    break;
+                  }
+                }
+                windController.SetStartPattern();
+                player.Position = position;
+                foreach (TransitionListener transitionListener in transitionOut) {
+                  if (transitionListener.OnOutBegin != null)
+                    transitionListener.OnOutBegin();
+                }
+                foreach (TransitionListener transitionListener in transitionIn) {
+                  if (transitionListener.OnInBegin != null)
+                    transitionListener.OnInBegin();
+                }
+
+                level.Camera.Position = cameraTo;
+                foreach (TransitionListener transitionListener in transitionIn) {
+                  if (transitionListener.OnInEnd != null)
+                    transitionListener.OnInEnd();
+                }
+            };
         }
 
         private void OnLoadLevelHook(On.Celeste.Level.orig_LoadLevel orig, Level self, Player.IntroTypes playerIntro, bool fromLoader) {
