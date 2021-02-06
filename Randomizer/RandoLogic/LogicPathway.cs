@@ -90,7 +90,7 @@ namespace Celeste.Mod.Randomizer {
                         newNode = node;
                     }
                 }
-                this.AddNextTask(new TaskPathwayPickEdge(this.Logic, newNode, state));
+                this.AddNextTask(new TaskPathwayPickEdge(this.Logic, newNode, state, false));
                 if (this.Logic.Settings.Strawberries != StrawberryDensity.None) {
                     this.AddLastTask(new TaskPathwayBerryOffshoot(this.Logic, newNode, state));
                 }
@@ -103,17 +103,19 @@ namespace Celeste.Mod.Randomizer {
             private LinkedNode Node;
             private HashSet<StaticEdge> TriedEdges = new HashSet<StaticEdge>();
             private FlagSet State;
+            private bool ForceWarp;
 
-            public TaskPathwayPickEdge(RandoLogic logic, LinkedNode node, FlagSet state) : base(logic) {
+            public TaskPathwayPickEdge(RandoLogic logic, LinkedNode node, FlagSet state, bool forceWarp) : base(logic) {
                 // TODO: advance forward through any obligatory edges
                 this.Node = node;
                 this.State = state;
+                this.ForceWarp = forceWarp;
             }
 
             public override bool Next() {
                 var caps = this.Logic.Caps.WithoutFlags();
                 var closure = LinkedNodeSet.Closure(this.Node, caps, null, true);
-                var available = closure.UnlinkedEdges(u => !this.TriedEdges.Contains(u.Static) && (u.Static.HoleTarget == null || this.Logic.Map.HoleFree(this.Node.Room, u.Static.HoleTarget)));
+                var available = closure.UnlinkedEdges(u => !this.TriedEdges.Contains(u.Static) && (u.Static.HoleTarget == null || (!this.ForceWarp && this.Logic.Map.HoleFree(this.Node.Room, u.Static.HoleTarget))));
                 if (available.Count == 0) {
                     Logger.Log("randomizer", $"Failure: No edges out of {Node.Room.Static.Name}:{Node.Static.Name}");
                     return false;
@@ -217,7 +219,7 @@ namespace Celeste.Mod.Randomizer {
         private class TaskPathwayPickRoom : RandoTask {
             private UnlinkedEdge Edge;
             private HashSet<StaticRoom> TriedRooms = new HashSet<StaticRoom>();
-            private bool IsEnd;
+            private bool IsEnd, FakeEnd;
             private FlagSet State;
 
             public TaskPathwayPickRoom(RandoLogic Logic, UnlinkedEdge edge, FlagSet state) : base(Logic) {
@@ -226,6 +228,7 @@ namespace Celeste.Mod.Randomizer {
 
                 float progress = (Logic.Map.Worth - PathwayMinimums[(int)Logic.Settings.Length]) / PathwayRanges[(int)Logic.Settings.Length];
                 this.IsEnd = progress > Math.Sqrt(Logic.Random.NextFloat());
+                this.FakeEnd = this.IsEnd && Logic.Random.Next(100) == 0;
             }
 
             private ConnectAndMapReceipt WorkingPossibility() {
@@ -274,9 +277,13 @@ namespace Celeste.Mod.Randomizer {
                     return false;
                 }
 
+                if (this.FakeEnd && receipt.NewRoom.Static.Level.Entities.Any(x => x.Name == "blackGem")) {
+                    
+                }
+
                 this.AddReceipt(receipt);
                 this.TriedRooms.Add(receipt.NewRoom.Static);
-                if (!this.IsEnd) {
+                if (!this.IsEnd || this.FakeEnd) {
                     var newNode = receipt.Edge.OtherNode(this.Edge.Node);
                     var state = new FlagSet(this.State);
                     foreach (var node in LinkedNodeSet.Closure(newNode, this.Logic.Caps.WithFlags(this.State), null, true).Nodes) {
@@ -285,7 +292,7 @@ namespace Celeste.Mod.Randomizer {
                             newNode = node;
                         }
                     }
-                    this.AddNextTask(new TaskPathwayPickEdge(this.Logic, newNode, state));
+                    this.AddNextTask(new TaskPathwayPickEdge(this.Logic, newNode, state, this.FakeEnd));
                     if (this.Logic.Settings.Strawberries != StrawberryDensity.None) {
                         this.AddLastTask(new TaskPathwayBerryOffshoot(this.Logic, newNode, state));
                     }

@@ -13,6 +13,7 @@ namespace Celeste.Mod.Randomizer {
         public readonly string Name;
         public readonly Requirement ReqEnd;
         public readonly bool Hub;
+        public readonly bool HasHeart;
         public readonly float Worth;
         public readonly bool SpinnersShatter;
         private List<RandoConfigEdit> Tweaks;
@@ -141,6 +142,17 @@ namespace Celeste.Mod.Randomizer {
                     HoleTarget = uhole,
                     ReqIn = this.ProcessReqs(null, uhole, false),
                     ReqOut = this.ProcessReqs(null, uhole, true),
+                });
+            }
+            
+            // Check for heart
+            this.HasHeart = !(this.ReqEnd is Impossible) && this.Level.Entities.Any(x => x.Name == "blackGem");
+            if (this.HasHeart) {
+                this.Nodes["main"].Edges.Add(new StaticEdge() {
+                    CustomWarp = true,
+                    FromNode = this.Nodes["main"],
+                    ReqOut = new Possible(),
+                    ReqIn = new Impossible(),
                 });
             }
 

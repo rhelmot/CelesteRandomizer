@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Monocle;
 using Microsoft.Xna.Framework;
+using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using MonoMod.Utils;
 using MonoMod.RuntimeDetour;
@@ -41,6 +42,8 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.Key.OnPlayer += PatchCollectKey;
             On.Celeste.Strawberry.OnPlayer += PatchCollectBerry;
             On.Celeste.SummitGem.SmashRoutine += PatchCollectGem;
+            
+            this.SpecialHooksMechanics.Add(new ILHook(typeof(HeartGem).GetMethod("CollectRoutine", BindingFlags.Instance | BindingFlags.NonPublic).GetStateMachineTarget(), FakeoutHeart));
         }
 
         private void DelayedLoadMechanics() {
@@ -170,6 +173,49 @@ namespace Celeste.Mod.Randomizer {
                 var leader = player.Leader;
                 Leader.RestoreStrawberries(leader);
             });
+        }
+
+        private void FakeoutHeart(ILContext il) {
+            var cursor = new ILCursor(il);
+            if (!cursor.TryGotoNext(MoveType.After, instr => instr.MatchCallvirt<Player>("get_Dead"))) {
+                throw new Exception("Could not find patching point");
+            }
+
+            cursor.Emit(OpCodes.Ldloc_1);  // the fake "this"; the heartGem reference
+            cursor.EmitDelegate<Func<HeartGem, bool>>(gem => {
+                if (!this.InRandomizer) {
+                    return false;
+                }
+
+                var level = Engine.Scene as Level ?? throw new Exception("what");
+                var dyn = new DynData<LevelData>(level.Session.LevelData);
+                if (dyn.Get<string>("CustomWarp") == null) {
+                    return false;
+                }
+
+                var targetLevel = level.Session.MapData.Get(dyn.Get<string>("CustomWarp"));
+                var player = level.Tracker.GetEntity<Player>();
+                level.Add(new Entity {new Coroutine(this.FakeoutWarp(level, player, targetLevel))});
+                return true;
+            });
+            cursor.Emit(OpCodes.Or);
+        }
+
+        private IEnumerator FakeoutWarp(Level level, Player player, LevelData targetLevel) {
+            Input.Rumble(RumbleStrength.Strong, RumbleLength.Medium);
+            Audio.Play("event:/new_content/game/10_farewell/glitch_short");
+            for (float i = 0f; i < 0.5f; i += Engine.RawDeltaTime) {
+                Glitch.Value = i * 2;
+                yield return null;
+            }
+            Engine.TimeRate = 1f;
+            player.Depth = 0;
+            Glitch.Value = 0f;
+            var m = level.Tracker.GetEntity<CassetteBlockManager>();  // does teleportTo not... actually... unload the previous room?
+            m?.RemoveSelf();
+            level.Session.Audio.Music.Event = SFX.music_farewell_intermission_heartgroove;
+            level.Session.Audio.Apply();
+            level.OnEndOfFrame += () => level.TeleportTo(player, level.Session.Level, Player.IntroTypes.Transition, targetLevel.Spawns[0]);
         }
 
         private void OnLoadLevelHook(On.Celeste.Level.orig_LoadLevel orig, Level self, Player.IntroTypes playerIntro, bool fromLoader) {
