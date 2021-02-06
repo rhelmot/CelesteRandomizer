@@ -125,10 +125,15 @@ namespace Celeste.Mod.Randomizer {
                 var picked = available[this.Logic.Random.Next(available.Count)];
                 var caps2 = caps.Copy();
                 for (int i = 0; ; i++, picked = available[this.Logic.Random.Next(available.Count)]){
+                    // bias against picking left-facing holes
+                    if (picked.Static.HoleTarget != null && picked.Static.HoleTarget.Side == ScreenDirection.Left && this.Logic.Random.Next(4) == 0) {
+                        continue;
+                    }
+                    
                     if (this.Logic.Settings.DifficultyEagerness == DifficultyEagerness.None || this.Logic.Settings.Difficulty == Difficulty.Easy) {
                         break;
                     }
-                    if (i == 4) {
+                    if (i >= 4) {
                         return false;
                     }
                     

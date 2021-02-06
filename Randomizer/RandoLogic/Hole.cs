@@ -139,6 +139,9 @@ namespace Celeste.Mod.Randomizer {
             }
 
             if (this.Side == ScreenDirection.Up && other.Side == ScreenDirection.Down) {
+                var oneWayUp = this.Kind == HoleKind.Out || other.Kind == HoleKind.In || other.Kind == HoleKind.Unknown;
+                var oneWayDown = this.Kind == HoleKind.In || this.Kind == HoleKind.Unknown || other.Kind == HoleKind.Out;
+                var topIsLarger = this.Size <= other.Size;
                 // Vertical transitions
                 if (this.Launch != null) {
                     if (other.Launch != null) {
@@ -160,13 +163,23 @@ namespace Celeste.Mod.Randomizer {
                     }
                 } else if (this.HalfOpen || other.HalfOpen) {
                     // if either is half-open, they must be the same half open
+                    // alternatively, as long as they're not open on different sides (i.e. one is closed)
+                    // then it's okay if it's one way and the target hole is larger
                     if (this.LowOpen == other.LowOpen) {
                         return this.LowOpen ? alignHigh() : alignLow();
+                    } else if (this.LowOpen != other.HighOpen) {
+                        if ((oneWayUp && topIsLarger) || (oneWayDown && !topIsLarger)) {
+                            return (this.LowOpen || other.LowOpen) ? alignHigh() : alignLow();
+                        }
                     }
                 } else {
                     // Only remaining option is both closed. they must be the same size
+                    // alternately, same trick with oneways
                     if (this.Size == other.Size) {
                         return alignLow();
+                    } else if ((oneWayUp && topIsLarger) || (oneWayDown && !topIsLarger)) {
+                        // pick alignment at random
+                        return (this.Size + other.Size) % 2 == 0 ? alignLow() : alignHigh();
                     }
                 }
             }
