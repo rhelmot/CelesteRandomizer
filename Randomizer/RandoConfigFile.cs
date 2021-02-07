@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using Monocle;
 using YamlDotNet.Core;
 using YamlDotNet.Serialization;
 
@@ -40,6 +41,9 @@ namespace Celeste.Mod.Randomizer {
 
         public static void YamlSkeleton(MapData map) {
             foreach (LevelData lvl in map.Levels) {
+                if (lvl.Dummy) {
+                    continue;
+                }
                 List<Hole> holes = RandoLogic.FindHoles(lvl);
                 if (holes.Count > 0) {
                     Logger.Log("randomizer", $"  - Room: \"{lvl.Name}\"");
@@ -56,10 +60,10 @@ namespace Celeste.Mod.Randomizer {
                     }
 
                     LevelData targetLvl = map.GetAt(hole.LowCoord(lvl.Bounds)) ?? map.GetAt(hole.HighCoord(lvl.Bounds));
-                    if (targetLvl != null) {
+                    if (targetLvl != null && !targetLvl.Dummy) {
                         Logger.Log("randomizer", $"    - Side: {hole.Side}");
                         Logger.Log("randomizer", $"      Idx: {holeIdx}");
-                        Logger.Log("randomizer", "      Kind: inout");
+                        Logger.Log("randomizer",  "      Kind: inout");
                     }
                 }
             }
@@ -78,6 +82,12 @@ namespace Celeste.Mod.Randomizer {
                 Logger.Log("randomizer", "CSide:");
                 YamlSkeleton(area.Mode[2].MapData);
             }
+        }
+
+        [Command("rando_skeleton", "Dumps a starting point for a rando.yaml configuration for a given map to log.txt")]
+        public static void YamlSkeletonCommand(string sid) {
+            var area = AreaDataExt.Get(sid);
+            YamlSkeleton(area);
         }
 
         public Dictionary<String, RandoConfigRoom> GetRoomMapping(AreaMode mode) {
