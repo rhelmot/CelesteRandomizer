@@ -146,7 +146,7 @@ namespace Celeste.Mod.Randomizer {
             }
             
             // Check for heart
-            this.HasHeart = !(this.ReqEnd is Impossible) && this.Level.Entities.Any(x => x.Name == "blackGem");
+            this.HasHeart = !(this.ReqEnd is Impossible) && this.Level.Entities.Any(x => x.Name == "blackGem" || x.Name == "cassette");
             if (this.HasHeart) {
                 this.Nodes["main"].Edges.Add(new StaticEdge() {
                     CustomWarp = true,
