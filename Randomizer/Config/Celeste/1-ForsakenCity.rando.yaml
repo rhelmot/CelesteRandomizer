@@ -1523,18 +1523,37 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: Unknown
+      HighOpen: true
+    - Side: Down
+      Idx: 1
+      Kind: Unknown
+      LowBound: 0
+    - Side: Down
+      Idx: 2
+      Kind: Unknown
+      HighOpen: true
   - Room: "11"
     Holes:
-    - Side: Up
-      Idx: 0
-      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: Unknown
+      HighOpen: true
     InternalEdges:
-    - Split: BottomToTop
+    - To: "top"
       ReqBoth:
         Dashes: one
+    Subrooms:
+      - Room: "top"
+        Holes:
+        - Side: Up
+          Idx: 0
+          Kind: inout
     Tweaks:
     - Name: "spawn"
       Update:
@@ -1673,6 +1692,9 @@ CSide:
       Kind: None
     - Side: Up
       Idx: 6
+      Kind: None
+    - Side: Up
+      Idx: 7
       Kind: None
     InternalEdges:
     - Split: LeftToRight

@@ -1508,16 +1508,23 @@ ASide:
 BSide:
   - Room: "a-00"
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: unknown
+      HighOpen: true
     InternalEdges:
-    - Split: LeftToRight
+    - To: "right"
       ReqBoth:
         Dashes: one
+    Subrooms:
+      - Room: "right"
+        Holes:
+        - Side: Right
+          Idx: 0
+          Kind: inout
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:
@@ -1531,16 +1538,23 @@ BSide:
           cameraY: 0.0
   - Room: "a-01"
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: unknown
+      HighOpen: true
     InternalEdges:
-    - Split: LeftToRight
+    - To: "right"
       ReqBoth:
         Dashes: one
+    Subrooms:
+      - Room: "right"
+        Holes:
+        - Side: Right
+          Idx: 0
+          Kind: inout
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:
@@ -1570,6 +1584,12 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 5
+      Kind: None
+    - Side: Down
+      Idx: 6
+      Kind: None
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
@@ -1596,18 +1616,25 @@ BSide:
           cameraY: 0.0
   - Room: "a-04"
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: Unknown
+      HighOpen: true
     InternalEdges:
-    - Split: LeftToRight
+    - To: "right"
       ReqOut:
         Dashes: one
       ReqIn:
         Dashes: two
+    Subrooms:
+      - Room: "right"
+        Holes:
+        - Side: Right
+          Idx: 0
+          Kind: inout
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:
@@ -1621,18 +1648,26 @@ BSide:
           cameraY: 0.0
   - Room: "b-00"
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: unknown
+      LowBound: 8
+      HighOpen: true
     InternalEdges:
-    - Split: LeftToRight
+    - To: "right"
       ReqOut:
         Dashes: one
       ReqIn:
         Dashes: zero
+    Subrooms:
+      - Room: "right"
+        Holes:
+        - Side: Right
+          Idx: 0
+          Kind: inout
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:
@@ -1646,14 +1681,15 @@ BSide:
           cameraY: 0.0
   - Room: "b-01"
     Holes:
-    - Side: Up
-      Idx: 1
-      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: Unknown
+      LowBound: 9
     InternalEdges:
-    - Split: LeftToRight
+    - To: "right"
       ReqOut:
         Dashes: one
       ReqIn:
@@ -1663,6 +1699,12 @@ BSide:
         - Dashes: one
           Difficulty: hard
         - Dashes: two
+    Subrooms:
+      - Room: "right"
+        Holes:
+        - Side: Up
+          Idx: 1
+          Kind: inout
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:
@@ -1719,11 +1761,6 @@ BSide:
       Idx: 0
       Kind: inout
     Tweaks:
-    - Name: "spawn"
-      Update:
-        Add: true
-        X: 392
-        Y: 40
     - Name: "jumpThru"
       ID: 0
       Update:
@@ -1737,6 +1774,9 @@ BSide:
     - Side: Down
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 1
+      Kind: None
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
@@ -1773,26 +1813,38 @@ BSide:
           cameraY: 0.0
   - Room: "c-00"
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
     InternalEdges:
-    - Split: LeftToRight
+    - To: "right"
       ReqOut:
         Dashes: one
+    Subrooms:
+      - Room: "right"
+        Holes:
+        - Side: Right
+          Idx: 0
+          Kind: inout
+        - Side: Down
+          Idx: 1
+          Kind: Unknown
+          HighOpen: true
+        - Side: Down
+          Idx: 2
+          Kind: Unknown
+          HighOpen: true
   - Room: "c-01"
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: unknown
+      HighOpen: true
     InternalEdges:
-    - Split: LeftToRight
+    - To: "right"
       ReqOut:
         Dashes: one
       ReqIn:
@@ -1800,6 +1852,16 @@ BSide:
         - Dashes: two
         - Dashes: one
           Difficulty: hard
+    - Subroom: "right"
+      Holes:
+      - Side: Right
+        Idx: 0
+        Kind: inout
+      - Side: Down
+        New: true
+        Kind: Unknown
+        LowBound: 0
+        HighBound: 84
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:
@@ -1824,6 +1886,10 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: Unknown
+      HighOpen: true
   - Room: "c-03"
     Holes:
     - Side: Up
@@ -1832,6 +1898,9 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: None
     InternalEdges:
     - Split: BottomToTop
       ReqOut:
@@ -1867,6 +1936,9 @@ BSide:
       Kind: inout
     - Side: Up
       Idx: 0
+      Kind: None
+    - Side: Down
+      Idx: 1
       Kind: None
     InternalEdges:
     - Split: LeftToRight
@@ -1923,6 +1995,24 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: Unknown
+      HighOpen: true
+    - Side: Down
+      Idx: 1
+      Kind: None
+    - Side: Down
+      Idx: 2
+      Kind: None
+    - Side: Down
+      Idx: 3
+      Kind: Unknown
+      LowBound: 0
+    - Side: Down
+      Idx: 5
+      Kind: Unknown
+      HighOpen: true
   - Room: "d-02"
     Holes:
     - Side: Right
@@ -1968,6 +2058,16 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 2
+      Kind: Unknown
+      HighOpen: true
+    - Side: Down
+      Idx: 3
+      Kind: None
+    - Side: Down
+      Idx: 2
+      Kind: None
   - Room: "end"
     ReqEnd:
       Dashes: one
@@ -1986,8 +2086,30 @@ CSide:
       Idx: 0
       Kind: inout
     - Side: Down
+      Idx: 0
+      Kind: Unknown
+      HighOpen: true
+    - Side: Down
+      Idx: 1
+      Kind: None
+    - Side: Down
+      Idx: 2
+      Kind: None
+    - Side: Down
       Idx: 3
       Kind: None
+    - Side: Up
+      Idx: 1
+      Kind: Unknown
+      LowBound: 23
+    - Side: Up
+      Idx: 2
+      Kind: Unknown
+      LowBound: 41
+    - Side: Up
+      Idx: 3
+      Kind: Unknown
+      LowBound: 66
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
@@ -2008,20 +2130,27 @@ CSide:
           cameraY: 0.0
   - Room: "01"
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: Unknown
+      LowBound: 16
     InternalEdges:
-    - Split: LeftToRight
+    - To: "right"
       ReqBoth:
         Or:
         - Dashes: one
           Difficulty: hard
         - Dashes: zero
           Difficulty: expert
+    Subrooms:
+      - Room: "right"
+        Holes:
+        - Side: Right
+          Idx: 0
+          Kind: inout
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:

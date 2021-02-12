@@ -370,15 +370,9 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: in
-    - Side: Up
-      Idx: 2
-      Kind: none
     - Side: Left
       Idx: 0
       Kind: inout
-    - Side: Down
-      Idx: 2
-      Kind: none
     InternalEdges:
     - To: "acrossTheDreamBlock"
       ReqBoth:
@@ -399,6 +393,14 @@ ASide:
           - Dashes: one
           - Dashes: zero
             Difficulty: hard
+    - Room: "outside"
+      Holes:
+      - Side: Up
+        Idx: 2
+        Kind: inout
+      - Side: Down
+        Idx: 2
+        Kind: inout
     Tweaks:
     - Name: "spawn"
       Update:
@@ -410,6 +412,16 @@ ASide:
         Add: true
         X: 472
         Y: 264
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 288
+        Y: 32
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 664
+        Y: 192
     - ID: 33
       Update:
         Remove: true
@@ -430,17 +442,20 @@ ASide:
   - Room: "9b"
     Holes:
     - Side: Down
-      Idx: 0
-      Kind: none
-    - Side: Down
       Idx: 1
       Kind: inout
     - Side: Down
       Idx: 2
       Kind: inout
-    - Side: Down
-      Idx: 3
-      Kind: none
+    Subrooms:
+      - Room: "outside"
+        Holes:
+        - Side: Down
+          Idx: 0
+          Kind: inout
+        - Side: Down
+          Idx: 3
+          Kind: inout
     Tweaks:
     - ID: 0
       Name: "jumpThru"
@@ -456,6 +471,16 @@ ASide:
         Add: true
         X: 248
         Y: 272
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 192
+        Y: 296
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 480
+        Y: 304
   - Room: "10"
     Holes:
     - Side: Up
@@ -1032,6 +1057,9 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: inout
+    - Side: Up
+      Idx: 0
+      Kind: None
     InternalEdges:
     - Collectable: 0
       ReqBoth:

@@ -1676,6 +1676,15 @@ ASide:
     - Side: Up
       Idx: 1
       Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: None
+    - Side: Down
+      Idx: 1
+      Kind: None
+    - Side: Down
+      Idx: 2
+      Kind: None
     InternalEdges:
     - To: "center"
       ReqBoth:
@@ -1783,6 +1792,9 @@ ASide:
       Idx: 1
       Kind: inout
     - Side: right
+      Idx: 0
+      Kind: None
+    - Side: down
       Idx: 0
       Kind: None
   - Room: "e-00b"
@@ -3992,21 +4004,48 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: unknown
+      HighOpen: true
+    - Side: Down
+      Idx: 1
+      Kind: None
+    - Side: Down
+      Idx: 2
+      Kind: None
   - Room: "f-02"
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: Unknown
+      HighOpen: true
     InternalEdges:
-    - Split: LeftToRight
+    - To: "right"
       ReqOut:
         Dashes: two
       ReqIn:
         Dashes: two
         Difficulty: perfect  # ?? marlin what did you do
+    Subrooms:
+      - Room: "right"
+        Holes:
+        - Side: Right
+          Idx: 0
+          Kind: inout
+        - Side: Down
+          Idx: 1
+          Kind: Unknown
+          ReqIn:
+            Dashes: two
+          HighOpen: true
+        - Side: Down
+          Idx: 2
+          Kind: Unknown
+          LowBound: 0
     Tweaks:
     - Name: "cameraOffsetTrigger"
       ID: 0
@@ -4065,6 +4104,10 @@ BSide:
     - Side: right
       Idx: 0
       Kind: None
+    - Side: Down
+      Idx: 0
+      Kind: Unknown
+      HighOpen: true
   - Room: "g-00"
     Holes:
     - Side: Up

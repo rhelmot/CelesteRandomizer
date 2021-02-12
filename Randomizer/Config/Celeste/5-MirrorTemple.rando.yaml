@@ -499,6 +499,9 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: None
     InternalEdges:
     - To: "berry"
       ReqOut:
@@ -2262,6 +2265,20 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Up
+      Idx: 0
+      Kind: Unknown
+      HighOpen: true
+    - Side: Up
+      New: true
+      Kind: Unknown
+      LowBound: 45
+      HighBound: 48
+      ReqIn:
+        Or:
+          - Dashes: one
+            Diffculty: hard
+          - Dashes: two
   - Room: "d-05"
     ReqEnd:
       Dashes: one
@@ -2273,14 +2290,15 @@ BSide:
 CSide:
   - Room: "00"
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: unknown
+      HighOpen: true
     InternalEdges:
-    - Split: LeftToRight
+    - To: "right"
       ReqOut:
         Dashes: one
         Difficulty: hard
@@ -2289,6 +2307,18 @@ CSide:
         - Dashes: two
         - Dashes: one
           Difficulty: hard
+    Subrooms:
+      - Room: "right"
+        Holes:
+        - Side: Right
+          Idx: 0
+          Kind: inout
+        - Side: Down
+          New: true
+          Kind: unknown
+          LowBound: 0
+          HighBound: 54
+          HighOpen: false
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:
@@ -2300,14 +2330,26 @@ CSide:
         Values:
           cameraX: -1.0
           cameraY: 0.0
+    - Name: "fgTiles"
+      X: 55
+      Y: 20
+      Update:
+        Tile: d
+    - Name: "fgTiles"
+      X: 55
+      Y: 21
+      Update:
+        Tile: d
   - Room: "01"
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: unknown
+      LowBound: 5
+      HighOpen: true
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
@@ -2315,6 +2357,18 @@ CSide:
         Difficulty: hard
       ReqIn:
         Dashes: two
+    Subrooms:
+      - Room: "right"
+        Holes:
+        - Side: Right
+          Idx: 0
+          Kind: inout
+    Tweaks:
+      - Name: "fgTiles"
+        X: 4
+        Y: 22
+        Update:
+          Tile: d
   - Room: "02"
     ReqEnd:
       Or:
@@ -2325,3 +2379,11 @@ CSide:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: Unknown
+      HighOpen: true
+    - Side: Down
+      Idx: 1
+      Kind: Unknown
+      LowBound: 0

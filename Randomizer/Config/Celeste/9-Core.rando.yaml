@@ -1304,6 +1304,9 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: None
   - Room: "b-00"
     Core:
       All: hot

@@ -171,18 +171,34 @@ ASide:
       Height: 112
   - Room: "a-05"
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Up
+      Idx: 0
+      Kind: None
+    - Side: Down
+      Idx: 0
+      Kind: Unknown
+      HighOpen: true
     InternalEdges:
-    - Split: LeftToRight
+    - To: "right"
       ReqOut:
         Dashes: one
       ReqIn:
         Dashes: two
+    Subrooms:
+      - Room: "right"
+        Holes:
+        - Side: Right
+          Idx: 0
+          Kind: inout
+        - Side: Up
+          Idx: 1
+          Kind: Unknown
+          ReqIn:
+            Difficulty: perfect
+            Dashes: one
   - Room: "b-00"
     Holes:
     - Side: Right
@@ -948,6 +964,10 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: None
+    - Side: Up
+      Idx: 0
+      Kind: Unknown
+      LowBound: 79
   - Room: "e-08"
     Holes:
     - Side: Right
@@ -1027,14 +1047,15 @@ ASide:
           cameraY: 0.0
   - Room: "f-01"
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: unknown
+      Launch: 48
     InternalEdges:
-    - Split: LeftToRight
+    - To: "right"
       ReqOut:
         Or:
         - Dashes: two
@@ -1042,6 +1063,12 @@ ASide:
           Difficulty: hard
       ReqIn:
         Dashes: one
+    Subrooms:
+      - Room: "right"
+        Holes:
+        - Side: Right
+          Idx: 0
+          Kind: inout
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:
@@ -1317,6 +1344,9 @@ ASide:
       Kind: in
     - Side: Down
       Idx: 0
+      Kind: None
+    - Side: Right
+      Idx: 1
       Kind: None
   - Room: "h-00b"
     Holes:
@@ -1728,6 +1758,9 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: None
+    - Side: Up
+      Idx: 0
+      Kind: None
   - Room: "i-05"
     Holes:
     - Side: Right
@@ -1745,6 +1778,19 @@ ASide:
       Idx: 0
       Kind: Unknown
       HighOpen: true
+    - Side: Up
+      Idx: 0
+      Kind: Unknown
+      HighBound: 19
+      HighOpen: false
+    - Side: Up
+      New: true
+      Kind: Unknown
+      LowBound: 97
+      HighBound: 113
+      ReqIn:
+        Dashes: one
+        Difficulty: master
   - Room: "j-00"
     Holes:
     - Side: Right

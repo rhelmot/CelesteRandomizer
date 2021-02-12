@@ -369,6 +369,14 @@ ASide:
         Values:
           cameraX: -0.5
           cameraY: 0
+    - Name: "spinner"
+      ID: 613
+      Update:
+        Remove: true
+    - Name: "spinner"
+      ID: 612
+      Update:
+        Remove: true
   - Room: "09"
     Hub: true
     Holes:
@@ -1750,6 +1758,10 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: Unknown
+      HighOpen: true
   - Room: "a-05"
     Holes:
     - Side: Right
@@ -2060,6 +2072,9 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: None
   - Room: "d-00"
     Holes:
     - Side: Up
@@ -2116,6 +2131,32 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: Unknown
+      ReqIn:
+        Dashes: one
+    - Side: Down
+      Idx: 1
+      Kind: None
+    - Side: Down
+      Idx: 2
+      Kind: None
+    - Side: Down
+      Idx: 3
+      Kind: None
+    - Side: Down
+      Idx: 4
+      Kind: None
+    - Side: Down
+      Idx: 5
+      Kind: None
+    - Side: Down
+      Idx: 6
+      Kind: None
+    - Side: Down
+      Idx: 7
+      Kind: None
   - Room: "d-05"
     ReqEnd:
       Dashes: one
