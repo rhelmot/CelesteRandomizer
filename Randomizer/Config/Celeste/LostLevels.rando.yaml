@@ -1422,6 +1422,9 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: None
+    - Side: Up
+      Idx: 0
+      Kind: None
   - Room: "h-03b"
     Holes:
     - Side: Right
