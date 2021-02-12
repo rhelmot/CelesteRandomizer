@@ -177,19 +177,18 @@ Rulesets:
     LongName: "2dash (B)"
     Algorithm: Pathway
     Dashes: Two
-    Length: Medium
     Darkness: Never
   - Name: C
     LongName: "Expert (C)"
     Algorithm: Pathway
     Difficulty: Expert
-    Length: Medium
+    DificultyEagerness: High
   - Name: D
     LongName: "Expert 2dash (D)"
     Algorithm: Pathway
     Difficulty: Expert
+    DificultyEagerness: High
     Dashes: Two
-    Length: Long
   - Name: E
     LongName: "Standard Labyrinth (E)"
     Algorithm: Labyrinth
