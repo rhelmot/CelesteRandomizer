@@ -2474,6 +2474,11 @@ ASide:
           Dashes: two
           Difficulty: perfect  # diag demo go brrrrr
     Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 1186
+        Y: 13
     - Name: "templeGate"
       ID: 606
       Update:

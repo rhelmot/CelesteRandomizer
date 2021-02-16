@@ -2585,6 +2585,9 @@ CSide:
     - Side: Up
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: None
     InternalEdges:
     - Split: LeftToRight
       ReqBoth:
