@@ -31,7 +31,7 @@ namespace Celeste.Mod.Randomizer {
 				var position = new Vector2(128f * Ease.CubeOut(this.JournalEase), 952f);
                 var color = Color.White * Ease.CubeOut(this.JournalEase);
 				GFX.Gui["menu/journal"].DrawCentered (position, color);
-				Input.GuiButton(Input.MenuJournal, "controls/keyboard/oemquestion").Draw(position, Vector2.Zero, color);
+				Input.GuiButton(Input.MenuJournal, Input.PrefixMode.Latest).Draw(position, Vector2.Zero, color);
 			}
         }
         

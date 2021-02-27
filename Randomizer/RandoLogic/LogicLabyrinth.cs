@@ -107,7 +107,10 @@ namespace Celeste.Mod.Randomizer {
                         edgeCount += node.Edges.Count;
                     }
                     if (edgeCount <= 1) {
-                        foreach (var node in startEdge.Node.Room.Nodes.Values) {
+                        var nodeNames = new List<string>(startEdge.Node.Room.Nodes.Keys);
+                        nodeNames.Sort();
+                        foreach (var nodeName in nodeNames) {
+                            var node = startEdge.Node.Room.Nodes[nodeName];
                             foreach (var edge in node.Edges) {
                                 var otherNode = edge.OtherNode(node);
                                 var otherEdge = edge.OtherEdge(node);
@@ -152,7 +155,7 @@ namespace Celeste.Mod.Randomizer {
                     gem--;
                 } else {
                     spot.Node.Collectables[spot.Static] = Tuple.Create(gem, autoBubble);
-                    //Logger.Log("DEBUG", $"Adding gem to {spot.Node.Room.Static.Name}");
+                    //Logger.Log("DEBUG", $"Adding gem to {spot}");
 
                     if (collection == this.PriorityCollectables) {
                         for (int i = 0; i < collection.Count; i++) {

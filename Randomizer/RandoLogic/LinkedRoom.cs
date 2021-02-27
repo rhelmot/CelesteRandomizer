@@ -359,7 +359,6 @@ namespace Celeste.Mod.Randomizer {
                 int diff = hole.Compatible(hole2);
                 var newHighBound = diff + hole2.LowBound - 1;
                 var newHole = new Hole(hole.Side, hole.LowBound, newHighBound, false);
-                //Logger.Log("DEBUG", $"{result.Name}: special-blocking {newHole}");
                 blockHole(newHole);
             }
 
@@ -815,6 +814,10 @@ namespace Celeste.Mod.Randomizer {
 
         public override int GetHashCode() {
             return 8765 ^ this.Static.GetHashCode() ^ this.Node.GetHashCode();
+        }
+
+        public override string ToString() {
+            return this.Static.ToString();
         }
     }
 

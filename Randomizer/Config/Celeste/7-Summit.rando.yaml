@@ -711,14 +711,13 @@ ASide:
         - Dashes: one
           Difficulty: expert
     - Collectable: 0
-      ReqBoth:
-        ReqOut:
-          Dashes: one
-        ReqIn:
-          Or:
-          - Dashes: two
-          - Dashes: one
-            Difficulty: expert
+      ReqOut:
+        Dashes: one
+      ReqIn:
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: expert
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:

@@ -863,6 +863,10 @@ namespace Celeste.Mod.Randomizer {
         public Vector2 Position;
         public bool MustFly;
         public StaticNode ParentNode;
+
+        public override string ToString() {
+            return $"{this.ParentNode}:{this.Position}";
+        }
     }
 
     public class StaticEdge {
