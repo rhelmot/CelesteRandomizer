@@ -686,7 +686,47 @@
     RANDOHEART_THEO_44=You must have forgotten to buffer your climbjump when I fell for you
     RANDOHEART_THEO_COUNT=45
     
+    RANDOHEART_MADDYPIC_0=distracted
+    RANDOHEART_MADDYPIC_1=sad
+    RANDOHEART_MADDYPIC_2=normal
+    RANDOHEART_MADDYPIC_3=shocked
+    RANDOHEART_MADDYPIC_4=upset
+    RANDOHEART_MADDYPIC_5=angry
+    RANDOHEART_MADDYPIC_COUNT=6
+    
+    RANDOHEART_THEOPHONE_0=clean belly button lint out of phone charger
+    RANDOHEART_THEOPHONE_1=search engines near me
+    RANDOHEART_THEOPHONE_2=making a bandage out of your undergraduate thesis
+    RANDOHEART_THEOPHONE_3=guitar songs pacify sleep paralysis demons filetype:pdf
+    RANDOHEART_THEOPHONE_4=how to un-cut jalapenos without hands
+    RANDOHEART_THEOPHONE_5=are horses in seattle oppressed
+    RANDOHEART_THEOPHONE_6=bee swarm broke toenail
+    RANDOHEART_THEOPHONE_7=how to reinstall windows over remote desktop
+    RANDOHEART_THEOPHONE_8=watch homestuck free online season 1 episode 2
+    RANDOHEART_THEOPHONE_9=how to learn russian if I only know Java
+    RANDOHEART_THEOPHONE_10=site:youtube.com religious services for squirrels
+    RANDOHEART_THEOPHONE_11=is root beer a soda during lent
+    RANDOHEART_THEOPHONE_12=which kinds of european football are kosher
+    RANDOHEART_THEOPHONE_13=can't delete youtube comment 'TwinkHarasser1890'
+    RANDOHEART_THEOPHONE_14=how do I let my trans friends know I love and support them
+    RANDOHEART_THEOPHONE_15=hi maddy! i left my phone for you to find intentionally this time <3
+    RANDOHEART_THEOPHONE_COUNT=16
+    
 # Madlibs sets
+
+    RANDO_RANDO_FOUNDTHEOPHONE=
+        [MADELINE left sad]
+        Oh, looks like {+ THEO} lost his phone again.
+        
+        {trigger 0 Maddy walks to phone, ducks to pick it up}
+        
+        [MADELINE left normal]
+        Let's see what he was up to...
+
+        {trigger 1 Maddy stands back up}
+        
+        [MADELINE left (RANDO:MADDYPIC)]
+        "(RANDO:THEOPHONE)"? That doesn't make any sense.
 
     RANDO_CH6_BOSS_TIRED_A=
         [BADELINE right angry]

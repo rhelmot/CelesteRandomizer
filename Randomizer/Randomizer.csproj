@@ -82,6 +82,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\FindTheoPhone.cs" />
     <Compile Include="Entities\LifeBerry.cs" />
     <Compile Include="Oui\GenericOui.cs" />
     <Compile Include="Oui\OuiRandoDifficulty.cs" />

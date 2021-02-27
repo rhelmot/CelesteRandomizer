@@ -1852,7 +1852,8 @@ BSide:
         - Dashes: two
         - Dashes: one
           Difficulty: hard
-    - Subroom: "right"
+    Subrooms:
+    - Room: "right"
       Holes:
       - Side: Right
         Idx: 0
@@ -2079,9 +2080,6 @@ BSide:
 CSide:
   - Room: "00"
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
@@ -2102,21 +2100,27 @@ CSide:
       Idx: 1
       Kind: Unknown
       LowBound: 23
-    - Side: Up
-      Idx: 2
-      Kind: Unknown
-      LowBound: 41
-    - Side: Up
-      Idx: 3
-      Kind: Unknown
-      LowBound: 66
     InternalEdges:
-    - Split: LeftToRight
+    - To: "right"
       ReqOut:
         Dashes: one
         Difficulty: hard
       ReqIn:
         Dashes: two
+    Subrooms:
+      - Room: "right"
+        Holes:
+        - Side: Right
+          Idx: 0
+          Kind: inout
+        - Side: Up
+          Idx: 2
+          Kind: Unknown
+          LowBound: 41
+        - Side: Up
+          Idx: 3
+          Kind: Unknown
+          LowBound: 66
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework;
 using Monocle;
 using MonoMod.Utils;
@@ -319,6 +320,7 @@ namespace Celeste.Mod.Randomizer {
             this.SetPoem();
             this.SpawnGolden(map);
             this.SetDarkness(map);
+            this.PlaceTheoPhone(map);
 
             return map;
         }
@@ -562,6 +564,51 @@ namespace Celeste.Mod.Randomizer {
                 room.Dark = dark;
             }
         }
+        
+        private void PlaceTheoPhone(MapData map) {
+            while (true) {
+                var lvl = this.Random.Choose(map.Levels);
+                var regex = new Regex("\\r\\n|\\n\\r|\\n|\\r");
+                var lines = new List<string>(regex.Split(lvl.Solids));
+                var height = lines.Count;
+                var width = lines.Select(j => j.Length).Max();
+                var found = false;
+                int x = 0, y = 0;
+                for (int i = 0; i < 20 && !found; i++) {
+                    x = this.Random.Next(width);
+                    y = this.Random.Next(height);
+                    var ch = lines[y].Length <= x ? '0' : lines[y][x];
+                    var dir = ch == '0' ? 1 : -1;
+                    for (y += dir; y >= 0 && y < height; y += dir) {
+                        var ch2 = lines[y].Length <= x ? '0' : lines[y][x];
+                        var edge = (ch == '0') != (ch2 == '0');
+                        if (edge) {
+                            found = true;
+                            if (dir == -1) {
+                                y++;
+                            }
+                            break;
+                        }
+                    }
+                }
+
+                if (!found) {
+                    continue;
+                }
+                var maxid = 0;
+                foreach (var e in lvl.Entities) {
+                    maxid = Math.Max(maxid, e.ID);
+                }
+                Logger.Log("Randomizer", $"Adding phone at {lvl.Name} {x}x{y}");
+                lvl.Entities.Add(new EntityData {
+                    Level = lvl,
+                    Name = "randomizer/TheoPhone",
+                    Position = new Vector2(x*8f + 4f, y*8f),
+                    ID = ++maxid,
+                });
+                break;
+            }
+        }
 
         private void RandomizeDialog() {
             RandomDialogMappings.Clear();
@@ -596,7 +643,7 @@ namespace Celeste.Mod.Randomizer {
             dialogIDs.Sort((s1, s2) => Dialog.Get(s1).Length.CompareTo(Dialog.Get(s2).Length));
             return dialogIDs;
         }
-
+        
         // The idea here is to have our results be random, but reasonably close to the same length
         // ~10% of the list gets shuffled with itself at a time (irregular segment at the end)
         static List<string> ShuffleDialogIDsByLength(List<string> sortedIDs) {
