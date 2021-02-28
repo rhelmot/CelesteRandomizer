@@ -181,8 +181,7 @@ namespace Celeste.Mod.Randomizer {
                 throw new Exception("Could not find patching point");
             }
 
-            cursor.Emit(OpCodes.Ldloc_1);  // the fake "this"; the heartGem reference
-            cursor.EmitDelegate<Func<HeartGem, bool>>(gem => {
+            cursor.EmitDelegate<Func<bool>>(() => {
                 if (!this.InRandomizer) {
                     return false;
                 }
