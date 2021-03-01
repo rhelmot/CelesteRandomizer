@@ -39,7 +39,7 @@ namespace Celeste.Mod.Randomizer {
             }
         }
 
-        public static void YamlSkeleton(MapData map) {
+        public static void YamlSkeleton(MapData map, bool doUnknown=true) {
             foreach (LevelData lvl in map.Levels) {
                 if (lvl.Dummy) {
                     continue;
@@ -60,34 +60,37 @@ namespace Celeste.Mod.Randomizer {
                     }
 
                     LevelData targetLvl = map.GetAt(hole.LowCoord(lvl.Bounds)) ?? map.GetAt(hole.HighCoord(lvl.Bounds));
-                    if (targetLvl != null && !targetLvl.Dummy) {
-                        Logger.Log("randomizer", $"    - Side: {hole.Side}");
-                        Logger.Log("randomizer", $"      Idx: {holeIdx}");
-                        Logger.Log("randomizer",  "      Kind: inout");
+                    var unknown = targetLvl == null || targetLvl.Dummy;
+                    if (unknown && !doUnknown) {
+                        continue;
                     }
+
+                    Logger.Log("randomizer", $"    - Side: {hole.Side}");
+                    Logger.Log("randomizer", $"      Idx: {holeIdx}");
+                    Logger.Log("randomizer",  "      Kind: " + (unknown ? "unknown" : "inout"));
                 }
             }
         }
 
-        public static void YamlSkeleton(AreaData area) {
+        public static void YamlSkeleton(AreaData area, bool doUnknown=true) {
             if (area.Mode[0] != null) {
                 Logger.Log("randomizer", "ASide:");
-                YamlSkeleton(area.Mode[0].MapData);
+                YamlSkeleton(area.Mode[0].MapData, doUnknown);
             }
             if (area.Mode.Length > 1 && area.Mode[1] != null) {
                 Logger.Log("randomizer", "BSide:");
-                YamlSkeleton(area.Mode[1].MapData);
+                YamlSkeleton(area.Mode[1].MapData, doUnknown);
             }
             if (area.Mode.Length > 2 && area.Mode[2] != null) {
                 Logger.Log("randomizer", "CSide:");
-                YamlSkeleton(area.Mode[2].MapData);
+                YamlSkeleton(area.Mode[2].MapData, doUnknown);
             }
         }
 
         [Command("rando_skeleton", "Dumps a starting point for a rando.yaml configuration for a given map to log.txt")]
-        public static void YamlSkeletonCommand(string sid) {
+        public static void YamlSkeletonCommand(string sid, bool doUnknown=true) {
             var area = AreaDataExt.Get(sid);
-            YamlSkeleton(area);
+            YamlSkeleton(area, doUnknown);
         }
 
         public Dictionary<String, RandoConfigRoom> GetRoomMapping(AreaMode mode) {
