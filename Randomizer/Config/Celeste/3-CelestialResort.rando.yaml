@@ -157,16 +157,25 @@ ASide:
       ReqOut:
         Or:
         - Dashes: one
-          And:
-            - Flag: towels:unset
-            - Flag: books:unset
-            - Flag: boxes:unset
-        - Dashes: one
-          Difficulty: hard
           Or:
-            - Flag: towels:unset
-            - Flag: books:unset
-            - Flag: boxes:unset
+          - And:
+              - Flag: towels:unset
+              - Flag: books:unset
+              - Flag: boxes:unset
+          - And:
+              - Flag: towels:unset
+              - Flag: books:set
+              - Flag: boxes:set
+        - And:
+          - Or:
+            - Dashes: one
+              Difficulty: hard
+            - Dashes: two
+              Difficulty: easy
+          - Or:
+              - Flag: towels:unset
+              - Flag: books:unset
+              - Flag: boxes:unset
       ReqIn:
         Or:
           - Dashes: one
@@ -731,6 +740,8 @@ ASide:
                 - Flag: boxes:unset
             - Dashes: one
               Difficulty: hard
+            - Dashes: two
+              Difficulty: normal
       - To: "down"
         ReqOut:
           Dashes: zero

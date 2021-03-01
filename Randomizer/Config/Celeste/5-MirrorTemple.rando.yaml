@@ -223,8 +223,11 @@ ASide:
       Idx: 0
       Kind: inout
       ReqBoth:
-        Dashes: one
-        Difficulty: hard
+        Or:
+        - Dashes: one
+          Difficulty: hard
+        - Dashes: two
+          Difficulty: normal
     - Side: Left
       Idx: 0
       Kind: inout
@@ -232,23 +235,15 @@ ASide:
       Idx: 0
       Kind: inout
     InternalEdges:
-    - To: "Alcove-lower"
+    - To: "Alcove"
       ReqIn:            # TODO can go out if you have previously gone in
         Dashes: one
     Subrooms:
-    - Room: "Alcove-lower"
+    - Room: "Alcove"
       Holes:
       - Side: Right
         Idx: 2
         Kind: inout
-      InternalEdges:
-      - To: "Alcove-upper"
-        ReqOut:
-          Dashes: one
-        ReqIn:
-          Dashes: zero
-    - Room: "Alcove-upper"
-      Holes:
       - Side: Right
         Idx: 1
         Kind: inout

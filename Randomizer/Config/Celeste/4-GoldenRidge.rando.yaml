@@ -722,7 +722,7 @@ ASide:
           Difficulty: hard
       ReqIn:
         Dashes: one
-        Difficulty: master  # very hard for master. requires either a diag demo or a ceiling pop
+        Difficulty: easy
     Tweaks:
     - Name: "spawn"
       Update:
