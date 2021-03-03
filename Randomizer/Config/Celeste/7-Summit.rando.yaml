@@ -184,6 +184,16 @@ ASide:
         Values:
           cameraX: -1
           cameraY: 0
+   - Name: "fgTiles"
+     X: 58
+     Y: 20
+     Update:
+       Remove: true
+   - Name: "fgTiles"
+     X: 59
+     Y: 20
+     Update:
+       Remove: true
   - Room: "a-04"
     Holes:
     - Side: Left
@@ -2421,6 +2431,9 @@ ASide:
     - Side: Right
       Idx: 0
       Kind: None
+    - Side: Down
+      Idx: 0
+      Kind: none
     InternalEdges:
     - Collectable: 0
       ReqBoth:
@@ -2457,9 +2470,9 @@ ASide:
           Difficulty: expert
       ReqIn:
         Or:
-          - Dashes: two
-          - Dashes: one
-            Difficulty: hard
+        - Dashes: two
+        - Dashes: one
+          Difficulty: hard
     Subrooms:
     - Room: "right"
       Holes:
