@@ -2121,6 +2121,9 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: none
   - Room: "d-04"
     Holes:
     - Side: Right
