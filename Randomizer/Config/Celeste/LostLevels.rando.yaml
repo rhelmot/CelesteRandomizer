@@ -427,6 +427,12 @@ ASide:
         - Dashes: two
         - Dashes: one
           Difficulty: hard
+    Tweaks:
+    - Name: "fgTiles"
+      X: 53
+      Y: 20
+      Update:
+        Tile: 0
   - Room: "c-02"
     Holes:
     - Side: Up

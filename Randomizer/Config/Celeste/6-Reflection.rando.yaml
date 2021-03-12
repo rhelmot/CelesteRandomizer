@@ -256,7 +256,13 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
-  - Room: "04e"  # TODO: cassette
+  - Room: "04e"
+    ReqEnd:
+      Or:
+      - Dashes: one
+        Difficulty: normal
+      - Dashes: two
+        Difficulty: easy
     Holes:
     - Side: Right
       Idx: 0

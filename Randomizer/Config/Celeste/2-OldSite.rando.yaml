@@ -526,27 +526,37 @@ ASide:
           cameraY: 0.0
   - Room: "12b"
     Holes:
-    - Side: Up
-      Idx: 1
-      Kind: inout
-    - Side: Right
-      Idx: 0
-      Kind: inout
-      ReqBoth:
-        Dashes: one
     - Side: Left
       Idx: 0
       Kind: inout
-      ReqBoth:
-        Dashes: one
-    - Side: Down
-      Idx: 0
-      Kind: out
-      ReqOut:
-        Dashes: one
-    - Side: Down
-      Idx: 1
-      Kind: in
+    Subrooms:
+    - Room: "center"
+      Holes:
+      - Side: Up
+        Idx: 1
+        Kind: inout
+      - Side: Down
+        Idx: 0
+        Kind: out
+        ReqOut:
+          Dashes: one
+      - Side: Down
+        Idx: 1
+        Kind: in
+      InternalEdges:
+        - To: "left"
+          ReqBoth:
+            Dashes: one
+            Difficulty: easy
+        - To: "right"
+          ReqBoth:
+            Dashes: one
+            Difficulty: easy
+    - Room: "right"
+      Holes:
+      - Side: Right
+        Idx: 0
+        Kind: inout
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:
@@ -893,7 +903,7 @@ ASide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: in 
+      Kind: in
     - Side: Up
       Idx: 1
       Kind: in #the two ins are accessible from each other technically

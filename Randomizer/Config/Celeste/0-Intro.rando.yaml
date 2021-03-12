@@ -37,6 +37,11 @@ ASide:
         Values:
           cameraX: -1
           cameraY: 0
+    - Name: "fgTiles"
+      X: 42
+      Y: 19
+      Update:
+        Tile: 0
   - Room: "0b"
     Holes:
     - Side: Down
