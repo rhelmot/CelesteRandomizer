@@ -79,6 +79,7 @@ namespace Celeste.Mod.Randomizer {
             }
 
             while (this.PossibleContinuations.Count != 0) {
+                //Logger.Log("DEBUG", $"Pruning - {this.PossibleContinuations.Count} remaining");
                 var startEdge = this.PossibleContinuations.Last();
                 this.PossibleContinuations.RemoveAt(this.PossibleContinuations.Count - 1);
 
@@ -139,6 +140,7 @@ namespace Celeste.Mod.Randomizer {
             }
 
             for (var gem = LinkedCollectable.Gem1 + this.StartingGemCount; gem <= LinkedCollectable.Gem6; gem++) {
+                //Logger.Log("DEBUG", $"Placing {gem}");
                 var collection = this.PriorityCollectables.Count != 0 ? this.PriorityCollectables : this.PossibleCollectables;
                 if (collection.Count == 0) {  // just in case
                     retry();
@@ -149,6 +151,7 @@ namespace Celeste.Mod.Randomizer {
                 collection.RemoveAt(idx);
 
                 if (spot.Static.MustFly) {
+                    //Logger.Log("DEBUG", "...winged berry");
                     if (this.Settings.Strawberries != StrawberryDensity.None) {
                         spot.Node.Collectables[spot.Static] = Tuple.Create(LinkedCollectable.WingedStrawberry, autoBubble);
                     }
@@ -171,6 +174,7 @@ namespace Celeste.Mod.Randomizer {
             var defaultBerry = this.Settings.HasLives ? LinkedCollectable.LifeBerry : LinkedCollectable.Strawberry;
 
             while (this.Settings.Strawberries != StrawberryDensity.None && this.PriorityCollectables.Count != 0) {
+                //Logger.Log("DEBUG", $"Pruning priority collectables - {this.PriorityCollectables.Count} remaining");
                 var spot = this.PriorityCollectables.Last().Item1;
                 var autoBubble = this.PriorityCollectables.Last().Item2;
                 this.PriorityCollectables.RemoveAt(this.PriorityCollectables.Count - 1);
@@ -192,6 +196,7 @@ namespace Celeste.Mod.Randomizer {
             }
             this.PossibleCollectables.Shuffle(this.Random);
             while (this.PossibleCollectables.Count > targetCount) {
+                //Logger.Log("DEBUG", $"Pruning collectables - {this.PossibleContinuations.Count - targetCount} remaining");
                 var spot = this.PossibleCollectables.Last().Item1;
                 var autoBubble = this.PossibleCollectables.Last().Item2;
                 this.PossibleCollectables.RemoveAt(this.PossibleCollectables.Count - 1);

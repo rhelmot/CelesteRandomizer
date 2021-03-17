@@ -567,6 +567,7 @@ namespace Celeste.Mod.Randomizer {
 
         private void PlaceTheoPhone(MapData map) {
             while (true) {
+                //Logger.Log("DEBUG", "Trying to place phone...");
                 var lvl = this.Random.Choose(map.Levels);
                 var regex = new Regex("\\r\\n|\\n\\r|\\n|\\r");
                 var lines = new List<string>(regex.Split(lvl.Solids));
@@ -589,8 +590,8 @@ namespace Celeste.Mod.Randomizer {
                             }
                             if (at(x + 1, y - 1) == '0' && at(x + 1, y) != '0') {
                                 found = true;
-                                break;
                             }
+                            break;
                         }
                     }
                 }
