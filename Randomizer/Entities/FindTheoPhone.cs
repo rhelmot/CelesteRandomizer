@@ -8,7 +8,7 @@ namespace Celeste.Mod.Randomizer.Entities {
     public class FindTheoPhone : TheoPhone {
         private TalkComponent Talker;
         public EntityID ID;
-        
+
         public FindTheoPhone(EntityData data, Vector2 offset, EntityID id) : base(offset + data.Position) {
             this.Add(this.Talker = new TalkComponent(new Rectangle(-12, -8, 24, 8), new Vector2(99999, 99999), this.OnTalk));
             this.ID = id;
@@ -23,16 +23,19 @@ namespace Celeste.Mod.Randomizer.Entities {
         private Player Player;
         private float TargetX;
         private FindTheoPhone Phone;
-        
+
         public CS_FindTheoPhone(Player player, FindTheoPhone phone) {
             this.Player = player;
             this.TargetX = phone.X + 8;
             this.Phone = phone;
         }
-        
+
         public override void OnBegin(Level level) => this.Add(new Coroutine(this.Routine()));
 
+        private bool SavedInvincible;
         private IEnumerator Routine() {
+            this.SavedInvincible = SaveData.Instance.Assists.Invincible;
+            SaveData.Instance.Assists.Invincible = true;
             this.Player.StateMachine.State = 11;
             this.Player.Facing = (Facings) Math.Sign(this.TargetX - this.Player.X);
             yield return 0.5f;
@@ -46,9 +49,17 @@ namespace Celeste.Mod.Randomizer.Entities {
         }
 
         public override void OnEnd(Level level) {
+            this.Scene.Add(new Entity {
+                new Coroutine(this.ResetInvincible()),
+            });
             this.Player.StateMachine.State = 0;
             this.Level.Session.DoNotLoad.Add(this.Phone.ID);
             this.Phone.RemoveSelf();
+        }
+
+        private IEnumerator ResetInvincible() {
+            yield return 1f;
+            SaveData.Instance.Assists.Invincible = this.SavedInvincible;
         }
 
         private IEnumerator WalkToPhone() {
@@ -67,6 +78,5 @@ namespace Celeste.Mod.Randomizer.Entities {
             this.Player.Sprite.Play("idle");
             yield return  0.2f;
         }
-
     }
 }
