@@ -39,7 +39,7 @@ namespace Celeste.Mod.Randomizer {
                 Mode = new ModeProperties[3] {
                     new ModeProperties {
                         Inventory = settings.Dashes == NumDashes.Zero ? new PlayerInventory(0, true, false, false) :
-                                    settings.Dashes == NumDashes.One ?  new PlayerInventory(1, true, false, false) : 
+                                    settings.Dashes == NumDashes.One ?  new PlayerInventory(1, true, false, false) :
                                                                         new PlayerInventory(2, true, false, false),
                     }, null, null
                 },
@@ -67,13 +67,13 @@ namespace Celeste.Mod.Randomizer {
             dyn.Set<RandoSettings>("RandoSettings", settings.Copy());
 
             newArea.SetSID($"randomizer/{newArea.Name}");
-            
+
             // avert race condition
             RandoModule.AreaHandoff = newArea;
             while (RandoModule.AreaHandoff != null) {
                 Thread.Sleep(10);
             }
-            
+
             // invalidate the MapEditor area key cache, as it will erroniously see a cache hit
             typeof(Editor.MapEditor).GetField("area", BindingFlags.NonPublic | BindingFlags.Static).SetValue(null, AreaKey.None);
 
@@ -236,7 +236,7 @@ namespace Celeste.Mod.Randomizer {
                 case 15:
                     return "event:/env/amb/worldmap";
             }
-            */           
+            */
         }
 
         private string PickCassetteAudio() {
@@ -361,7 +361,7 @@ namespace Celeste.Mod.Randomizer {
                     }
                 });
             }
-            
+
             // this cutscene hardcodes a reference to a windsnow fg
             // the level should only ever be last on the list, right?
             if (effect.Effect != "windsnow" && map.Levels[map.Levels.Count - 1].Name.StartsWith("Celeste/4-GoldenRidge/A/d-10")) {
@@ -411,7 +411,7 @@ namespace Celeste.Mod.Randomizer {
             } else {
                 throw new Exception("Config error: styleground without Texture or Effect");
             }
-            
+
             if (element.NeedsColor) {
                 var color2 = this.RandomColor(c => (int) c.R + (int) c.G + (int) c.B > 128 * 3);
                 yield return new BinaryPacker.Element {
@@ -564,12 +564,13 @@ namespace Celeste.Mod.Randomizer {
                 room.Dark = dark;
             }
         }
-        
+
         private void PlaceTheoPhone(MapData map) {
             while (true) {
                 var lvl = this.Random.Choose(map.Levels);
                 var regex = new Regex("\\r\\n|\\n\\r|\\n|\\r");
                 var lines = new List<string>(regex.Split(lvl.Solids));
+                char at(int xx, int yy) => yy >= lines.Count ? '0' : xx >= lines[yy].Length ? '0' : lines[yy][xx];
                 var height = lines.Count;
                 var width = lines.Select(j => j.Length).Max();
                 var found = false;
@@ -577,17 +578,19 @@ namespace Celeste.Mod.Randomizer {
                 for (int i = 0; i < 20 && !found; i++) {
                     x = this.Random.Next(width);
                     y = this.Random.Next(height);
-                    var ch = lines[y].Length <= x ? '0' : lines[y][x];
-                    var dir = ch == '0' ? 1 : -1;
+                    var ch = at(x, y);
+                    var dir = at(x, y) == '0' ? 1 : -1;
                     for (y += dir; y >= 0 && y < height; y += dir) {
-                        var ch2 = lines[y].Length <= x ? '0' : lines[y][x];
+                        var ch2 = at(x, y);
                         var edge = (ch == '0') != (ch2 == '0');
                         if (edge) {
-                            found = true;
                             if (dir == -1) {
                                 y++;
                             }
-                            break;
+                            if (at(x + 1, y - 1) == '0' && at(x + 1, y) != '0') {
+                                found = true;
+                                break;
+                            }
                         }
                     }
                 }
@@ -643,7 +646,7 @@ namespace Celeste.Mod.Randomizer {
             dialogIDs.Sort((s1, s2) => Dialog.Get(s1).Length.CompareTo(Dialog.Get(s2).Length));
             return dialogIDs;
         }
-        
+
         // The idea here is to have our results be random, but reasonably close to the same length
         // ~10% of the list gets shuffled with itself at a time (irregular segment at the end)
         static List<string> ShuffleDialogIDsByLength(List<string> sortedIDs) {
