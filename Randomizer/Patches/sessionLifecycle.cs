@@ -26,9 +26,10 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.Player.Die += DieInEndless;
             IL.Celeste.SpeedrunTimerDisplay.DrawTime += SetPlatinumColor;
             IL.Celeste.AreaComplete.ctor += SetEndlessTitle;
-            
+
             // this method is patched by everest so we need to get at the unpatched orig version
             SpecialHooksSession.Add(new ILHook(typeof(AreaComplete).GetMethod("orig_Update"), GotoNextEndless));
+            SpecialHooksSession.Add(new ILHook(typeof(AreaComplete).GetMethod("InitAreaCompleteInfoForEverest2"), EverestDontIntrospect));
         }
 
         private void UnloadSessionLifecycle() {
@@ -42,7 +43,7 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.Player.Die -= DieInEndless;
             IL.Celeste.SpeedrunTimerDisplay.DrawTime -= SetPlatinumColor;
             IL.Celeste.AreaComplete.ctor -= SetEndlessTitle;
-            
+
             foreach (var detour in this.SpecialHooksSession) {
                 detour.Dispose();
             }
@@ -75,7 +76,7 @@ namespace Celeste.Mod.Randomizer {
                     typeof(AreaComplete).GetField("canConfirm", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(Engine.Scene, true);
                     return true;
                 }
-                
+
                 var session = SaveData.Instance.CurrentSession;
                 var time = session.Time;
                 var deaths = session.Deaths;
@@ -94,6 +95,22 @@ namespace Celeste.Mod.Randomizer {
                 return true;
             });
             cursor.Emit(Mono.Cecil.Cil.OpCodes.Brtrue, label);
+        }
+
+        private void EverestDontIntrospect(ILContext il) {
+            var cursor = new ILCursor(il);
+
+            if (!cursor.TryGotoNext(MoveType.Before, insn => insn.MatchBrfalse(out var nobodyCares))) {
+                throw new Exception("Could not find patch point");
+            }
+
+            cursor.EmitDelegate<Func<Session, Session>>(s => {
+                if (this.endingSettings != null) {
+                    return null;
+                } else {
+                    return s;
+                }
+            });
         }
 
         private PlayerDeadBody DieInEndless(On.Celeste.Player.orig_Die orig, Player self, Vector2 direction, bool evenifinvincible, bool registerdeathinstats) {
@@ -132,7 +149,7 @@ namespace Celeste.Mod.Randomizer {
             if (!cursor.TryGotoNext(MoveType.After, instr => instr.MatchCall<Scene>("Add"))) {
                 throw new Exception("Could not find patch point 2!");
             }
-            
+
             cursor.Emit(Mono.Cecil.Cil.OpCodes.Ldarg_0);
             cursor.EmitDelegate<Action<AreaComplete>>(self => {
                 if (this.endingSettings != null && this.endingSettings.HasLives) {
@@ -196,7 +213,7 @@ namespace Celeste.Mod.Randomizer {
             }
             if (StartMe != null && !Entering) {
                 var newArea = StartMe.Value;
-                
+
                 var area = AreaData.Get(newArea);
                 var dyn = new DynData<AreaData>(area);
                 var areaSettings = dyn.Get<RandoSettings>("RandoSettings");
@@ -265,7 +282,7 @@ namespace Celeste.Mod.Randomizer {
 
                 }*/
             }
-            
+
             // update endless mode score
             var settings = (Engine.Scene is AreaComplete) ? this.endingSettings : this.InRandomizerSettings;
             if (settings != null && settings.Algorithm == LogicType.Endless) {
@@ -286,7 +303,7 @@ namespace Celeste.Mod.Randomizer {
         void OnComplete(Level level) {
             level.Session.BeatBestTimePlatinum(false);
             var settings = this.InRandomizerSettings;
-            if (settings != null && level.Session.StartedFromBeginning) {  // how strong can/should we make this condition?   
+            if (settings != null && level.Session.StartedFromBeginning) {  // how strong can/should we make this condition?
                 var hash = uint.Parse(settings.Hash); // convert and unconvert, yeah I know
 
                 level.Session.BeatBestTime = false;
@@ -350,7 +367,7 @@ namespace Celeste.Mod.Randomizer {
                 ActiveFont.DrawOutline(text, new Vector2(1820f + 300f * (1f - Ease.CubeOut(ease)), variants ? 810f : 894f), new Vector2(0.5f, 0f), Vector2.One * 0.5f, settings.SpawnGolden ? Calc.HexToColor("fad768") : Color.White, 2f, Color.Black);
             }
         }
-        
+
         private void SetPlatinumColor(ILContext il) {
             ILCursor cursor = new ILCursor(il);
             if (!cursor.TryGotoNext(MoveType.After, instr => instr.MatchLdarg(5))) {
@@ -415,7 +432,7 @@ namespace Celeste.Mod.Randomizer {
                 timeDecay = 0.1f / (60f * 15f);
             }
             score = levels * levelBonus + berries * berryBonus - time - timeDecay / 2f * time * time;
-            
+
             return (int) score;
         }
 
@@ -425,7 +442,7 @@ namespace Celeste.Mod.Randomizer {
                 orig(self);
                 return;
             }
-            
+
             float x = -300f * Ease.CubeIn(1f - self.DrawLerp);
             var scene = Engine.Scene as Level;
             if (scene == null) {
@@ -434,17 +451,17 @@ namespace Celeste.Mod.Randomizer {
             var session = scene.Session;
             var wiggler = (Wiggler)typeof(SpeedrunTimerDisplay).GetField("wiggler", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(self);
             var bg = (MTexture) typeof(SpeedrunTimerDisplay).GetField("bg", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(self);
-            
+
             string timeString = TimeSpan.FromTicks(session.Time).ShortGameplayFormat();
             string scoreString = Dialog.Clean("RANDOENDLESS_SCORE") + " " + this.CurrentScore;
-            
+
             bg.Draw(new Vector2(x, self.Y));
             SpeedrunTimerDisplay.DrawTime(new Vector2(x + 32f, self.Y + 44f), timeString);
             Draw.Rect(x, self.Y + 38f, (float) (96 + 2), 22.8f, Color.Black); // ???
             bg.Draw(new Vector2(x + 96, self.Y + 38f), Vector2.Zero, Color.White, 0.6f);
             SpeedrunTimerDisplay.DrawTime(new Vector2(x + 32f, (float) ((double) self.Y + 40.0 + 26.400001525878906)), scoreString, (float) ((1.0 + (double) wiggler.Value * 0.15000000596046448) * 0.6000000238418579), session.StartedFromBeginning, scene.Completed, session.BeatBestTime, 0.6f);
         }
-        
+
         private void EndlessShowScore2(On.Celeste.AreaComplete.orig_Info orig, float ease, string speedruntimerchapterstring, string speedruntimerfilestring, string chapterspeedruntext, string versiontext) {
             var settings = Engine.Scene is AreaComplete ? this.endingSettings : this.InRandomizerSettings;
             var savedSetting = global::Celeste.Settings.Instance.SpeedrunClock;
