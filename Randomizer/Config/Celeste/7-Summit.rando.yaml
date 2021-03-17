@@ -184,16 +184,16 @@ ASide:
         Values:
           cameraX: -1
           cameraY: 0
-   - Name: "fgTiles"
-     X: 58
-     Y: 20
-     Update:
-       Remove: true
-   - Name: "fgTiles"
-     X: 59
-     Y: 20
-     Update:
-       Remove: true
+    - Name: "fgTiles"
+      X: 58
+      Y: 20
+      Update:
+        Tile: 0
+    - Name: "fgTiles"
+      X: 59
+      Y: 20
+      Update:
+        Tile: 0
   - Room: "a-04"
     Holes:
     - Side: Left
@@ -2593,18 +2593,28 @@ ASide:
           Dashes: two
   - Room: "f-04"
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: Unknown
+      HighOpen: true
+    - Side: Down
+      Idx: 1
+      Kind: none
     InternalEdges:
-    - Split: LeftToRight
+    - To: "right"
       ReqOut:
         Dashes: one
       ReqIn:
         Dashes: two
+    Subrooms:
+      - Room: "right"
+        Holes:
+          - Side: Right
+            Idx: 0
+            Kind: inout
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:

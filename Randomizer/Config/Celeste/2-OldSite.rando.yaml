@@ -544,7 +544,7 @@ ASide:
         Idx: 1
         Kind: in
       InternalEdges:
-        - To: "left"
+        - To: "main"
           ReqBoth:
             Dashes: one
             Difficulty: easy

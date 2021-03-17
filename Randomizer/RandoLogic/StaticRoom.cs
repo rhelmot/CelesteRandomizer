@@ -26,7 +26,7 @@ namespace Celeste.Mod.Randomizer {
 
         private string TweakedFgTiles, TweakedObjTiles;
         private List<DecalData> TweakedFgDecals, TweakedBgDecals;
-        
+
 
         public override string ToString() {
             return this.Name;
@@ -144,7 +144,7 @@ namespace Celeste.Mod.Randomizer {
                     ReqOut = this.ProcessReqs(null, uhole, true),
                 });
             }
-            
+
             // Check for heart
             this.HasHeart = !(this.ReqEnd is Impossible) && this.Level.Entities.Any(x => x.Name == "blackGem" || x.Name == "cassette");
             if (this.HasHeart) {
@@ -191,7 +191,7 @@ namespace Celeste.Mod.Randomizer {
                     bestNode.Collectables.Add(c);
                 }
             }
-            
+
             // perform fg tweaks
             var regex = new Regex("\\r\\n|\\n\\r|\\n|\\r");
             var tweakable = new List<List<char>>();
@@ -225,7 +225,7 @@ namespace Celeste.Mod.Randomizer {
 
             var FgDecals = this.TweakedFgDecals = new List<DecalData>(Level.FgDecals);
             var BgDecals = this.TweakedBgDecals = new List<DecalData>(Level.BgDecals);
-            
+
             // peform decal tweaks
             foreach (var decalList in new[] {FgDecals, BgDecals}) {
                 var removals = new List<DecalData>();
@@ -254,7 +254,7 @@ namespace Celeste.Mod.Randomizer {
                     decalList.Remove(decal);
                 }
             }
-            
+
             foreach (var tweak in config.Tweaks ?? new List<RandoConfigEdit>()) {
                 if ((tweak.Update?.Add ?? false) && tweak.Decal != RandoConfigDecalType.None) {
                     var newDecal = new DecalData {
@@ -265,7 +265,7 @@ namespace Celeste.Mod.Randomizer {
                     (tweak.Decal == RandoConfigDecalType.BG ? BgDecals : FgDecals).Add(newDecal);
                 }
             }
-            
+
             // objtile tweaks
             var tilesMap = Calc.ReadCSVIntGrid(Level.ObjTiles, Level.Bounds.Width / 8, Level.Bounds.Height / 8);
             foreach (var tweak in config.Tweaks ?? new List<RandoConfigEdit>()) {
@@ -339,10 +339,10 @@ namespace Celeste.Mod.Randomizer {
                         ReqOut = this.ProcessReqs(holeConfig.ReqOut, matchedHole, true),
                     });
                 }
-                
+
                 if (holeConfig.Split != null) {
                     matchedHole.HighOpen = true;
-                    
+
                     var hole = new Hole(matchedHole.Side, 0, matchedHole.HighBound, false) {
                         Launch = holeConfig.Split.Launch,
                         Kind = holeConfig.Split.Kind,
@@ -426,7 +426,7 @@ namespace Celeste.Mod.Randomizer {
                         throw new Exception($"[{this.Name}.{node.Name}] Can only assign a collectable to one owner");
                     }
                     thing.ParentNode = toNode;
-                    toNode.Collectables.Add(thing); 
+                    toNode.Collectables.Add(thing);
                 } else {
                     throw new Exception($"[{this.Name}.{node.Name}] Internal edge must have either To or Split or Collectable or CustomWarp");
                 }
