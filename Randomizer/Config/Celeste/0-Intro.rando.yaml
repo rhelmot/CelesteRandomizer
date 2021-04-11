@@ -38,8 +38,8 @@ ASide:
           cameraX: -1
           cameraY: 0
     - Name: "fgTiles"
-      X: 42
-      Y: 19
+      X: 44
+      Y: 20
       Update:
         Tile: 0
   - Room: "0b"

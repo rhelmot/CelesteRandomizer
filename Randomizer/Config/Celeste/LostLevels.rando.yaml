@@ -488,6 +488,9 @@ ASide:
       Idx: 2
       Kind: None
     - Side: Down
+      Idx: 3
+      Kind: None
+    - Side: Down
       Idx: 6
       Kind: None
     - Side: Down
@@ -996,6 +999,12 @@ ASide:
     - Side: Down
       Idx: 1
       Kind: None
+    Tweaks:
+      - Name: "fgTiles"
+        X: 164
+        Y: 20
+        Update:
+          Tile: 0
   - Room: "f-door"
     Holes:
     - Side: Right

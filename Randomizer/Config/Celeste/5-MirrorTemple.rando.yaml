@@ -2329,13 +2329,13 @@ CSide:
           cameraX: -1.0
           cameraY: 0.0
     - Name: "fgTiles"
-      X: 55
-      Y: 20
+      X: 57
+      Y: 21
       Update:
         Tile: d
     - Name: "fgTiles"
-      X: 55
-      Y: 21
+      X: 57
+      Y: 22
       Update:
         Tile: d
   - Room: "01"

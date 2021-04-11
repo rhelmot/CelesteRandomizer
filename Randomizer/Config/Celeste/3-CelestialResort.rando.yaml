@@ -1060,7 +1060,7 @@ ASide:
         Collectables:
           - Idx: 0
             MustFly: true
-        
+
   - Room: "13-a"  # towels 4
     Holes:
     - Side: Up
@@ -2132,14 +2132,15 @@ BSide:
         Dashes: one
   - Room: "08"
     Holes:
-    - Side: Up
-      Idx: 0
-      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: unknown
+      HighOpen: true
     InternalEdges:
-    - Split: BottomToTop
+    - To: "top"
       ReqOut:
         Dashes: one
         Flag: towels:unset
@@ -2150,6 +2151,12 @@ BSide:
         - Dashes: one
           Difficulty: hard
         - Dashes: two
+    Subrooms:
+      - Room: "top"
+        Holes:
+        - Side: Up
+          Idx: 0
+          Kind: inout
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:
@@ -2270,6 +2277,11 @@ BSide:
         Values:
           cameraX: -1.0
           cameraY: 0.0
+    - Name: "fgTiles"
+      X: 4
+      Y: 20
+      Update:
+        Tile: 0
   - Room: "14"
     Holes:
     - Side: Right
@@ -2372,7 +2384,7 @@ BSide:
         Height: 40
         Values:
           cameraX: -1.0
-          cameraY: 0.0	
+          cameraY: 0.0
   - Room: "16"
     Holes:
     - Side: Up
@@ -2442,7 +2454,7 @@ BSide:
         Height: 168
         Values:
           cameraX: -1.0
-          cameraY: 0.0	
+          cameraY: 0.0
   - Room: "18"
     Holes:
     - Side: Right
@@ -2475,7 +2487,7 @@ BSide:
         Height: 168
         Values:
           cameraX: -1.0
-          cameraY: 0.0	
+          cameraY: 0.0
   - Room: "19"
     Holes:
     - Side: Right
@@ -2508,7 +2520,7 @@ BSide:
         Height: 168
         Values:
           cameraX: -1.0
-          cameraY: 0.0		
+          cameraY: 0.0
   - Room: "21"
     Holes:
     - Side: Right
@@ -2547,7 +2559,7 @@ BSide:
         Height: 168
         Values:
           cameraX: -1.0
-          cameraY: 0.0		
+          cameraY: 0.0
   - Room: "20"
     Holes:
     - Side: Left

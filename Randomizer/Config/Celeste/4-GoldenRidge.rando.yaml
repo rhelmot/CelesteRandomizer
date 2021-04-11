@@ -904,14 +904,15 @@ ASide:
           cameraY: 0.0
   - Room: "c-04"
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
     - Side: Down
       Idx: 0
       Kind: inout
+    - Side: Up
+      Idx: 0
+      Kind: unknown
+      HighOpen: true
     InternalEdges:
-    - Split: LeftToRight
+    - To: "right"
       ReqOut:
         Or:
         - Dashes: one
@@ -923,6 +924,12 @@ ASide:
           Difficulty: master
         - Dashes: one
           Difficulty: perfect
+    Subrooms:
+      - Room: "right"
+        Holes:
+        - Side: Right
+          Idx: 0
+          Kind: inout
     Tweaks:
     - ID: 0
       Name: "jumpThru"
@@ -1794,6 +1801,9 @@ BSide:
       Kind: inout
     - Side: Down
       Idx: 1
+      Kind: None
+    - Side: Down
+      Idx: 2
       Kind: None
     InternalEdges:
     - Split: LeftToRight
