@@ -1949,6 +1949,9 @@ ASide:
       Idx: 0
       Kind: Unknown
       HighOpen: true
+    - Side: Down
+      Idx: 1
+      Kind: None
     InternalEdges:
     - To: "right"
       ReqOut:

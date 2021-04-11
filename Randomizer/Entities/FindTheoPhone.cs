@@ -34,6 +34,7 @@ namespace Celeste.Mod.Randomizer.Entities {
 
         private bool SavedInvincible;
         private IEnumerator Routine() {
+            this.Player.Speed = Vector2.Zero;
             this.SavedInvincible = SaveData.Instance.Assists.Invincible;
             SaveData.Instance.Assists.Invincible = true;
             this.Player.StateMachine.State = 11;
@@ -49,9 +50,11 @@ namespace Celeste.Mod.Randomizer.Entities {
         }
 
         public override void OnEnd(Level level) {
-            this.Scene.Add(new Entity {
+            var reseter = new Entity {
                 new Coroutine(this.ResetInvincible()),
-            });
+            };
+            reseter.Tag |= Tags.Global;
+            this.Scene.Add(reseter);
             this.Player.StateMachine.State = 0;
             this.Level.Session.DoNotLoad.Add(this.Phone.ID);
             this.Phone.RemoveSelf();

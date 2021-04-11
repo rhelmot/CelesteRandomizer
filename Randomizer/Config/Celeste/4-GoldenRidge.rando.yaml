@@ -153,7 +153,7 @@ ASide:
         Height: 128
         Values:
           cameraX: -1.0
-          cameraY: 0.0	
+          cameraY: 0.0
   - Room: "a-04"
     Holes:
     - Side: Right
@@ -172,7 +172,7 @@ ASide:
         Height: 56
         Values:
           cameraX: -1.0
-          cameraY: 0.0		
+          cameraY: 0.0
   - Room: "a-05"
     Holes:
     - Side: Right
@@ -197,7 +197,7 @@ ASide:
         Height: 48
         Values:
           cameraX: -1.0
-          cameraY: 0.0	
+          cameraY: 0.0
   - Room: "a-05x"  # dummy room
     Holes:
     - Side: Up
@@ -252,7 +252,7 @@ ASide:
         Height: 40
         Values:
           cameraX: -1.0
-          cameraY: 0.0		
+          cameraY: 0.0
     ExtraSpace:
     - X: 256
       Y: -48
@@ -621,7 +621,7 @@ ASide:
         Height: 32
         Values:
           cameraX: 1.0
-          cameraY: 0.0	
+          cameraY: 0.0
     - Name: "cameraOffsetTrigger"
       Update:
         Add: true
@@ -1267,6 +1267,9 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: None
     InternalEdges:
       - To: "right"
         ReqOut:
@@ -1287,16 +1290,28 @@ ASide:
             Dashes: one
   - Room: "d-02"
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Up
+      Idx: 0
+      Kind: unknown
     InternalEdges:
-      - Split: LeftToRight
+      - To: "right"
         ReqOut:
           Dashes: zero
+    Subrooms:
+    - Room: "right"
+      Holes:
+      - Side: Right
+        Idx: 0
+        Kind: inout
+      - Side: Down
+        Idx: 1
+        Kind: unknown
+      - Side: Up
+        Idx: 1
+        Kind: unknown
   - Room: "d-03"
     Holes:
     - Side: Right
@@ -1417,7 +1432,7 @@ ASide:
         Height: 144
         Values:
           cameraX: -1.2
-          cameraY: 0.0	
+          cameraY: 0.0
   - Room: "d-07"
     Holes:
     - Side: Right

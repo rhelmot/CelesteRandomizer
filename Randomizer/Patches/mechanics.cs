@@ -42,7 +42,7 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.Key.OnPlayer += PatchCollectKey;
             On.Celeste.Strawberry.OnPlayer += PatchCollectBerry;
             On.Celeste.SummitGem.SmashRoutine += PatchCollectGem;
-            
+
             this.SpecialHooksMechanics.Add(new ILHook(typeof(HeartGem).GetMethod("CollectRoutine", BindingFlags.Instance | BindingFlags.NonPublic).GetStateMachineTarget(), FakeoutHeart));
         }
 
@@ -59,7 +59,7 @@ namespace Celeste.Mod.Randomizer {
                     Logger.Log("randomizer", "ERROR: DJMapHelper.Triggers.TeleportTrigger.OnEnter signature changed");
                 }
             }
-            
+
             dll = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName.Contains("LuaCutscenes"));
             if (dll != null) {
                 var ty = dll.GetType("Celeste.Mod.LuaCutscenes.MethodWrappers");
@@ -73,7 +73,7 @@ namespace Celeste.Mod.Randomizer {
                 }
             }
         }
-        
+
         private void UnloadMechanics() {
             Everest.Events.Level.OnTransitionTo -= OnTransition;
             Everest.Events.Level.OnLoadLevel -= OnLoadLevel;
@@ -94,7 +94,7 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.Key.OnPlayer -= PatchCollectKey;
             On.Celeste.Strawberry.OnPlayer -= PatchCollectBerry;
             On.Celeste.SummitGem.SmashRoutine -= PatchCollectGem;
-            
+
             foreach (var detour in this.SpecialHooksMechanics) {
                 detour.Dispose();
             }
@@ -122,17 +122,17 @@ namespace Celeste.Mod.Randomizer {
               player.StartCassetteFly(respawn, (respawn + player.Position) / 2 - 30 * Vector2.UnitY);
             }
         }
-        
+
         void PatchNewKey(On.Celeste.Key.orig_ctor_EntityData_Vector2_EntityID orig, Key self, EntityData e, Vector2 v, EntityID i) {
             orig(self, e, v, i);
             PatchAutoBubble(self, e);
         }
-        
+
         void PatchNewBerry(On.Celeste.Strawberry.orig_ctor orig, Strawberry self, EntityData e, Vector2 v, EntityID i) {
             orig(self, e, v, i);
             PatchAutoBubble(self, e);
         }
-        
+
         void PatchNewGem(On.Celeste.SummitGem.orig_ctor orig, SummitGem self, EntityData e, Vector2 v, EntityID i) {
             orig(self, e, v, i);
             PatchAutoBubble(self, e);
@@ -220,9 +220,9 @@ namespace Celeste.Mod.Randomizer {
                   if (component.DisposeOnTransition)
                     component.Stop();
                 }
-                
+
                 level.TeleportTo(player, level.Session.Level, Player.IntroTypes.Transition, targetLevel.Spawns[0]);
-                
+
                 Audio.SetParameter(Audio.CurrentAmbienceEventInstance, "has_conveyors", level.Tracker.GetEntities<WallBooster>().Count > 0 ? 1f : 0.0f);
                 List<Component> transitionIn = level.Tracker.GetComponentsCopy<TransitionListener>();
                 transitionIn.RemoveAll((Predicate<Component>) (c => transitionOut.Contains(c)));
@@ -258,10 +258,10 @@ namespace Celeste.Mod.Randomizer {
         private void OnLoadLevelHook(On.Celeste.Level.orig_LoadLevel orig, Level self, Player.IntroTypes playerIntro, bool fromLoader) {
             // HACK: reset endingSettings in case VersionNumberAndVariants is called from something other than AreaComplete
             this.endingSettings = null;
-            
+
             var settings = this.InRandomizerSettings;
-            if (fromLoader && settings != null) {
-                // Don't restart the timer on retry
+            if (fromLoader && settings != null && SaveData.Instance.CurrentSession.SeedCleanRandom()) {
+                // Don't restart the timer on retry in random seeds
                 self.Session.FirstLevel = false;
             }
             orig(self, playerIntro, fromLoader);
@@ -276,7 +276,7 @@ namespace Celeste.Mod.Randomizer {
             }
 
             if (settings != null && settings.IsLabyrinth && Everest.Loader.DependencyLoaded(new EverestModuleMetadata() { Name = "BingoUI" })) {
-                var ui = LoadGemUI(fromLoader); // must be a separate method or the jit will be very sad :(
+                var ui = LoadGemUI(fromLoader);
                 self.Add(ui); // lord fucking help us
             }
 
@@ -348,7 +348,7 @@ namespace Celeste.Mod.Randomizer {
                 if (new DynData<MapData>(level.Session.MapData).Get<bool?>("HasIsaVariantTriggers") ?? false) {
                     this.ResetIsaVariants();
                 }
-                
+
                 // reset inventory
                 SaveData.Instance.CurrentSession.Inventory = settings.Dashes == NumDashes.Zero ? new PlayerInventory(0, true, false, false) :
                                                              settings.Dashes == NumDashes.One ?  new PlayerInventory(1, true, false, false) :
@@ -366,7 +366,7 @@ namespace Celeste.Mod.Randomizer {
                     SaveData.Instance.SummitGems[1] = true;
                     SaveData.Instance.SummitGems[2] = true;
                 }
-                
+
                 // set life berries
                 if (isFromLoader && settings.HasLives) {
                     var glb = Entities.LifeBerry.GrabbedLifeBerries;
@@ -420,7 +420,7 @@ namespace Celeste.Mod.Randomizer {
                 if (!this.InRandomizer) {
                     return true;
                 }
-                
+
                 var currentRoom = level.Session.LevelData;
                 var player = level.Tracker.GetEntity<Player>();
                 var dyn = new DynData<LevelData>(currentRoom);
@@ -571,7 +571,7 @@ namespace Celeste.Mod.Randomizer {
                 var newNextLevel = LookupCustomwarpTarget();
                 var levelData = SaveData.Instance.CurrentSession.MapData.Get(newNextLevel);
                 var spawn = levelData.Spawns[0] - levelData.Position;
-                
+
                 var dll = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName.Contains("DJMapHelper"));
                 var ty = dll.GetType("Celeste.Mod.DJMapHelper.Triggers.TeleportTrigger");
                 ty.GetField("room", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(self, newNextLevel);
@@ -580,7 +580,7 @@ namespace Celeste.Mod.Randomizer {
             }
             orig(self, player);
         }
-        
+
         private void GenericCutsceneWarp(On.Celeste.Level.orig_TeleportTo orig, Level self, Player player, string nextlevel, Player.IntroTypes introtype, Vector2? nearestspawn) {
             if (this.InRandomizer) {
                 nextlevel = LookupCustomwarpTarget();
@@ -641,7 +641,7 @@ namespace Celeste.Mod.Randomizer {
         private static void CombineAutotilers(Autotiler basic, List<string> additions, RandoSettings settings) {
             var counts = new Dictionary<char, int>();
             var r = new Random((int)settings.IntSeed);
-            
+
             // uhhhhhhh this is intensely sketchy
             var lookup = (IDictionary)typeof(Autotiler).GetField("lookup", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(basic);
             foreach (char k in lookup.Keys) {
@@ -724,7 +724,7 @@ namespace Celeste.Mod.Randomizer {
             var r = new Random((int)settings.IntSeed);
             foreach (var addition in additions) {
                 var bankMod = new SpriteBank(GFX.Game, addition);
-                
+
                 foreach (KeyValuePair<string, SpriteData> kvpBank in bankMod.SpriteData) {
                     string key = kvpBank.Key;
                     SpriteData valueMod = kvpBank.Value;
