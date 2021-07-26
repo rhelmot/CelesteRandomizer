@@ -181,6 +181,9 @@ ASide:
       Kind: inout
       ReqBoth:
         Dashes: one
+    - Side: Down
+      Idx: 0
+      Kind: none
     InternalEdges:
     - Collectable: 0
       ReqBoth:

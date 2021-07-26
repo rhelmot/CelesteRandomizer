@@ -509,6 +509,7 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: inout
+      Launch: -1
     InternalEdges:
     - To: "left"
       ReqBoth:
@@ -3644,7 +3645,10 @@ BSide:
       Idx: 0
       Kind: out
       ReqOut:
-        Dashes: two
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: master
     - Side: Down
       Idx: 0
       Kind: none

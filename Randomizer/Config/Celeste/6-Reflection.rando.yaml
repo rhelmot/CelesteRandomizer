@@ -192,6 +192,12 @@ ASide:
     - To: "heart"
       ReqIn:
         Dashes: zero
+      ReqOut:
+        Or:
+          - Dashes: one
+            Difficulty: normal
+          - Dashes: zero
+            Difficulty: expert
     Subrooms:
     - Room: "cassette"
       Holes:

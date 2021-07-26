@@ -491,6 +491,10 @@ ASide:
       Kind: out
       ReqOut:
         Dashes: one
+    InternalEdges:
+      - Collectable: 0
+        ReqBoth:
+          Dashes: one
     Tweaks:
     - ID: 97
       Name: "lightbeam"

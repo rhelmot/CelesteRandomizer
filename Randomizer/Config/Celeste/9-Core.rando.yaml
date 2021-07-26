@@ -900,6 +900,11 @@ ASide:
         - Dashes: two
     Tweaks:
     - Name: "spawn"
+      X: 256
+      Y: 144
+      Update:
+        Default: true
+    - Name: "spawn"
       X: 160
       Y: 160
       Update:
