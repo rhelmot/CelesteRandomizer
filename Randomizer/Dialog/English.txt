@@ -686,7 +686,8 @@
     RANDOHEART_THEO_44=You must have forgotten to buffer your climbjump when I fell for you
     RANDOHEART_THEO_45=I feel like I'm in some sort of weird romcom except there's no rom and no com. Help me
     RANDOHEART_THEO_46=ugh drinking the recommended daily amount of water makes me feel like a potted plant
-    RANDOHEART_THEO_COUNT=47
+    RANDOHEART_THEO_47=I heard they're gonna rerelease Farewell in Japan as Celeste 2
+    RANDOHEART_THEO_COUNT=48
 
     RANDOHEART_MADDYPIC_0=distracted
     RANDOHEART_MADDYPIC_1=sad
