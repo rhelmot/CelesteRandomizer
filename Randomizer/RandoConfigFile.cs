@@ -357,7 +357,7 @@ namespace Celeste.Mod.Randomizer {
 
         public void Add(RandoMetadataFile other) {
             this.CollectableNames.AddRange(other.CollectableNames);
-            this.Music.AddRange(other.Music);
+            this.Music.AddRange(other.Music.Where(t => t.IsLoaded()));
             this.Campaigns.AddRange(other.Campaigns);
             this.Backgrounds.AddRange(other.Backgrounds);
             this.BgEffects.AddRange(other.BgEffects);
@@ -392,6 +392,8 @@ namespace Celeste.Mod.Randomizer {
             get => this.weight;
             set => this.weight = (value >= 0 && value <= 3) ? value : 1f;
         }
+
+        public bool IsLoaded() => Audio.GetEventDescription(this.Name) != null;
     }
 
     public class RandoMetadataCampaign {
