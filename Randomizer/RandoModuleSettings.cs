@@ -22,7 +22,7 @@ namespace Celeste.Mod.Randomizer {
         public RandoSettings SavedSettings { get; set; }
 
         public bool FastMenu { get; set; }
-        public bool LazyLoading { get; set; }
+        public bool LazyLoading { get; set; } = true;
     }
 
     public struct RecordTuple {
