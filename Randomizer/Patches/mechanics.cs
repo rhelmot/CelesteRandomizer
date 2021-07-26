@@ -267,7 +267,8 @@ namespace Celeste.Mod.Randomizer {
             orig(self, playerIntro, fromLoader);
             // also, set the core mode right
             // if we're transitioning, we already set it correctly via the direction
-            if (settings != null && !self.Transitioning && playerIntro != Player.IntroTypes.Respawn) {
+            // hack: detect golden berry respawns by checking if the timer is 0
+            if (settings != null && !self.Transitioning && (playerIntro != Player.IntroTypes.Respawn || self.Session.Time == 0)) {
                 var leveldata = self.Session.LevelData;
                 var dyn = new DynData<LevelData>(leveldata);
                 RandoConfigCoreMode modes = dyn.Get<RandoConfigCoreMode>("coreModes");
