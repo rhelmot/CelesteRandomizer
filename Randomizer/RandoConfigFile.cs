@@ -18,25 +18,79 @@ using YamlDotNet.Serialization;
 
 namespace Celeste.Mod.Randomizer {
     public class RandoConfigFile {
+        // null means the side does not exist. zero rooms means the side needs to be lazy-loaded
         public List<RandoConfigRoom> ASide { get; set; }
         public List<RandoConfigRoom> BSide { get; set; }
         public List<RandoConfigRoom> CSide { get; set; }
 
-        public static RandoConfigFile Load(AreaData area) {
-            String fullPath = "Config/" + area.GetSID() + ".rando";
+        public static RandoConfigFile LoadAll(AreaData area, bool lazy=true) {
+            var result = LoadSingle($"Config/{area.GetSID()}.rando", false);
+            if (result != null) {
+                return result;
+            }
+
+            result = new RandoConfigFile();
+            var partialResult = LoadSingle($"Config/{area.GetSID()}.A.rando", lazy);
+            if (partialResult?.ASide != null) {
+                result.ASide = partialResult.ASide;
+            }
+            partialResult = LoadSingle($"Config/{area.GetSID()}.B.rando", lazy);
+            if (partialResult?.BSide != null) {
+                result.BSide = partialResult.BSide;
+            }
+            partialResult = LoadSingle($"Config/{area.GetSID()}.C.rando", lazy);
+            if (partialResult?.CSide != null) {
+                result.CSide = partialResult.CSide;
+            }
+
+            if (result.ASide == null && result.BSide == null && result.CSide == null) {
+                // is this necessary? not sure
+                return null;
+            }
+            return result;
+        }
+
+        public static RandoConfigFile LoadSingle(string fullPath, bool lazy = true) {
             Logger.Log("randomizer", $"Loading config from {fullPath}");
             if (!Everest.Content.TryGet(fullPath, out ModAsset asset)) {
                 Logger.Log("randomizer", "...not found");
                 return null;
+            } else if (lazy) {
+                return new RandoConfigFile {
+                    ASide = new List<RandoConfigRoom>(),
+                    BSide = new List<RandoConfigRoom>(),
+                    CSide = new List<RandoConfigRoom>(),
+                };
             } else {
                 using (StreamReader reader = new StreamReader(asset.Stream)) {
                     try {
                         return YamlHelper.Deserializer.Deserialize<RandoConfigFile>(reader);
                     } catch (YamlException e) {
-                        throw new Exception($"Error parsing {area.GetSID()}.rando: {e.Message}");
+                        throw new Exception($"Error parsing {fullPath}", e);
                     }
                 }
             }
+        }
+
+        public static Dictionary<string, RandoConfigRoom> LazyReload(AreaKey key) {
+            char side;
+            switch (key.Mode) {
+                case AreaMode.Normal:
+                    side = 'A';
+                    break;
+                case AreaMode.BSide:
+                    side = 'B';
+                    break;
+                case AreaMode.CSide:
+                    side = 'C';
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            var path = $"Config/{key.GetSID()}.{side}.rando";
+            var result = LoadSingle(path, false);
+            return result?.GetRoomMapping(key.Mode);
         }
 
         public static void YamlSkeleton(MapData map, bool doUnknown=true) {
@@ -310,7 +364,7 @@ namespace Celeste.Mod.Randomizer {
             this.FgEffects.AddRange(other.FgEffects);
             this.Rulesets = other.Rulesets; // rely on setter behavior to use this as an updater
         }
-        
+
         public static RandoMetadataFile LoadAll() {
             var result = new RandoMetadataFile();
 
@@ -321,7 +375,7 @@ namespace Celeste.Mod.Randomizer {
             }
             return result;
         }
-        
+
         private static RandoMetadataFile Load(ModAsset asset) {
             // do not catch errors, they should crash on load
             using (StreamReader reader = new StreamReader(asset.Stream)) {
@@ -365,7 +419,7 @@ namespace Celeste.Mod.Randomizer {
         public bool Variants = false;
         public ShineLights Lights = ShineLights.Hubs;
         public Darkness Darkness = Darkness.Never;
-        
+
         public LogicType Algorithm = LogicType.Pathway;
         public MapLength Length = MapLength.Short;
         public NumDashes Dashes = NumDashes.One;
@@ -393,4 +447,3 @@ namespace Celeste.Mod.Randomizer {
         public RandoMetadataBackground AndThen;
     }
 }
-

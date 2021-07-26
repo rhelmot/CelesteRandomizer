@@ -25,6 +25,8 @@ namespace Celeste.Mod.Randomizer {
             builder.Write("Generating map with settings:\n");
             YamlHelper.Serializer.Serialize(builder, settings);
             Logger.Log("randomizer", builder.ToString());
+            LazyReload(settings.EnabledMaps);
+
             var newID = AreaData.Areas.Count;
             if (AreaData.Areas.Last().GetSID().StartsWith("randomizer/")) {
                 newID--;
@@ -125,6 +127,21 @@ namespace Celeste.Mod.Randomizer {
                     this.RemainingRooms.Add(room);
                 }
             }
+
+            this.RemainingRooms.Sort((x, y) => {
+                var z = String.Compare(x.Area.SID, y.Area.SID, comparisonType: StringComparison.Ordinal);
+                if (z != 0) {
+                    return z;
+                }
+
+                z = x.Area.Mode.CompareTo(y.Area.Mode);
+                if (z != 0) {
+                    return z;
+                }
+
+                z = String.Compare(x.Level.Name, y.Level.Name, comparisonType: StringComparison.Ordinal);
+                return z;
+            });
         }
 
         private RandoLogic(RandoSettings settings, AreaKey key, int tryNum) {

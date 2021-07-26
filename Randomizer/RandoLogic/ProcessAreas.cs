@@ -8,6 +8,7 @@ namespace Celeste.Mod.Randomizer {
         public static List<StaticRoom> AllRooms = new List<StaticRoom>();
         public static Dictionary<string, List<AreaKey>> LevelSets = new Dictionary<string, List<AreaKey>> ();
         public static Dictionary<RandoSettings.AreaKeyNotStupid, int> LevelCount = new Dictionary<RandoSettings.AreaKeyNotStupid, int>();
+        public static HashSet<RandoSettings.AreaKeyNotStupid> LazyLoaded = new HashSet<RandoSettings.AreaKeyNotStupid>();
 
         public static List<Hole> FindHoles(LevelData data) {
             List<Hole> result = new List<Hole>();
@@ -119,8 +120,8 @@ namespace Celeste.Mod.Randomizer {
             return result;
         }
 
-        private static void ProcessArea(AreaData area, AreaMode? mode = null) {
-            RandoConfigFile config = RandoConfigFile.Load(area);
+        private static void ProcessArea(AreaData area) {
+            RandoConfigFile config = RandoConfigFile.LoadAll(area, RandoModule.Instance.SavedData.LazyLoading);
             if (config == null) {
                 return;
             }
@@ -129,29 +130,45 @@ namespace Celeste.Mod.Randomizer {
                 if (area.Mode[i] == null) {
                     continue;
                 }
-                if (mode != null && mode != (AreaMode?)i) {
-                    continue;
-                }
                 var mapConfig = config.GetRoomMapping((AreaMode)i);
                 if (mapConfig == null) {
                     continue;
                 }
 
-                RandoLogic.AllRooms.AddRange(RandoLogic.ProcessMap(area.Mode[i].MapData, mapConfig));
+                // Mark map as available
                 // Use SID (minus level name) for levelsets to avoid collisions
                 AreaKey key = new AreaKey(area.ID, (AreaMode)i);
                 string SID = key.GetSID();
                 string levelSetID = SID.Substring(0, SID.LastIndexOf('/'));
                 if (RandoLogic.LevelSets.TryGetValue(levelSetID, out var keyList)) {
                     keyList.Add(key);
-                }
-                else {
+                } else {
                     RandoLogic.LevelSets.Add(levelSetID, new List<AreaKey> { key });
                 }
+
+                if (mapConfig.Count == 0) {
+                    LazyLoaded.Add(new RandoSettings.AreaKeyNotStupid(key));
+                } else {
+                    RandoLogic.AllRooms.AddRange(RandoLogic.ProcessMap(area.Mode[i].MapData, mapConfig));
+                }
+
             }
         }
 
+        private static void LazyReload(IEnumerable<AreaKey> keys) {
+            foreach (var key in keys) {
+                var notstupid = new RandoSettings.AreaKeyNotStupid(key);
+                if (LazyLoaded.Contains(notstupid)) {
+                    LazyLoaded.Remove(notstupid);
+                    var mapping = RandoConfigFile.LazyReload(key);
+                    RandoLogic.AllRooms.AddRange(RandoLogic.ProcessMap(AreaData.Get(key).Mode[(int) key.Mode].MapData, mapping));
+                }
+            }
+            CountRooms();
+        }
+
         private static void CountRooms() {
+            LevelCount = new Dictionary<RandoSettings.AreaKeyNotStupid, int>();
             foreach (var room in RandoLogic.AllRooms)
             {
                 var notstupid = new RandoSettings.AreaKeyNotStupid(room.Area);
@@ -160,6 +177,17 @@ namespace Celeste.Mod.Randomizer {
                 }
                 else {
                     RandoLogic.LevelCount[notstupid] = 1;
+                }
+            }
+
+            foreach (var notstupid in LazyLoaded) {
+                var stupid = notstupid.Stupid;
+                var count = AreaData.Get(stupid).Mode[(int) stupid.Mode].MapData.Levels.Count;
+                if (RandoLogic.LevelCount.TryGetValue(notstupid, out int c)) {
+                    RandoLogic.LevelCount[notstupid] = c + count;
+                }
+                else {
+                    RandoLogic.LevelCount[notstupid] = count;
                 }
             }
         }
