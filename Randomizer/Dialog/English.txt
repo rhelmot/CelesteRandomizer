@@ -687,7 +687,12 @@
     RANDOHEART_THEO_45=I feel like I'm in some sort of weird romcom except there's no rom and no com. Help me
     RANDOHEART_THEO_46=ugh drinking the recommended daily amount of water makes me feel like a potted plant
     RANDOHEART_THEO_47=I heard they're gonna rerelease Farewell in Japan as Celeste 2
-    RANDOHEART_THEO_COUNT=48
+    RANDOHEART_THEO_48=What do you mean, “internal bleeding”. That’s where the blood is supposed to be, on the inside. What’s the big deal.
+    RANDOHEART_THEO_49=I’m gonna make a religion out of the experience of looking down slightly when you walk through a room so you don’t trip on anything.
+    RANDOHEART_THEO_50=if nobody got me I know Celeste (2018) got me, can I get an AMEN?
+    RANDOHEART_THEO_51=I wanna be a jar of flour :(
+    RANDOHEART_THEO_52=gender IS a game and i’m uploading the files to emulation sites and the nintendo is going to send me a cease and desist over it
+    RANDOHEART_THEO_COUNT=53
 
     RANDOHEART_MADDYPIC_0=distracted
     RANDOHEART_MADDYPIC_1=sad
@@ -713,7 +718,8 @@
     RANDOHEART_THEOPHONE_13=can't delete youtube comment 'TwinkHarasser1890'
     RANDOHEART_THEOPHONE_14=how do I let my trans friends know I love and support them
     RANDOHEART_THEOPHONE_15=hi maddy! i left my phone for you to find intentionally this time <3
-    RANDOHEART_THEOPHONE_COUNT=16
+    RANDOHEART_THEOPHONE_16=how to start a girlunion
+    RANDOHEART_THEOPHONE_COUNT=17
 
 # Madlibs sets
 
