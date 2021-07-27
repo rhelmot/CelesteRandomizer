@@ -1477,6 +1477,7 @@ BSide:
     - Side: Down
       Idx: 0
       Kind: inout
+      Launch: -1
     InternalEdges:
     - Split: BottomToTop
       ReqOut:
