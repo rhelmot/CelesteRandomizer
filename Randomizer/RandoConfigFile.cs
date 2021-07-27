@@ -387,6 +387,7 @@ namespace Celeste.Mod.Randomizer {
     public class RandoMetadataMusic {
         public string Name;
         private float weight = 1;
+        public int Progress;
 
         public float Weight {
             get => this.weight;

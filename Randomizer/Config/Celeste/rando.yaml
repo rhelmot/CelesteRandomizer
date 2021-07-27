@@ -42,7 +42,9 @@ Music:
   - Name: "event:/music/lvl7/final_ascent"
   - Name: "event:/music/lvl8/main"
   - Name: "event:/music/lvl9/main"
-#  - Name: "event:/new_content/music/lvl10/part01"  # needs progress to be set to be anything
+  - Name: "event:/new_content/music/lvl10/part01"
+    Progress: 1
+    Weight: 2
   - Name: "event:/new_content/music/lvl10/part02"
   - Name: "event:/new_content/music/lvl10/part03"
   - Name: "event:/new_content/music/lvl10/intermission_heartgroove"

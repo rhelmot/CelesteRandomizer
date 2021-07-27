@@ -90,7 +90,7 @@ namespace Celeste.Mod.Randomizer {
                     newArea.Wipe = r.PickWipe();
                     newArea.CompleteScreenName = r.PickCompleteScreen();
                     newArea.CassetteSong = r.PickCassetteAudio();
-                    newArea.Mode[0].AudioState = new AudioState(r.PickMusicAudio(), r.PickAmbienceAudio());
+                    newArea.Mode[0].AudioState = r.PickAudioState();
                     if (settings.RandomColors) {
                         newArea.BloomBase = (float)Math.Pow(r.Random.NextFloat(), 5) * r.Random.NextFloat();
                         newArea.DarknessAlpha = r.Random.NextFloat() * (float) Math.Pow(r.Random.NextFloat(), 0.5) * (float) Math.Pow(r.Random.NextFloat(), 2) * 0.35f;
@@ -201,59 +201,23 @@ namespace Celeste.Mod.Randomizer {
             };
         }
 
-        private string PickMusicAudio() {
+        private AudioState PickAudioState() {
+            var result = new AudioState();
+            result.Ambience.Event = "event:/env/amb/04_main"; // only way to get wind effects?
+
             float totalWeight = RandoModule.Instance.MetaConfig.Music.Select(t => t.Weight).Sum();
             float weighAt = this.Random.NextFloat(totalWeight);
             float soFar = 0f;
             foreach (var track in RandoModule.Instance.MetaConfig.Music) {
                 soFar += track.Weight;
                 if (weighAt < soFar) {
-                    return track.Name;
+                    result.Music.Event = track.Name;
+                    result.Music.Progress = track.Progress;
+                    break;
                 }
             }
-            // this should be unreachable. but just in case:
-            return RandoModule.Instance.MetaConfig.Music.Last().Name;
-        }
 
-        private string PickAmbienceAudio() {
-            return "event:/env/amb/04_main"; // only way to get wind effects?
-            /*
-            switch (this.Random.Next(16)) {
-                default:
-                case 0:
-                    return "event:/env/amb/00_prologue";
-                case 1:
-                    return "event:/env/amb/01_main";
-                case 2:
-                    return "event:/env/amb/02_awake";
-                case 3:
-                    return "event:/env/amb/02_dream";
-                case 4:
-                    return "event:/env/amb/03_exterior";
-                case 5:
-                    return "event:/env/amb/03_interior";
-                case 6:
-                    return "event:/env/amb/03_pico8_closeup";
-                case 7:
-                    return "event:/env/amb/04_main";
-                case 8:
-                    return "event:/env/amb/05_interior_dark";
-                case 9:
-                    return "event:/env/amb/05_interior_main";
-                case 10:
-                    return "event:/env/amb/05_mirror_sequence";
-                case 11:
-                    return "event:/env/amb/06_lake";
-                case 12:
-                    return "event:/env/amb/06_main";
-                case 13:
-                    return "event:/env/amb/06_prehug";
-                case 14:
-                    return "event:/env/amb/09_main";
-                case 15:
-                    return "event:/env/amb/worldmap";
-            }
-            */
+            return result;
         }
 
         private string PickCassetteAudio() {
