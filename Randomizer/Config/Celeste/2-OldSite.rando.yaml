@@ -475,7 +475,7 @@ ASide:
       Update:
         Add: true
         X: 192
-        Y: 296
+        Y: 272
     - Name: "spawn"
       Update:
         Add: true
