@@ -18,7 +18,6 @@ Music:
     Weight: 2
   - Name: "event:/music/lvl3/clean"
     Weight: 2
-  - Name: "event:/music/lvl3/clean_extended"
   - Name: "event:/music/lvl3/oshiro_theme"
   - Name: "event:/music/lvl3/oshiro_chase"
   - Name: "event:/music/lvl4/main"
