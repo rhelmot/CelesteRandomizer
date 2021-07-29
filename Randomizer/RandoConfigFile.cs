@@ -387,7 +387,7 @@ namespace Celeste.Mod.Randomizer {
     public class RandoMetadataMusic {
         public string Name;
         private float weight = 1;
-        public int Progress;
+        public Dictionary<string, int> Parameters = new Dictionary<string, int>();
 
         public float Weight {
             get => this.weight;

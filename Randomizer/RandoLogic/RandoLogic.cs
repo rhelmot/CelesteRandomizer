@@ -212,7 +212,9 @@ namespace Celeste.Mod.Randomizer {
                 soFar += track.Weight;
                 if (weighAt < soFar) {
                     result.Music.Event = track.Name;
-                    result.Music.Progress = track.Progress;
+                    foreach (var param in track.Parameters) {
+                        result.Music.Param(param.Key, param.Value);
+                    }
                     break;
                 }
             }
