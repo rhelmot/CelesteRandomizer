@@ -343,7 +343,7 @@ CollectableNames:
   - "name of collectable entity"
 Music:
   - Name: "name of music track event"
-    Weight: {float which is larger or smaller than one to make the track appear more or less oftne}
+    Weight: {float which is larger or smaller than one to make the track appear more or less often}
   - Name: "name"
     Weight: 0.5
   - Name: "name"
