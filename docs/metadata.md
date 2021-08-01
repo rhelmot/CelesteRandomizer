@@ -346,6 +346,10 @@ Music:
     Weight: {float which is larger or smaller than one to make the track appear more or less oftne}
   - Name: "name"
     Weight: 0.5
+  - Name: "name"
+    Weight: 0.5
+    Parameters
+      fmod_parameter_name: number # only do this if your song has progression in it or there are special parameters which need to be set. you can easily find the parameter name in the mod option "Sound Test"
 Campaigns:
   - Name: "Name of campaign"
     LevelSets:
@@ -377,6 +381,8 @@ Rulesets:
 The CollectableNames are the names of the entities which should be considered as collectables, i.e. valid places to put strawberries, keys, gems. The music tracks are fmod event names, for example `"event:/music/lvl1/main"`.
 
 The campaign system is designed for mods which add a huge number of small maps which ought to be toggled in large swaths, like the spring 2020 collab. If you add a levelset to a campaign, it won't show up as a toggle by itself, but rather one toggle will appear for the whole campaign.
+
+Lazy loading is a small feature that skips the loading process on config until that map is turned on in the randomizer settings. This is done to help decrease loading times. If you want your map to use this, each side of the map has to be split into a different file. level.A.rando.yaml, level.B.rando.yaml, etc. This feature is only necessary for large mods, so you shouldn't need to worry about it.
 
 ## Debugging
 
