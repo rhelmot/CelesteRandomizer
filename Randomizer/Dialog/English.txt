@@ -719,7 +719,10 @@
     RANDOHEART_THEOPHONE_14=how do I let my trans friends know I love and support them
     RANDOHEART_THEOPHONE_15=hi maddy! i left my phone for you to find intentionally this time <3
     RANDOHEART_THEOPHONE_16=how to start a girlunion
-    RANDOHEART_THEOPHONE_COUNT=17
+    RANDOHEART_THEOPHONE_17=have you tried turning the hamster on and off again
+    RANDOHEART_THEOPHONE_18=experienced rando users dont say wWhat is a perfect" they say "why is a perfect"
+    RANDOHEART_THEOPHONE_19=that spike is being on the fbi watchlist for violation of madeline rights
+    RANDOHEART_THEOPHONE_COUNT=20
 
 # Madlibs sets
 
