@@ -246,6 +246,8 @@ namespace Celeste.Mod.Randomizer {
                         session.SeedCleanRandom(Settings.SeedType == SeedType.Random);
                     }
 
+                    session.OldStats.Modes[0].HeartGem = false;
+
                     var showPostcard = areaSettings.EndlessLevel == 0 && !areaSettings.SpawnGolden;
                     string postcard = null;
                     if (showPostcard) {
