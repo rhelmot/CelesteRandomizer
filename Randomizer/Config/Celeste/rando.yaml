@@ -209,6 +209,7 @@ Rulesets:
     EndlessLives: 3
     Lights: On
     Strawberries: Low
+    Lives: 3
   - Name: H
     LongName: "Hard Endless (H)"
     Algorithm: Endless
@@ -216,3 +217,4 @@ Rulesets:
     Difficulty: Hard
     Lights: On
     Strawberries: High
+    Lives: 5

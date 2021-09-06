@@ -429,6 +429,7 @@ namespace Celeste.Mod.Randomizer {
         public Difficulty Difficulty = Difficulty.Normal;
         public DifficultyEagerness DifficultyEagerness = DifficultyEagerness.Medium;
         public StrawberryDensity Strawberries = StrawberryDensity.None;
+        public int Lives = 0;
     }
 
     public class RandoMetadataBackground {
