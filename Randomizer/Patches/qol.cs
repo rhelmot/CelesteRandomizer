@@ -44,6 +44,7 @@ namespace Celeste.Mod.Randomizer {
             On.Celeste.CS06_Campfire.OnBegin += FuckUpEvenLess;
             IL.Celeste.CS06_Campfire.OnEnd += FuckUpWayLess;
             IL.Celeste.LightningRenderer.Track += TrackExtraSpace;
+            On.Celeste.LockBlock.OnPlayer += NoKeySkips;
             
             // https://github.com/EverestAPI/CelesteTAS-EverestInterop/blob/master/CelesteTAS-EverestInterop/EverestInterop/DisableAchievements.cs
             // Before hooking Achievements.Register, check the size of the method.
@@ -98,11 +99,23 @@ namespace Celeste.Mod.Randomizer {
             IL.Celeste.CS06_Campfire.OnEnd -= FuckUpWayLess;
             IL.Celeste.LightningRenderer.Track -= TrackExtraSpace;
             IL.Celeste.HeartGem.Awake -= SpecialHeartColors;
+            On.Celeste.LockBlock.OnPlayer += NoKeySkips;
             
             foreach (var detour in this.SpecialHooksQol) {
                 detour.Dispose();
             }
             this.SpecialHooksQol.Clear();
+        }
+
+        private void NoKeySkips(On.Celeste.LockBlock.orig_OnPlayer orig, LockBlock self, Player player) {
+            var blockCount = Engine.Scene.Entities.Count(e => e is LockBlock);
+            var keyCount = Engine.Scene.Entities.Count(e => e is Key);
+
+            if (blockCount > keyCount) {
+                return;
+            }
+
+            orig(self, player);
         }
 
         private void HeartSfx(ILContext il) {
