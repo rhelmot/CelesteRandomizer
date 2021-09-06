@@ -2200,15 +2200,20 @@ BSide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
-      ReqOut:
-        Dashes: one
+      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
     - Side: Down
       Idx: 0
       Kind: None
+    InternalEdges:
+      - Split: LeftToRight
+        ReqOut:
+          Dashes: one
+        ReqIn:
+          Dashes: two
+          Difficulty: perfect
   - Room: "11"
     Holes:
     - Side: Right

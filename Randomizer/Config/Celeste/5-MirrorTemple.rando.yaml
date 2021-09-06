@@ -55,7 +55,7 @@ ASide:
         Or:
         - Dashes: one
         - Dashes: zero
-          Difficulty: expert  # requires a ceiling pop but there's no penalty for failure
+          Difficulty: master  # requires two ceiling pops but there's no penalty for failure
     - Side: Right
       Idx: 0
       Kind: inout

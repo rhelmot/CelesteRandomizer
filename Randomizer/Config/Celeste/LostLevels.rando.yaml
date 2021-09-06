@@ -1027,6 +1027,9 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: unknown
+    - Side: Down
+      Idx: 0
+      Kind: unknown
     InternalEdges:
     - To: "right"
       ReqOut:
