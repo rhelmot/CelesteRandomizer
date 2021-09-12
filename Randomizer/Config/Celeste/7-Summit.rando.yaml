@@ -4272,27 +4272,3 @@ CSide:
           X: 120
           Y: 48
           Bubble: true
-      - Name: refill
-        ID: 882
-        Update: 
-          twoDash: true
-      - Name: refill
-        ID: 896
-        Update: 
-          twoDash: true
-      - Name: refill
-        ID: 916
-        Update: 
-          twoDash: true
-      - Name: refill
-        ID: 943
-        Update: 
-          twoDash: true
-      - Name: refill
-        ID: 964
-        Update: 
-          twoDash: true
-      - Name: refill
-        ID: 971
-        Update: 
-          twoDash: true
