@@ -692,7 +692,10 @@
     RANDOHEART_THEO_50=if nobody got me I know Celeste (2018) got me, can I get an AMEN?
     RANDOHEART_THEO_51=I wanna be a jar of flour :(
     RANDOHEART_THEO_52=gender IS a game and i’m uploading the files to emulation sites and the nintendo is going to send me a cease and desist over it
-    RANDOHEART_THEO_COUNT=53
+    RANDOHEART_THEO_53=have you tried turning your hamster off and on again
+    RANDOHEART_THEO_54=experienced rando players dont say "what is a perfect" they say "why is a perfect"
+    RANDOHEART_THEO_55=that spike is being put on the fbi watchlist for violation of madeline rights
+    RANDOHEART_THEO_COUNT=56
 
     RANDOHEART_MADDYPIC_0=distracted
     RANDOHEART_MADDYPIC_1=sad
@@ -719,10 +722,8 @@
     RANDOHEART_THEOPHONE_14=how do I let my trans friends know I love and support them
     RANDOHEART_THEOPHONE_15=hi maddy! i left my phone for you to find intentionally this time <3
     RANDOHEART_THEOPHONE_16=how to start a girlunion
-    RANDOHEART_THEOPHONE_17=have you tried turning the hamster on and off again
-    RANDOHEART_THEOPHONE_18=experienced rando users dont say "what is a perfect" they say "why is a perfect"
-    RANDOHEART_THEOPHONE_19=that spike is being on the fbi watchlist for violation of madeline rights
-    RANDOHEART_THEOPHONE_COUNT=20
+    RANDOHEART_THEOPHONE_17=am I funny enough to be on the theo quotes list
+    RANDOHEART_THEOPHONE_COUNT=18
 
 # Madlibs sets
 
