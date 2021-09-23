@@ -99,7 +99,7 @@ namespace Celeste.Mod.Randomizer {
             IL.Celeste.CS06_Campfire.OnEnd -= FuckUpWayLess;
             IL.Celeste.LightningRenderer.Track -= TrackExtraSpace;
             IL.Celeste.HeartGem.Awake -= SpecialHeartColors;
-            On.Celeste.LockBlock.OnPlayer += NoKeySkips;
+            On.Celeste.LockBlock.OnPlayer -= NoKeySkips;
             
             foreach (var detour in this.SpecialHooksQol) {
                 detour.Dispose();
