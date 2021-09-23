@@ -108,11 +108,13 @@ namespace Celeste.Mod.Randomizer {
         }
 
         private void NoKeySkips(On.Celeste.LockBlock.orig_OnPlayer orig, LockBlock self, Player player) {
-            var blockCount = Engine.Scene.Entities.Count(e => e is LockBlock);
-            var keyCount = Engine.Scene.Entities.Count(e => e is Key);
+            if (this.InRandomizer) {
+                var blockCount = Engine.Scene.Entities.Count(e => e is LockBlock);
+                var keyCount = Engine.Scene.Entities.Count(e => e is Key);
 
-            if (blockCount > keyCount) {
-                return;
+                if (blockCount > keyCount) {
+                    return;
+                }
             }
 
             orig(self, player);
