@@ -23,6 +23,11 @@ ASide:
     - CustomWarp: true
       ReqOut:
         Dashes: one
+    Tweaks:
+    - Name: "infiniteStar"
+      ID: 6
+      Update:
+        Y: 128
   - Room: "00"
     Holes:
     - Side: Up
