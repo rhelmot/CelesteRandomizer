@@ -688,7 +688,8 @@ ASide:
           cameraX: -1.0
           cameraY: 0.0
   - Room: "b-sec"
-    End: true
+    ReqEnd:
+      Difficulty: easy
     Holes:
     - Side: Right
       Idx: 0
@@ -1844,6 +1845,9 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Up
+      Idx: 0
+      Kind: none
     InternalEdges:
     - To: "right"
       ReqOut:
@@ -2087,10 +2091,6 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: in
-    - Side: Down
-      Idx: 2
-      Kind: Unknown
-      HighOpen: true
     - Side: Down
       Idx: 3
       Kind: None

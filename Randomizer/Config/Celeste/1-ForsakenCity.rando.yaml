@@ -1572,7 +1572,8 @@ BSide:
           cameraX: 0.0
           cameraY: 1.2
   - Room: "end"
-    End: true
+    ReqEnd:
+      Difficulty: easy
     Holes:
     - Side: Down
       Idx: 0

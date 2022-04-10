@@ -78,7 +78,8 @@ ASide:
       Idx: 0
       Kind: inout
   - Room: "3"
-    End: true
+    ReqEnd:
+      Difficulty: easy
     Holes:
     - Side: Left
       Idx: 0

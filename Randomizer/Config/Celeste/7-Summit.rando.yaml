@@ -1391,10 +1391,6 @@ ASide:
       Idx: 2
       Kind: None
     - Side: Down
-      Idx: 3
-      Kind: Unknown
-      Launch: -1
-    - Side: Down
       Idx: 4
       Kind: None
     InternalEdges:
@@ -1419,6 +1415,10 @@ ASide:
       - Side: Right
         Idx: 0
         Kind: inout
+      - Side: Down
+        Idx: 3
+        Kind: Unknown
+        Launch: -1
     Tweaks:
     - Name: "cameraOffsetTrigger"
       ID: 3
@@ -1943,7 +1943,7 @@ ASide:
         - Dashes: two
           Difficulty: expert
         - Dashes: one
-          Difficulty: perfect
+          Difficulty: master
     Tweaks:
     - Name: "spawn"
       Update:
@@ -3648,7 +3648,7 @@ BSide:
         Or:
         - Dashes: two
         - Dashes: one
-          Difficulty: master
+          Difficulty: perfect
     - Side: Down
       Idx: 0
       Kind: none

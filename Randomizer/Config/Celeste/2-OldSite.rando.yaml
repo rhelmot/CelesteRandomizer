@@ -64,7 +64,8 @@ ASide:
     #  ReqIn:
     #    Dashes: one
   - Room: "s2"
-    End: true
+    ReqEnd:
+      Difficulty: easy
     Holes:
     - Side: Down
       Idx: 0

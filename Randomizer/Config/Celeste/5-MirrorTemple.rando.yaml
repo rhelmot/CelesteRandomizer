@@ -1780,8 +1780,11 @@ BSide:
       ReqOut:
         Dashes: one
       ReqIn:
-        Dashes: two
-        Difficulty: hard
+        Or:
+        - Dashes: two
+          Difficulty: hard
+        - Dashes: one
+          Difficulty: perfect
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:

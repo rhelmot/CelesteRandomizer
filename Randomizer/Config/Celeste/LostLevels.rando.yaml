@@ -484,6 +484,14 @@ ASide:
     - Side: Left
       Idx: 1
       Kind: inout
+      ReqOut:
+        Or:
+          - Dashes: Zero
+            Difficulty: Master # (ceiling pop)
+          - Dashes: one
+            Difficulty: Easy
+      ReqIn:
+        Dashes: one
     - Side: Down
       Idx: 2
       Kind: None
@@ -975,8 +983,7 @@ ASide:
       Kind: None
     - Side: Up
       Idx: 0
-      Kind: Unknown
-      LowBound: 79
+      Kind: None
   - Room: "e-08"
     Holes:
     - Side: Right
@@ -1601,6 +1608,9 @@ ASide:
       Idx: 1
       Kind: inout
     - Side: Down
+      Idx: 0
+      Kind: None
+    - Side: Up
       Idx: 0
       Kind: None
     InternalEdges:
