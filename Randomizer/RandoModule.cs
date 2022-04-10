@@ -18,8 +18,9 @@ namespace Celeste.Mod.Randomizer {
                 if (result.CurrentVersion != this.VersionString) {
                     result.CurrentVersion = this.VersionString;
                     result.BestTimes = new Dictionary<uint, long>();
-                    result.BestSetSeedTimes = new Dictionary<string, RecordTuple>();
-                    result.BestRandomSeedTimes = new Dictionary<string, RecordTuple>();
+                    //result.BestSetSeedTimes = new Dictionary<string, RecordTuple>();
+                    //result.BestRandomSeedTimes = new Dictionary<string, RecordTuple>();
+                    // intentionally do not wipe ruleset times, people have suffered enough
                     // intentionally do not wipe settings, they should upgrade gracefully
                 }
                 return result;
