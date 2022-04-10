@@ -226,6 +226,7 @@ namespace Celeste.Mod.Randomizer {
                 // turn on/off variants mode
                 SaveData.Instance.VariantMode = areaSettings.Variants;
                 SaveData.Instance.AssistMode = false;
+                SaveData.Instance.AssistModeChecks();
                 // mark as completed to spawn golden berry
                 // but only if we actually want the golden berry so otherwise we can see postcards
                 SaveData.Instance.Areas[newArea.ID].Modes[0].Completed = areaSettings.SpawnGolden;
