@@ -363,7 +363,7 @@ namespace Celeste.Mod.Randomizer {
 
         private int SummitLaunchReset(On.Celeste.Player.orig_SummitLaunchUpdate orig, Player self) {
             var level = Engine.Scene as Level;
-            if (this.InRandomizer && self.Y < level.Bounds.Y - 8) {
+            if (this.InRandomizer && self.Y < level.Bounds.Y + 8) {
                 // teleport to spawn point
                 self.Position = level.Session.RespawnPoint.Value;
 
