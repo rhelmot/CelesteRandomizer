@@ -644,7 +644,7 @@
     RANDOHEART_THEO_2=I rlly love that I can share anecdotes that start “my girlfriend’s girlfriend’s girlfriend”. love 2 b part of a polycule
     RANDOHEART_THEO_3=I would describe my political leanings as anarcho-librarianism
     RANDOHEART_THEO_4=I will not be accepting constructive criticism
-    RANDOHEART_THEO_5=“Hey, it’s your gay stepsister” is a great way to start a text to me
+    RANDOHEART_THEO_5=“Hey, it’s your gay stepsibling” is a great way to start a text to me
     RANDOHEART_THEO_6=What is the protocol on convincing yourself that you don’t actually have a crush on a twitch streamer
     RANDOHEART_THEO_7=when someone sends you a thumbs up emoji and you give it a thumbs up react. digital echolalia
     RANDOHEART_THEO_8=we r all one race. the cumin race.
