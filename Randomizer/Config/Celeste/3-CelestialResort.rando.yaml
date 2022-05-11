@@ -2658,6 +2658,8 @@ CSide:
         - Dashes: two
         - Dashes: one
           Difficulty: hard
+        - Dashes: zero
+          Difficulty: perfect
       ReqIn:
         Or:
         - Dashes: two

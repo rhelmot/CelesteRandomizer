@@ -330,7 +330,10 @@ ASide:
     InternalEdges:
     - Collectable: 0
       ReqBoth:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect
   - Room: "a-15"
     Holes:
     - Side: Down
@@ -1734,12 +1737,10 @@ BSide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
-      ReqOut:
-        Dashes: one
+      Kind: inout
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
     - Side: Down
       Idx: 0
       Kind: None
@@ -1767,6 +1768,13 @@ BSide:
     - Side: Down
       Idx: 8
       Kind: None
+    InternalEdges:
+    - Split: LeftToRight
+      ReqOut:
+        Dashes: one
+      ReqIn:
+        Dashes: two
+        Difficulty: perfect
   - Room: "a-02"
     Holes:
     - Side: Up
