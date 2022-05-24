@@ -2182,7 +2182,10 @@ BSide:
       Kind: None
   - Room: "d-05"
     ReqEnd:
-      Dashes: one
+      Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: master
     Holes:
     - Side: Left
       Idx: 0

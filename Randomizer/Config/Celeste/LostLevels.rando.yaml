@@ -1110,17 +1110,22 @@ ASide:
           cameraY: 1.4
   - Room: "f-02"
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: out
-      ReqOut:
-        Or:
-        - Dashes: two
-        - Dashes: one
-          Difficulty: hard
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    InternalEdges:
+      - Split: "LeftToRight"
+        ReqOut:
+          Or:
+          - Dashes: two
+          - Dashes: one
+            Difficulty: hard
+        ReqIn:
+          Dashes: two
+          Difficulty: expert
   - Room: "f-03"
     Holes:
     - Side: Right
@@ -1227,18 +1232,23 @@ ASide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
-      ReqOut:
-        Or:
-        - Dashes: two
-        - Dashes: one
-          Difficulty: hard
+      Kind: inout
     - Side: Left
       Idx: 0
       Kind: in
     - Side: Down
       Idx: 0
       Kind: None
+    InternalEdges:
+      - Split: LeftToRight
+        ReqOut:
+          Or:
+          - Dashes: two
+          - Dashes: one
+            Difficulty: hard
+        ReqIn:
+          Dashes: two
+          Difficulty: perfect
   - Room: "f-08"
     Holes:
     - Side: Right
@@ -1455,21 +1465,33 @@ ASide:
       Kind: None
   - Room: "h-03b"
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: out
-      ReqOut:
-        Or:
-        - Dashes: two
-        - Dashes: one
-          Difficulty: hard
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
     - Side: Down
       Idx: 0
       Kind: unknown
       Launch: -1
+      HighOpen: true
+    Subrooms:
+      - Room: "right"
+        Holes:
+          - Side: Right
+            Idx: 0
+            Kind: inout
+    InternalEdges:
+      - To: "right"
+        ReqOut:
+          Or:
+          - Dashes: two
+          - Dashes: one
+            Difficulty: hard
+        ReqIn:
+          Or:
+          - Dashes: one
+            Difficulty: master
+          - Dashes: two
+            Difficulty: expert
   - Room: "h-04"
     Holes:
     - Side: Right
@@ -1523,14 +1545,6 @@ ASide:
       Launch: -1
   - Room: "h-06"
     Holes:
-    - Side: Up
-      Idx: 0
-      Kind: out
-      ReqOut:
-        Or:
-        - Dashes: two
-        - Dashes: one
-          Difficulty: hard
     - Side: Left
       Idx: 0
       Kind: in
@@ -1538,6 +1552,45 @@ ASide:
       Idx: 0
       Kind: Unknown
       HighOpen: true
+    InternalEdges:
+      - To: "right"
+        ReqOut:
+          Or:
+          - Dashes: two
+          - Dashes: one
+            Difficulty: hard
+        ReqIn:
+          Or:
+          - Dashes: one
+            Difficulty: expert
+          - Dashes: two
+            Difficulty: normal
+    Subrooms:
+      - Room: "right"
+        Holes:
+          - Side: Up
+            Idx: 0
+            Kind: out
+    Tweaks:
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 848
+        Y: 0
+        Width: 24
+        Height: 72
+        Values:
+          cameraX: -1.0
+          cameraY: 0.0
+    - Name: "spikesUp"
+      ID: 1411
+      Update:
+        Remove: true
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 864
+        Y: 32
     ExtraSpace:
       - X: 328
         Y: 184
@@ -1588,6 +1641,12 @@ ASide:
       ReqOut:
         Dashes: one
         Difficulty: hard
+      ReqIn:
+        Or:
+          - Dashes: two
+            Difficulty: expert
+          - Dashes: one
+            Difficulty: perfect
     Subrooms:
     - Room: "right"
       Holes:
@@ -1596,9 +1655,11 @@ ASide:
         Kind: inout
       - Side: Right
         Idx: 1
-        Kind: out
+        Kind: inout
         ReqOut:
           Dashes: one
+        ReqIn:
+          Dashes: two
   - Room: "h-09"
     Holes:
     - Side: Left

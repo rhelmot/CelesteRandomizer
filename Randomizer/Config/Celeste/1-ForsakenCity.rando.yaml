@@ -1171,8 +1171,14 @@ BSide:
       Kind: inout
     InternalEdges:
     - Split: LeftToRight
-      ReqBoth:
+      ReqOut:
+        Or:
+          - Dashes: one
+          - Dashes: zero
+            Difficulty: perfect
+      ReqIn:
         Dashes: one
+        Difficulty: normal
     Tweaks:
     - ID: 0
       Update:
@@ -1352,8 +1358,16 @@ BSide:
       Kind: none
     InternalEdges:
     - Split: LeftToRight
-      ReqBoth:
-        Dashes: one
+      ReqOut:
+        Or:
+          - Dashes: one
+          - Dashes: zero
+            Difficulty: expert
+      ReqIn:
+        Or:
+          - Dashes: one
+          - Dashes: zero
+            Difficulty: hard
     Tweaks:
     - ID: 0
       Update:

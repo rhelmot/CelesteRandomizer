@@ -1852,6 +1852,9 @@ BSide:
     - To: "right"
       ReqOut:
         Dashes: one
+      ReqIn:
+        Dashes: two
+        Difficulty: perfect
     Subrooms:
       - Room: "right"
         Holes:

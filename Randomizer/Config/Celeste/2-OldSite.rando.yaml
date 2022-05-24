@@ -296,7 +296,10 @@ ASide:
     InternalEdges:
     - Split: BottomToTop
       ReqBoth:
-        Dashes: one
+        Or:
+          - Dashes: one
+          - Dashes: zero
+            Difficulty: master
   - Room: "8"
     Holes:
     - Side: Up
@@ -1397,22 +1400,32 @@ BSide:
         Add: true
         X: 296
         Y: 24
-  - Room: "04"  # TODO when we can edit fg tiles, remove the leftmost spikes and blocks under it
+  - Room: "04"
     Holes:
     - Side: Up
       Idx: 0
       Kind: inout
-      ReqBoth:
-        Dashes: one
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
+    InternalEdges:
+      - Split: BottomToTop
+        ReqOut:
+          Dashes: one
+        ReqIn:
+          Dashes: two
+          Difficulty: master
     Tweaks:
     - Name: "spawn"
       Update:
         Add: true
         X: 40
         Y: 24
+    - Name: "jumpThru"
+      ID: 0
+      Update:
+        X: 72
+        Width: 16
   - Room: "05"
     Holes:
     - Side: Up
