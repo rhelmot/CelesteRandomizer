@@ -1487,7 +1487,10 @@ BSide:
       Idx: 0
       Kind: out
       ReqOut:
-        Dashes: two
+        Or:
+          - Dashes: two
+          - Dashes: one
+            Difficulty: perfect
     - Side: Down
       Idx: 0
       Kind: in

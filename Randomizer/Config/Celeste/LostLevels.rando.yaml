@@ -1203,7 +1203,7 @@ ASide:
           - Dashes: two
             Difficulty: expert
           - Dashes: one
-            Difficulty: perfect
+            Difficulty: master
   - Room: "f-06"
     Holes:
     - Side: Right

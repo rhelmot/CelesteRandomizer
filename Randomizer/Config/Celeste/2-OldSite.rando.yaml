@@ -1439,7 +1439,10 @@ BSide:
       ReqOut:
         Dashes: one
       ReqIn:
-        Dashes: two
+        Or:
+          - Dashes: two
+          - Dashes: one
+            Difficulty: master
     Tweaks:
     - ID: 0
       Update:
@@ -1556,18 +1559,43 @@ BSide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: out
-      ReqOut:
-        Dashes: one
+      Kind: inout
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
+    InternalEdges:
+      - Split: BottomToTop
+        ReqOut:
+          Dashes: one
+        ReqIn:
+          Dashes: one
+          Difficulty: expert
     Tweaks:
     - Name: "spawn"
       Update:
         Add: true
         X: 296
         Y: 24
+    - Name: "jumpThru"
+      ID: 0
+      Update:
+        X: 24
+        Width: 24
+    - Name: "spawn"
+      X: 24
+      Y: 520
+      Update:
+        X: 32
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 272
+        Y: 0
+        Width: 32
+        Height: 32
+        Values:
+          cameraX: 0.0
+          cameraY: 1.0
   - Room: "end"
     ReqEnd:
       Dashes: one

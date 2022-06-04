@@ -703,8 +703,11 @@ ASide:
       Idx: 0
       Kind: inout
       ReqOut:
-        Dashes: one
-        Difficulty: easy
+        Or:
+          - Dashes: one
+            Difficulty: easy
+          - Dashes: zero
+            Difficulty: perfect
     - Side: Up
       Idx: 1
       Kind: in              # tweak crumble block for inout?

@@ -861,7 +861,10 @@ ASide:
       Idx: 0
       Kind: out
       ReqOut:
-        Dashes: one
+        Or:
+          - Dashes: one
+          - Dashes: zero
+            Difficulty: master
     - Side: Down
       Idx: 0
       Kind: in
@@ -1881,7 +1884,10 @@ ASide:
     InternalEdges:
     - To: "left"
       ReqBoth:
-        Dashes: two
+        Or:
+          - Dashes: two
+          - Dashes: one
+            Difficulty: expert
     Subrooms:
     - Room: "left"
       Holes:

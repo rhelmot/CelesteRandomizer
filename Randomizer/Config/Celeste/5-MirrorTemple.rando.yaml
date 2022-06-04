@@ -160,7 +160,12 @@ ASide:
       Kind: inout
     InternalEdges:
     - Collectable: 0
-      ReqBoth:
+      ReqOut:
+        Or:
+          - Dashes: one
+          - Dashes: zero
+            Difficulty: hard
+      ReqIn:
         Dashes: one
   - Room: "a-05"
     Hub: true
