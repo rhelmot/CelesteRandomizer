@@ -79,9 +79,20 @@ namespace Celeste.Mod.Randomizer {
             if (dll != null) {
                 var ty = dll.GetType("Celeste.Mod.IsaGrabBag.ForceVariantTrigger");
                 var method = ty.GetMethod("SetVariantsToDefault", BindingFlags.Static | BindingFlags.Public);
-                ResetIsaVariants = () => {
-                    method.Invoke(null, new object[0]);
-                };
+                if (method != null) {
+                    ResetIsaVariants = () => {
+                        method.Invoke(null, new object[0]);
+                    };
+                } else {
+                    ty = dll.GetType("Celeste.Mod.IsaGrabBag.ForceVariants");
+                    method = ty.GetMethod("ResetSession", BindingFlags.Static | BindingFlags.Public);
+                    if (method != null) {
+                        ResetIsaVariants = () => {
+                            method.Invoke(null, new object[0]);
+                        };
+                    }
+                }
+
             } else {
                 ResetIsaVariants = () => {};
             }
