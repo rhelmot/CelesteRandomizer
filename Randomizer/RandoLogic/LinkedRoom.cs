@@ -93,10 +93,9 @@ namespace Celeste.Mod.Randomizer {
             }
         }
 
-        private static HashSet<string> extendedVariantsEntities = new HashSet<string> {
-            "ExtendedVariantTrigger", "ExtendedVariantMode/ExtendedVariantTrigger", "ExtendedVariantMode/ColorGradeTrigger",
-            "ExtendedVariantMode/JumpRefill", "ExtendedVariantMode/RecoverJumpRefill", "ExtendedVariantMode/ExtraJumpRefill"
-        };
+        private static bool isExtendedVariantsEntity(string name) {
+            return name == "ExtendedVariantTrigger" || name.StartsWith("ExtendedVariantMode/");
+        }
 
         public void FillMap(MapData map, RandoSettings settings, Random random) {
             foreach (var room in this.Rooms) {
@@ -129,8 +128,8 @@ namespace Celeste.Mod.Randomizer {
             }
 
             var hasExtendedVariantTriggers = map.Levels.Exists(levelData =>
-                levelData.Triggers.Exists(entityData => extendedVariantsEntities.Contains(entityData.Name)) ||
-                levelData.Entities.Exists(entityData => extendedVariantsEntities.Contains(entityData.Name)));
+                levelData.Triggers.Exists(entityData => isExtendedVariantsEntity(entityData.Name)) ||
+                levelData.Entities.Exists(entityData => isExtendedVariantsEntity(entityData.Name)));
             var hasIsaVariantTriggers = map.Levels.Exists(levelData =>
                 levelData.Triggers.Exists(entityData => entityData.Name == "ForceVariantTrigger"));
             var dyn2 = new DynData<MapData>(map);

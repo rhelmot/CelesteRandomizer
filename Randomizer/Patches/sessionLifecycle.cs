@@ -29,7 +29,7 @@ namespace Celeste.Mod.Randomizer {
 
             // this method is patched by everest so we need to get at the unpatched orig version
             SpecialHooksSession.Add(new ILHook(typeof(AreaComplete).GetMethod("orig_Update"), GotoNextEndless));
-            SpecialHooksSession.Add(new ILHook(typeof(AreaComplete).GetMethod("InitAreaCompleteInfoForEverest2"), EverestDontIntrospect));
+            SpecialHooksSession.Add(new Hook(typeof(AreaComplete).GetMethod("InitAreaCompleteInfoForEverest2"), new Action<Action<bool, Session>, bool, Session>(EverestDontIntrospect)));
         }
 
         private void UnloadSessionLifecycle() {
@@ -97,20 +97,11 @@ namespace Celeste.Mod.Randomizer {
             cursor.Emit(Mono.Cecil.Cil.OpCodes.Brtrue, label);
         }
 
-        private void EverestDontIntrospect(ILContext il) {
-            var cursor = new ILCursor(il);
-
-            if (!cursor.TryGotoNext(MoveType.Before, insn => insn.MatchBrfalse(out var nobodyCares))) {
-                throw new Exception("Could not find patch point");
+        private void EverestDontIntrospect(Action<bool, Session> orig, bool pieScreen, Session session) {
+            if (this.endingSettings != null) {
+                session = null;
             }
-
-            cursor.EmitDelegate<Func<Session, Session>>(s => {
-                if (this.endingSettings != null) {
-                    return null;
-                } else {
-                    return s;
-                }
-            });
+            orig(pieScreen, session);
         }
 
         private PlayerDeadBody DieInEndless(On.Celeste.Player.orig_Die orig, Player self, Vector2 direction, bool evenifinvincible, bool registerdeathinstats) {
@@ -201,6 +192,7 @@ namespace Celeste.Mod.Randomizer {
             orig(self);
 
             if (AreaHandoff != null) {
+                RandoModule.Instance.ResetCachedSettings();
                 if (AreaHandoff.ID < AreaData.Areas.Count) {
                     AreaData.Areas[AreaHandoff.ID] = AreaHandoff;
                 } else if (AreaHandoff.ID == AreaData.Areas.Count) {

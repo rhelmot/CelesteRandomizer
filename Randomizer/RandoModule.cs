@@ -8,7 +8,7 @@ using MonoMod.Utils;
 namespace Celeste.Mod.Randomizer {
     public partial class RandoModule : EverestModule {
         public const Overworld.StartMode STARTMODE_RANDOMIZER = (Overworld.StartMode) 55;
-        
+
         public static RandoModule Instance;
         public RandoMetadataFile MetaConfig;
         public override Type SettingsType => typeof(RandoModuleSettings);
@@ -45,7 +45,7 @@ namespace Celeste.Mod.Randomizer {
         public RandoModule() {
             Instance = this;
         }
-        
+
         public override void LoadContent(bool firstLoad) {
         }
 
@@ -61,7 +61,7 @@ namespace Celeste.Mod.Randomizer {
 
         public Action ResetExtendedVariants;
         public Action ResetIsaVariants;
-        
+
         private void LateInitialize(On.Celeste.GameLoader.orig_Begin orig, GameLoader self) {
             orig(self);
             var dll = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(asm => asm.FullName.Contains("ExtendedVariant"));
@@ -96,7 +96,7 @@ namespace Celeste.Mod.Randomizer {
             } else {
                 ResetIsaVariants = () => {};
             }
-            
+
             this.DelayedLoadMechanics();
             this.DelayedLoadQol();
         }
@@ -116,14 +116,27 @@ namespace Celeste.Mod.Randomizer {
             }
         }
 
+        private RandoSettings CachedSettings;
+        private AreaKey? CachedSettingsKey;
+
+        internal void ResetCachedSettings() {
+            this.CachedSettingsKey = null;
+            this.CachedSettings = null;
+        }
+
         public RandoSettings InRandomizerSettings {
             get {
                 AreaKey? key = SaveData.Instance?.CurrentSession?.Area;
                 if (key == null) return null;
+                if (key == this.CachedSettingsKey) {
+                    return this.CachedSettings;
+                }
                 AreaData area = AreaData.Get(key.Value);
                 if (area == null) return null;
                 var dyn = new DynData<AreaData>(area);
                 var attachedSettings = dyn.Get<RandoSettings>("RandoSettings");
+                this.CachedSettingsKey = key;
+                this.CachedSettings = attachedSettings;
                 return attachedSettings;
             }
         }

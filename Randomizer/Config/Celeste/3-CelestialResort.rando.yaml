@@ -1171,9 +1171,11 @@ ASide:
       - Side: Down
         Idx: 1
         Kind: inout
+        Launch: -1
       - Side: Down
         Idx: 0
         Kind: inout
+        Launch: -1
     Tweaks:
       - ID: 29
         Name: "blackGem"
