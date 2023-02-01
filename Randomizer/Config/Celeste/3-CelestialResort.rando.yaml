@@ -2084,10 +2084,10 @@ BSide:
       Idx: 0
       Kind: out
       ReqOut:
-          Or:
+         Or:
          - Dashes: one
          - Dashes: zero
-          Difficulty: master
+           Difficulty: master
     - Side: Left
       Idx: 0
       Kind: in
@@ -2383,11 +2383,11 @@ BSide:
     InternalEdges:
     - Split: LeftToRight
      ReqOut:
-    Or:
-    - Dashes: one
-    - Dashes: zero
-      Difficulty: master
-      ReqIn:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: master
+     ReqIn:
           Dashes: one
     Tweaks:
     - Name: "cameraOffsetTrigger"
