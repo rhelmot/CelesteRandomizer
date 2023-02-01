@@ -3893,7 +3893,10 @@ BSide:
         - Dashes: one
           Difficulty: hard
       ReqIn:
-        Dashes: one
+      Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: hard
     Tweaks:
     - Name: "jumpThru"
       ID: 1544
