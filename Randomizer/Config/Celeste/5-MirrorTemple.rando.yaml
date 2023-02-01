@@ -1230,10 +1230,10 @@ ASide:
     InternalEdges:
     - Collectable: 0
       ReqBoth:
-      Or:
-        - Dashes: one
-        - Dashes: zero
-          Difficulty: perfect
+          Or:
+          - Dashes: one
+          - Dashes: zero
+            Difficulty: perfect
     - To: "keyleft_top"
       ReqBoth:
         Or:
@@ -1728,10 +1728,10 @@ BSide:
       Idx: 0
       Kind: out
       ReqOut:
-      Or:
-        - Dashes: one
-        - Dashes: zero
-          Difficulty: master
+         Or:
+         - Dashes: one
+         - Dashes: zero
+           Difficulty: master
     - Side: Left
       Idx: 0
       Kind: inout
@@ -1821,10 +1821,10 @@ BSide:
       Idx: 0
       Kind: inout
       ReqOut:
-      Or:
-        - Dashes: one
-        - Dashes: zero
-          Difficulty: perfect
+         Or:
+         - Dashes: one
+         - Dashes: zero
+           Difficulty: perfect
     - Side: Right
       Idx: 0
       Kind: inout
