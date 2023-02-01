@@ -1492,7 +1492,7 @@ ASide:
       Kind: none
     Tweaks:
     - ID: 96             # shorten jumpthru
-     Update:
+      Update:
        X: 256
        Width: 16
   - Room: "d-09"
