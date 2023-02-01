@@ -2379,10 +2379,11 @@ BSide:
       Kind: None
     InternalEdges:
     - Split: LeftToRight
-      ReqOut:
-        - Dashes: zero
-          Difficulty: master
-          Dashes: one
+     ReqOut:
+    Or:
+    - Dashes: one
+    - Dashes: zero
+      Difficulty: master
       ReqIn:
           Dashes: one
     Tweaks:
