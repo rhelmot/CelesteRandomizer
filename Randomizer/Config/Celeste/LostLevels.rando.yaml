@@ -803,6 +803,8 @@ ASide:
       Kind: inout
       ReqOut:
         Dashes: one
+      ReqIn:
+        Dashes: one
     - Side: Up
       Idx: 1
       Kind: none
@@ -861,8 +863,13 @@ ASide:
       Kind: none
     InternalEdges:
     - Split: LeftToRight
-      ReqBoth:
+      ReqOut:
         Dashes: one
+      ReqIn:
+         Or:
+         - Dashes: one
+         - Dashes: zero
+          Difficulty: hard
   - Room: "e-03-dummy"
     Holes:
     - Side: Up
@@ -2169,6 +2176,9 @@ ASide:
         - Dashes: two
         - Dashes: one
           Difficulty: hard
+      ReqIn:
+          Dashes: two
+          Difficulty: master
     - Side: Left
       Idx: 0
       Kind: in
