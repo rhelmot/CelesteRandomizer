@@ -3888,12 +3888,12 @@ BSide:
     InternalEdges:
     - Split: BottomToTop
       ReqOut:
-        Or:
-        - Dashes: two
-        - Dashes: one
-          Difficulty: hard
+         Or:
+         - Dashes: two
+         - Dashes: one
+           Difficulty: hard
       ReqIn:
-      Or:
+        Or:
         - Dashes: one
         - Dashes: zero
           Difficulty: hard
