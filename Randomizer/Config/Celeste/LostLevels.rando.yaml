@@ -864,11 +864,11 @@ ASide:
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
-        Dashes: one
+        - Dashes: one
       ReqIn:
-         Or:
-         - Dashes: one
-         - Dashes: zero
+        Or:
+        - Dashes: one
+        - Dashes: zero
           Difficulty: hard
   - Room: "e-03-dummy"
     Holes:
