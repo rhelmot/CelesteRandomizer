@@ -2585,7 +2585,10 @@ BSide:
       Idx: 1
       Kind: out
       ReqOut:
-        Dashes: one
+          Or:
+          - Dashes: one
+          - Dashes: zero
+         Difficulty: master
     - Side: Down
       Idx: 2
       Kind: None
