@@ -509,7 +509,10 @@ ASide:
     InternalEdges:
     - To: "Right"
       ReqOut:
-        Dashes: one
+          Or:
+          - Dashes: one
+          - Dashes: zero
+          Difficulty: perfect
       ReqIn:
         Or:
         - Dashes: two
@@ -1348,7 +1351,10 @@ BSide:
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect
       ReqIn:
         Or:
         - Dashes: two
@@ -1610,6 +1616,8 @@ BSide:
       ReqIn:
         Or:
         - Dashes: two
+          Difficulty: hard
+        - Dashes: one
           Difficulty: hard
     Tweaks:
     - Name: "cameraOffsetTrigger"
