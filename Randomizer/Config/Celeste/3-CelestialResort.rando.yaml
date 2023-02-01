@@ -2379,8 +2379,12 @@ BSide:
       Kind: None
     InternalEdges:
     - Split: LeftToRight
-      ReqBoth:
-        Dashes: one  # out is SO close to being doable dashless
+      ReqOut:
+        - Dashes: zero
+          Difficulty: master
+          Dashes: one
+      ReqIn:
+          Dashes: one
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:
