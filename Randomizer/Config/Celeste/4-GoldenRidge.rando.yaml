@@ -1490,6 +1490,11 @@ ASide:
     - Side: up
       Idx: 1
       Kind: none
+    Tweaks:
+    - ID: 96             # shorten jumpthru
+     Update:
+       X: 256
+       Width: 16
   - Room: "d-09"
     Holes:
     - Side: Left
