@@ -810,13 +810,18 @@ ASide:
       Kind: none
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
     - Side: left
       Idx: 0
       Kind: None
     - Side: right
       Idx: 0
       Kind: None
+    Tweaks:  
+    - ID: 614            #shorten jumpthrough
+      Update: 
+       X: 160
+       Width: 8       
   - Room: "e-01"
     Holes:
     - Side: Up
