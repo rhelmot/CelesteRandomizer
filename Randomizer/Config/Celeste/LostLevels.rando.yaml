@@ -864,7 +864,7 @@ ASide:
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
-        - Dashes: one
+          Dashes: one
       ReqIn:
         Or:
         - Dashes: one
