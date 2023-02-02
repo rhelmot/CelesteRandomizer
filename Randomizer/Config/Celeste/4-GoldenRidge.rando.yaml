@@ -1507,7 +1507,8 @@ ASide:
         Y: 48
         Width: 24
         Height: 16
-        Pattern: LeftStrong
+        Values:
+          Pattern: LeftStrong
   - Room: "d-09"
     Holes:
     - Side: Left
