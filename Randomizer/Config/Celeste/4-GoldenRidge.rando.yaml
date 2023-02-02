@@ -959,8 +959,13 @@ ASide:
         Kind: inout
     InternalEdges:
     - To: "top"
-      ReqBoth:
+      ReqOut:
         Dashes: one
+      ReqIn:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect
     Subrooms:
     - Room: "top"
       Holes:
