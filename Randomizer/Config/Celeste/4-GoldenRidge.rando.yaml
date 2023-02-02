@@ -1500,13 +1500,14 @@ ASide:
       Update:
        X: 256
        Width: 16
-    - Name: "windAttackTrigger"
+    - Name: "windTrigger"
       Update:
         Add: true
         X: 248
         Y: 48
         Width: 24
         Height: 16
+        Pattern: LeftStrong
   - Room: "d-09"
     Holes:
     - Side: Left
