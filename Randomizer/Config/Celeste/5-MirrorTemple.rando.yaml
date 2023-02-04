@@ -1230,10 +1230,7 @@ ASide:
     InternalEdges:
     - Collectable: 0
       ReqBoth:
-          Or:
-          - Dashes: one
-          - Dashes: zero
-            Difficulty: perfect
+          Dashes: one
     - To: "keyleft_top"
       ReqBoth:
         Or:
@@ -1284,7 +1281,10 @@ ASide:
       InternalEdges:
       - Collectable: 3
         ReqBoth:
-          Dashes: one
+           Or:
+           - Dashes: one
+           - Dashes: zero
+             Difficulty: perfect
     Tweaks:
     - ID: 4
       Name: "changeRespawnTrigger"
