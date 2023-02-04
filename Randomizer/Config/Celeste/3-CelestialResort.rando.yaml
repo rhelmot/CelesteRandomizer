@@ -2084,7 +2084,10 @@ BSide:
       Idx: 0
       Kind: out
       ReqOut:
-        Dashes: one
+         Or:
+         - Dashes: one
+         - Dashes: zero
+           Difficulty: master
     - Side: Left
       Idx: 0
       Kind: in
@@ -2379,8 +2382,13 @@ BSide:
       Kind: None
     InternalEdges:
     - Split: LeftToRight
-      ReqBoth:
-        Dashes: one  # out is SO close to being doable dashless
+      ReqOut:
+         Or:
+         - Dashes: one
+         - Dashes: zero
+           Difficulty: master
+      ReqIn:
+           Dashes: one
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:
@@ -2580,7 +2588,10 @@ BSide:
       Idx: 1
       Kind: out
       ReqOut:
-        Dashes: one
+         Or:
+         - Dashes: one
+         - Dashes: zero
+           Difficulty: master
     - Side: Down
       Idx: 2
       Kind: None

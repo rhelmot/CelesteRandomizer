@@ -959,8 +959,13 @@ ASide:
         Kind: inout
     InternalEdges:
     - To: "top"
-      ReqBoth:
+      ReqOut:
         Dashes: one
+      ReqIn:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect
     Subrooms:
     - Room: "top"
       Holes:
@@ -1109,7 +1114,10 @@ ASide:
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: expert
       ReqIn:
         Or:
         - Dashes: two
@@ -1478,15 +1486,34 @@ ASide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
-        Dashes: one
+          Dashes: one
+      ReqIn:
+        0r:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: expert
     - Side: Left
       Idx: 0
       Kind: inout
     - Side: up
       Idx: 1
       Kind: none
+    Tweaks:
+    - ID: 96             # shorten jumpthru
+      Update:
+       X: 256
+       Width: 16
+    - Name: "windTrigger"
+      Update:
+        Add: true
+        X: 248
+        Y: 48
+        Width: 24
+        Height: 16
+        Values:
+          pattern: LeftStrong
   - Room: "d-09"
     Holes:
     - Side: Left

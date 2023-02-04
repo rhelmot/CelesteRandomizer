@@ -803,18 +803,25 @@ ASide:
       Kind: inout
       ReqOut:
         Dashes: one
+      ReqIn:
+        Dashes: one
     - Side: Up
       Idx: 1
       Kind: none
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
     - Side: left
       Idx: 0
       Kind: None
     - Side: right
       Idx: 0
       Kind: None
+    Tweaks:  
+    - ID: 614            #shorten jumpthrough
+      Update: 
+       X: 160
+       Width: 8       
   - Room: "e-01"
     Holes:
     - Side: Up
@@ -861,8 +868,13 @@ ASide:
       Kind: none
     InternalEdges:
     - Split: LeftToRight
-      ReqBoth:
-        Dashes: one
+      ReqOut:
+          Dashes: one
+      ReqIn:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: hard
   - Room: "e-03-dummy"
     Holes:
     - Side: Up
@@ -967,7 +979,10 @@ ASide:
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
-        Dashes: one
+         Or:
+         - Dashes: one
+         - Dashes: zero
+           Difficulty: expert
   - Room: "e-07"
     Holes:
     - Side: Right
@@ -1739,12 +1754,20 @@ ASide:
       - Split: LeftToRight
         ReqOut:
           Or:
-            - Dashes: two
-            - Dashes: one
-              Difficulty: hard
+          - Dashes: two
+          - Dashes: one
+            Difficulty: hard
         ReqIn:
-          Dashes: two
-          Difficulty: perfect
+          Or:
+          - Dashes: two
+            Difficulty: perfect
+          - Dashes: one
+            Difficulty: perfect   
+    ExtraSpace:
+   - X: 219
+     Y: -44
+     Width: 365
+     Height: 44         
   - Room: "i-01"
     Holes:
     - Side: Left
@@ -2163,18 +2186,32 @@ ASide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
         Or:
         - Dashes: two
         - Dashes: one
           Difficulty: hard
+      ReqIn:
+          Dashes: two
+          Difficulty: master
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
     - Side: Down
       Idx: 0
       Kind: None
+    Tweaks:
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 2504
+        Y: 48
+        Width: 71
+        Height: 32
+        Values:
+          cameraX: -2.0
+          cameraY: 0.0
   - Room: "j-13"
     Holes:
     - Side: Right

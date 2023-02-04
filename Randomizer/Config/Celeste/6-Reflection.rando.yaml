@@ -814,8 +814,13 @@ ASide:
       Kind: inout
     InternalEdges:
     - To: "right"
-      ReqBoth:
-        Dashes: one
+      ReqOut:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: expert
+      ReqIn:
+          Dashes: one
     Subrooms:
     - Room: "right"
       Holes:

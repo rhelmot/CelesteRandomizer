@@ -3888,12 +3888,15 @@ BSide:
     InternalEdges:
     - Split: BottomToTop
       ReqOut:
-        Or:
-        - Dashes: two
-        - Dashes: one
-          Difficulty: hard
+         Or:
+         - Dashes: two
+         - Dashes: one
+           Difficulty: hard
       ReqIn:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: hard
     Tweaks:
     - Name: "jumpThru"
       ID: 1544
