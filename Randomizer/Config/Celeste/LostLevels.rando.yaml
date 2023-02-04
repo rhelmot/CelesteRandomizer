@@ -1764,10 +1764,10 @@ ASide:
           - Dashes: one
             Difficulty: perfect   
     ExtraSpace:
-   - X: 219
-     Y: -44
-     Width: 365
-     Height: 44         
+    - X: 219
+      Y: -44
+      Width: 365
+      Height: 44         
   - Room: "i-01"
     Holes:
     - Side: Left
