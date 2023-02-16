@@ -39,13 +39,12 @@ namespace Celeste.Mod.Randomizer {
             IL.Celeste.EventTrigger.OnEnter += DontGiveOneDash;
             IL.Celeste.CS10_MoonIntro.OnEnd += DontGiveOneDash;
             IL.Celeste.CS10_BadelineHelps.OnEnd += DontGiveOneDash;
-            IL.Celeste.CS10_Gravestone.OnEnd += DontGiveTwoDashes;
             IL.Celeste.CS06_Campfire.OnBegin += FuckUpLess;
             On.Celeste.CS06_Campfire.OnBegin += FuckUpEvenLess;
             IL.Celeste.CS06_Campfire.OnEnd += FuckUpWayLess;
             IL.Celeste.LightningRenderer.Track += TrackExtraSpace;
             On.Celeste.LockBlock.OnPlayer += NoKeySkips;
-            
+
             // https://github.com/EverestAPI/CelesteTAS-EverestInterop/blob/master/CelesteTAS-EverestInterop/EverestInterop/DisableAchievements.cs
             // Before hooking Achievements.Register, check the size of the method.
             // If it is 4 instructions long, hooking it is unnecessary and even causes issues.
@@ -100,7 +99,7 @@ namespace Celeste.Mod.Randomizer {
             IL.Celeste.LightningRenderer.Track -= TrackExtraSpace;
             IL.Celeste.HeartGem.Awake -= SpecialHeartColors;
             On.Celeste.LockBlock.OnPlayer -= NoKeySkips;
-            
+
             foreach (var detour in this.SpecialHooksQol) {
                 detour.Dispose();
             }
@@ -158,7 +157,7 @@ namespace Celeste.Mod.Randomizer {
             if (heartindex == 3 || settings == null) {
                 return;
             }
-            
+
             Color color = Color.White;
             string guiSprite = "";
             switch (settings.Difficulty) {
@@ -189,7 +188,7 @@ namespace Celeste.Mod.Randomizer {
             }
 
             typeof(Poem).GetProperty("Color").SetValue(self, color);
-            
+
             self.Heart = GFX.GuiSpriteBank.Create(guiSprite);
             self.Heart.Play("spin");
             self.Heart.Position = new Vector2(1920f, 1080f) * 0.5f;
@@ -217,7 +216,7 @@ namespace Celeste.Mod.Randomizer {
                     if (id == "heartgem3" || settings == null) {
                         return id;
                     }
-                    
+
                     var prideMode = AppDomain.CurrentDomain.GetAssemblies().Any(asm => asm.FullName.Contains("PrideHearts"));
 
                     switch (settings.Difficulty) {
@@ -622,7 +621,7 @@ namespace Celeste.Mod.Randomizer {
             cursor.Emit(Mono.Cecil.Cil.OpCodes.Ldc_I4, 32);
             cursor.Emit(Mono.Cecil.Cil.OpCodes.Add);
         }
-        
+
         [Command("madlibs_stats", "run statistical tests on the madlibs")]
         public static void MadlibsStats(string blank = "WAVEDASHING", int runs = 100000) {
             var map = new Dictionary<string, int>();
