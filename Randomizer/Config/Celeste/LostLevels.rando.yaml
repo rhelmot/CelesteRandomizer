@@ -1760,11 +1760,8 @@ ASide:
           - Dashes: one
             Difficulty: hard
         ReqIn:
-          Or:
-          - Dashes: two
-            Difficulty: perfect
-          - Dashes: one
-            Difficulty: perfect   
+          Dashes: two
+          Difficulty: perfect 
     ExtraSpace:
     - X: 219
       Y: -44
