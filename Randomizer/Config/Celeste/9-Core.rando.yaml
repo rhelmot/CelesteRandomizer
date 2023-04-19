@@ -157,6 +157,8 @@ ASide:
         - Dashes: two
         - Dashes: one
           Difficulty: hard
+        - Dashes: zero
+          Difficulty: Perfect
     - Side: Down
       Idx: 0
       Kind: inout
@@ -1032,8 +1034,11 @@ ASide:
         - Dashes: one
           Difficulty: hard # demo OR ultra OR corner kick
       ReqIn:
-        Dashes: two
-        Difficulty: expert # corner kick
+        Or:
+        - Dashes: two
+          Difficulty: expert # corner kick
+        - Dashes: one
+          Difficulty: expert
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:
@@ -1057,6 +1062,8 @@ ASide:
         - Dashes: two
         - Dashes: one
           Difficulty: hard
+        - Dashes: zero
+          Difficulty: Perfect
     - Side: Left
       Idx: 0
       Kind: in
@@ -1247,7 +1254,10 @@ BSide:
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: expert
       ReqIn:
         Or:
         - Dashes: zero
@@ -1286,8 +1296,11 @@ BSide:
         - Dashes: one
           Difficulty: perfect
       ReqIn:
-        Dashes: two
-        Difficulty: expert
+        Or:
+        - Dashes: two
+          Difficulty: expert
+        - Dashes: one
+          Difficulty: Perfect
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:
@@ -1383,12 +1396,15 @@ BSide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
         Dashes: two
+      ReqIn:
+        Dashes: two
+        Difficulty: Perfect
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
   - Room: "b-04"
     Core:
       All: hot
@@ -1429,7 +1445,10 @@ BSide:
       Idx: 0
       Kind: out
       ReqOut:
-        Dashes: two
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: master
     - Side: Left
       Idx: 0
       Kind: in
@@ -1766,7 +1785,13 @@ CSide:
       Kind: in
     InternalEdges:
     - Split: LeftToRight
-      ReqBoth:
+      ReqOut:
+        Or:
+        - Dashes: two
+          Difficulty: hard
+        - Dashes: one
+          Difficulty: expert
+      ReqIn:   
         Dashes: two
         Difficulty: hard
   - Room: "02"
