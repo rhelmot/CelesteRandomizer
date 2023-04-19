@@ -805,8 +805,13 @@ ASide:
       HighOpen: true
     InternalEdges:
     - To: "Right"
-      ReqBoth:
+      ReqOut:
         Dashes: one
+      ReqIn:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: Perfect
     - To: "Berry"
       ReqBoth:
         Dashes: one
@@ -1231,8 +1236,13 @@ ASide:
       Kind: inout
     InternalEdges:
     - Split: BottomToTop
-      ReqBoth:
+      ReqOut:
         Dashes: one
+      ReqIn:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: Perfect
     Tweaks:
     - Name: spawn
       Update:
@@ -1847,6 +1857,8 @@ BSide:
         - Dashes: two
         - Dashes: one
           Difficulty: hard
+        - Dashes: zero
+          Difficulty: Perfect
     Tweaks:
     - ID: 0
       Name: "jumpThru"
