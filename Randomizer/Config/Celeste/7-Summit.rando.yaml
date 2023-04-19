@@ -3417,8 +3417,8 @@ BSide:
     Tweaks:
     - ID: 56             # shorten jumpthru
       Update:
-       X: -32
-       Width: 40  
+       X: 144
+       Width: 48  
   - Room: "a-01"
     Holes:
     - Side: Right
