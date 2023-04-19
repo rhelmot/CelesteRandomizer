@@ -25,7 +25,10 @@ ASide:
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
-        Dashes: two
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: master
       ReqIn:
         Or:
         - Dashes: two
@@ -172,7 +175,10 @@ ASide:
         - Dashes: one
           Difficulty: hard
       ReqIn:
-        Dashes: two
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: expert
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:
@@ -575,8 +581,13 @@ ASide:
       Kind: inout
     InternalEdges:
     - To: "right"
-      ReqBoth:
+      ReqOut:
         Dashes: one
+      ReqIn:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: expert
     Subrooms:
     - Room: "right"
       Holes:
@@ -658,6 +669,8 @@ ASide:
         - Dashes: two
         - Dashes: one
           Difficulty: hard
+        - Dashes: zero
+          Difficulty: expert
       ReqIn:
         Dashes: zero
     Tweaks:
@@ -1637,7 +1650,10 @@ ASide:
     InternalEdges:
     - To: "right"
       ReqOut:
-        Dashes: two
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: hard
       ReqIn:
         Or:
           - Dashes: two
@@ -1652,7 +1668,9 @@ ASide:
         InternalEdges:
         - Collectable: 0
           ReqBoth:
-            Dashes: two
+            Or:
+            - Dashes: two
+            - Dashes: one
     Tweaks:
     - Name: "spawn"
       Update:
@@ -1987,8 +2005,13 @@ ASide:
       Kind: inout
     InternalEdges:
     - To: "right"
-      ReqBoth:
-        Dashes: one
+      ReqOut:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect
+      ReqIn:
+          Dashes: one
     Subrooms:
     - Room: "right"
       Holes:
@@ -2096,7 +2119,10 @@ ASide:
     InternalEdges:
     - To: "right"
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect
       ReqIn:
         Or:
           - Dashes: one
@@ -2961,7 +2987,10 @@ ASide:
       Kind: out
       Launch: 19
       ReqOut:
-        Dashes: two
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: master
     - Side: Left
       Idx: 1
       Kind: inout
@@ -3098,7 +3127,11 @@ ASide:
       Idx: 0
       Kind: inout
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: two
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: expert
     - Side: Down
       Idx: 0
       Kind: inout
@@ -3372,12 +3405,20 @@ BSide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
         Dashes: two
+      ReqIn:
+        Dashes: two
+        Difficulty: expert
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
+    Tweaks:
+    - ID: 56             # shorten jumpthru
+      Update:
+       X: -32
+       Width: 40  
   - Room: "a-01"
     Holes:
     - Side: Right
@@ -3769,7 +3810,10 @@ BSide:
       Idx: 0
       Kind: out
       ReqOut:
-        Dashes: two
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: Perfect
     - Side: Down
       Idx: 0
       Kind: in
@@ -4077,7 +4121,10 @@ BSide:
     InternalEdges:
     - To: "right"
       ReqOut:
-        Dashes: two
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: perfect
       ReqIn:
         Dashes: two
         Difficulty: perfect  # ?? marlin what did you do
