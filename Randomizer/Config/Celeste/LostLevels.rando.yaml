@@ -106,6 +106,8 @@ ASide:
         - Dashes: two
         - Dashes: one
           Difficulty: hard
+        - Dashes: zero
+          Difficulty: master
   - Room: "a-03"
     Holes:
     - Side: Right
