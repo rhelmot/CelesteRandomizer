@@ -1849,8 +1849,13 @@ ASide:
       Kind: None
     InternalEdges:
     - Split: LeftToRight
-      ReqBoth:
+      ReqOut:
         Dashes: one
+      ReqIn:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: master
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:
