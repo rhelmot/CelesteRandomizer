@@ -209,8 +209,11 @@ ASide:
       Idx: 0
       Kind: inout
       ReqOut:
-        Dashes: two
-        Diffuclty: hard
+        Or:
+        - Dashes: two
+          Diffuclty: hard
+        - Dashes: one
+          Difficulty: Perfect
     - Side: Right
       Idx: 0
       Kind: inout
