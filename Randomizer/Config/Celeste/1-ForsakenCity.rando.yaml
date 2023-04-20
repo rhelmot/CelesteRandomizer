@@ -83,7 +83,7 @@ ASide:
         - Dashes: one
           Difficulty: easy
         - Dashes: zero
-          Difficulty: perfect  # ceiling pop?
+          Difficulty: master  # ceiling pop?
     Tweaks:
     - ID: 0             # shorten jumpthru
       Update:
