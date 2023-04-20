@@ -2385,7 +2385,10 @@ CSide:
         Dashes: one
         Difficulty: hard
       ReqIn:
-        Dashes: two
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: Perfect
     Subrooms:
       - Room: "right"
         Holes:
