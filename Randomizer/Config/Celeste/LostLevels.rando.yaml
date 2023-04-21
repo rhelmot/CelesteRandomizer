@@ -1465,15 +1465,18 @@ ASide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
         Or:
         - Dashes: two
         - Dashes: one
           Difficulty: hard
+      ReqIn:
+        Dashes: two
+        Difficulty: expert
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
     - Side: Down
       Idx: 0
       Kind: None
