@@ -265,8 +265,13 @@ ASide:
       Kind: inout
     InternalEdges:
     - Split: RightToLeft
-      ReqBoth:
+      ReqOut:
         Dashes: one
+      ReqIn:
+         Or:
+         - Dashes: one
+         - Dashes: zero
+           Difficulty: perfect
   - Room: "a-09"
     Holes:
     - Side: Right
