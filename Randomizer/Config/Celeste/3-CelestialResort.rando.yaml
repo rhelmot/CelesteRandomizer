@@ -364,14 +364,13 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: inout
-      ReqBoth:
+      ReqOut:
         Or:
         - Dashes: one
         - Dashes: zero
-          And:
-            - Flag: books:set
-            - Flag: towels:set
-            - Flag: boxes:set
+          Difficulty: Perfect
+      ReqIn:
+        Dashes: one       
     - Side: Down
       Idx: 1
       Kind: inout
