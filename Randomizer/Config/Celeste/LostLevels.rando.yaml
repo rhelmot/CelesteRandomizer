@@ -1432,8 +1432,11 @@ ASide:
         ReqOut:
           Dashes: one
         ReqIn:
-          Dashes: two
-          Difficulty: perfect
+          Or:
+          - Dashes: two
+            Difficulty: expert
+          - Dashes: one
+            Difficulty: master
   - Room: "h-01"
     Holes:
     - Side: Up
