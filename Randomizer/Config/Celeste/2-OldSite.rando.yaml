@@ -836,7 +836,7 @@ ASide:
         - Dashes: one
           Difficulty: hard
         - Dashes: zero
-          Difficulty: perfect
+          Difficulty: master
         - Dashes: two
       ReqOut:
         Dashes: zero
