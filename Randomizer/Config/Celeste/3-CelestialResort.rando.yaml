@@ -416,7 +416,7 @@ ASide:
         Or:
         - Dashes: two
         - Dashes: one
-          Difficulty: perfect
+          Difficulty: master
     - To: "up"
       ReqOut:
         Dashes: one
