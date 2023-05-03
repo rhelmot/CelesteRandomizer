@@ -821,7 +821,7 @@ ASide:
         Or:
         - Dashes: one
         - Dashes: zero
-          Difficulty: expert
+          Difficulty: master
       ReqIn:
           Dashes: one
     Subrooms:
