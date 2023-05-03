@@ -604,7 +604,7 @@ ASide:
           Or:
           - Dashes: one
           - Dashes: zero
-            Difficulty: perfect
+            Difficulty: master
       Collectables:
       - Idx: 0
       # TODO there is no way to represent that this collectable can be gotten from the bottom with two dashes without the generator thinking that you can also get to the top of the room with two dashes
