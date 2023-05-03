@@ -1127,7 +1127,7 @@ ASide:
         Or:
           - Dashes: two
           - Dashes: one
-            Difficulty: perfect  # absolutely stupid spike jumps
+            Difficulty: master  
   - Room: "c-08"
     Holes:
     - Side: Right
