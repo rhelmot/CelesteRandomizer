@@ -1264,8 +1264,11 @@ ASide:
           - Dashes: one
             Difficulty: hard
         ReqIn:
-          Dashes: two
-          Difficulty: perfect
+           Or:
+           - Dashes: two
+             Difficulty: perfect
+           - Dashes: one
+             Difficulty: perfect  
   - Room: "f-08"
     Holes:
     - Side: Right
