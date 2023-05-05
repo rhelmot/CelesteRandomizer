@@ -77,7 +77,10 @@ ASide:
       Idx: 0
       Kind: inout
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: Perfect
     - Side: Right
       Idx: 0
       Kind: inout
