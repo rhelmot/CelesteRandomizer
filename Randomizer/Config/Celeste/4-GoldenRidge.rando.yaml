@@ -1076,7 +1076,7 @@ ASide:
         - Dashes: two
           Difficulty: hard
         - Dashes: one
-          Difficulty: perfect
+          Difficulty: master
     Tweaks:
     - Name: "spawn"
       Update:
