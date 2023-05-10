@@ -602,7 +602,10 @@ ASide:
       Idx: 0
       Kind: inout
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: Perfect                               #hardest dashless room in randomizer
     - Side: Down
       Idx: 0
       Kind: inout
