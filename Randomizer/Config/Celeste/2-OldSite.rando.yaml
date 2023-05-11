@@ -708,6 +708,10 @@ ASide:
       - Side: Right
         Idx: 1
         Kind: inout
+    Tweaks:
+    - ID: 6             # remove change respawn trigger
+      Update:
+        Remove: true
   - Room: "d1"
     Holes:
     - Side: Right
