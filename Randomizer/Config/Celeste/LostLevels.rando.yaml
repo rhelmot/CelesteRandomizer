@@ -823,7 +823,12 @@ ASide:
     - ID: 614            #shorten jumpthrough
       Update: 
        X: 160
-       Width: 8       
+       Width: 8
+    - Name: spawn
+      Update:
+        Add: true
+        X: 177
+        Y: 56   
   - Room: "e-01"
     Holes:
     - Side: Up
