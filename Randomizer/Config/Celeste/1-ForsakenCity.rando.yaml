@@ -589,9 +589,9 @@ ASide:
       ReqIn:
         Or:
         - Dashes: two
-          Difficulty: normal
+          Difficulty: hard
         - Dashes: one
-          Difficulty: normal
+          Difficulty: hard
         - Dashes: zero
           Difficulty: master
     - Side: Up
@@ -668,7 +668,8 @@ ASide:
       Idx: 0
       Kind: inout
       ReqOut:
-        Dashes: one
+        Dashes: zero
+        Difficulty: master
     InternalEdges:
     - To: "right"
       ReqIn:
@@ -699,6 +700,10 @@ ASide:
       Name: "changeRespawnTrigger"
       Update:
         Remove: true
+    - ID: 1
+      Name: "changeRespawnTrigger"
+      Update:
+        Remove: true   
   - Room: "9c"
     Holes:
     - Side: Left
