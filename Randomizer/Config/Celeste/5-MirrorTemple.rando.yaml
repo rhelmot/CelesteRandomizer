@@ -689,6 +689,7 @@ ASide:
       Kind: out
       ReqOut:
         Dashes: one
+        Difficulty: hard
     - Side: Left
       Idx: 0
       Kind: inout
