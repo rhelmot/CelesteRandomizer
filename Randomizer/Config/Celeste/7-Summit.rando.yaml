@@ -1718,14 +1718,33 @@ ASide:
       Kind: None
     InternalEdges:
     - To: "center"
-      ReqBoth:
-        Dashes: one
+      ReqOut:
+         Or: 
+         - Dashes: one
+         - Dashes: zero
+           Difficulty: master
+      ReqIn:
+         Dashes: one
     Subrooms:
     - Room: "center"
       Holes:
       - Side: Up
         Idx: 2
         Kind: out
+      InternalEdges:
+      - To: "right"
+        ReqOut:
+           Dashes: one
+        ReqIn:
+          Or:
+          - Dashes: one
+          - Dashes: zero
+            Difficulty: master
+    - Room: "right"
+      Holes:
+      - Side: Right
+        Idx: 0
+        Kind: inout
       InternalEdges:
       - To: "right"
         ReqBoth:
