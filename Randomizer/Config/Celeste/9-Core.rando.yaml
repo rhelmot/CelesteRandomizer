@@ -430,10 +430,13 @@ ASide:
         Idx: 0
         Kind: inout
         ReqOut:
-          Dashes: one
+          Dashes: zero
+          Difficulty: master
       - Side: Right
         Idx: 0
         Kind: inout
+        ReqIn:
+          Dashes: one
     Tweaks:
     - ID: 183
       Update:
