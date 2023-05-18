@@ -852,7 +852,10 @@ ASide:
     InternalEdges:
     - Collectable: 0
       ReqBoth:
-        Dashes: one
+         Or:
+         - Dashes: one
+         - Dashes: zero
+           Difficulty: hard
     Tweaks:
     - Name: "spawn"
       Update:
