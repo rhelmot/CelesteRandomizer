@@ -833,15 +833,54 @@ ASide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: out
-      ReqOut:
-        Dashes: one
+      Kind: inout
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
     - Side: Down
       Idx: 1
       Kind: none
+    InternalEdges:
+    - Split: BottomToTop
+      ReqOut:
+        Dashes: one
+      ReqIn: 
+        Or:
+        Dashes: two
+        Difficulty: perfect
+        Dashes: one
+        Difficulty: perfect
+    Tweaks:
+    - Name: spawn
+      Update: 
+        Add: true
+        X: 176
+        Y: 40
+    - ID: 868
+      Name: "killbox"
+      Update: 
+        Remove: true
+    - ID: 869
+      Name: "killbox"
+      Update:
+        Remove: true
+    - ID: 870
+      Name: "killbox"
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"                  
+      Update:
+        Add: true
+        X: 144
+        Y: 24
+        Width:  28
+        Height: 16
+        Values:
+          cameraX: 0
+          cameraY: 1.5
+    - ID: 780
+      Update:
+        Width: 8                                  #edit for jumpthru
   - Room: "e-02"
     Holes:
     - Side: Right
