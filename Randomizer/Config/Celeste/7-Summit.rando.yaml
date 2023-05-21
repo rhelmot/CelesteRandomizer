@@ -1751,7 +1751,7 @@ ASide:
           Or:
           - Dashes: one
           - Dashes: zero
-            Difficulty: perfect
+            Difficulty: master
     Tweaks:
     - Name: "exitBlock"
       ID: 616
