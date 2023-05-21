@@ -1752,11 +1752,6 @@ ASide:
           - Dashes: one
           - Dashes: zero
             Difficulty: perfect
-    - Room: "right"
-      Holes:
-      - Side: Right
-        Idx: 0
-        Kind: inout
     Tweaks:
     - Name: "exitBlock"
       ID: 616
