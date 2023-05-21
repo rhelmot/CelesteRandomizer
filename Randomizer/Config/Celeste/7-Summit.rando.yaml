@@ -4340,19 +4340,9 @@ CSide:
             HighBound: 89
   - Room: "03"
     ReqEnd:
-      Or:
-      - Dashes: two
-        Difficulty: hard
-      - Dashes: one
-        Difficulty: perfect
+      Dashes: two
+      Difficulty: hard
     Holes:
     - Side: Down
       Idx: 0
       Kind: in
-    Tweaks:
-      - Name: Glider
-        Update: 
-          Add: true
-          X: 120
-          Y: 48
-          Bubble: true
