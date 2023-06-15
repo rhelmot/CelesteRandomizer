@@ -265,8 +265,13 @@ ASide:
       Kind: inout
     InternalEdges:
     - Split: RightToLeft
-      ReqBoth:
+      ReqOut:
         Dashes: one
+      ReqIn:
+         Or:
+         - Dashes: one
+         - Dashes: zero
+           Difficulty: perfect
   - Room: "a-09"
     Holes:
     - Side: Right
@@ -599,7 +604,7 @@ ASide:
           Or:
           - Dashes: one
           - Dashes: zero
-            Difficulty: perfect
+            Difficulty: master
       Collectables:
       - Idx: 0
       # TODO there is no way to represent that this collectable can be gotten from the bottom with two dashes without the generator thinking that you can also get to the top of the room with two dashes
@@ -684,6 +689,7 @@ ASide:
       Kind: out
       ReqOut:
         Dashes: one
+        Difficulty: hard
     - Side: Left
       Idx: 0
       Kind: inout
@@ -1665,7 +1671,10 @@ ASide:
       Idx: 0
       Kind: out
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: Perfect
     - Side: Left
       Idx: 0
       Kind: in
@@ -2382,7 +2391,10 @@ CSide:
         Dashes: one
         Difficulty: hard
       ReqIn:
-        Dashes: two
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: Perfect
     Subrooms:
       - Room: "right"
         Holes:

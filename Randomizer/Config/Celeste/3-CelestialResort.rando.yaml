@@ -364,14 +364,13 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: inout
-      ReqBoth:
+      ReqOut:
         Or:
         - Dashes: one
         - Dashes: zero
-          And:
-            - Flag: books:set
-            - Flag: towels:set
-            - Flag: boxes:set
+          Difficulty: Perfect
+      ReqIn:
+        Dashes: one       
     - Side: Down
       Idx: 1
       Kind: inout
@@ -417,7 +416,7 @@ ASide:
         Or:
         - Dashes: two
         - Dashes: one
-          Difficulty: perfect
+          Difficulty: master
     - To: "up"
       ReqOut:
         Dashes: one
@@ -603,7 +602,10 @@ ASide:
       Idx: 0
       Kind: inout
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: Perfect                               #hardest dashless room in randomizer
     - Side: Down
       Idx: 0
       Kind: inout
@@ -1627,7 +1629,10 @@ ASide:
       Idx: 0
       Kind: inout
       ReqOut:
-        Dashes: one
+         Or:
+         - Dashes: one
+         - Dashes: zero
+           Difficulty: expert
     - Side: Right
       Idx: 0
       Kind: inout
@@ -1769,7 +1774,7 @@ ASide:
         Or:
         - Dashes: one
         - Dashes: zero
-          Difficulty: perfect
+          Difficulty: expert
     Tweaks:
     - ID: 2             # remove invisible barrier
       Update:
@@ -1908,7 +1913,7 @@ ASide:
         Or:
           - Dashes: one
           - Dashes: zero
-            Difficulty: perfect
+            Difficulty: master
     Tweaks:
     - ID: 1             # remove invisible barrier
       Update:

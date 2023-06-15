@@ -77,7 +77,10 @@ ASide:
       Idx: 0
       Kind: inout
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: Perfect
     - Side: Right
       Idx: 0
       Kind: inout
@@ -705,6 +708,10 @@ ASide:
       - Side: Right
         Idx: 1
         Kind: inout
+    Tweaks:
+    - ID: 6             # remove change respawn trigger
+      Update:
+        Remove: true
   - Room: "d1"
     Holes:
     - Side: Right
@@ -836,7 +843,7 @@ ASide:
         - Dashes: one
           Difficulty: hard
         - Dashes: zero
-          Difficulty: perfect
+          Difficulty: master
         - Dashes: two
       ReqOut:
         Dashes: zero

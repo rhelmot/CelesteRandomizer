@@ -83,7 +83,7 @@ ASide:
         - Dashes: one
           Difficulty: easy
         - Dashes: zero
-          Difficulty: perfect  # ceiling pop?
+          Difficulty: master  # ceiling pop?
     Tweaks:
     - ID: 0             # shorten jumpthru
       Update:
@@ -585,7 +585,15 @@ ASide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: in
+      Kind: inout
+      ReqIn:
+        Or:
+        - Dashes: two
+          Difficulty: hard
+        - Dashes: one
+          Difficulty: hard
+        - Dashes: zero
+          Difficulty: master
     - Side: Up
       Idx: 1
       Kind: inout
@@ -660,7 +668,8 @@ ASide:
       Idx: 0
       Kind: inout
       ReqOut:
-        Dashes: one
+        Dashes: zero
+        Difficulty: master
     InternalEdges:
     - To: "right"
       ReqIn:
@@ -691,6 +700,10 @@ ASide:
       Name: "changeRespawnTrigger"
       Update:
         Remove: true
+    - ID: 1
+      Name: "changeRespawnTrigger"
+      Update:
+        Remove: true   
   - Room: "9c"
     Holes:
     - Side: Left
@@ -1180,8 +1193,11 @@ BSide:
           - Dashes: zero
             Difficulty: perfect
       ReqIn:
-        Dashes: one
-        Difficulty: normal
+        Or:
+        - Dashes: one
+          Difficulty: normal
+        - Dashes: zero
+          Difficulty: master
     Tweaks:
     - ID: 0
       Update:
@@ -1424,7 +1440,10 @@ BSide:
       Idx: 0
       Kind: out
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: Perfect
     - Side: Down
       Idx: 0
       Kind: inout
@@ -1450,10 +1469,16 @@ BSide:
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: Perfect
       ReqIn:
-        Dashes: two
-        Difficulty: perfect
+        Or:
+        - Dashes: two
+          Difficulty: master
+        - Dashes: one 
+          Difficulty: Perfect
     Tweaks:
     - ID: 0
       Name: "jumpThru"
@@ -1498,7 +1523,10 @@ BSide:
     InternalEdges:
     - Split: BottomToTop
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: Perfect
       ReqIn:
         Dashes: zero
     Tweaks:
@@ -1762,6 +1790,8 @@ CSide:
         - Dashes: two
         - Dashes: one
           Difficulty: hard
+        - Dashes: zero
+          Difficulty: Perfect
     Holes:
     - Side: Left
       Idx: 0

@@ -106,6 +106,8 @@ ASide:
         - Dashes: two
         - Dashes: one
           Difficulty: hard
+        - Dashes: zero
+          Difficulty: master
   - Room: "a-03"
     Holes:
     - Side: Right
@@ -821,20 +823,64 @@ ASide:
     - ID: 614            #shorten jumpthrough
       Update: 
        X: 160
-       Width: 8       
+       Width: 8
+    - Name: spawn
+      Update:
+        Add: true
+        X: 177
+        Y: 56   
   - Room: "e-01"
     Holes:
     - Side: Up
       Idx: 0
-      Kind: out
-      ReqOut:
-        Dashes: one
+      Kind: inout
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
     - Side: Down
       Idx: 1
       Kind: none
+    InternalEdges:
+    - Split: BottomToTop
+      ReqOut:
+        Dashes: one
+      ReqIn: 
+        Or:
+        Dashes: two
+        Difficulty: perfect
+        Dashes: one
+        Difficulty: perfect
+    Tweaks:
+    - Name: spawn
+      Update: 
+        Add: true
+        X: 176
+        Y: 40
+    - ID: 868
+      Name: "killbox"
+      Update: 
+        Remove: true
+    - ID: 869
+      Name: "killbox"
+      Update:
+        Remove: true
+    - ID: 870
+      Name: "killbox"
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"                  
+      Update:
+        Add: true
+        X: 144
+        Y: 24
+        Width:  28
+        Height: 16
+        Values:
+          cameraX: 0
+          cameraY: 1.5
+    - ID: 780
+      Update:
+        Width: 8                                  #edit for jumpthru
   - Room: "e-02"
     Holes:
     - Side: Right
@@ -1262,8 +1308,11 @@ ASide:
           - Dashes: one
             Difficulty: hard
         ReqIn:
-          Dashes: two
-          Difficulty: perfect
+           Or:
+           - Dashes: two
+             Difficulty: perfect
+           - Dashes: one
+             Difficulty: perfect  
   - Room: "f-08"
     Holes:
     - Side: Right
@@ -1430,8 +1479,11 @@ ASide:
         ReqOut:
           Dashes: one
         ReqIn:
-          Dashes: two
-          Difficulty: perfect
+          Or:
+          - Dashes: two
+            Difficulty: expert
+          - Dashes: one
+            Difficulty: master
   - Room: "h-01"
     Holes:
     - Side: Up
@@ -1463,15 +1515,18 @@ ASide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
         Or:
         - Dashes: two
         - Dashes: one
           Difficulty: hard
+      ReqIn:
+        Dashes: two
+        Difficulty: expert
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
     - Side: Down
       Idx: 0
       Kind: None
@@ -1758,11 +1813,8 @@ ASide:
           - Dashes: one
             Difficulty: hard
         ReqIn:
-          Or:
-          - Dashes: two
-            Difficulty: perfect
-          - Dashes: one
-            Difficulty: perfect   
+          Dashes: two
+          Difficulty: perfect 
     ExtraSpace:
     - X: 219
       Y: -44
@@ -1850,8 +1902,13 @@ ASide:
       Kind: None
     InternalEdges:
     - Split: LeftToRight
-      ReqBoth:
+      ReqOut:
         Dashes: one
+      ReqIn:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: master
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:
@@ -1883,15 +1940,18 @@ ASide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
         Or:
         - Dashes: two
         - Dashes: one
           Difficulty: hard
+      ReqIn:
+        Dashes: two
+        Difficulty: Perfect
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
     - Side: Down
       Idx: 0
       Kind: Unknown
@@ -2212,6 +2272,9 @@ ASide:
         Values:
           cameraX: -2.0
           cameraY: 0.0
+    - ID: 214           # remove one-way barrier
+      Update:
+        Remove: true
   - Room: "j-13"
     Holes:
     - Side: Right

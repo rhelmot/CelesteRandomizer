@@ -129,7 +129,10 @@ ASide:
       Idx: 0
       Kind: out
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: Perfect
     - Side: Right
       Idx: 1
       Kind: in
@@ -818,7 +821,7 @@ ASide:
         Or:
         - Dashes: one
         - Dashes: zero
-          Difficulty: expert
+          Difficulty: master
       ReqIn:
           Dashes: one
     Subrooms:
@@ -1777,12 +1780,15 @@ BSide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
         Dashes: one
+      ReqIn:
+        Dashes: two
+        Difficulty: Perfect                    #very perfect
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
     - Side: Down
       Idx: 0
       Kind: Unknown
@@ -2104,18 +2110,34 @@ BSide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
         Dashes: one
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
+      ReqOut:
+        Or:
+        - Dashes: two
+          Difficulty: perfect
+        - Dashes: one
+          Difficulty: perfect
     Tweaks:
     - Name: "spawn"
       Update:
         Add: true
         X: 936
         Y: 16
+    - ID: 1276
+      Name: "invisibleBarrier"
+      Update:
+        Remove: true
+    - Name: "jumpThru"
+      Update: 
+        Add: true
+        X: 936
+        Y: 16
+        Width: 8
   - Room: "d-01"
     Holes:
     - Side: Right
