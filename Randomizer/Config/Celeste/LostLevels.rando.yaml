@@ -2272,6 +2272,9 @@ ASide:
         Values:
           cameraX: -2.0
           cameraY: 0.0
+    - ID: 214           # remove one-way barrier
+      Update:
+        Remove: true
   - Room: "j-13"
     Holes:
     - Side: Right
