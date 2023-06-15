@@ -1340,10 +1340,11 @@ BSide:
   - Room: "b-00"
     Core:
       All: hot
+      Right: cold
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
         Or:
         - Dashes: two
@@ -1351,10 +1352,17 @@ BSide:
           Difficulty: hard
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
+      ReqOut:
+        Dashes: two
+        Difficulty: master
     Tweaks:
     - Name: "spinner"  # "useless and bad spinner"
       ID: 309
+      Update:
+        Remove: true
+    - Name: "jumpThru"
+      ID: 306
       Update:
         Remove: true
   - Room: "b-01"
