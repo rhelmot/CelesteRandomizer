@@ -2057,28 +2057,28 @@ ASide:
           cameraY: 0
   - Room: "e-03"
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
     - Side: Left
-      Idx: 0
+      Idx: 1
       Kind: inout
     InternalEdges:
-    - To: "bottom"
-      ReqIn:
+    - To: "Top"
+      ReqOut:
         Or:
         - Dashes: two
         - Dashes: one
           Difficulty: hard
-      ReqOut:
+      ReqIn:
         Dashes: two
         Difficulty: hard
     Subrooms:
-    - Room: "bottom"
+    - Room: "Top"
       Holes:
-      - Side: Left
-        Idx: 1
-        Kind: inout
+        - Side: Right
+          Idx: 0
+          Kind: inout
+        - Side: Left
+          Idx: 0
+          Kind: inout
     Tweaks:
     - Name: "exitBlock"
       ID: 265
@@ -3182,6 +3182,18 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: inout
+      LowBound: 13
+      HighBound: 17
+      ReqOut:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: master
+    - Side: Up
+      New: true
+      Kind: inout
+      LowBound: 30
+      HighBound: 34
       ReqOut:
         Or:
         - Dashes: one
