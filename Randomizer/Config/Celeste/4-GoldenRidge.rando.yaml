@@ -999,18 +999,24 @@ ASide:
           cameraY: 0.5
   - Room: "c-06"
     Holes:
-    - Side: Up
+    - Side: Down
       Idx: 0
-      Kind: inout
-    - Side: Left
-      Idx: 0
-      Kind: inout
+      Kind: inout    
     InternalEdges:
-    - To: "Bottom"
+    - To: "Top"
       ReqOut:
-        Dashes: zero
-      ReqIn:
         Dashes: one
+      ReqIn:
+        Dashes: zero
+    Subrooms:
+    - Room: "Top"
+      Holes:
+      - Side: Up
+        Idx: 0
+        Kind: inout
+      - Side: Left
+        Idx: 0
+        Kind: inout
     Subrooms:
     - Room: "Bottom"
       Holes:
