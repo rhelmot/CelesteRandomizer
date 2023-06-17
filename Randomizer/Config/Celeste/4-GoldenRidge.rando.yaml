@@ -1017,12 +1017,6 @@ ASide:
       - Side: Left
         Idx: 0
         Kind: inout
-    Subrooms:
-    - Room: "Bottom"
-      Holes:
-      - Side: Down
-        Idx: 0
-        Kind: inout
     Tweaks:
     - Name: "spawn"
       Update:
