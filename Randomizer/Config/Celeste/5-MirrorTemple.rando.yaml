@@ -594,20 +594,36 @@ ASide:
     - To: "top"
       ReqIn:
         Dashes: zero
+      ReqOut:
+        Or:
+        - Dashes: two
+          Diffculty: expert
+        - Dashes: one
+          Difficulty: perfect
     Subrooms:
     - Room: "top"
       Holes:
       - Side: Right
         Idx: 0
         Kind: inout
+        ReqOut:
+          Dashes: two
+          Difficulty: perfect
         ReqIn:
           Or:
-          - Dashes: one
+          - Dashes: one 
           - Dashes: zero
             Difficulty: master
       Collectables:
       - Idx: 0
-      # TODO there is no way to represent that this collectable can be gotten from the bottom with two dashes without the generator thinking that you can also get to the top of the room with two dashes
+        ReqIn:
+          Dashes: zero
+        ReqOut:
+          Or:
+          - Dashes: two
+            Diffculty: expert
+          - Dashes: one
+            Difficulty: perfect
   - Room: "b-05"
     Holes:
     - Side: Left
