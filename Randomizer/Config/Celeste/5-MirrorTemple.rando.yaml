@@ -618,6 +618,7 @@ ASide:
       - Idx: 0
         ReqIn:
           Dashes: zero
+          Difficulty: master
         ReqOut:
           Or:
           - Dashes: two
