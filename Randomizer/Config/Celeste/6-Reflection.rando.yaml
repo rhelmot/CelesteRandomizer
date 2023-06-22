@@ -2107,6 +2107,7 @@ BSide:
       Idx: 0
       Kind: None
   - Room: "d-00"
+    SpinnersShatter: true # fixes issue where itd be (likely) impossible if the room chose dust bunnies.
     Holes:
     - Side: Up
       Idx: 0
