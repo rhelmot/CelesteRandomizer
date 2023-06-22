@@ -24,10 +24,16 @@ ASide:
       ReqOut:
         Dashes: one
     Tweaks:
+    #- Name: "infiniteStar"
+    #  ID: 6
+    #  Update:
+    #    Y: 128
+    # this just moves the 2nd feather lol? who added this?
     - Name: "infiniteStar"
-      ID: 6
-      Update:
-        Y: 128
+      Update: 
+        Add: true
+        X: 272
+        Y: 2632
   - Room: "00"
     Holes:
     - Side: Up
