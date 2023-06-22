@@ -3190,16 +3190,6 @@ ASide:
         - Dashes: zero
           Difficulty: master
     - Side: Up
-      New: true
-      Kind: inout
-      LowBound: 30
-      HighBound: 34
-      ReqOut:
-        Or:
-        - Dashes: one
-        - Dashes: zero
-          Difficulty: master
-    - Side: Up
       Idx: 1
       Kind: inout
       ReqOut:

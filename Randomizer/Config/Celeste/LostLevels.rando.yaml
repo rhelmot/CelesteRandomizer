@@ -1512,6 +1512,12 @@ ASide:
       Idx: 1
       Kind: None
   - Room: "h-03"
+    SpinnersShatter: true # fixes issue where if dustbunnies, room becomes impossible RtL
+    ExtraSpace:
+    - X: 0
+      Y: -40
+      Width: 320
+      Height: 48
     Holes:
     - Side: Right
       Idx: 0
