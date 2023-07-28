@@ -380,6 +380,16 @@ ASide:
       ID: 183
       Update:
         Width: 16
+    - Name: "cameraOffsetTrigger"                  
+      Update:
+        Add: true
+        X: 144
+        Y: 40
+        Width:  32
+        Height: 16
+        Values:
+          cameraX: 0
+          cameraY: 1.5
   - Room: "b-07"
     Core:
       All: hot
