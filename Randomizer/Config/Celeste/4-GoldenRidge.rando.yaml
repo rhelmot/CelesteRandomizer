@@ -344,7 +344,7 @@ ASide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
     InternalEdges:
     - Collectable: 0
       ReqOut:
@@ -365,6 +365,11 @@ ASide:
         Values:
           cameraX: 0.0
           cameraY: 1.0
+    - Name: "jumpThru"
+      ID: 0
+      Update:
+        X: 288
+        Width: 24
   - Room: "a-11"
     ReqEnd:
       Or:
