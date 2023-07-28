@@ -3004,7 +3004,7 @@ ASide:
         Or:
         - Dashes: two
         - Dashes: one
-          Difficulty: master
+          Difficulty: perfect
     - Side: Left
       Idx: 1
       Kind: inout
@@ -3709,7 +3709,7 @@ BSide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
         Or:
         - Dashes: two
@@ -3729,7 +3729,10 @@ BSide:
       Kind: none
     - Side: Down
       Idx: 4
-      Kind: in
+      Kind: inout
+      ReqOut:
+        Dashes: two
+        Difficulty: perfect # funny spikeclimb haha, good luck with that.
     - Side: Down
       Idx: 5
       Kind: none
@@ -3754,11 +3757,15 @@ BSide:
         Y: 20
         Update:
           Tile: 0
+      - Name: "jumpThru"
+        ID: 744
+        Update:
+          Width: 16
   - Room: "b-03"
     Holes:
     - Side: Up
       Idx: 0
-      Kind: out
+      Kind: inout
       Launch: 19
       ReqOut:
         Or:
