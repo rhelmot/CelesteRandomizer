@@ -367,7 +367,7 @@ ASide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
       ReqIn:
         Dashes: one
     Tweaks:
@@ -376,6 +376,10 @@ ASide:
         Add: true
         X: 160
         Y: 24
+    - Name: "jumpThru"
+      ID: 183
+      Update:
+        Width: 16
   - Room: "b-07"
     Core:
       All: hot
