@@ -1304,6 +1304,7 @@ ASide:
       Width: 16
       Height: 100
   - Room: "f-07"
+    SpinnersShatter: true # impossible if dust bunnies
     Holes:
     - Side: Right
       Idx: 0
