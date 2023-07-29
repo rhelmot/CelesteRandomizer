@@ -1748,6 +1748,13 @@ BSide:
     - Side: Right
       Idx: 0
       Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: unknown
+      ReqIn: 
+        Or:
+        - Dashes: two
+        - Dashes: one
   - Room: "a-00"
     Holes:
     - Side: Right
@@ -1820,6 +1827,20 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: unknown
+      LowBound: 5
+      HighBound: 8
+    - Side: Down
+      Idx: 1
+      Kind: unknown
+      LowBound: 20
+      HighBound: 47
+      ReqIn:
+        Or:
+        - Dashes: two
+        - Dashes: one
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
@@ -2193,6 +2214,10 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: unknown
+      Launch: 11
   - Room: "c-03"
     Holes:
     - Side: Right
@@ -2284,6 +2309,9 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 2
+      Kind: none # remove if the barrier is ever removed (ie to do the room backwards)
   - Room: "d-02"
     Holes:
     - Side: Right
@@ -2307,6 +2335,10 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      idx: 1
+      kind: unknown
+      HighBound: 15
   - Room: "d-04"
     Holes:
     - Side: Right
