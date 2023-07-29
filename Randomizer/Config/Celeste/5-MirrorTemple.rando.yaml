@@ -1832,17 +1832,23 @@ BSide:
       Kind: unknown
       LowBound: 5
       HighBound: 8
-    - Side: Down
-      Idx: 1
-      Kind: unknown
-      LowBound: 20
-      HighBound: 47
-      ReqIn:
-        Or:
-        - Dashes: two
-        - Dashes: one
-    InternalEdges:
-    - Split: LeftToRight
+    Subrooms:
+    - Room: "right"
+      Holes:
+      - Side: Up
+        Idx: 0
+        Kind: inout
+      - Side: Down
+        Idx: 1
+        Kind: unknown
+        LowBound: 20
+        HighBound: 47
+        ReqIn:
+          Or:
+          - Dashes: two
+          - Dashes: one
+    InternalEdges: 
+    - To: "right"
       ReqOut:
         Dashes: one
       ReqIn:
@@ -2220,14 +2226,27 @@ BSide:
       Launch: 11
   - Room: "c-03"
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: unknown
+      HighBound: 15
+      Launch: 13
+    Subrooms:
+    - Room: "right"
+      Holes:
+      - Side: Right
+        Idx: 0
+        Kind: inout
+      - Side: Down
+        Kind: unknown
+        New: true
+        LowBound: 67
+        HighBound: 76
     InternalEdges:
-    - Split: LeftToRight
+    - To: "right"
       ReqOut:
         Or:
         - Dashes: one
@@ -2252,14 +2271,27 @@ BSide:
         Remove: true
   - Room: "c-04"
     Holes:
-    - Side: Up
-      Idx: 0
-      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: unknown
+      HighBound: 14
+    Subrooms:
+    - Room: "right"
+      Holes:
+      - Side: Up
+        Idx: 0
+        Kind: inout
+      - Side: Down
+        Kind: unknown
+        New: true
+        LowBound: 62
+        HighBound: 80
+        Launch: 68
     InternalEdges:
-    - Split: LeftToRight
+    - To: "right"
       ReqOut:
         Or:
           - Dashes: one
@@ -2336,8 +2368,9 @@ BSide:
       Idx: 0
       Kind: in
     - Side: Down
-      idx: 1
+      Idx: 1
       kind: unknown
+      LowBound: 13
       HighBound: 15
   - Room: "d-04"
     Holes:
