@@ -636,8 +636,7 @@ ASide:
     - ID: 0
       Name: "jumpThru"
       Update:
-        X: 40
-        Width: 16
+        Width: 24
     - Name: "spawn"
       X: 32
       Y: 160
