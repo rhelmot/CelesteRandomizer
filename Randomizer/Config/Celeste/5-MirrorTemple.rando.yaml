@@ -2253,8 +2253,11 @@ BSide:
         - Dashes: zero
           Difficulty: expert
       ReqIn:
-        Dashes: two
-        Difficulty: expert
+        Or:
+        - Dashes: two
+          Difficulty: expert
+        - Dashes: one
+          Difficulty: perfect
     Tweaks:
     - Name: "spawn"
       Update:
