@@ -1528,42 +1528,42 @@ ASide:
         Kind: inout
   - Room: "d-05"
     Holes:
-    - Side: Up
+    - Side: Left
       Idx: 0
       Kind: inout
-    - Side: Right
-      Idx: 0
-      Kind: inout
-    - Side: Down
-      Idx: 0
-      Kind: none
-    - Side: Down
-      Idx: 1
-      Kind: none
-    - Side: Down
-      Idx: 2
-      Kind: none
-    - Side: Down
-      Idx: 3
-      Kind: none
     InternalEdges:
-    - To: "left"
-      ReqOut:
-        Or:
-        - Dashes: two
-        - Dashes: one
-          Difficulty: hard
+    - To: "right"
       ReqIn:
         Or:
         - Dashes: two
         - Dashes: one
           Difficulty: hard
+      ReqOut:
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: hard
     Subrooms:
-    - Room: "left"
+    - Room: "right"
       Holes:
-      - Side: Left
+      - Side: Up
         Idx: 0
         Kind: inout
+      - Side: Right
+        Idx: 0
+        Kind: inout
+      - Side: Down
+        Idx: 0
+        Kind: none
+      - Side: Down
+        Idx: 1
+        Kind: none
+      - Side: Down
+        Idx: 2
+        Kind: none
+      - Side: Down
+        Idx: 3
+        Kind: none
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:
