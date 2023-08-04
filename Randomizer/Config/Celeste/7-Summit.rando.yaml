@@ -3239,26 +3239,24 @@ ASide:
         Y: 80
   - Room: "credits-dashes"
     Holes:
-    - Side: Left
+    - Side: Right
       Idx: 0
       Kind: inout
-    InternalEdges:
-    - To: "everything_else"
-      ReqOut:
-        Dashes: zero
+    - Side: Down
+      Idx: 0
+      Kind: unknown  # reeeeeally wanna make this inout   
       ReqIn:
         Dashes: one
+    InternalEdges:
+    - To: "left" 
+      ReqBoth:
+        Dashes: one
     Subrooms:
-    - Room: "everything_else"
+    - Room: "left"
       Holes:
-      - Side: Right
+      - Side: Left
         Idx: 0
         Kind: inout
-        ReqOut:
-          Dashes: one
-      - Side: Down
-        Idx: 0
-        Kind: unknown  # reeeeeally wanna make this inout
     Tweaks:
     - Name: "templeGate"
       ID: 10
