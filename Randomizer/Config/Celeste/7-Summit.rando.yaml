@@ -2484,7 +2484,10 @@ ASide:
     InternalEdges:
     - Collectable: 0
       ReqBoth:
-        Dashes: two
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: perfect
   - Room: "f-00"
     Hub: true
     Holes:
