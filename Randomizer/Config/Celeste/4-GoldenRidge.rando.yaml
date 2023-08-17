@@ -1297,7 +1297,10 @@ ASide:
     InternalEdges:
     - Collectable: 0
       ReqBoth:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect
   - Room: "d-01"
     Holes:
     - Side: Left
