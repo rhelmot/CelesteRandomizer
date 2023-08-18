@@ -34,7 +34,10 @@ ASide:
       ReqIn:
         Dashes: zero
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect # hahaha funny triple spikeclimb room
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:
