@@ -987,7 +987,10 @@ ASide:
           ReqOut:
             Dashes: zero
           ReqIn:
-            Dashes: one
+            Or:
+            - Dashes: one
+            - Dashes: zero
+              Difficulty: master
     - Room: "Berry"
       Collectables:
       - Idx: 0
