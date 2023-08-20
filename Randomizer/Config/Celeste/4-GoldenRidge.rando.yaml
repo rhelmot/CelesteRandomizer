@@ -887,7 +887,10 @@ ASide:
         - Dashes: zero
           Difficulty: hard
       ReqIn:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect # 3x half stamina climbs is a bit hard.
   - Room: "c-02"
     Holes:
     - Side: Up
