@@ -2509,7 +2509,7 @@ ASide:
         - Dashes: two
           Difficulty: hard
         - Dashes: one
-          Difficulty: perfect
+          Difficulty: expert
     - Collectable: 0
       ReqOut:
         Or:
@@ -2534,7 +2534,7 @@ ASide:
         Kind: in  # TODO: bubble
         ReqIn:
           Dashes: two
-          Difficulty: perfect  # diag demo go brrrrr
+          Difficulty: master  # diag demo go brrrrr
     Tweaks:
     - Name: "spawn"
       Update:
@@ -3020,13 +3020,22 @@ ASide:
     InternalEdges:
     - Collectable: 0
       ReqBoth:
-        Dashes: two
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: perfect
     - Collectable: 1
       ReqBoth:
-        Dashes: two
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: perfect
     - Collectable: 2
       ReqBoth:
-        Dashes: two
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: perfect
   - Room: "g-00"
     Holes:
     - Side: Up
@@ -3060,7 +3069,7 @@ ASide:
         Or:
         - Dashes: two
         - Dashes: one
-          Difficulty: perfect
+          Difficulty: master
     - Side: Down
       Idx: 0
       Kind: in
