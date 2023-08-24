@@ -1838,7 +1838,10 @@ BSide:
       Idx: 1
       Kind: out
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect # cornerslip roulette.
     - Side: Down
       Idx: 0
       Kind: inout
