@@ -1599,8 +1599,15 @@ BSide:
       HighOpen: true
     InternalEdges:
     - To: "right"
-      ReqBoth:
-        Dashes: one
+      ReqOut:
+        Or:
+        - Dashes: one
+        - Dashes: two
+      ReqIn:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect
     Subrooms:
       - Room: "right"
         Holes:
