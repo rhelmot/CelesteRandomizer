@@ -586,7 +586,7 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: inout
-      ReqIn:
+      ReqOut:
         Or:
         - Dashes: two
           Difficulty: hard
