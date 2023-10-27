@@ -344,7 +344,7 @@ ASide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
     InternalEdges:
     - Collectable: 0
       ReqOut:
@@ -365,6 +365,11 @@ ASide:
         Values:
           cameraX: 0.0
           cameraY: 1.0
+    - Name: "jumpThru"
+      ID: 0
+      Update:
+        X: 288
+        Width: 24
   - Room: "a-11"
     ReqEnd:
       Or:
@@ -882,7 +887,10 @@ ASide:
         - Dashes: zero
           Difficulty: hard
       ReqIn:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect # 3x half stamina climbs is a bit hard.
   - Room: "c-02"
     Holes:
     - Side: Up
@@ -982,7 +990,10 @@ ASide:
           ReqOut:
             Dashes: zero
           ReqIn:
-            Dashes: one
+            Or:
+            - Dashes: one
+            - Dashes: zero
+              Difficulty: master
     - Room: "Berry"
       Collectables:
       - Idx: 0
@@ -1292,7 +1303,10 @@ ASide:
     InternalEdges:
     - Collectable: 0
       ReqBoth:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect
   - Room: "d-01"
     Holes:
     - Side: Left
@@ -1585,8 +1599,15 @@ BSide:
       HighOpen: true
     InternalEdges:
     - To: "right"
-      ReqBoth:
-        Dashes: one
+      ReqOut:
+        Or:
+        - Dashes: one
+        - Dashes: two
+      ReqIn:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect
     Subrooms:
       - Room: "right"
         Holes:
@@ -1824,7 +1845,10 @@ BSide:
       Idx: 1
       Kind: out
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect # cornerslip roulette.
     - Side: Down
       Idx: 0
       Kind: inout

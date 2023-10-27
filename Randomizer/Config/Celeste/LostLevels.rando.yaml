@@ -466,10 +466,24 @@ ASide:
       Kind: in
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
     - Side: Right
       Idx: 0
       Kind: None
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 160
+        Y: 24
+    - Name: "jumpThru"
+      ID: 15
+      Update:
+        Width: 24
+    - Name: "jumpThru"
+      ID: 17
+      Update:
+        Width: 24
   - Room: "c-alt-00"
     Holes:
     - Side: Right
@@ -1290,6 +1304,7 @@ ASide:
       Width: 16
       Height: 100
   - Room: "f-07"
+    SpinnersShatter: true # impossible if dust bunnies
     Holes:
     - Side: Right
       Idx: 0
@@ -2401,8 +2416,12 @@ ASide:
       Kind: none  # TODO somehow guarantee one of the upper holes is connected to something?
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
     Tweaks:
+    - Name: "jumpThru"
+      ID: 0
+      Update:
+        Width: 16
     - Name: "spawn"
       X: 272
       Y: 64

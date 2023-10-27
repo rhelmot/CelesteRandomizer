@@ -1748,6 +1748,13 @@ BSide:
     - Side: Right
       Idx: 0
       Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: unknown
+      ReqIn: 
+        Or:
+        - Dashes: two
+        - Dashes: one
   - Room: "a-00"
     Holes:
     - Side: Right
@@ -1820,8 +1827,28 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: inout
-    InternalEdges:
-    - Split: LeftToRight
+    - Side: Down
+      Idx: 0
+      Kind: unknown
+      LowBound: 5
+      HighBound: 8
+    Subrooms:
+    - Room: "right"
+      Holes:
+      - Side: Up
+        Idx: 0
+        Kind: inout
+      - Side: Down
+        Idx: 1
+        Kind: unknown
+        LowBound: 20
+        HighBound: 47
+        ReqIn:
+          Or:
+          - Dashes: two
+          - Dashes: one
+    InternalEdges: 
+    - To: "right"
       ReqOut:
         Dashes: one
       ReqIn:
@@ -2193,24 +2220,44 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: unknown
+      Launch: 11
   - Room: "c-03"
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: unknown
+      HighBound: 15
+      Launch: 13
+    Subrooms:
+    - Room: "right"
+      Holes:
+      - Side: Right
+        Idx: 0
+        Kind: inout
+      - Side: Down
+        Kind: unknown
+        New: true
+        LowBound: 67
+        HighBound: 76
     InternalEdges:
-    - Split: LeftToRight
+    - To: "right"
       ReqOut:
         Or:
         - Dashes: one
         - Dashes: zero
           Difficulty: expert
       ReqIn:
-        Dashes: two
-        Difficulty: expert
+        Or:
+        - Dashes: two
+          Difficulty: expert
+        - Dashes: one
+          Difficulty: perfect
     Tweaks:
     - Name: "spawn"
       Update:
@@ -2227,14 +2274,27 @@ BSide:
         Remove: true
   - Room: "c-04"
     Holes:
-    - Side: Up
-      Idx: 0
-      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: unknown
+      HighBound: 14
+    Subrooms:
+    - Room: "right"
+      Holes:
+      - Side: Up
+        Idx: 0
+        Kind: inout
+      - Side: Down
+        Kind: unknown
+        New: true
+        LowBound: 62
+        HighBound: 80
+        Launch: 68
     InternalEdges:
-    - Split: LeftToRight
+    - To: "right"
       ReqOut:
         Or:
           - Dashes: one
@@ -2284,6 +2344,9 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 2
+      Kind: none # remove if the barrier is ever removed (ie to do the room backwards)
   - Room: "d-02"
     Holes:
     - Side: Right
@@ -2307,6 +2370,11 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: in
+    - Side: Down
+      Idx: 1
+      kind: unknown
+      LowBound: 13
+      HighBound: 15
   - Room: "d-04"
     Holes:
     - Side: Right

@@ -34,7 +34,10 @@ ASide:
       ReqIn:
         Dashes: zero
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect # hahaha funny triple spikeclimb room
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:
@@ -367,7 +370,7 @@ ASide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
       ReqIn:
         Dashes: one
     Tweaks:
@@ -376,6 +379,20 @@ ASide:
         Add: true
         X: 160
         Y: 24
+    - Name: "jumpThru"
+      ID: 183
+      Update:
+        Width: 16
+    - Name: "cameraOffsetTrigger"                  
+      Update:
+        Add: true
+        X: 144
+        Y: 40
+        Width:  32
+        Height: 16
+        Values:
+          cameraX: 0
+          cameraY: 1.5
   - Room: "b-07"
     Core:
       All: hot
@@ -1693,8 +1710,11 @@ BSide:
         - Dashes: one
           Difficulty: hard
       ReqIn:
-        Dashes: two
-        Difficulty: expert
+        Or:
+        - Dashes: two
+          Difficulty: expert
+        - Dashes: one
+          Difficulty: perfect
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:

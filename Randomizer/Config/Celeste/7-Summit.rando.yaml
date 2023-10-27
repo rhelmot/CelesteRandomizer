@@ -877,7 +877,7 @@ ASide:
         Or:
           - Dashes: one
           - Dashes: zero
-            Difficulty: master
+            Difficulty: perfect
     - Side: Down
       Idx: 0
       Kind: in
@@ -1528,42 +1528,42 @@ ASide:
         Kind: inout
   - Room: "d-05"
     Holes:
-    - Side: Up
+    - Side: Left
       Idx: 0
       Kind: inout
-    - Side: Right
-      Idx: 0
-      Kind: inout
-    - Side: Down
-      Idx: 0
-      Kind: none
-    - Side: Down
-      Idx: 1
-      Kind: none
-    - Side: Down
-      Idx: 2
-      Kind: none
-    - Side: Down
-      Idx: 3
-      Kind: none
     InternalEdges:
-    - To: "left"
-      ReqOut:
-        Or:
-        - Dashes: two
-        - Dashes: one
-          Difficulty: hard
+    - To: "right"
       ReqIn:
         Or:
         - Dashes: two
         - Dashes: one
           Difficulty: hard
+      ReqOut:
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: hard
     Subrooms:
-    - Room: "left"
+    - Room: "right"
       Holes:
-      - Side: Left
+      - Side: Up
         Idx: 0
         Kind: inout
+      - Side: Right
+        Idx: 0
+        Kind: inout
+      - Side: Down
+        Idx: 0
+        Kind: none
+      - Side: Down
+        Idx: 1
+        Kind: none
+      - Side: Down
+        Idx: 2
+        Kind: none
+      - Side: Down
+        Idx: 3
+        Kind: none
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:
@@ -2484,7 +2484,10 @@ ASide:
     InternalEdges:
     - Collectable: 0
       ReqBoth:
-        Dashes: two
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: perfect
   - Room: "f-00"
     Hub: true
     Holes:
@@ -2506,7 +2509,7 @@ ASide:
         - Dashes: two
           Difficulty: hard
         - Dashes: one
-          Difficulty: perfect
+          Difficulty: expert
     - Collectable: 0
       ReqOut:
         Or:
@@ -2531,7 +2534,7 @@ ASide:
         Kind: in  # TODO: bubble
         ReqIn:
           Dashes: two
-          Difficulty: perfect  # diag demo go brrrrr
+          Difficulty: master  # diag demo go brrrrr
     Tweaks:
     - Name: "spawn"
       Update:
@@ -2839,6 +2842,8 @@ ASide:
         - Dashes: two
         - Dashes: one
           Difficulty: hard
+        - Dashes: zero
+          Difficulty: perfect # that is the most cursed cornercorrect ever.
     Subrooms:
       - Room: "right"
         Holes:
@@ -3004,7 +3009,7 @@ ASide:
         Or:
         - Dashes: two
         - Dashes: one
-          Difficulty: master
+          Difficulty: perfect
     - Side: Left
       Idx: 1
       Kind: inout
@@ -3017,13 +3022,22 @@ ASide:
     InternalEdges:
     - Collectable: 0
       ReqBoth:
-        Dashes: two
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: perfect
     - Collectable: 1
       ReqBoth:
-        Dashes: two
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: perfect
     - Collectable: 2
       ReqBoth:
-        Dashes: two
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: perfect
   - Room: "g-00"
     Holes:
     - Side: Up
@@ -3057,7 +3071,7 @@ ASide:
         Or:
         - Dashes: two
         - Dashes: one
-          Difficulty: perfect
+          Difficulty: master
     - Side: Down
       Idx: 0
       Kind: in
@@ -3239,26 +3253,24 @@ ASide:
         Y: 80
   - Room: "credits-dashes"
     Holes:
-    - Side: Left
+    - Side: Right
       Idx: 0
       Kind: inout
-    InternalEdges:
-    - To: "everything_else"
-      ReqOut:
-        Dashes: zero
+    - Side: Down
+      Idx: 0
+      Kind: unknown  # reeeeeally wanna make this inout   
       ReqIn:
         Dashes: one
+    InternalEdges:
+    - To: "left" 
+      ReqBoth:
+        Dashes: one
     Subrooms:
-    - Room: "everything_else"
+    - Room: "left"
       Holes:
-      - Side: Right
+      - Side: Left
         Idx: 0
         Kind: inout
-        ReqOut:
-          Dashes: one
-      - Side: Down
-        Idx: 0
-        Kind: unknown  # reeeeeally wanna make this inout
     Tweaks:
     - Name: "templeGate"
       ID: 10
@@ -3709,7 +3721,7 @@ BSide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
         Or:
         - Dashes: two
@@ -3729,7 +3741,10 @@ BSide:
       Kind: none
     - Side: Down
       Idx: 4
-      Kind: in
+      Kind: inout
+      ReqOut:
+        Dashes: two
+        Difficulty: perfect # funny spikeclimb haha, good luck with that.
     - Side: Down
       Idx: 5
       Kind: none
@@ -3754,11 +3769,15 @@ BSide:
         Y: 20
         Update:
           Tile: 0
+      - Name: "jumpThru"
+        ID: 744
+        Update:
+          Width: 16
   - Room: "b-03"
     Holes:
     - Side: Up
       Idx: 0
-      Kind: out
+      Kind: inout
       Launch: 19
       ReqOut:
         Or:

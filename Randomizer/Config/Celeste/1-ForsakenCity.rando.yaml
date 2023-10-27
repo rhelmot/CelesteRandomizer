@@ -577,16 +577,16 @@ ASide:
       Update:
         Width: 16
         X: 24
-    - Name: "spawn"
-      X: 24
-      Update:
-        X: 32
+ #   - Name: "spawn" # this messes with dashless setups and is not needed.
+ #     X: 24
+ #     Update:
+ #       X: 32
   - Room: "7a"
     Holes:
     - Side: Up
       Idx: 0
       Kind: inout
-      ReqIn:
+      ReqOut:
         Or:
         - Dashes: two
           Difficulty: hard
