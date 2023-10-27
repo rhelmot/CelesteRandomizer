@@ -877,7 +877,7 @@ ASide:
         Or:
           - Dashes: one
           - Dashes: zero
-            Difficulty: master
+            Difficulty: perfect
     - Side: Down
       Idx: 0
       Kind: in
