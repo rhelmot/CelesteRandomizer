@@ -3777,7 +3777,7 @@ BSide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: inout
+      Kind: out
       Launch: 19
       ReqOut:
         Or:
