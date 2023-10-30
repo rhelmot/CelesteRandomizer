@@ -1821,9 +1821,6 @@ BSide:
         Difficulty: perfect
   - Room: "a-02"
     Holes:
-    - Side: Up
-      Idx: 0
-      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
