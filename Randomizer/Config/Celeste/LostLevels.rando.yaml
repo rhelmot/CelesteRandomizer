@@ -237,7 +237,10 @@ ASide:
       ReqOut:
         Dashes: one
       ReqIn:
-        Dashes: two
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: perfect
   - Room: "b-02"
     Holes:
     - Side: Right
@@ -860,10 +863,10 @@ ASide:
         Dashes: one
       ReqIn: 
         Or:
-        Dashes: two
-        Difficulty: perfect
-        Dashes: one
-        Difficulty: perfect
+        - Dashes: two
+          Difficulty: perfect
+        - Dashes: one
+          Difficulty: perfect
     Tweaks:
     - Name: spawn
       Update: 
@@ -1241,7 +1244,7 @@ ASide:
         Or:
         - Dashes: two
         - Dashes: one
-          Diffiulty: hard
+          Difficulty: hard
       ReqIn:
         Dashes: one
     Tweaks:
