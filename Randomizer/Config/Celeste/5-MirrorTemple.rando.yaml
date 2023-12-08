@@ -713,6 +713,7 @@ ASide:
       ReqOut:
         Or:
         - Dashes: one
+          Difficulty: hard
         - Dashes: zero
           Difficulty: hard
     - Side: Left
