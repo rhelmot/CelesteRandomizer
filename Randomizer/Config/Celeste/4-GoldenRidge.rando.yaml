@@ -208,7 +208,7 @@ ASide:
       Kind: None
     - Side: Down
       Idx: 0
-      Kind: None
+    - Kind: None
       Side: Right
       Idx: 0
       Kind: None
@@ -1514,7 +1514,7 @@ ASide:
       ReqOut:
           Dashes: one
       ReqIn:
-        0r:
+        Or:
         - Dashes: one
         - Dashes: zero
           Difficulty: expert
@@ -2154,20 +2154,28 @@ BSide:
           cameraY: 0
   - Room: "d-03"
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: out
-      ReqOut:
-        Dashes: one
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
     - Side: Down
       Idx: 3
       Kind: None
     - Side: Down
       Idx: 2
       Kind: None
+    InternalEdges:
+    - To: "right"
+      ReqOut:
+        Dashes: one
+      ReqIn:
+        Dashes: two
+        Difficulty: perfect
+    Subrooms:
+    - Room: "right"
+      Holes:
+      - Side: Right
+        Idx: 0
+        Kind: inout
   - Room: "end"
     ReqEnd:
       Dashes: one
