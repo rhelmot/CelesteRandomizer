@@ -1512,17 +1512,44 @@ ASide:
             Difficulty: master
   - Room: "h-01"
     Holes:
-    - Side: Up
+    - Side: Left
       Idx: 0
-      Kind: out
+      Kind: inout
+    InternalEdges:
+    - To: "top"
       ReqOut:
         Or:
         - Dashes: two
         - Dashes: one
           Difficulty: hard
-    - Side: Left
-      Idx: 0
-      Kind: in
+      ReqIn: 
+        Or:
+        - Dashes: two
+          Difficulty: hard
+        - Dashes: one
+          Difficulty: hard
+    Subrooms:
+    - Room: "top"
+      Holes:
+      - Side: Up
+        Idx: 0
+        Kind: inout
+    Tweaks:
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 256
+        Y: 24
+        Width: 24
+        Height: 8
+        Values:  
+          cameraX: 0
+          cameraY: 1.5
+    - Name: spawn
+      Update:
+        Add: true
+        X: 272
+        Y: 24        
   - Room: "h-02"
     Holes:
     - Side: Right
