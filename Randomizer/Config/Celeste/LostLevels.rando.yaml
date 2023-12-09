@@ -951,14 +951,9 @@ ASide:
       Kind: none
   - Room: "e-04"
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: out
-      ReqOut:
-        Dashes: one
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
     - Side: down
       Idx: 0
       Kind: None
@@ -968,6 +963,19 @@ ASide:
     - Side: down
       Idx: 2
       Kind: None
+    InternalEdges:
+    - To: "right"
+      ReqOut:
+        Dashes: one
+      ReqIn: 
+        Dashes: two
+        Difficulty: perfect
+    Subrooms:
+    - Room: "right"
+      Holes:
+      - Side: Right
+        Idx: 0
+        Kind: inout
     ExtraSpace:
     - X: 472
       Y: 176
