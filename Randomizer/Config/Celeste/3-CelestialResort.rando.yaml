@@ -74,6 +74,7 @@ ASide:
     - Collectable: 0
       ReqBoth:
         Dashes: one
+        Difficulty: hard
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:
@@ -1536,7 +1537,7 @@ ASide:
         - Dashes: zero
           Difficulty: hard
         - Dashes: one
-          Dificulty: normal
+          Difficulty: normal
         - Dashes: two
           Difficulty: easy
     Holes:
@@ -1696,7 +1697,7 @@ ASide:
         Or:
         - Dashes: one
         - Dashes: zero
-          Dificulty: expert
+          Difficulty: expert
       ReqIn:
         Or:
         - Dashes: two

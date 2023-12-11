@@ -237,7 +237,10 @@ ASide:
       ReqOut:
         Dashes: one
       ReqIn:
-        Dashes: two
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: perfect
   - Room: "b-02"
     Holes:
     - Side: Right
@@ -860,10 +863,10 @@ ASide:
         Dashes: one
       ReqIn: 
         Or:
-        Dashes: two
-        Difficulty: perfect
-        Dashes: one
-        Difficulty: perfect
+        - Dashes: two
+          Difficulty: perfect
+        - Dashes: one
+          Difficulty: perfect
     Tweaks:
     - Name: spawn
       Update: 
@@ -948,14 +951,9 @@ ASide:
       Kind: none
   - Room: "e-04"
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: out
-      ReqOut:
-        Dashes: one
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
     - Side: down
       Idx: 0
       Kind: None
@@ -965,6 +963,19 @@ ASide:
     - Side: down
       Idx: 2
       Kind: None
+    InternalEdges:
+    - To: "right"
+      ReqOut:
+        Dashes: one
+      ReqIn: 
+        Dashes: two
+        Difficulty: perfect
+    Subrooms:
+    - Room: "right"
+      Holes:
+      - Side: Right
+        Idx: 0
+        Kind: inout
     ExtraSpace:
     - X: 472
       Y: 176
@@ -1241,7 +1252,7 @@ ASide:
         Or:
         - Dashes: two
         - Dashes: one
-          Diffiulty: hard
+          Difficulty: hard
       ReqIn:
         Dashes: one
     Tweaks:
@@ -1501,17 +1512,44 @@ ASide:
             Difficulty: master
   - Room: "h-01"
     Holes:
-    - Side: Up
+    - Side: Left
       Idx: 0
-      Kind: out
+      Kind: inout
+    InternalEdges:
+    - To: "top"
       ReqOut:
         Or:
         - Dashes: two
         - Dashes: one
           Difficulty: hard
-    - Side: Left
-      Idx: 0
-      Kind: in
+      ReqIn: 
+        Or:
+        - Dashes: two
+          Difficulty: hard
+        - Dashes: one
+          Difficulty: hard
+    Subrooms:
+    - Room: "top"
+      Holes:
+      - Side: Up
+        Idx: 0
+        Kind: inout
+    Tweaks:
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 256
+        Y: 24
+        Width: 24
+        Height: 8
+        Values:  
+          cameraX: 0
+          cameraY: 1.5
+    - Name: spawn
+      Update:
+        Add: true
+        X: 272
+        Y: 24        
   - Room: "h-02"
     Holes:
     - Side: Right

@@ -2306,7 +2306,7 @@ ASide:
         Or:
         - Dashes: one
         - Dashes: zero
-          Dificulty: hard
+          Difficulty: hard
       ReqIn:
         Dashes: zero
     - To: "left"
@@ -2909,7 +2909,10 @@ ASide:
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
-        Dashes: two
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: perfect
       ReqIn:
         Dashes: two
         Difficulty: hard
@@ -3777,7 +3780,7 @@ BSide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: inout
+      Kind: out
       Launch: 19
       ReqOut:
         Or:

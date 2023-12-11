@@ -614,17 +614,17 @@ ASide:
           - Dashes: one 
           - Dashes: zero
             Difficulty: master
-      Collectables:
-      - Idx: 0
+      InternalEdges:
+      - Collectable: 0
         ReqIn:
           Dashes: zero
           Difficulty: master
         ReqOut:
           Or:
           - Dashes: two
-            Diffculty: expert
+            Difficulty: expert
           - Dashes: one
-            Difficulty: perfect
+            Difficulty: perfect  
   - Room: "b-05"
     Holes:
     - Side: Left
@@ -713,6 +713,7 @@ ASide:
       ReqOut:
         Or:
         - Dashes: one
+          Difficulty: hard
         - Dashes: zero
           Difficulty: hard
     - Side: Left
@@ -1821,9 +1822,6 @@ BSide:
         Difficulty: perfect
   - Room: "a-02"
     Holes:
-    - Side: Up
-      Idx: 0
-      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
@@ -2372,7 +2370,7 @@ BSide:
       Kind: in
     - Side: Down
       Idx: 1
-      kind: unknown
+      Kind: unknown
       LowBound: 13
       HighBound: 15
   - Room: "d-04"
@@ -2397,7 +2395,7 @@ BSide:
       ReqIn:
         Or:
           - Dashes: one
-            Diffculty: hard
+            Difficulty: hard
           - Dashes: two
   - Room: "d-05"
     ReqEnd:

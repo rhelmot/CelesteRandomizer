@@ -214,7 +214,7 @@ ASide:
       ReqOut:
         Or:
         - Dashes: two
-          Diffuclty: hard
+          Difficulty: hard
         - Dashes: one
           Difficulty: Perfect
     - Side: Right
