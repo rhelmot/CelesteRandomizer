@@ -4,6 +4,8 @@ using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
 using MonoMod.Utils;
+using Celeste.Mod.Randomizer.Interoperability;
+using MonoMod.ModInterop;
 
 namespace Celeste.Mod.Randomizer {
     public partial class RandoModule : EverestModule {
@@ -57,6 +59,7 @@ namespace Celeste.Mod.Randomizer {
             LoadSessionLifecycle();
             LoadMenuLifecycle();
             Entities.LifeBerry.Load();
+            typeof(SettingsInterop).ModInterop();
         }
 
         public Action ResetExtendedVariants;
