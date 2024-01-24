@@ -82,8 +82,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Builder.cs" />
     <Compile Include="Entities\FindTheoPhone.cs" />
     <Compile Include="Entities\LifeBerry.cs" />
+    <Compile Include="Interoperability\SettingsInterop.cs" />
     <Compile Include="Oui\GenericOui.cs" />
     <Compile Include="Oui\OuiRandoDifficulty.cs" />
     <Compile Include="Oui\OuiRandoMode.cs" />
@@ -400,12 +402,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Config\" />
-    <Folder Include="Dialog\" />
-    <Folder Include="Graphics\" />
-    <Folder Include="RandoLogic\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <MonoDevelop>
