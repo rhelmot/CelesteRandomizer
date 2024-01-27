@@ -59,8 +59,9 @@ namespace Celeste.Mod.Randomizer {
             LoadSessionLifecycle();
             LoadMenuLifecycle();
             Entities.LifeBerry.Load();
-            typeof(SettingsInterop).ModInterop();
-        }
+			typeof(GenerationInterop).ModInterop();
+			typeof(SettingsInterop).ModInterop();
+		}
 
         public Action ResetExtendedVariants;
         public Action ResetIsaVariants;
