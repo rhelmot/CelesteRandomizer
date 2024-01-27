@@ -8,8 +8,6 @@ namespace Celeste.Mod.Randomizer {
     public class OuiRandoSettings : GenericOui {
         private float JournalEase;
         private bool Entering = false;
-        private Thread BuilderThread = null;
-            
         
         protected override bool IsDeeperThan(Oui other) {
             // deeper than everything but the journal and the text entry
@@ -38,7 +36,7 @@ namespace Celeste.Mod.Randomizer {
         public override void Update() {
             base.Update();
             
-            if ((this.Menu?.Active ?? false) && !this.Entering && this.BuilderThread == null && Input.MenuJournal.Pressed) {
+            if ((this.Menu?.Active ?? false) && !this.Entering && RandoModule.MapBuilder == null && Input.MenuJournal.Pressed) {
                 Audio.Play(SFX.ui_world_journal_select);
                 Overworld.Goto<OuiRandoRecords>();
             }
@@ -299,53 +297,41 @@ namespace Celeste.Mod.Randomizer {
                 }
 
                 void reenableMenu() {
-                    this.BuilderThread = null;
+					RandoModule.MapBuilder?.Abort();
+					RandoModule.MapBuilder = null;
 
                     startbutton.Label = Dialog.Clean("MODOPTIONS_RANDOMIZER_START");
                     updateHashText();
                     menu.DisableMovement = false;
                 }
 
-                if (this.BuilderThread == null) {
+                if (RandoModule.MapBuilder == null) {
                     errortext.FadeVisible = false;
                     startbutton.Label = Dialog.Clean("MODOPTIONS_RANDOMIZER_CANCEL");
                     hashtext.Title += " " + Dialog.Clean("MODOPTIONS_RANDOMIZER_GENERATING");
                     menu.DisableMovement = true;
 
-                    this.BuilderThread = new Thread(() => {
-                        Settings.Enforce();
-                        AreaKey newArea;
-                        try {
-                            newArea = RandoLogic.GenerateMap(Settings);
-                        } catch (ThreadAbortException) {
-                            return;
-                        } catch (GenerationError e) {
-                            errortext.Title = e.Message;
+					RandoModule.MapBuilder = new Builder();
+					RandoModule.MapBuilder.OnError = (Exception e) => {
+                        if (e is GenerationError ge) {
+							errortext.Title = ge.Message;
                             errortext.FadeVisible = true;
                             reenableMenu();
-                            return;
-                        } catch (Exception e) {
+                        }
+                        else {
                             errortext.Title = "Encountered an error - Check log.txt for details";
                             Logger.LogDetailed(e, "randomizer");
                             errortext.FadeVisible = true;
                             reenableMenu();
-                            return;
                         }
-                        // save settings
-                        RandoModule.Instance.SavedData.SavedSettings = Settings.Copy();
-                        RandoModule.Instance.SaveSettings();
-                        
+					};
+					RandoModule.MapBuilder.OnSuccess = (AreaKey newArea) => {
                         this.Entering = true;
-                        RandoModule.StartMe = newArea;
-                        while (RandoModule.StartMe != null) {
-                            Thread.Sleep(10);
-                        }
-                        this.BuilderThread = null;
-                        this.Entering = false;
-                    });
-                    this.BuilderThread.Start();
+                        RandoModule.LaunchIntoRandoArea(newArea);
+                    };
+					RandoModule.MapBuilder.Go(Settings);
                 } else {
-                    this.BuilderThread.Abort();
+					RandoModule.MapBuilder.Abort();
                     reenableMenu();
                 }
             });
@@ -364,7 +350,7 @@ namespace Celeste.Mod.Randomizer {
             syncModel();
 
             menu.OnCancel = () => {
-                if (this.Entering || this.BuilderThread != null) {
+                if (this.Entering || RandoModule.MapBuilder != null) {
                     return;
                 }
                 
@@ -377,7 +363,7 @@ namespace Celeste.Mod.Randomizer {
             };
 
             menu.OnPause = () => {
-                if (this.Entering || this.BuilderThread != null) {
+                if (this.Entering || RandoModule.MapBuilder != null) {
                     return;
                 }
                 

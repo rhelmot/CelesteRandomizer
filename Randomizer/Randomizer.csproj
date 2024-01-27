@@ -85,6 +85,8 @@
     <Compile Include="Builder.cs" />
     <Compile Include="Entities\FindTheoPhone.cs" />
     <Compile Include="Entities\LifeBerry.cs" />
+    <Compile Include="Interoperability\GenerationInterop.cs" />
+    <Compile Include="Interoperability\InteropHelper.cs" />
     <Compile Include="Interoperability\SettingsInterop.cs" />
     <Compile Include="Oui\GenericOui.cs" />
     <Compile Include="Oui\OuiRandoDifficulty.cs" />
