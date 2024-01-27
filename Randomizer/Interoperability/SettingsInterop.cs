@@ -24,7 +24,7 @@ namespace Celeste.Mod.Randomizer.Interoperability {
 		/// <param name="area">The map to enable</param>
 		/// <exception cref="ArgumentException">Thrown when the parameter is not an instance of RandoSettings</exception>
 		public static void EnableMap(object settings, AreaKey area) {
-			RandoSettings s = settings as RandoSettings ?? TypeError(settings);
+			RandoSettings s = settings as RandoSettings ?? InteropHelper.TypeError<RandoSettings>(settings);
 			s.EnableMap(area);
 		}
 
@@ -35,7 +35,7 @@ namespace Celeste.Mod.Randomizer.Interoperability {
 		/// <param name="areas">An enumerable set of maps to enable</param>
 		/// <exception cref="ArgumentException">Thrown when the parameter is not an instance of RandoSettings</exception>
 		public static void EnableMaps(object settings, IEnumerable<AreaKey> areas) {
-			RandoSettings s = settings as RandoSettings ?? TypeError(settings);
+			RandoSettings s = settings as RandoSettings ?? InteropHelper.TypeError<RandoSettings>(settings);
 			if (areas == null) throw new ArgumentNullException(nameof(areas));
             foreach (var area in areas)
             {
@@ -49,7 +49,7 @@ namespace Celeste.Mod.Randomizer.Interoperability {
 		/// <param name="settings">The settings object</param>
 		/// <exception cref="ArgumentException">Thrown when the parameter is not an instance of RandoSettings</exception>
 		public static void EnableVanillaMaps(object settings) {
-			RandoSettings s = settings as RandoSettings ?? TypeError(settings);
+			RandoSettings s = settings as RandoSettings ?? InteropHelper.TypeError<RandoSettings>(settings);
 
 			s.EnableMap(new AreaKey(0, AreaMode.Normal));
 			s.EnableMap(new AreaKey(1, AreaMode.Normal));
@@ -88,7 +88,7 @@ namespace Celeste.Mod.Randomizer.Interoperability {
 		/// <param name="strawberriesStr">The value to set</param>
 		/// <exception cref="ArgumentException">Thrown when the first parameter is not an instance of RandoSettings</exception>
 		public static void SetSeed(object settings, string seed) {
-			RandoSettings s = settings as RandoSettings ?? TypeError(settings);
+			RandoSettings s = settings as RandoSettings ?? InteropHelper.TypeError<RandoSettings>(settings);
 			s.Seed = seed;
 		}
 
@@ -99,7 +99,7 @@ namespace Celeste.Mod.Randomizer.Interoperability {
 		/// <param name="strawberriesStr">The value to set</param>
 		/// <exception cref="ArgumentException">Thrown when the first parameter is not an instance of RandoSettings</exception>
 		public static void SetRules(object settings, string rules) {
-			RandoSettings s = settings as RandoSettings ?? TypeError(settings);
+			RandoSettings s = settings as RandoSettings ?? InteropHelper.TypeError<RandoSettings>(settings);
 			s.Rules = rules;
 		}
 
@@ -111,7 +111,7 @@ namespace Celeste.Mod.Randomizer.Interoperability {
 		/// <returns>True if the arguments were valid and the value was set, false if the value is not a valid enum value</returns>
 		/// <exception cref="ArgumentException">Thrown when the first parameter is not an instance of RandoSettings</exception>
 		public static bool SetSeedType(object settings, string seedTypeStr) {
-			RandoSettings s = settings as RandoSettings ?? TypeError(settings);
+			RandoSettings s = settings as RandoSettings ?? InteropHelper.TypeError<RandoSettings>(settings);
 			return Enum.TryParse(seedTypeStr, out s.SeedType);
 		}
 
@@ -123,7 +123,7 @@ namespace Celeste.Mod.Randomizer.Interoperability {
 		/// <returns>True if the arguments were valid and the value was set, false if the value is not a valid enum value</returns>
 		/// <exception cref="ArgumentException">Thrown when the first parameter is not an instance of RandoSettings</exception>
 		public static bool SetAlgorithm(object settings, string algorithmStr) {
-			RandoSettings s = settings as RandoSettings ?? TypeError(settings);
+			RandoSettings s = settings as RandoSettings ?? InteropHelper.TypeError<RandoSettings>(settings);
 			return Enum.TryParse(algorithmStr, out s.Algorithm);
 		}
 
@@ -135,7 +135,7 @@ namespace Celeste.Mod.Randomizer.Interoperability {
 		/// <returns>True if the arguments were valid and the value was set, false if the value is not a valid enum value</returns>
 		/// <exception cref="ArgumentException">Thrown when the first parameter is not an instance of RandoSettings</exception>
 		public static bool SetDashes(object settings, string dashesStr) {
-			RandoSettings s = settings as RandoSettings ?? TypeError(settings);
+			RandoSettings s = settings as RandoSettings ?? InteropHelper.TypeError<RandoSettings>(settings);
 			return Enum.TryParse(dashesStr, out s.Dashes);
 		}
 
@@ -147,7 +147,7 @@ namespace Celeste.Mod.Randomizer.Interoperability {
 		/// <returns>True if the arguments were valid and the value was set, false if the value is not a valid enum value</returns>
 		/// <exception cref="ArgumentException">Thrown when the first parameter is not an instance of RandoSettings</exception>
 		public static bool SetDifficulty(object settings, string difficultyStr) {
-			RandoSettings s = settings as RandoSettings ?? TypeError(settings);
+			RandoSettings s = settings as RandoSettings ?? InteropHelper.TypeError<RandoSettings>(settings);
 			return Enum.TryParse(difficultyStr, out s.Difficulty);
 		}
 
@@ -159,7 +159,7 @@ namespace Celeste.Mod.Randomizer.Interoperability {
 		/// <returns>True if the arguments were valid and the value was set, false if the value is not a valid enum value</returns>
 		/// <exception cref="ArgumentException">Thrown when the first parameter is not an instance of RandoSettings</exception>
 		public static bool SetDifficultyEagerness(object settings, string difficultyEagernessStr) {
-			RandoSettings s = settings as RandoSettings ?? TypeError(settings);
+			RandoSettings s = settings as RandoSettings ?? InteropHelper.TypeError<RandoSettings>(settings);
 			return Enum.TryParse(difficultyEagernessStr, out s.DifficultyEagerness);
 		}
 
@@ -171,7 +171,7 @@ namespace Celeste.Mod.Randomizer.Interoperability {
 		/// <returns>True if the arguments were valid and the value was set, false if the value is not a valid enum value</returns>
 		/// <exception cref="ArgumentException">Thrown when the first parameter is not an instance of RandoSettings</exception>
 		public static bool SetLength(object settings, string lengthStr) {
-			RandoSettings s = settings as RandoSettings ?? TypeError(settings);
+			RandoSettings s = settings as RandoSettings ?? InteropHelper.TypeError<RandoSettings>(settings);
 			return Enum.TryParse(lengthStr, out s.Length);
 		}
 
@@ -183,7 +183,7 @@ namespace Celeste.Mod.Randomizer.Interoperability {
 		/// <returns>True if the arguments were valid and the value was set, false if the value is not a valid enum value</returns>
 		/// <exception cref="ArgumentException">Thrown when the first parameter is not an instance of RandoSettings</exception>
 		public static bool SetLights(object settings, string lightsStr) {
-			RandoSettings s = settings as RandoSettings ?? TypeError(settings);
+			RandoSettings s = settings as RandoSettings ?? InteropHelper.TypeError<RandoSettings>(settings);
 			return Enum.TryParse(lightsStr, out s.Lights);
 		}
 
@@ -195,7 +195,7 @@ namespace Celeste.Mod.Randomizer.Interoperability {
 		/// <returns>True if the arguments were valid and the value was set, false if the value is not a valid enum value</returns>
 		/// <exception cref="ArgumentException">Thrown when the first parameter is not an instance of RandoSettings</exception>
 		public static bool SetDarkness(object settings, string darknessStr) {
-			RandoSettings s = settings as RandoSettings ?? TypeError(settings);
+			RandoSettings s = settings as RandoSettings ?? InteropHelper.TypeError<RandoSettings>(settings);
 			return Enum.TryParse(darknessStr, out s.Darkness);
 		}
 
@@ -207,18 +207,9 @@ namespace Celeste.Mod.Randomizer.Interoperability {
 		/// <returns>True if the arguments were valid and the value was set, false if the value is not a valid enum value</returns>
 		/// <exception cref="ArgumentException">Thrown when the first parameter is not an instance of RandoSettings</exception>
 		public static bool SetStrawberries(object settings, string strawberriesStr) {
-			RandoSettings s = settings as RandoSettings ?? TypeError(settings);
+			RandoSettings s = settings as RandoSettings ?? InteropHelper.TypeError<RandoSettings>(settings);
 			return Enum.TryParse(strawberriesStr, out s.Strawberries);
 		}
 
-		/// <summary>
-		/// Throws an error describing a misuse of the ModInterop API
-		/// </summary>
-		/// <param name="settings">the object that was passed in place of the settings</param>
-		/// <returns>never</returns>
-		/// <exception cref="ArgumentException">Thrown always with a formatted error message</exception>
-		private static RandoSettings TypeError(object settings) {
-			throw new ArgumentException($"Randomizer.SettingsInterop: received an object of type '{settings?.GetType()?.Name ?? "null"}', expected RandoSettings");
-		}
 	}
 }
