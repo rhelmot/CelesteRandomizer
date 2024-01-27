@@ -6,6 +6,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Celeste.Mod.Randomizer.Interoperability {
+
+	/// <summary>
+	/// Interop class that allows other mods to build a RandoSettings object
+	/// </summary>
 	[ModExportName("Randomizer.SettingsInterop")]
 	public static class SettingsInterop {
 
