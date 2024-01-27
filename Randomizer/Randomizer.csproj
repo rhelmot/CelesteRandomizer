@@ -415,4 +415,11 @@
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
+  <PropertyGroup Condition="'$(COPY_OUTPUT_TO_DIR)' != ''">
+    <PostBuildEvent>
+      echo POST-BUILD: Copying Randomizer.dll and Randomizer.pdb from "$(TargetDir)" to "$(COPY_OUTPUT_TO_DIR)"...
+      copy "$(TargetDir)\Randomizer.dll" "$(COPY_OUTPUT_TO_DIR)\Randomizer.dll"
+      copy "$(TargetDir)\Randomizer.pdb" "$(COPY_OUTPUT_TO_DIR)\Randomizer.pdb"
+    </PostBuildEvent>
+  </PropertyGroup>
 </Project>
