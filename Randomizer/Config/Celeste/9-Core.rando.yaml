@@ -1648,7 +1648,6 @@ BSide:
   - Room: "c-06"
     Core:
       All: cold
-      Right: hot
     Holes:
     - Side: Right
       Idx: 0
@@ -1672,6 +1671,8 @@ BSide:
           Difficulty: hard
         - Dashes: one
           Difficulty: hard
+        - Dashes: zero
+          Difficulty: perfect
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:
