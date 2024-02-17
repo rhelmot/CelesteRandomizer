@@ -11,10 +11,13 @@ using MonoMod.Cil;
 using MonoMod.Utils;
 using MonoMod.RuntimeDetour;
 
-namespace Celeste.Mod.Randomizer {
-    public partial class RandoModule : EverestModule {
+namespace Celeste.Mod.Randomizer
+{
+    public partial class RandoModule : EverestModule
+    {
         private List<IDetour> SpecialHooksQol = new List<IDetour>();
-        private void LoadQol() {
+        private void LoadQol()
+        {
             On.Celeste.TextMenu.MoveSelection += DisableMenuMovement;
             On.Celeste.Cassette.CollectRoutine += NeverCollectCassettes;
             On.Celeste.AngryOshiro.Added += DontSpawnTwoOshiros;
@@ -48,9 +51,11 @@ namespace Celeste.Mod.Randomizer {
             // https://github.com/EverestAPI/CelesteTAS-EverestInterop/blob/master/CelesteTAS-EverestInterop/EverestInterop/DisableAchievements.cs
             // Before hooking Achievements.Register, check the size of the method.
             // If it is 4 instructions long, hooking it is unnecessary and even causes issues.
-            using (DynamicMethodDefinition statsDMD = new DynamicMethodDefinition(typeof(Achievements).GetMethod("Register"))) {
+            using (DynamicMethodDefinition statsDMD = new DynamicMethodDefinition(typeof(Achievements).GetMethod("Register")))
+            {
                 int instructionCount = statsDMD.Definition.Body.Instructions.Count;
-                if (instructionCount > 4) {
+                if (instructionCount > 4)
+                {
                     On.Celeste.Achievements.Register += NoAchievements;
                 }
             }
@@ -63,12 +68,14 @@ namespace Celeste.Mod.Randomizer {
             SpecialHooksQol.Add(new ILHook(typeof(HeartGem).GetMethod("CollectRoutine", BindingFlags.Instance | BindingFlags.NonPublic).GetStateMachineTarget(), HeartSfx));
         }
 
-        private void DelayedLoadQol() {
+        private void DelayedLoadQol()
+        {
             // needs to be delayed so we patch AFTER pridehearts
             IL.Celeste.HeartGem.Awake += SpecialHeartColors;
         }
 
-        private void UnloadQol() {
+        private void UnloadQol()
+        {
             On.Celeste.TextMenu.MoveSelection -= DisableMenuMovement;
             On.Celeste.Cassette.CollectRoutine -= NeverCollectCassettes;
             On.Celeste.AngryOshiro.Added -= DontSpawnTwoOshiros;
@@ -100,18 +107,22 @@ namespace Celeste.Mod.Randomizer {
             IL.Celeste.HeartGem.Awake -= SpecialHeartColors;
             On.Celeste.LockBlock.OnPlayer -= NoKeySkips;
 
-            foreach (var detour in this.SpecialHooksQol) {
+            foreach (var detour in this.SpecialHooksQol)
+            {
                 detour.Dispose();
             }
             this.SpecialHooksQol.Clear();
         }
 
-        private void NoKeySkips(On.Celeste.LockBlock.orig_OnPlayer orig, LockBlock self, Player player) {
-            if (this.InRandomizer) {
+        private void NoKeySkips(On.Celeste.LockBlock.orig_OnPlayer orig, LockBlock self, Player player)
+        {
+            if (this.InRandomizer)
+            {
                 var blockCount = Engine.Scene.Entities.Count(e => e is LockBlock);
                 var keyCount = Engine.Scene.Entities.Count(e => e is Key);
 
-                if (blockCount > keyCount) {
+                if (blockCount > keyCount)
+                {
                     return;
                 }
             }
@@ -119,19 +130,24 @@ namespace Celeste.Mod.Randomizer {
             orig(self, player);
         }
 
-        private void HeartSfx(ILContext il) {
+        private void HeartSfx(ILContext il)
+        {
             var cursor = new ILCursor(il);
-            if (!cursor.TryGotoNext(MoveType.After, instr => instr.MatchLdstr("event:/game/general/crystalheart_blue_get"))) {
+            if (!cursor.TryGotoNext(MoveType.After, instr => instr.MatchLdstr("event:/game/general/crystalheart_blue_get")))
+            {
                 throw new Exception("Could not find patch point");
             }
 
-            cursor.EmitDelegate<Func<string, string>>(sfx => {
+            cursor.EmitDelegate<Func<string, string>>(sfx =>
+            {
                 var settings = this.InRandomizerSettings;
-                if (settings == null) {
+                if (settings == null)
+                {
                     return sfx;
                 }
 
-                switch (settings.Difficulty) {
+                switch (settings.Difficulty)
+                {
                     case Difficulty.Easy:
                     case Difficulty.Normal:
                     case Difficulty.Hard:
@@ -150,17 +166,20 @@ namespace Celeste.Mod.Randomizer {
             });
         }
 
-        private void PoemColor(On.Celeste.Poem.orig_ctor orig, Poem self, string text, int heartindex, float heartalpha) {
+        private void PoemColor(On.Celeste.Poem.orig_ctor orig, Poem self, string text, int heartindex, float heartalpha)
+        {
             orig(self, text, heartindex, heartalpha);
 
             var settings = this.InRandomizerSettings;
-            if (heartindex == 3 || settings == null) {
+            if (heartindex == 3 || settings == null)
+            {
                 return;
             }
 
             Color color = Color.White;
             string guiSprite = "";
-            switch (settings.Difficulty) {
+            switch (settings.Difficulty)
+            {
                 case Difficulty.Easy:
                     color = Calc.HexToColor("20c020");
                     guiSprite = "heartgem0";
@@ -195,31 +214,39 @@ namespace Celeste.Mod.Randomizer {
             self.Heart.Color = Color.White * heartalpha;
         }
 
-        private void SpecialHeartColors(ILContext il) {
+        private void SpecialHeartColors(ILContext il)
+        {
             // this code copied from pridehearts, of course
             VariableDefinition someString = null;
-            foreach (VariableDefinition variable in il.Body.Variables) {
-                if (variable.VariableType.FullName == typeof(string).FullName) {
+            foreach (VariableDefinition variable in il.Body.Variables)
+            {
+                if (variable.VariableType.FullName == typeof(string).FullName)
+                {
                     someString = variable;
                     break;
                 }
             }
 
-            if (someString == null) {
+            if (someString == null)
+            {
                 throw new Exception("Could not find variable defn to patch!");
             }
 
-            var cursor = new ILCursor (il);
-            while (cursor.TryGotoNext (MoveType.After, instr => instr.MatchLdloc(someString.Index) )) {
-                cursor.EmitDelegate<Func<string, string>>(id => {
+            var cursor = new ILCursor(il);
+            while (cursor.TryGotoNext(MoveType.After, instr => instr.MatchLdloc(someString.Index)))
+            {
+                cursor.EmitDelegate<Func<string, string>>(id =>
+                {
                     var settings = this.InRandomizerSettings;
-                    if (id == "heartgem3" || settings == null) {
+                    if (id == "heartgem3" || settings == null)
+                    {
                         return id;
                     }
 
                     var prideMode = AppDomain.CurrentDomain.GetAssemblies().Any(asm => asm.FullName.Contains("PrideHearts"));
 
-                    switch (settings.Difficulty) {
+                    switch (settings.Difficulty)
+                    {
                         case Difficulty.Easy:
                             id = prideMode ? "heartgem0" : "Randomizer_HeartEasy";
                             break;
@@ -244,62 +271,75 @@ namespace Celeste.Mod.Randomizer {
             }
         }
 
-        private void NoAchievements(On.Celeste.Achievements.orig_Register orig, Achievement achievement) {
-            if (!this.InRandomizer) {
+        private void NoAchievements(On.Celeste.Achievements.orig_Register orig, Achievement achievement)
+        {
+            if (!this.InRandomizer)
+            {
                 orig(achievement);
             }
         }
 
-        private void TentacleOutline(On.Celeste.Spikes.orig_Render orig, Spikes self) {
-            if (this.InRandomizer && (string)typeof(Spikes).GetField("spikeType", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(self) == "tentacles") {
+        private void TentacleOutline(On.Celeste.Spikes.orig_Render orig, Spikes self)
+        {
+            if (this.InRandomizer && (string)typeof(Spikes).GetField("spikeType", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(self) == "tentacles")
+            {
                 self.SetSpikeColor(Color.Black);
                 var onShake = typeof(Spikes).GetMethod("OnShake", BindingFlags.Instance | BindingFlags.NonPublic);
-                onShake.Invoke(self, new object[] {new Vector2(1, 0)});
+                onShake.Invoke(self, new object[] { new Vector2(1, 0) });
                 orig(self);
-                onShake.Invoke(self, new object[] {new Vector2(-1, 1)});
+                onShake.Invoke(self, new object[] { new Vector2(-1, 1) });
                 orig(self);
-                onShake.Invoke(self, new object[] {new Vector2(-1, -1)});
+                onShake.Invoke(self, new object[] { new Vector2(-1, -1) });
                 orig(self);
-                onShake.Invoke(self, new object[] {new Vector2(1, -1)});
+                onShake.Invoke(self, new object[] { new Vector2(1, -1) });
                 orig(self);
-                onShake.Invoke(self, new object[] {new Vector2(0, 1)});
+                onShake.Invoke(self, new object[] { new Vector2(0, 1) });
                 self.SetSpikeColor(Color.White);
             }
 
             orig(self);
         }
 
-        private static string MadlibBlank(string description, string hash, string seed) {
-            if (description.Contains(":")) {
+        private static string MadlibBlank(string description, string hash, string seed)
+        {
+            if (description.Contains(":"))
+            {
                 var split = description.Split(':');
                 description = split[0];
                 seed = split[1];
             }
 
             int count;
-            try {
+            try
+            {
                 count = int.Parse(Dialog.Get("RANDOHEART_" + description + "_COUNT"));
-            } catch (FormatException) {
+            }
+            catch (FormatException)
+            {
                 throw new Exception("Bad key: RANDOHEART_" + description + "_COUNT");
             }
             var r = new Random((int)RandoSettings.djb2(hash + seed));
             var picked = r.Next(count);
             var result = Dialog.Get("RANDOHEART_" + description + "_" + picked.ToString());
-            if (char.IsLower(description[0])) {
+            if (char.IsLower(description[0]))
+            {
                 result = result.ToLower();
             }
             return result;
         }
 
-        private string PlayMadlibs(Func<string, string> orig, string name) {
+        private string PlayMadlibs(Func<string, string> orig, string name)
+        {
             RandoSettings settings;
-            if (!Dialog.Has("RANDO_" + name) || (settings = this.InRandomizerSettings) == null) {
+            if (!Dialog.Has("RANDO_" + name) || (settings = this.InRandomizerSettings) == null)
+            {
                 return orig(name);
             }
 
             var thing = orig("RANDO_" + name);
             var i = 0;
-            while (thing.Contains("(RANDO:")) {
+            while (thing.Contains("(RANDO:"))
+            {
                 var idx = thing.IndexOf("(RANDO:");
                 var startidx = idx + "(RANDO:".Length;
                 var endidx = thing.IndexOf(')', idx);
@@ -310,39 +350,50 @@ namespace Celeste.Mod.Randomizer {
             return thing;
         }
 
-        private string PlayMadlibs2(On.Celeste.Dialog.orig_Get orig, string name, Language language) {
+        private string PlayMadlibs2(On.Celeste.Dialog.orig_Get orig, string name, Language language)
+        {
             return PlayMadlibs(s => orig(s, language), name);
         }
 
-        private string PlayMadlibs1(On.Celeste.Dialog.orig_Clean orig, string name, Language language) {
+        private string PlayMadlibs1(On.Celeste.Dialog.orig_Clean orig, string name, Language language)
+        {
             return PlayMadlibs(s => orig(s, language), name);
         }
 
-        private void DisableMenuMovement(On.Celeste.TextMenu.orig_MoveSelection orig, TextMenu self, int direction, bool wiggle = false) {
-            if (self is DisablableTextMenu newself && newself.DisableMovement) {
+        private void DisableMenuMovement(On.Celeste.TextMenu.orig_MoveSelection orig, TextMenu self, int direction, bool wiggle = false)
+        {
+            if (self is DisablableTextMenu newself && newself.DisableMovement)
+            {
                 return;
             }
             orig(self, direction, wiggle);
         }
 
-        private IEnumerator NeverCollectCassettes(On.Celeste.Cassette.orig_CollectRoutine orig, Cassette self, Player player) {
+        private IEnumerator NeverCollectCassettes(On.Celeste.Cassette.orig_CollectRoutine orig, Cassette self, Player player)
+        {
             var thing = orig(self, player);
-            while (thing.MoveNext()) {  // why does it not let me use foreach?
+            while (thing.MoveNext())
+            {  // why does it not let me use foreach?
                 yield return thing.Current;
             }
 
-            if (this.InRandomizer) {
+            if (this.InRandomizer)
+            {
                 var level = self.Scene as Level;
                 level.Session.Cassette = false;
             }
         }
 
-        private void PlayBadelineCutscene(On.Celeste.BadelineOldsite.orig_Added orig, BadelineOldsite self, Scene scene) {
+        private void PlayBadelineCutscene(On.Celeste.BadelineOldsite.orig_Added orig, BadelineOldsite self, Scene scene)
+        {
             orig(self, scene);
             var level = scene as Level;
-            if (!level.Session.GetFlag("evil_maddy_intro") && level.Session.Level.StartsWith("Celeste/2-OldSite/A/3")) {
-                foreach (var c in self.Components) {
-                    if (c is Coroutine) {
+            if (!level.Session.GetFlag("evil_maddy_intro") && level.Session.Level.StartsWith("Celeste/2-OldSite/A/3"))
+            {
+                foreach (var c in self.Components)
+                {
+                    if (c is Coroutine)
+                    {
                         self.Components.Remove(c);
                         break;
                     }
@@ -352,7 +403,8 @@ namespace Celeste.Mod.Randomizer {
                 self.Visible = true;
                 self.Hair.Visible = false;
                 self.Sprite.Play("pretendDead", false, false);
-                if (level.Session.Area.Mode == AreaMode.Normal) {
+                if (level.Session.Area.Mode == AreaMode.Normal)
+                {
                     level.Session.Audio.Music.Event = null;
                     level.Session.Audio.Apply(false);
                 }
@@ -360,9 +412,11 @@ namespace Celeste.Mod.Randomizer {
             }
         }
 
-        private int SummitLaunchReset(On.Celeste.Player.orig_SummitLaunchUpdate orig, Player self) {
+        private int SummitLaunchReset(On.Celeste.Player.orig_SummitLaunchUpdate orig, Player self)
+        {
             var level = Engine.Scene as Level;
-            if (this.InRandomizer && self.Y < level.Bounds.Y + 0) {
+            if (this.InRandomizer && self.Y < level.Bounds.Y + 0)
+            {
                 // teleport to spawn point
                 self.Position = level.Session.RespawnPoint.Value;
 
@@ -378,70 +432,91 @@ namespace Celeste.Mod.Randomizer {
                 Entity fader = null;
                 HeightDisplay h = null;
                 BadelineDummy b = null;
-                foreach (var ent in Engine.Scene.Entities) {
-                    if (ent is AscendManager manager) {
+                foreach (var ent in Engine.Scene.Entities)
+                {
+                    if (ent is AscendManager manager)
+                    {
                         mgr = manager;
                     }
-                    if (ent.GetType().Name == "Fader") {
+                    if (ent.GetType().Name == "Fader")
+                    {
                         fader = ent;
                     }
-                    if (ent is HeightDisplay heightDisplay) {
+                    if (ent is HeightDisplay heightDisplay)
+                    {
                         h = heightDisplay;
                     }
-                    if (ent is BadelineDummy bd) {
+                    if (ent is BadelineDummy bd)
+                    {
                         b = bd;
                     }
                 }
-                if (mgr != null) {
+                if (mgr != null)
+                {
                     level.Remove(mgr);
                 }
-                if (fader != null) {
+                if (fader != null)
+                {
                     level.Remove(fader);
                 }
-                if (h != null) {
+                if (h != null)
+                {
                     level.Remove(h);
                 }
-                if (b != null) {
+                if (b != null)
+                {
                     level.Remove(b);
                 }
                 level.NextTransitionDuration = 0.65f;
 
                 // return to normal
                 return Player.StNormal;
-            } else {
+            }
+            else
+            {
                 return orig(self);
             }
         }
 
-        private void DontSpawnTwoOshiros(On.Celeste.AngryOshiro.orig_Added orig, AngryOshiro self, Scene scene) {
+        private void DontSpawnTwoOshiros(On.Celeste.AngryOshiro.orig_Added orig, AngryOshiro self, Scene scene)
+        {
             orig(self, scene);
             var level = scene as Level;
-            if (!level.Session.GetFlag("oshiro_resort_roof") && level.Session.Level.StartsWith("Celeste/3-CelestialResort/A/roof00")) {
+            if (!level.Session.GetFlag("oshiro_resort_roof") && level.Session.Level.StartsWith("Celeste/3-CelestialResort/A/roof00"))
+            {
                 self.RemoveSelf();
             }
         }
 
-        private void DontMoveOnWakeup(On.Celeste.Player.orig_Added orig, Player self, Scene scene) {
+        private void DontMoveOnWakeup(On.Celeste.Player.orig_Added orig, Player self, Scene scene)
+        {
             orig(self, scene);
-            if (this.InRandomizer) {
+            if (this.InRandomizer)
+            {
                 self.JustRespawned = true;
             }
         }
 
-        private void DontBlockOnTheo(ILContext il) {
+        private void DontBlockOnTheo(ILContext il)
+        {
             ILCursor cursor = new ILCursor(il);
             cursor.TryGotoNext(MoveType.After, instr => instr.MatchCallvirt<Monocle.Tracker>("GetEntity"));
-            cursor.EmitDelegate<Func<TheoCrystal, TheoCrystal>>((theo) => {
+            cursor.EmitDelegate<Func<TheoCrystal, TheoCrystal>>((theo) =>
+            {
                 return this.InRandomizer ? null : theo;
             });
         }
 
-        private void BeGracefulOnTransitions(ILContext il) {
+        private void BeGracefulOnTransitions(ILContext il)
+        {
             ILCursor cursor = new ILCursor(il);
-            while (cursor.TryGotoNext(MoveType.Before, instr => instr.MatchCallvirt<Level>("get_Bounds"))) {
+            while (cursor.TryGotoNext(MoveType.Before, instr => instr.MatchCallvirt<Level>("get_Bounds")))
+            {
                 cursor.Remove();
-                cursor.EmitDelegate<Func<Level, Rectangle>>((level) => {
-                    if (level.Transitioning && this.InRandomizer) {
+                cursor.EmitDelegate<Func<Level, Rectangle>>((level) =>
+                {
+                    if (level.Transitioning && this.InRandomizer)
+                    {
                         return level.Session.MapData.Bounds;
                     }
                     return level.Bounds;
@@ -449,33 +524,43 @@ namespace Celeste.Mod.Randomizer {
             }
         }
 
-        private void DashlessAccessability(ILContext il) {
+        private void DashlessAccessability(ILContext il)
+        {
             ILCursor cursor = new ILCursor(il);
             cursor.TryGotoNext(MoveType.After, instr => instr.MatchCallvirt<Player>("get_DashAttacking"));
-            cursor.EmitDelegate<Func<bool, bool>>((dobreak) => {
-                if ((this.InRandomizerSettings?.Dashes ?? NumDashes.One) == NumDashes.Zero) {
+            cursor.EmitDelegate<Func<bool, bool>>((dobreak) =>
+            {
+                if ((this.InRandomizerSettings?.Dashes ?? NumDashes.One) == NumDashes.Zero)
+                {
                     return true;
                 }
                 return dobreak;
             });
         }
 
-        private void GemRefillsDashes(ILContext il) {
+        private void GemRefillsDashes(ILContext il)
+        {
             ILCursor cursor = new ILCursor(il);
             cursor.TryGotoNext(MoveType.After, instr => instr.MatchCallvirt<Monocle.Entity>("Add"));
             cursor.Emit(Mono.Cecil.Cil.OpCodes.Ldarg_1);
-            cursor.EmitDelegate<Action<Player>>((player) => {
-                if (this.InRandomizer) {
+            cursor.EmitDelegate<Action<Player>>((player) =>
+            {
+                if (this.InRandomizer)
+                {
                     player.RefillDash();
                 }
             });
         }
 
-        private void DontGiveTwoDashes(ILContext il) {
+        private void DontGiveTwoDashes(ILContext il)
+        {
             ILCursor cursor = new ILCursor(il);
-            while (cursor.TryGotoNext(MoveType.After, instr => instr.MatchLdcI4(2))) {
-                cursor.EmitDelegate<Func<int, int>>((dashes) => {
-                    if (this.InRandomizer) {
+            while (cursor.TryGotoNext(MoveType.After, instr => instr.MatchLdcI4(2)))
+            {
+                cursor.EmitDelegate<Func<int, int>>((dashes) =>
+                {
+                    if (this.InRandomizer)
+                    {
                         return (Engine.Scene as Level).Session.Inventory.Dashes;
                     }
                     return dashes;
@@ -483,12 +568,16 @@ namespace Celeste.Mod.Randomizer {
             }
         }
 
-        private void DontGiveOneDash(ILContext il) {
+        private void DontGiveOneDash(ILContext il)
+        {
             var cursor = new ILCursor(il);
             var count = 0;
-            while (cursor.TryGotoNext(MoveType.Before, instr => instr.MatchStfld("Celeste.PlayerInventory", "Dashes"))) {
-                cursor.EmitDelegate<Func<int, int>>((dashes) => {
-                    if (this.InRandomizer) {
+            while (cursor.TryGotoNext(MoveType.Before, instr => instr.MatchStfld("Celeste.PlayerInventory", "Dashes")))
+            {
+                cursor.EmitDelegate<Func<int, int>>((dashes) =>
+                {
+                    if (this.InRandomizer)
+                    {
                         return (Engine.Scene as Level).Session.Inventory.Dashes;
                     }
                     return dashes;
@@ -496,19 +585,24 @@ namespace Celeste.Mod.Randomizer {
                 cursor.Index++;
                 count++;
             }
-            if (count == 0) {
+            if (count == 0)
+            {
                 throw new Exception("Could not find patch point(s)!");
             }
         }
 
-        private void MoveOutOfTheWay(ILContext il) {
+        private void MoveOutOfTheWay(ILContext il)
+        {
             ILCursor cursor = new ILCursor(il);
             cursor.TryGotoNext(MoveType.After, instr => instr.MatchCallvirt<AngryOshiro>("get_TargetY"));
-            cursor.EmitDelegate<Func<float, float>>((targety) => {
-                if (this.InRandomizer) {
+            cursor.EmitDelegate<Func<float, float>>((targety) =>
+            {
+                if (this.InRandomizer)
+                {
                     var level = Engine.Scene as Level;
                     var player = level.Tracker.GetEntity<Player>();
-                    if (player.Facing == Facings.Left && player.X < level.Bounds.X + 70) {
+                    if (player.Facing == Facings.Left && player.X < level.Bounds.X + 70)
+                    {
                         return targety - 50;
                     }
                 }
@@ -516,23 +610,29 @@ namespace Celeste.Mod.Randomizer {
             });
         }
 
-        private void PleaseDontStopTheMusic(ILContext il) {
+        private void PleaseDontStopTheMusic(ILContext il)
+        {
             var cursor = new ILCursor(il);
             cursor.TryGotoNext(MoveType.After, instr => instr.MatchCallvirt<AudioTrackState>("set_Event"));
-            if (!cursor.TryGotoNext(MoveType.Before, instr => instr.MatchCallvirt<AudioTrackState>("set_Event"))) {
+            if (!cursor.TryGotoNext(MoveType.Before, instr => instr.MatchCallvirt<AudioTrackState>("set_Event")))
+            {
                 throw new Exception("Could not find patching spot");
             }
             cursor.Remove();
-            cursor.EmitDelegate<Action<AudioTrackState, string>>((music, track) => {
-                if (!this.InRandomizer) {
+            cursor.EmitDelegate<Action<AudioTrackState, string>>((music, track) =>
+            {
+                if (!this.InRandomizer)
+                {
                     music.Event = track;
                 }
             });
         }
 
-        private void FuckUpLess(ILContext il) {
+        private void FuckUpLess(ILContext il)
+        {
             var cursor = new ILCursor(il);
-            if (!cursor.TryGotoNext(MoveType.After, instr => instr.MatchCallvirt<Session>("GetFlag"))) {
+            if (!cursor.TryGotoNext(MoveType.After, instr => instr.MatchCallvirt<Session>("GetFlag")))
+            {
                 throw new Exception("Could not find patching spot 1");
             }
 
@@ -554,22 +654,26 @@ namespace Celeste.Mod.Randomizer {
             cursor.MarkLabel(label);*/
         }
 
-        private void FuckUpEvenLess(On.Celeste.CS06_Campfire.orig_OnBegin orig, CS06_Campfire self, Level level) {
+        private void FuckUpEvenLess(On.Celeste.CS06_Campfire.orig_OnBegin orig, CS06_Campfire self, Level level)
+        {
             var player = level.Tracker.GetEntity<Player>();
             var savedX = player.X;
             orig(self, level);
-            if (this.InRandomizer) {
+            if (this.InRandomizer)
+            {
                 player.X = savedX;
                 player.StateMachine.Locked = false;
                 player.StateMachine.State = 0;
             }
         }
 
-        private void FuckUpWayLess(ILContext il) {
+        private void FuckUpWayLess(ILContext il)
+        {
             var cursor = new ILCursor(il);
             if (!cursor.TryGotoNext(MoveType.Before, instr => instr.MatchLdarg(0),
                                                      instr => instr.MatchLdfld("Celeste.CS06_Campfire", "player"),
-                                                     instr => instr.MatchLdfld("Celeste.Player", "Sprite"))) {
+                                                     instr => instr.MatchLdfld("Celeste.Player", "Sprite")))
+            {
                 throw new Exception("Could not find patching spot 1");
             }
 
@@ -578,44 +682,54 @@ namespace Celeste.Mod.Randomizer {
             cursor.Emit(Mono.Cecil.Cil.OpCodes.Brtrue, label);
 
             if (!cursor.TryGotoNext(MoveType.Before, instr => instr.MatchLdarg(0),
-                                                     instr => instr.MatchCall("Monocle.Entity", "RemoveSelf"))) {
+                                                     instr => instr.MatchCall("Monocle.Entity", "RemoveSelf")))
+            {
                 throw new Exception("Could not find patching spot 2");
             }
 
             cursor.MarkLabel(label);
         }
 
-        private void TransferGoldenBerries(Action<object> orig, object self) {
+        private void TransferGoldenBerries(Action<object> orig, object self)
+        {
             var level = Engine.Scene as Level;
             var player = level.Tracker.GetEntity<Player>();
             var leader = player.Get<Leader>();
-            foreach (var follower in leader.Followers) {
-                if (follower.Entity != null) {
+            foreach (var follower in leader.Followers)
+            {
+                if (follower.Entity != null)
+                {
                     follower.Entity.Position -= player.Position;
                     follower.Entity.AddTag(Tags.Global);
                     level.Session.DoNotLoad.Add(follower.ParentEntityID);
                 }
             }
-            for (int i = 0; i < leader.PastPoints.Count; i++) {
+            for (int i = 0; i < leader.PastPoints.Count; i++)
+            {
                 leader.PastPoints[i] -= player.Position;
             }
             orig(self);
-            foreach (var follower in leader.Followers) {
-                if (follower.Entity != null) {
+            foreach (var follower in leader.Followers)
+            {
+                if (follower.Entity != null)
+                {
                     follower.Entity.Position += player.Position;
                     follower.Entity.RemoveTag(Tags.Global);
                     level.Session.DoNotLoad.Remove(follower.ParentEntityID);
                 }
             }
-            for (int i = 0; i < leader.PastPoints.Count; i++) {
+            for (int i = 0; i < leader.PastPoints.Count; i++)
+            {
                 leader.PastPoints[i] += player.Position;
             }
             leader.TransferFollowers();
         }
 
-        private void TrackExtraSpace(ILContext il) {
+        private void TrackExtraSpace(ILContext il)
+        {
             var cursor = new ILCursor(il);
-            if (!cursor.TryGotoNext(MoveType.After, instr => instr.MatchLdfld("Microsoft.Xna.Framework.Rectangle", "Height"))) {
+            if (!cursor.TryGotoNext(MoveType.After, instr => instr.MatchLdfld("Microsoft.Xna.Framework.Rectangle", "Height")))
+            {
                 throw new Exception("Could not find patch point!");
             }
             cursor.Emit(Mono.Cecil.Cil.OpCodes.Ldc_I4, 32);
@@ -623,21 +737,25 @@ namespace Celeste.Mod.Randomizer {
         }
 
         [Command("madlibs_stats", "run statistical tests on the madlibs")]
-        public static void MadlibsStats(string blank = "WAVEDASHING", int runs = 100000) {
+        public static void MadlibsStats(string blank = "WAVEDASHING", int runs = 100000)
+        {
             var map = new Dictionary<string, int>();
             var seed = "1";
-            for (int i = 0; i < runs; i++) {
+            for (int i = 0; i < runs; i++)
+            {
                 var result = MadlibBlank(blank, new Random().Next().ToString(), seed);
                 map[result] = (map.TryGetValue(result, out int j) ? j : 0) + 1;
             }
 
-            foreach (var kv in map.OrderBy(x => x.Value)) {
+            foreach (var kv in map.OrderBy(x => x.Value))
+            {
                 Engine.Commands.Log($"{kv.Value} {kv.Key}");
             }
         }
     }
 
-    public class DisablableTextMenu : TextMenu {
+    public class DisablableTextMenu : TextMenu
+    {
         public bool DisableMovement;
     }
 }

@@ -2,14 +2,16 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Celeste.Mod.Randomizer {
+namespace Celeste.Mod.Randomizer
+{
     // https://github.com/StephenCleary/Deque/blob/b1633a39de4381a3a093ada1e15b97086ca0be11/src/Nito.Collections.Deque/Deque.cs 
 
     /// <summary>
     /// A double-ended queue (deque), which provides O(1) indexed access, O(1) removals from the front and back, amortized O(1) insertions to the front and back, and O(N) insertions and removals anywhere else (with the operations getting slower as the index approaches the middle).
     /// </summary>
     /// <typeparam name="T">The type of elements contained in the deque.</typeparam>
-    public sealed class Deque<T> : IList<T>, IReadOnlyList<T>, System.Collections.IList {
+    public sealed class Deque<T> : IList<T>, IReadOnlyList<T>, System.Collections.IList
+    {
         /// <summary>
         /// The default capacity.
         /// </summary>
@@ -29,7 +31,8 @@ namespace Celeste.Mod.Randomizer {
         /// Initializes a new instance of the <see cref="Deque&lt;T&gt;"/> class with the specified capacity.
         /// </summary>
         /// <param name="capacity">The initial capacity. Must be greater than <c>0</c>.</param>
-        public Deque(int capacity) {
+        public Deque(int capacity)
+        {
             if (capacity < 0)
                 throw new ArgumentOutOfRangeException(nameof(capacity), "Capacity may not be negative.");
             _buffer = new T[capacity];
@@ -39,16 +42,20 @@ namespace Celeste.Mod.Randomizer {
         /// Initializes a new instance of the <see cref="Deque&lt;T&gt;"/> class with the elements from the specified collection.
         /// </summary>
         /// <param name="collection">The collection. May not be <c>null</c>.</param>
-        public Deque(IEnumerable<T> collection) {
+        public Deque(IEnumerable<T> collection)
+        {
             if (collection == null)
                 throw new ArgumentNullException(nameof(collection));
 
             var source = CollectionHelpers.ReifyCollection(collection);
             var count = source.Count;
-            if (count > 0) {
+            if (count > 0)
+            {
                 _buffer = new T[count];
                 DoInsertRange(0, source);
-            } else {
+            }
+            else
+            {
                 _buffer = new T[DefaultCapacity];
             }
         }
@@ -57,7 +64,8 @@ namespace Celeste.Mod.Randomizer {
         /// Initializes a new instance of the <see cref="Deque&lt;T&gt;"/> class.
         /// </summary>
         public Deque()
-            : this(DefaultCapacity) {
+            : this(DefaultCapacity)
+        {
         }
 
         #region GenericListImplementations
@@ -66,7 +74,8 @@ namespace Celeste.Mod.Randomizer {
         /// Gets a value indicating whether this list is read-only. This implementation always returns <c>false</c>.
         /// </summary>
         /// <returns>true if this list is read-only; otherwise, false.</returns>
-        bool ICollection<T>.IsReadOnly {
+        bool ICollection<T>.IsReadOnly
+        {
             get { return false; }
         }
 
@@ -76,13 +85,16 @@ namespace Celeste.Mod.Randomizer {
         /// <param name="index">The index of the item to get or set.</param>
         /// <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="index"/> is not a valid index in this list.</exception>
         /// <exception cref="T:System.NotSupportedException">This property is set and the list is read-only.</exception>
-        public T this[int index] {
-            get {
+        public T this[int index]
+        {
+            get
+            {
                 CheckExistingIndexArgument(Count, index);
                 return DoGetItem(index);
             }
 
-            set {
+            set
+            {
                 CheckExistingIndexArgument(Count, index);
                 DoSetItem(index, value);
             }
@@ -99,7 +111,8 @@ namespace Celeste.Mod.Randomizer {
         /// <exception cref="T:System.NotSupportedException">
         /// This list is read-only.
         /// </exception>
-        public void Insert(int index, T item) {
+        public void Insert(int index, T item)
+        {
             CheckNewIndexArgument(Count, index);
             DoInsert(index, item);
         }
@@ -114,7 +127,8 @@ namespace Celeste.Mod.Randomizer {
         /// <exception cref="T:System.NotSupportedException">
         /// This list is read-only.
         /// </exception>
-        public void RemoveAt(int index) {
+        public void RemoveAt(int index)
+        {
             CheckExistingIndexArgument(Count, index);
             DoRemoveAt(index);
         }
@@ -124,10 +138,12 @@ namespace Celeste.Mod.Randomizer {
         /// </summary>
         /// <param name="item">The object to locate in this list.</param>
         /// <returns>The index of <paramref name="item"/> if found in this list; otherwise, -1.</returns>
-        public int IndexOf(T item) {
+        public int IndexOf(T item)
+        {
             var comparer = EqualityComparer<T>.Default;
             int ret = 0;
-            foreach (var sourceItem in this) {
+            foreach (var sourceItem in this)
+            {
                 if (comparer.Equals(item, sourceItem))
                     return ret;
                 ++ret;
@@ -143,7 +159,8 @@ namespace Celeste.Mod.Randomizer {
         /// <exception cref="T:System.NotSupportedException">
         /// This list is read-only.
         /// </exception>
-        void ICollection<T>.Add(T item) {
+        void ICollection<T>.Add(T item)
+        {
             DoInsert(Count, item);
         }
 
@@ -154,9 +171,11 @@ namespace Celeste.Mod.Randomizer {
         /// <returns>
         /// true if <paramref name="item"/> is found in this list; otherwise, false.
         /// </returns>
-        bool ICollection<T>.Contains(T item) {
+        bool ICollection<T>.Contains(T item)
+        {
             var comparer = EqualityComparer<T>.Default;
-            foreach (var entry in this) {
+            foreach (var entry in this)
+            {
                 if (comparer.Equals(item, entry))
                     return true;
             }
@@ -179,7 +198,8 @@ namespace Celeste.Mod.Randomizer {
         /// -or-
         /// The number of elements in the source <see cref="T:System.Collections.Generic.ICollection`1"/> is greater than the available space from <paramref name="arrayIndex"/> to the end of the destination <paramref name="array"/>.
         /// </exception>
-        void ICollection<T>.CopyTo(T[] array, int arrayIndex) {
+        void ICollection<T>.CopyTo(T[] array, int arrayIndex)
+        {
             if (array == null)
                 throw new ArgumentNullException(nameof(array));
 
@@ -193,16 +213,20 @@ namespace Celeste.Mod.Randomizer {
         /// </summary>
         /// <param name="array">The destination array.</param>
         /// <param name="arrayIndex">The optional index in the destination array at which to begin writing.</param>
-        private void CopyToArray(Array array, int arrayIndex = 0) {
+        private void CopyToArray(Array array, int arrayIndex = 0)
+        {
             if (array == null)
                 throw new ArgumentNullException(nameof(array));
 
-            if (IsSplit) {
+            if (IsSplit)
+            {
                 // The existing buffer is split, so we have to copy it in parts
                 int length = Capacity - _offset;
                 Array.Copy(_buffer, _offset, array, arrayIndex, length);
                 Array.Copy(_buffer, 0, array, arrayIndex + length, Count - length);
-            } else {
+            }
+            else
+            {
                 // The existing buffer is whole
                 Array.Copy(_buffer, _offset, array, arrayIndex, Count);
             }
@@ -218,7 +242,8 @@ namespace Celeste.Mod.Randomizer {
         /// <exception cref="T:System.NotSupportedException">
         /// This list is read-only.
         /// </exception>
-        public bool Remove(T item) {
+        public bool Remove(T item)
+        {
             int index = IndexOf(item);
             if (index == -1)
                 return false;
@@ -233,9 +258,11 @@ namespace Celeste.Mod.Randomizer {
         /// <returns>
         /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
         /// </returns>
-        public IEnumerator<T> GetEnumerator() {
+        public IEnumerator<T> GetEnumerator()
+        {
             int count = Count;
-            for (int i = 0; i != count; ++i) {
+            for (int i = 0; i != count; ++i)
+            {
                 yield return DoGetItem(i);
             }
         }
@@ -246,14 +273,16 @@ namespace Celeste.Mod.Randomizer {
         /// <returns>
         /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
         /// </returns>
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
             return GetEnumerator();
         }
 
         #endregion
         #region ObjectListImplementations
 
-        private static bool IsT(object value) {
+        private static bool IsT(object value)
+        {
             if (value is T)
                 return true;
             if (value != null)
@@ -261,7 +290,8 @@ namespace Celeste.Mod.Randomizer {
             return default(T) == null;
         }
 
-        int System.Collections.IList.Add(object value) {
+        int System.Collections.IList.Add(object value)
+        {
             if (value == null && default(T) != null)
                 throw new ArgumentNullException(nameof(value), "Value cannot be null.");
             if (!IsT(value))
@@ -270,15 +300,18 @@ namespace Celeste.Mod.Randomizer {
             return Count - 1;
         }
 
-        bool System.Collections.IList.Contains(object value) {
+        bool System.Collections.IList.Contains(object value)
+        {
             return IsT(value) ? ((ICollection<T>)this).Contains((T)value) : false;
         }
 
-        int System.Collections.IList.IndexOf(object value) {
+        int System.Collections.IList.IndexOf(object value)
+        {
             return IsT(value) ? IndexOf((T)value) : -1;
         }
 
-        void System.Collections.IList.Insert(int index, object value) {
+        void System.Collections.IList.Insert(int index, object value)
+        {
             if (value == null && default(T) != null)
                 throw new ArgumentNullException("value", "Value cannot be null.");
             if (!IsT(value))
@@ -286,25 +319,31 @@ namespace Celeste.Mod.Randomizer {
             Insert(index, (T)value);
         }
 
-        bool System.Collections.IList.IsFixedSize {
+        bool System.Collections.IList.IsFixedSize
+        {
             get { return false; }
         }
 
-        bool System.Collections.IList.IsReadOnly {
+        bool System.Collections.IList.IsReadOnly
+        {
             get { return false; }
         }
 
-        void System.Collections.IList.Remove(object value) {
+        void System.Collections.IList.Remove(object value)
+        {
             if (IsT(value))
                 Remove((T)value);
         }
 
-        object System.Collections.IList.this[int index] {
-            get {
+        object System.Collections.IList.this[int index]
+        {
+            get
+            {
                 return this[index];
             }
 
-            set {
+            set
+            {
                 if (value == null && default(T) != null)
                     throw new ArgumentNullException(nameof(value), "Value cannot be null.");
                 if (!IsT(value))
@@ -313,25 +352,33 @@ namespace Celeste.Mod.Randomizer {
             }
         }
 
-        void System.Collections.ICollection.CopyTo(Array array, int index) {
+        void System.Collections.ICollection.CopyTo(Array array, int index)
+        {
             if (array == null)
                 throw new ArgumentNullException(nameof(array), "Destination array cannot be null.");
             CheckRangeArguments(array.Length, index, Count);
 
-            try {
+            try
+            {
                 CopyToArray(array, index);
-            } catch (ArrayTypeMismatchException ex) {
+            }
+            catch (ArrayTypeMismatchException ex)
+            {
                 throw new ArgumentException("Destination array is of incorrect type.", nameof(array), ex);
-            } catch (RankException ex) {
+            }
+            catch (RankException ex)
+            {
                 throw new ArgumentException("Destination array must be single dimensional.", nameof(array), ex);
             }
         }
 
-        bool System.Collections.ICollection.IsSynchronized {
+        bool System.Collections.ICollection.IsSynchronized
+        {
             get { return false; }
         }
 
-        object System.Collections.ICollection.SyncRoot {
+        object System.Collections.ICollection.SyncRoot
+        {
             get { return this; }
         }
 
@@ -344,8 +391,10 @@ namespace Celeste.Mod.Randomizer {
         /// <param name="sourceLength">The length of the source. This parameter is not checked for validity.</param>
         /// <param name="index">The index into the source.</param>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is not a valid index to an insertion point for the source.</exception>
-        private static void CheckNewIndexArgument(int sourceLength, int index) {
-            if (index < 0 || index > sourceLength) {
+        private static void CheckNewIndexArgument(int sourceLength, int index)
+        {
+            if (index < 0 || index > sourceLength)
+            {
                 throw new ArgumentOutOfRangeException(nameof(index), "Invalid new index " + index + " for source length " + sourceLength);
             }
         }
@@ -356,8 +405,10 @@ namespace Celeste.Mod.Randomizer {
         /// <param name="sourceLength">The length of the source. This parameter is not checked for validity.</param>
         /// <param name="index">The index into the source.</param>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is not a valid index to an existing element for the source.</exception>
-        private static void CheckExistingIndexArgument(int sourceLength, int index) {
-            if (index < 0 || index >= sourceLength) {
+        private static void CheckExistingIndexArgument(int sourceLength, int index)
+        {
+            if (index < 0 || index >= sourceLength)
+            {
                 throw new ArgumentOutOfRangeException(nameof(index), "Invalid existing index " + index + " for source length " + sourceLength);
             }
         }
@@ -370,16 +421,20 @@ namespace Celeste.Mod.Randomizer {
         /// <param name="count">The number of elements in the range.</param>
         /// <exception cref="ArgumentOutOfRangeException">Either <paramref name="offset"/> or <paramref name="count"/> is less than 0.</exception>
         /// <exception cref="ArgumentException">The range [offset, offset + count) is not within the range [0, sourceLength).</exception>
-        private static void CheckRangeArguments(int sourceLength, int offset, int count) {
-            if (offset < 0) {
+        private static void CheckRangeArguments(int sourceLength, int offset, int count)
+        {
+            if (offset < 0)
+            {
                 throw new ArgumentOutOfRangeException(nameof(offset), "Invalid offset " + offset);
             }
 
-            if (count < 0) {
+            if (count < 0)
+            {
                 throw new ArgumentOutOfRangeException(nameof(count), "Invalid count " + count);
             }
 
-            if (sourceLength - offset < count) {
+            if (sourceLength - offset < count)
+            {
                 throw new ArgumentException("Invalid offset (" + offset + ") or count + (" + count + ") for source length " + sourceLength);
             }
         }
@@ -389,22 +444,26 @@ namespace Celeste.Mod.Randomizer {
         /// <summary>
         /// Gets a value indicating whether this instance is empty.
         /// </summary>
-        private bool IsEmpty {
+        private bool IsEmpty
+        {
             get { return Count == 0; }
         }
 
         /// <summary>
         /// Gets a value indicating whether this instance is at full capacity.
         /// </summary>
-        private bool IsFull {
+        private bool IsFull
+        {
             get { return Count == Capacity; }
         }
 
         /// <summary>
         /// Gets a value indicating whether the buffer is "split" (meaning the beginning of the view is at a later index in <see cref="_buffer"/> than the end).
         /// </summary>
-        private bool IsSplit {
-            get {
+        private bool IsSplit
+        {
+            get
+            {
                 // Overflow-safe version of "(offset + Count) > Capacity"
                 return _offset > (Capacity - Count);
             }
@@ -414,12 +473,15 @@ namespace Celeste.Mod.Randomizer {
         /// Gets or sets the capacity for this deque. This value must always be greater than zero, and this property cannot be set to a value less than <see cref="Count"/>.
         /// </summary>
         /// <exception cref="InvalidOperationException"><c>Capacity</c> cannot be set to a value less than <see cref="Count"/>.</exception>
-        public int Capacity {
-            get {
+        public int Capacity
+        {
+            get
+            {
                 return _buffer.Length;
             }
 
-            set {
+            set
+            {
                 if (value < Count)
                     throw new ArgumentOutOfRangeException(nameof(value), "Capacity cannot be set to a value less than Count");
 
@@ -447,7 +509,8 @@ namespace Celeste.Mod.Randomizer {
         /// </summary>
         /// <param name="index">The deque index.</param>
         /// <returns>The buffer index.</returns>
-        private int DequeIndexToBufferIndex(int index) {
+        private int DequeIndexToBufferIndex(int index)
+        {
             return (index + _offset) % Capacity;
         }
 
@@ -456,7 +519,8 @@ namespace Celeste.Mod.Randomizer {
         /// </summary>
         /// <param name="index">The zero-based view index of the element to get. This index is guaranteed to be valid.</param>
         /// <returns>The element at the specified index.</returns>
-        private T DoGetItem(int index) {
+        private T DoGetItem(int index)
+        {
             return _buffer[DequeIndexToBufferIndex(index)];
         }
 
@@ -465,7 +529,8 @@ namespace Celeste.Mod.Randomizer {
         /// </summary>
         /// <param name="index">The zero-based view index of the element to get. This index is guaranteed to be valid.</param>
         /// <param name="item">The element to store in the list.</param>
-        private void DoSetItem(int index, T item) {
+        private void DoSetItem(int index, T item)
+        {
             _buffer[DequeIndexToBufferIndex(index)] = item;
         }
 
@@ -474,13 +539,17 @@ namespace Celeste.Mod.Randomizer {
         /// </summary>
         /// <param name="index">The zero-based view index at which the element should be inserted. This index is guaranteed to be valid.</param>
         /// <param name="item">The element to store in the list.</param>
-        private void DoInsert(int index, T item) {
+        private void DoInsert(int index, T item)
+        {
             EnsureCapacityForOneElement();
 
-            if (index == 0) {
+            if (index == 0)
+            {
                 DoAddToFront(item);
                 return;
-            } else if (index == Count) {
+            }
+            else if (index == Count)
+            {
                 DoAddToBack(item);
                 return;
             }
@@ -492,11 +561,15 @@ namespace Celeste.Mod.Randomizer {
         /// Removes an element at the specified view index.
         /// </summary>
         /// <param name="index">The zero-based view index of the element to remove. This index is guaranteed to be valid.</param>
-        private void DoRemoveAt(int index) {
-            if (index == 0) {
+        private void DoRemoveAt(int index)
+        {
+            if (index == 0)
+            {
                 DoRemoveFromFront();
                 return;
-            } else if (index == Count - 1) {
+            }
+            else if (index == Count - 1)
+            {
                 DoRemoveFromBack();
                 return;
             }
@@ -509,7 +582,8 @@ namespace Celeste.Mod.Randomizer {
         /// </summary>
         /// <param name="value">The value by which to increase <see cref="_offset"/>. May not be negative.</param>
         /// <returns>The value of <see cref="_offset"/> after it was incremented.</returns>
-        private int PostIncrement(int value) {
+        private int PostIncrement(int value)
+        {
             int ret = _offset;
             _offset += value;
             _offset %= Capacity;
@@ -521,7 +595,8 @@ namespace Celeste.Mod.Randomizer {
         /// </summary>
         /// <param name="value">The value by which to reduce <see cref="_offset"/>. May not be negative or greater than <see cref="Capacity"/>.</param>
         /// <returns>The value of <see cref="_offset"/> before it was decremented.</returns>
-        private int PreDecrement(int value) {
+        private int PreDecrement(int value)
+        {
             _offset -= value;
             if (_offset < 0)
                 _offset += Capacity;
@@ -532,7 +607,8 @@ namespace Celeste.Mod.Randomizer {
         /// Inserts a single element to the back of the view. <see cref="IsFull"/> must be false when this method is called.
         /// </summary>
         /// <param name="value">The element to insert.</param>
-        private void DoAddToBack(T value) {
+        private void DoAddToBack(T value)
+        {
             _buffer[DequeIndexToBufferIndex(Count)] = value;
             ++Count;
         }
@@ -541,7 +617,8 @@ namespace Celeste.Mod.Randomizer {
         /// Inserts a single element to the front of the view. <see cref="IsFull"/> must be false when this method is called.
         /// </summary>
         /// <param name="value">The element to insert.</param>
-        private void DoAddToFront(T value) {
+        private void DoAddToFront(T value)
+        {
             _buffer[PreDecrement(1)] = value;
             ++Count;
         }
@@ -550,7 +627,8 @@ namespace Celeste.Mod.Randomizer {
         /// Removes and returns the last element in the view. <see cref="IsEmpty"/> must be false when this method is called.
         /// </summary>
         /// <returns>The former last element.</returns>
-        private T DoRemoveFromBack() {
+        private T DoRemoveFromBack()
+        {
             T ret = _buffer[DequeIndexToBufferIndex(Count - 1)];
             --Count;
             return ret;
@@ -560,7 +638,8 @@ namespace Celeste.Mod.Randomizer {
         /// Removes and returns the first element in the view. <see cref="IsEmpty"/> must be false when this method is called.
         /// </summary>
         /// <returns>The former first element.</returns>
-        private T DoRemoveFromFront() {
+        private T DoRemoveFromFront()
+        {
             --Count;
             return _buffer[PostIncrement(1)];
         }
@@ -570,10 +649,12 @@ namespace Celeste.Mod.Randomizer {
         /// </summary>
         /// <param name="index">The index into the view at which the elements are to be inserted.</param>
         /// <param name="collection">The elements to insert. The sum of <c>collection.Count</c> and <see cref="Count"/> must be less than or equal to <see cref="Capacity"/>.</param>
-        private void DoInsertRange(int index, IReadOnlyCollection<T> collection) {
+        private void DoInsertRange(int index, IReadOnlyCollection<T> collection)
+        {
             var collectionCount = collection.Count;
             // Make room in the existing list
-            if (index < Count / 2) {
+            if (index < Count / 2)
+            {
                 // Inserting into the first half of the list
 
                 // Move lower items down: [0, index) -> [Capacity - collectionCount, Capacity - collectionCount + index)
@@ -586,7 +667,9 @@ namespace Celeste.Mod.Randomizer {
 
                 // Rotate to the new view
                 PreDecrement(collectionCount);
-            } else {
+            }
+            else
+            {
                 // Inserting into the second half of the list
 
                 // Move higher items up: [index, count) -> [index + collectionCount, collectionCount + count)
@@ -598,7 +681,8 @@ namespace Celeste.Mod.Randomizer {
 
             // Copy new items into place
             int i = index;
-            foreach (T item in collection) {
+            foreach (T item in collection)
+            {
                 _buffer[DequeIndexToBufferIndex(i)] = item;
                 ++i;
             }
@@ -612,19 +696,24 @@ namespace Celeste.Mod.Randomizer {
         /// </summary>
         /// <param name="index">The index into the view at which the range begins.</param>
         /// <param name="collectionCount">The number of elements in the range. This must be greater than 0 and less than or equal to <see cref="Count"/>.</param>
-        private void DoRemoveRange(int index, int collectionCount) {
-            if (index == 0) {
+        private void DoRemoveRange(int index, int collectionCount)
+        {
+            if (index == 0)
+            {
                 // Removing from the beginning: rotate to the new view
                 PostIncrement(collectionCount);
                 Count -= collectionCount;
                 return;
-            } else if (index == Count - collectionCount) {
+            }
+            else if (index == Count - collectionCount)
+            {
                 // Removing from the ending: trim the existing view
                 Count -= collectionCount;
                 return;
             }
 
-            if ((index + (collectionCount / 2)) < Count / 2) {
+            if ((index + (collectionCount / 2)) < Count / 2)
+            {
                 // Removing from first half of list
 
                 // Move lower items up: [0, index) -> [collectionCount, collectionCount + index)
@@ -635,7 +724,9 @@ namespace Celeste.Mod.Randomizer {
 
                 // Rotate to new view
                 PostIncrement(collectionCount);
-            } else {
+            }
+            else
+            {
                 // Removing from second half of list
 
                 // Move higher items down: [index + collectionCount, count) -> [index, count - collectionCount)
@@ -652,8 +743,10 @@ namespace Celeste.Mod.Randomizer {
         /// <summary>
         /// Doubles the capacity if necessary to make room for one more element. When this method returns, <see cref="IsFull"/> is false.
         /// </summary>
-        private void EnsureCapacityForOneElement() {
-            if (IsFull) {
+        private void EnsureCapacityForOneElement()
+        {
+            if (IsFull)
+            {
                 Capacity = (Capacity == 0) ? 1 : Capacity * 2;
             }
         }
@@ -662,7 +755,8 @@ namespace Celeste.Mod.Randomizer {
         /// Inserts a single element at the back of this deque.
         /// </summary>
         /// <param name="value">The element to insert.</param>
-        public void AddToBack(T value) {
+        public void AddToBack(T value)
+        {
             EnsureCapacityForOneElement();
             DoAddToBack(value);
         }
@@ -671,7 +765,8 @@ namespace Celeste.Mod.Randomizer {
         /// Inserts a single element at the front of this deque.
         /// </summary>
         /// <param name="value">The element to insert.</param>
-        public void AddToFront(T value) {
+        public void AddToFront(T value)
+        {
             EnsureCapacityForOneElement();
             DoAddToFront(value);
         }
@@ -682,17 +777,20 @@ namespace Celeste.Mod.Randomizer {
         /// <param name="index">The index at which the collection is inserted.</param>
         /// <param name="collection">The collection of elements to insert.</param>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is not a valid index to an insertion point for the source.</exception>
-        public void InsertRange(int index, IEnumerable<T> collection) {
+        public void InsertRange(int index, IEnumerable<T> collection)
+        {
             CheckNewIndexArgument(Count, index);
             var source = CollectionHelpers.ReifyCollection(collection);
             int collectionCount = source.Count;
 
             // Overflow-safe check for "Count + collectionCount > Capacity"
-            if (collectionCount > Capacity - Count) {
+            if (collectionCount > Capacity - Count)
+            {
                 Capacity = checked(Count + collectionCount);
             }
 
-            if (collectionCount == 0) {
+            if (collectionCount == 0)
+            {
                 return;
             }
 
@@ -706,10 +804,12 @@ namespace Celeste.Mod.Randomizer {
         /// <param name="count">The number of elements to remove.</param>
         /// <exception cref="ArgumentOutOfRangeException">Either <paramref name="offset"/> or <paramref name="count"/> is less than 0.</exception>
         /// <exception cref="ArgumentException">The range [<paramref name="offset"/>, <paramref name="offset"/> + <paramref name="count"/>) is not within the range [0, <see cref="Count"/>).</exception>
-        public void RemoveRange(int offset, int count) {
+        public void RemoveRange(int offset, int count)
+        {
             CheckRangeArguments(Count, offset, count);
 
-            if (count == 0) {
+            if (count == 0)
+            {
                 return;
             }
 
@@ -721,7 +821,8 @@ namespace Celeste.Mod.Randomizer {
         /// </summary>
         /// <returns>The former last element.</returns>
         /// <exception cref="InvalidOperationException">The deque is empty.</exception>
-        public T RemoveFromBack() {
+        public T RemoveFromBack()
+        {
             if (IsEmpty)
                 throw new InvalidOperationException("The deque is empty.");
 
@@ -733,7 +834,8 @@ namespace Celeste.Mod.Randomizer {
         /// </summary>
         /// <returns>The former first element.</returns>
         /// <exception cref="InvalidOperationException">The deque is empty.</exception>
-        public T RemoveFromFront() {
+        public T RemoveFromFront()
+        {
             if (IsEmpty)
                 throw new InvalidOperationException("The deque is empty.");
 
@@ -743,7 +845,8 @@ namespace Celeste.Mod.Randomizer {
         /// <summary>
         /// Removes all items from this deque.
         /// </summary>
-        public void Clear() {
+        public void Clear()
+        {
             _offset = 0;
             Count = 0;
         }
@@ -751,29 +854,36 @@ namespace Celeste.Mod.Randomizer {
         /// <summary>
         /// Creates and returns a new array containing the elements in this deque.
         /// </summary>
-        public T[] ToArray() {
+        public T[] ToArray()
+        {
             var result = new T[Count];
             ((ICollection<T>)this).CopyTo(result, 0);
             return result;
         }
 
-        private sealed class DebugView {
+        private sealed class DebugView
+        {
             private readonly Deque<T> deque;
 
-            public DebugView(Deque<T> deque) {
+            public DebugView(Deque<T> deque)
+            {
                 this.deque = deque;
             }
 
-            public T[] Items {
-                get {
+            public T[] Items
+            {
+                get
+                {
                     return deque.ToArray();
                 }
             }
         }
     }
 
-    internal static class CollectionHelpers {
-        public static IReadOnlyCollection<T> ReifyCollection<T>(IEnumerable<T> source) {
+    internal static class CollectionHelpers
+    {
+        public static IReadOnlyCollection<T> ReifyCollection<T>(IEnumerable<T> source)
+        {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
 
@@ -790,51 +900,63 @@ namespace Celeste.Mod.Randomizer {
             return new List<T>(source);
         }
 
-        private sealed class NongenericCollectionWrapper<T> : IReadOnlyCollection<T> {
+        private sealed class NongenericCollectionWrapper<T> : IReadOnlyCollection<T>
+        {
             private readonly ICollection _collection;
 
-            public NongenericCollectionWrapper(ICollection collection) {
+            public NongenericCollectionWrapper(ICollection collection)
+            {
                 if (collection == null)
                     throw new ArgumentNullException(nameof(collection));
                 _collection = collection;
             }
 
-            public int Count {
-                get {
+            public int Count
+            {
+                get
+                {
                     return _collection.Count;
                 }
             }
 
-            public IEnumerator<T> GetEnumerator() {
+            public IEnumerator<T> GetEnumerator()
+            {
                 foreach (T item in _collection)
                     yield return item;
             }
 
-            IEnumerator IEnumerable.GetEnumerator() {
+            IEnumerator IEnumerable.GetEnumerator()
+            {
                 return _collection.GetEnumerator();
             }
         }
 
-        private sealed class CollectionWrapper<T> : IReadOnlyCollection<T> {
+        private sealed class CollectionWrapper<T> : IReadOnlyCollection<T>
+        {
             private readonly ICollection<T> _collection;
 
-            public CollectionWrapper(ICollection<T> collection) {
+            public CollectionWrapper(ICollection<T> collection)
+            {
                 if (collection == null)
                     throw new ArgumentNullException(nameof(collection));
                 _collection = collection;
             }
 
-            public int Count {
-                get {
+            public int Count
+            {
+                get
+                {
                     return _collection.Count;
                 }
             }
 
-            public IEnumerator<T> GetEnumerator() {
+            public IEnumerator<T> GetEnumerator()
+            {
                 return _collection.GetEnumerator();
             }
 
-            IEnumerator IEnumerable.GetEnumerator() {
+            IEnumerator IEnumerable.GetEnumerator()
+            {
                 return _collection.GetEnumerator();
             }
         }

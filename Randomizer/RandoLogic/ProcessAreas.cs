@@ -3,25 +3,31 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace Celeste.Mod.Randomizer {
-    public partial class RandoLogic {
+namespace Celeste.Mod.Randomizer
+{
+    public partial class RandoLogic
+    {
         public static List<StaticRoom> AllRooms = new List<StaticRoom>();
-        public static Dictionary<string, List<AreaKey>> LevelSets = new Dictionary<string, List<AreaKey>> ();
+        public static Dictionary<string, List<AreaKey>> LevelSets = new Dictionary<string, List<AreaKey>>();
         public static Dictionary<RandoSettings.AreaKeyNotStupid, int> LevelCount = new Dictionary<RandoSettings.AreaKeyNotStupid, int>();
         public static HashSet<RandoSettings.AreaKeyNotStupid> LazyLoaded = new HashSet<RandoSettings.AreaKeyNotStupid>();
 
-        public static List<Hole> FindHoles(LevelData data) {
+        public static List<Hole> FindHoles(LevelData data)
+        {
             List<Hole> result = new List<Hole>();
             Regex regex = new Regex("\\r\\n|\\n\\r|\\n|\\r");
             string[] lines = regex.Split(data.Solids);
 
             // returns whether the given tile is clear
-            bool lookup(int x, int y) {
-                if (y >= lines.Length) {
+            bool lookup(int x, int y)
+            {
+                if (y >= lines.Length)
+                {
                     return true;
                 }
                 string line = lines[y];
-                if (x >= line.Length) {
+                if (x >= line.Length)
+                {
                     return true;
                 }
                 return line[x] == '0';
@@ -33,78 +39,103 @@ namespace Celeste.Mod.Randomizer {
             //Logger.Log("findholes", $"{data.TileBounds.Width} x {data.TileBounds.Height} => {data.Solids.Length}");
             //Logger.Log("findholes", $"\n{data.Solids}");
 
-            for (int i = 0; i < data.TileBounds.Width; i++) {
+            for (int i = 0; i < data.TileBounds.Width; i++)
+            {
                 clear = lookup(i, 0);
-                if (clear && curHole == -1) {
+                if (clear && curHole == -1)
+                {
                     curHole = i;
-                } else if (!clear && curHole != -1) {
+                }
+                else if (!clear && curHole != -1)
+                {
                     result.Add(new Hole(ScreenDirection.Up, curHole, i - 1, false));
                     curHole = -1;
                 }
             }
-            if (curHole != -1) {
+            if (curHole != -1)
+            {
                 result.Add(new Hole(ScreenDirection.Up, curHole, data.TileBounds.Width - 1, true));
             }
 
             curHole = -1;
-            for (int i = 0; i < data.TileBounds.Height; i++) {
+            for (int i = 0; i < data.TileBounds.Height; i++)
+            {
                 clear = lookup(data.TileBounds.Width - 1, i);
-                if (clear && curHole == -1) {
+                if (clear && curHole == -1)
+                {
                     curHole = i;
-                } else if (!clear && curHole != -1) {
+                }
+                else if (!clear && curHole != -1)
+                {
                     result.Add(new Hole(ScreenDirection.Right, curHole, i - 1, false));
                     curHole = -1;
                 }
             }
-            if (curHole != -1) {
+            if (curHole != -1)
+            {
                 result.Add(new Hole(ScreenDirection.Right, curHole, data.TileBounds.Height - 1, true));
             }
 
             curHole = -1;
 
-            for (int i = 0; i < data.TileBounds.Height; i++) {
+            for (int i = 0; i < data.TileBounds.Height; i++)
+            {
                 clear = lookup(0, i);
-                if (clear && curHole == -1) {
+                if (clear && curHole == -1)
+                {
                     curHole = i;
-                } else if (!clear && curHole != -1) {
+                }
+                else if (!clear && curHole != -1)
+                {
                     result.Add(new Hole(ScreenDirection.Left, curHole, i - 1, false));
                     curHole = -1;
                 }
             }
-            if (curHole != -1) {
+            if (curHole != -1)
+            {
                 result.Add(new Hole(ScreenDirection.Left, curHole, data.TileBounds.Height - 1, true));
             }
 
             curHole = -1;
 
-            for (int i = 0; i < data.TileBounds.Width; i++) {
+            for (int i = 0; i < data.TileBounds.Width; i++)
+            {
                 clear = lookup(i, data.TileBounds.Height - 1);
-                if (clear && curHole == -1) {
+                if (clear && curHole == -1)
+                {
                     curHole = i;
-                } else if (!clear && curHole != -1) {
+                }
+                else if (!clear && curHole != -1)
+                {
                     result.Add(new Hole(ScreenDirection.Down, curHole, i - 1, false));
                     curHole = -1;
                 }
             }
-            if (curHole != -1) {
+            if (curHole != -1)
+            {
                 result.Add(new Hole(ScreenDirection.Down, curHole, data.TileBounds.Width - 1, true));
             }
 
             return result;
         }
 
-        private static List<StaticRoom> ProcessMap(MapData map, Dictionary<String, RandoConfigRoom> config) {
+        private static List<StaticRoom> ProcessMap(MapData map, Dictionary<String, RandoConfigRoom> config)
+        {
             var result = new List<StaticRoom>();
             var resultMap = new Dictionary<string, StaticRoom>();
 
-            foreach (LevelData level in map.Levels) {
-                if (level.Dummy) {
+            foreach (LevelData level in map.Levels)
+            {
+                if (level.Dummy)
+                {
                     continue;
                 }
-                if (!config.TryGetValue(level.Name, out RandoConfigRoom roomConfig)) {
+                if (!config.TryGetValue(level.Name, out RandoConfigRoom roomConfig))
+                {
                     continue;
                 }
-                if (roomConfig == null) {
+                if (roomConfig == null)
+                {
                     continue;
                 }
                 var holes = RandoLogic.FindHoles(level);
@@ -113,25 +144,31 @@ namespace Celeste.Mod.Randomizer {
                 resultMap[level.Name] = room;
             }
 
-            foreach (var room in result) {
+            foreach (var room in result)
+            {
                 room.ProcessWarps(resultMap);
             }
 
             return result;
         }
 
-        private static void ProcessArea(AreaData area) {
+        private static void ProcessArea(AreaData area)
+        {
             RandoConfigFile config = RandoConfigFile.LoadAll(area, RandoModule.Instance.SavedData.LazyLoading);
-            if (config == null) {
+            if (config == null)
+            {
                 return;
             }
 
-            for (int i = 0; i < area.Mode.Length; i++) {
-                if (area.Mode[i] == null) {
+            for (int i = 0; i < area.Mode.Length; i++)
+            {
+                if (area.Mode[i] == null)
+                {
                     continue;
                 }
                 var mapConfig = config.GetRoomMapping((AreaMode)i);
-                if (mapConfig == null) {
+                if (mapConfig == null)
+                {
                     continue;
                 }
 
@@ -140,65 +177,83 @@ namespace Celeste.Mod.Randomizer {
                 AreaKey key = new AreaKey(area.ID, (AreaMode)i);
                 string SID = key.GetSID();
                 string levelSetID = SID.Substring(0, SID.LastIndexOf('/'));
-                if (RandoLogic.LevelSets.TryGetValue(levelSetID, out var keyList)) {
+                if (RandoLogic.LevelSets.TryGetValue(levelSetID, out var keyList))
+                {
                     keyList.Add(key);
-                } else {
+                }
+                else
+                {
                     RandoLogic.LevelSets.Add(levelSetID, new List<AreaKey> { key });
                 }
 
-                if (mapConfig.Count == 0) {
+                if (mapConfig.Count == 0)
+                {
                     LazyLoaded.Add(new RandoSettings.AreaKeyNotStupid(key));
-                } else {
+                }
+                else
+                {
                     RandoLogic.AllRooms.AddRange(RandoLogic.ProcessMap(area.Mode[i].MapData, mapConfig));
                 }
 
             }
         }
 
-        private static void LazyReload(IEnumerable<AreaKey> keys) {
-            foreach (var key in keys) {
+        private static void LazyReload(IEnumerable<AreaKey> keys)
+        {
+            foreach (var key in keys)
+            {
                 var notstupid = new RandoSettings.AreaKeyNotStupid(key);
-                if (LazyLoaded.Contains(notstupid)) {
+                if (LazyLoaded.Contains(notstupid))
+                {
                     LazyLoaded.Remove(notstupid);
                     var mapping = RandoConfigFile.LazyReload(key);
-                    RandoLogic.AllRooms.AddRange(RandoLogic.ProcessMap(AreaData.Get(key).Mode[(int) key.Mode].MapData, mapping));
+                    RandoLogic.AllRooms.AddRange(RandoLogic.ProcessMap(AreaData.Get(key).Mode[(int)key.Mode].MapData, mapping));
                 }
             }
             CountRooms();
         }
 
-        private static void CountRooms() {
+        private static void CountRooms()
+        {
             LevelCount = new Dictionary<RandoSettings.AreaKeyNotStupid, int>();
             foreach (var room in RandoLogic.AllRooms)
             {
                 var notstupid = new RandoSettings.AreaKeyNotStupid(room.Area);
-                if (RandoLogic.LevelCount.TryGetValue(notstupid, out int c)) {
+                if (RandoLogic.LevelCount.TryGetValue(notstupid, out int c))
+                {
                     RandoLogic.LevelCount[notstupid] = c + 1;
                 }
-                else {
+                else
+                {
                     RandoLogic.LevelCount[notstupid] = 1;
                 }
             }
 
-            foreach (var notstupid in LazyLoaded) {
+            foreach (var notstupid in LazyLoaded)
+            {
                 var stupid = notstupid.Stupid;
-                var count = AreaData.Get(stupid).Mode[(int) stupid.Mode].MapData.Levels.Count;
-                if (RandoLogic.LevelCount.TryGetValue(notstupid, out int c)) {
+                var count = AreaData.Get(stupid).Mode[(int)stupid.Mode].MapData.Levels.Count;
+                if (RandoLogic.LevelCount.TryGetValue(notstupid, out int c))
+                {
                     RandoLogic.LevelCount[notstupid] = c + count;
                 }
-                else {
+                else
+                {
                     RandoLogic.LevelCount[notstupid] = count;
                 }
             }
         }
 
-        public static void ProcessAreas() {
-            if (RandoLogic.AllRooms.Count != 0) {
+        public static void ProcessAreas()
+        {
+            if (RandoLogic.AllRooms.Count != 0)
+            {
                 return;
             }
             Logger.Log("randomizer", "Processing level data...");
 
-            foreach (var area in AreaData.Areas) {
+            foreach (var area in AreaData.Areas)
+            {
                 RandoLogic.ProcessArea(area);
             }
 

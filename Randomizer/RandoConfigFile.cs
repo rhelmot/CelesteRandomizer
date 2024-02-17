@@ -16,65 +16,86 @@ using YamlDotNet.Serialization;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 
-namespace Celeste.Mod.Randomizer {
-    public class RandoConfigFile {
+namespace Celeste.Mod.Randomizer
+{
+    public class RandoConfigFile
+    {
         // null means the side does not exist. zero rooms means the side needs to be lazy-loaded
         public List<RandoConfigRoom> ASide { get; set; }
         public List<RandoConfigRoom> BSide { get; set; }
         public List<RandoConfigRoom> CSide { get; set; }
 
-        public static RandoConfigFile LoadAll(AreaData area, bool lazy=true) {
+        public static RandoConfigFile LoadAll(AreaData area, bool lazy = true)
+        {
             var result = LoadSingle($"Config/{area.SID}.rando", false);
-            if (result != null) {
+            if (result != null)
+            {
                 return result;
             }
 
             result = new RandoConfigFile();
             var partialResult = LoadSingle($"Config/{area.SID}.A.rando", lazy);
-            if (partialResult?.ASide != null) {
+            if (partialResult?.ASide != null)
+            {
                 result.ASide = partialResult.ASide;
             }
             partialResult = LoadSingle($"Config/{area.SID}.B.rando", lazy);
-            if (partialResult?.BSide != null) {
+            if (partialResult?.BSide != null)
+            {
                 result.BSide = partialResult.BSide;
             }
             partialResult = LoadSingle($"Config/{area.SID}.C.rando", lazy);
-            if (partialResult?.CSide != null) {
+            if (partialResult?.CSide != null)
+            {
                 result.CSide = partialResult.CSide;
             }
 
-            if (result.ASide == null && result.BSide == null && result.CSide == null) {
+            if (result.ASide == null && result.BSide == null && result.CSide == null)
+            {
                 // is this necessary? not sure
                 return null;
             }
             return result;
         }
 
-        public static RandoConfigFile LoadSingle(string fullPath, bool lazy = true) {
+        public static RandoConfigFile LoadSingle(string fullPath, bool lazy = true)
+        {
             Logger.Log("randomizer", $"Loading config from {fullPath}");
-            if (!Everest.Content.TryGet(fullPath, out ModAsset asset)) {
+            if (!Everest.Content.TryGet(fullPath, out ModAsset asset))
+            {
                 Logger.Log("randomizer", "...not found");
                 return null;
-            } else if (lazy) {
-                return new RandoConfigFile {
+            }
+            else if (lazy)
+            {
+                return new RandoConfigFile
+                {
                     ASide = new List<RandoConfigRoom>(),
                     BSide = new List<RandoConfigRoom>(),
                     CSide = new List<RandoConfigRoom>(),
                 };
-            } else {
-                using (StreamReader reader = new StreamReader(asset.Stream)) {
-                    try {
+            }
+            else
+            {
+                using (StreamReader reader = new StreamReader(asset.Stream))
+                {
+                    try
+                    {
                         return YamlHelper.Deserializer.Deserialize<RandoConfigFile>(reader);
-                    } catch (YamlException e) {
+                    }
+                    catch (YamlException e)
+                    {
                         throw new Exception($"Error parsing {fullPath}", e);
                     }
                 }
             }
         }
 
-        public static Dictionary<string, RandoConfigRoom> LazyReload(AreaKey key) {
+        public static Dictionary<string, RandoConfigRoom> LazyReload(AreaKey key)
+        {
             char side;
-            switch (key.Mode) {
+            switch (key.Mode)
+            {
                 case AreaMode.Normal:
                     side = 'A';
                     break;
@@ -93,63 +114,79 @@ namespace Celeste.Mod.Randomizer {
             return result?.GetRoomMapping(key.Mode);
         }
 
-        public static void YamlSkeleton(MapData map, bool doUnknown=true) {
-            foreach (LevelData lvl in map.Levels) {
-                if (lvl.Dummy) {
+        public static void YamlSkeleton(MapData map, bool doUnknown = true)
+        {
+            foreach (LevelData lvl in map.Levels)
+            {
+                if (lvl.Dummy)
+                {
                     continue;
                 }
                 List<Hole> holes = RandoLogic.FindHoles(lvl);
-                if (holes.Count > 0) {
+                if (holes.Count > 0)
+                {
                     Logger.Log("randomizer", $"  - Room: \"{lvl.Name}\"");
                     Logger.Log("randomizer", "    Holes:");
                 }
                 ScreenDirection lastDirection = ScreenDirection.Up;
                 int holeIdx = -1;
-                foreach (Hole hole in holes) {
-                    if (hole.Side == lastDirection) {
+                foreach (Hole hole in holes)
+                {
+                    if (hole.Side == lastDirection)
+                    {
                         holeIdx++;
-                    } else {
+                    }
+                    else
+                    {
                         holeIdx = 0;
                         lastDirection = hole.Side;
                     }
 
                     LevelData targetLvl = map.GetAt(hole.LowCoord(lvl.Bounds)) ?? map.GetAt(hole.HighCoord(lvl.Bounds));
                     var unknown = targetLvl == null || targetLvl.Dummy;
-                    if (unknown && !doUnknown) {
+                    if (unknown && !doUnknown)
+                    {
                         continue;
                     }
 
                     Logger.Log("randomizer", $"    - Side: {hole.Side}");
                     Logger.Log("randomizer", $"      Idx: {holeIdx}");
-                    Logger.Log("randomizer",  "      Kind: " + (unknown ? "unknown" : "inout"));
+                    Logger.Log("randomizer", "      Kind: " + (unknown ? "unknown" : "inout"));
                 }
             }
         }
 
-        public static void YamlSkeleton(AreaData area, bool doUnknown=true) {
-            if (area.Mode[0] != null) {
+        public static void YamlSkeleton(AreaData area, bool doUnknown = true)
+        {
+            if (area.Mode[0] != null)
+            {
                 Logger.Log("randomizer", "ASide:");
                 YamlSkeleton(area.Mode[0].MapData, doUnknown);
             }
-            if (area.Mode.Length > 1 && area.Mode[1] != null) {
+            if (area.Mode.Length > 1 && area.Mode[1] != null)
+            {
                 Logger.Log("randomizer", "BSide:");
                 YamlSkeleton(area.Mode[1].MapData, doUnknown);
             }
-            if (area.Mode.Length > 2 && area.Mode[2] != null) {
+            if (area.Mode.Length > 2 && area.Mode[2] != null)
+            {
                 Logger.Log("randomizer", "CSide:");
                 YamlSkeleton(area.Mode[2].MapData, doUnknown);
             }
         }
 
         [Command("rando_skeleton", "Dumps a starting point for a rando.yaml configuration for a given map to log.txt")]
-        public static void YamlSkeletonCommand(string sid, bool doUnknown=true) {
+        public static void YamlSkeletonCommand(string sid, bool doUnknown = true)
+        {
             var area = AreaData.Get(sid);
             YamlSkeleton(area, doUnknown);
         }
 
-        public Dictionary<String, RandoConfigRoom> GetRoomMapping(AreaMode mode) {
+        public Dictionary<String, RandoConfigRoom> GetRoomMapping(AreaMode mode)
+        {
             List<RandoConfigRoom> rooms;
-            switch (mode) {
+            switch (mode)
+            {
                 case AreaMode.Normal:
                 default:
                     rooms = this.ASide;
@@ -162,12 +199,14 @@ namespace Celeste.Mod.Randomizer {
                     break;
             }
 
-            if (rooms == null) {
+            if (rooms == null)
+            {
                 return null;
             }
 
             var result = new Dictionary<String, RandoConfigRoom>();
-            foreach (RandoConfigRoom room in rooms) {
+            foreach (RandoConfigRoom room in rooms)
+            {
                 result.Add(room.Room, room);
             }
 
@@ -175,14 +214,16 @@ namespace Celeste.Mod.Randomizer {
         }
     }
 
-    public class RandoConfigRoom {
+    public class RandoConfigRoom
+    {
         public String Room;
         public List<RandoConfigCollectable> Collectables = new List<RandoConfigCollectable>();
         public List<RandoConfigHole> Holes { get; set; } = new List<RandoConfigHole>();
         public List<RandoConfigRoom> Subrooms { get; set; }
         public List<RandoConfigInternalEdge> InternalEdges { get; set; }
 
-        public bool End {
+        public bool End
+        {
             get => this.ReqEnd != null;
             set => this.ReqEnd = value ? new RandoConfigReq() : null;
         }
@@ -197,12 +238,14 @@ namespace Celeste.Mod.Randomizer {
         public List<string> Flags;
     }
 
-    public class RandoConfigRectangle {
+    public class RandoConfigRectangle
+    {
         public int X, Y;
         public int Width, Height;
     }
 
-    public class RandoConfigHole {
+    public class RandoConfigHole
+    {
         public ScreenDirection Side { get; set; }
         public int Idx { get; set; }
         public int? LowBound { get; set; }
@@ -211,10 +254,12 @@ namespace Celeste.Mod.Randomizer {
 
         public RandoConfigReq ReqIn { get; set; }
         public RandoConfigReq ReqOut { get; set; }
-        public RandoConfigReq ReqBoth {
+        public RandoConfigReq ReqBoth
+        {
             get => null;
 
-            set {
+            set
+            {
                 this.ReqIn = value;
                 this.ReqOut = value;
             }
@@ -225,28 +270,33 @@ namespace Celeste.Mod.Randomizer {
         public RandoConfigHole Split;
     }
 
-    public class RandoConfigCollectable {
+    public class RandoConfigCollectable
+    {
         public int? Idx;
         public int? X;
         public int? Y;
         public bool MustFly;
     }
 
-    public class RandoConfigInternalEdge {
+    public class RandoConfigInternalEdge
+    {
         public String To { get; set; }
         public String Warp { get; set; }
         public RandoConfigReq ReqIn { get; set; }
         public RandoConfigReq ReqOut { get; set; }
-        public RandoConfigReq ReqBoth {
+        public RandoConfigReq ReqBoth
+        {
             get => null;
 
-            set {
+            set
+            {
                 this.ReqIn = value;
                 this.ReqOut = value;
             }
         }
 
-        public enum SplitKind {
+        public enum SplitKind
+        {
             TopToBottom,
             BottomToTop,
             LeftToRight,
@@ -259,7 +309,8 @@ namespace Celeste.Mod.Randomizer {
         public bool CustomWarp;
     }
 
-    public class RandoConfigReq {
+    public class RandoConfigReq
+    {
         public List<RandoConfigReq> And;
         public List<RandoConfigReq> Or;
 
@@ -270,7 +321,8 @@ namespace Celeste.Mod.Randomizer {
         public string Flag;
     }
 
-    public class RandoConfigEdit {
+    public class RandoConfigEdit
+    {
         public String Name { get; set; }
         public int? ID { get; set; }
         public float? X { get; set; }
@@ -279,7 +331,8 @@ namespace Celeste.Mod.Randomizer {
         public RandoConfigUpdate Update { get; set; }
     }
 
-    public class RandoConfigUpdate {
+    public class RandoConfigUpdate
+    {
         public bool Remove { get; set; }
         public bool Add { get; set; }
         public bool Default { get; set; }
@@ -295,42 +348,50 @@ namespace Celeste.Mod.Randomizer {
         public string Tile;
     }
 
-    public enum RandoConfigDecalType {
+    public enum RandoConfigDecalType
+    {
         None, FG, BG,
     }
 
-    public class RandoConfigNode {
+    public class RandoConfigNode
+    {
         public int Idx { get; set; }
         public float? X { get; set; }
         public float? Y { get; set; }
     }
 
-    public class RandoConfigCoreMode {
+    public class RandoConfigCoreMode
+    {
         private Session.CoreModes? left, right, up, down;
         public Session.CoreModes All = Session.CoreModes.None;
 
-        public Session.CoreModes Left {
+        public Session.CoreModes Left
+        {
             get => left ?? All;
             set => left = value;
         }
 
-        public Session.CoreModes Right {
+        public Session.CoreModes Right
+        {
             get => right ?? All;
             set => right = value;
         }
 
-        public Session.CoreModes Up {
+        public Session.CoreModes Up
+        {
             get => up ?? All;
             set => up = value;
         }
 
-        public Session.CoreModes Down {
+        public Session.CoreModes Down
+        {
             get => down ?? All;
             set => down = value;
         }
     }
 
-    public class RandoMetadataFile {
+    public class RandoMetadataFile
+    {
         public List<string> CollectableNames = new List<string>();
         public List<RandoMetadataMusic> Music = new List<RandoMetadataMusic>();
         public List<RandoMetadataCampaign> Campaigns = new List<RandoMetadataCampaign>();
@@ -340,14 +401,19 @@ namespace Celeste.Mod.Randomizer {
 
         [YamlIgnore] public Dictionary<string, RandoMetadataRuleset> RulesetsDict = new Dictionary<string, RandoMetadataRuleset>();
 
-        public List<RandoMetadataRuleset> Rulesets {
+        public List<RandoMetadataRuleset> Rulesets
+        {
             get => new List<RandoMetadataRuleset>(this.RulesetsDict.Values);
-            set {
-                foreach (var r in value) {
-                    if (String.IsNullOrEmpty(r.Name)) {
+            set
+            {
+                foreach (var r in value)
+                {
+                    if (String.IsNullOrEmpty(r.Name))
+                    {
                         throw new Exception("Rulesets must have Name specified");
                     }
-                    if (this.RulesetsDict.ContainsKey(r.Name)) {
+                    if (this.RulesetsDict.ContainsKey(r.Name))
+                    {
                         throw new Exception($"Ruleset name '{r.Name}' is duplicated");
                     }
                     this.RulesetsDict[r.Name] = r;
@@ -355,7 +421,8 @@ namespace Celeste.Mod.Randomizer {
             }
         }
 
-        public void Add(RandoMetadataFile other) {
+        public void Add(RandoMetadataFile other)
+        {
             this.CollectableNames.AddRange(other.CollectableNames);
             this.Music.AddRange(other.Music.Where(t => t.IsLoaded()));
             this.Campaigns.AddRange(other.Campaigns);
@@ -365,31 +432,37 @@ namespace Celeste.Mod.Randomizer {
             this.Rulesets = other.Rulesets; // rely on setter behavior to use this as an updater
         }
 
-        public static RandoMetadataFile LoadAll() {
+        public static RandoMetadataFile LoadAll()
+        {
             var result = new RandoMetadataFile();
 
             Regex r = new Regex("^[^\\\\/]+:(/|\\\\).*$");
-            foreach (var kv in Everest.Content.Map.Where(kv => !r.IsMatch(kv.Key) && Path.GetFileName(kv.Value.PathVirtual) == "rando" && kv.Value.Type == typeof(AssetTypeYaml))) {
+            foreach (var kv in Everest.Content.Map.Where(kv => !r.IsMatch(kv.Key) && Path.GetFileName(kv.Value.PathVirtual) == "rando" && kv.Value.Type == typeof(AssetTypeYaml)))
+            {
                 Logger.Log("randomizer", $"Found metadata {kv.Value.PathVirtual} in {kv.Value.Source.Name}");
                 result.Add(Load(kv.Value));
             }
             return result;
         }
 
-        private static RandoMetadataFile Load(ModAsset asset) {
+        private static RandoMetadataFile Load(ModAsset asset)
+        {
             // do not catch errors, they should crash on load
-            using (StreamReader reader = new StreamReader(asset.Stream)) {
+            using (StreamReader reader = new StreamReader(asset.Stream))
+            {
                 return YamlHelper.Deserializer.Deserialize<RandoMetadataFile>(reader);
             }
         }
     }
 
-    public class RandoMetadataMusic {
+    public class RandoMetadataMusic
+    {
         public string Name;
         private float weight = 1;
         public Dictionary<string, int> Parameters = new Dictionary<string, int>();
 
-        public float Weight {
+        public float Weight
+        {
             get => this.weight;
             set => this.weight = (value >= 0 && value <= 3) ? value : 1f;
         }
@@ -397,21 +470,25 @@ namespace Celeste.Mod.Randomizer {
         public bool IsLoaded() => Audio.GetEventDescription(this.Name) != null;
     }
 
-    public class RandoMetadataCampaign {
+    public class RandoMetadataCampaign
+    {
         public string Name;
         public List<RandoMetadataLevelSet> LevelSets;
     }
 
-    public class RandoMetadataLevelSet {
+    public class RandoMetadataLevelSet
+    {
         public string Name;
         public string ID;
     }
 
-    public class RandoMetadataRuleset {
+    public class RandoMetadataRuleset
+    {
         public string Name;
         private string longName;
 
-        public string LongName {
+        public string LongName
+        {
             get => this.longName ?? "Ruleset " + this.Name;
             set => this.longName = value;
         }
@@ -432,7 +509,8 @@ namespace Celeste.Mod.Randomizer {
         public int Lives = 0;
     }
 
-    public class RandoMetadataBackground {
+    public class RandoMetadataBackground
+    {
         public string Texture;
         public string Effect;
         public int CoverTop;

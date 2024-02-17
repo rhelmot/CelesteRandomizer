@@ -3,18 +3,23 @@ using System.Collections.Generic;
 
 //  
 
-namespace Celeste.Mod.Randomizer {
-    public class PriorityQueue<T> where T : IComparable {
+namespace Celeste.Mod.Randomizer
+{
+    public class PriorityQueue<T> where T : IComparable
+    {
         private List<T> data;
 
-        public PriorityQueue() {
+        public PriorityQueue()
+        {
             this.data = new List<T>();
         }
 
-        public void Enqueue(T item) {
+        public void Enqueue(T item)
+        {
             data.Add(item);
             int ci = data.Count - 1; // child index; start at end
-            while (ci > 0) {
+            while (ci > 0)
+            {
                 int pi = (ci - 1) / 2; // parent index
                 if (data[ci].CompareTo(data[pi]) >= 0) break; // child item is larger than (or equal) parent so we're done
                 T tmp = data[ci]; data[ci] = data[pi]; data[pi] = tmp;
@@ -22,7 +27,8 @@ namespace Celeste.Mod.Randomizer {
             }
         }
 
-        public T Dequeue() {
+        public T Dequeue()
+        {
             // assumes pq is not empty; up to calling code
             int li = data.Count - 1; // last index (before removal)
             T frontItem = data[0];   // fetch the front
@@ -31,7 +37,8 @@ namespace Celeste.Mod.Randomizer {
 
             --li; // last index (after removal)
             int pi = 0; // parent index. start at front of pq
-            while (true) {
+            while (true)
+            {
                 int ci = pi * 2 + 1; // left child index of parent
                 if (ci > li) break;  // no children so done
                 int rc = ci + 1;     // right child
@@ -44,18 +51,22 @@ namespace Celeste.Mod.Randomizer {
             return frontItem;
         }
 
-        public T Peek() {
+        public T Peek()
+        {
             T frontItem = data[0];
             return frontItem;
         }
 
-        public int Count {
-            get {
+        public int Count
+        {
+            get
+            {
                 return data.Count;
             }
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             string s = "";
             for (int i = 0; i < data.Count; ++i)
                 s += data[i].ToString() + " ";
@@ -63,7 +74,8 @@ namespace Celeste.Mod.Randomizer {
             return s;
         }
 
-        public bool IsConsistent() {
+        public bool IsConsistent()
+        {
             // is the heap property true for all data?
             if (data.Count == 0) return true;
             int li = data.Count - 1; // last index
