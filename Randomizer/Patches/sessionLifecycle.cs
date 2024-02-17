@@ -184,98 +184,25 @@ namespace Celeste.Mod.Randomizer {
             });
         }
 
-        public static AreaData AreaHandoff;
+		internal static Builder MapBuilder = null;
+		public static AreaData AreaHandoff;
         public static AreaKey? StartMe;
         public static Session UseSession;
         private bool Entering;
         private void MainThreadHook(On.Celeste.AutoSplitterInfo.orig_Update orig, AutoSplitterInfo self) {
             orig(self);
 
+            if (MapBuilder?.Check() == true) {
+                MapBuilder.Dispose();
+                MapBuilder = null;
+            }
+
             if (AreaHandoff != null) {
-                RandoModule.Instance.ResetCachedSettings();
-                if (AreaHandoff.ID < AreaData.Areas.Count) {
-                    AreaData.Areas[AreaHandoff.ID] = AreaHandoff;
-                } else if (AreaHandoff.ID == AreaData.Areas.Count) {
-                    AreaData.Areas.Add(AreaHandoff);
-                } else {
-                    throw new Exception("Strange edge case in the randomizer, please report this bug");
-                }
-                var unused = new AreaKey(AreaData.Areas.Count - 1); // does this trigger some extra behavior
-                AreaHandoff = null;
+                IngestNewArea(AreaHandoff);
+			    AreaHandoff = null;
             }
             if (StartMe != null && !Entering) {
-                var newArea = StartMe.Value;
-
-                var area = AreaData.Get(newArea);
-                var dyn = new DynData<AreaData>(area);
-                var areaSettings = dyn.Get<RandoSettings>("RandoSettings");
-                Audio.SetMusic(null);
-                Audio.SetAmbience(null);
-                Audio.Play("event:/ui/main/savefile_begin");
-
-                // use the debug file
-                SaveData.InitializeDebugMode();
-                // turn on/off variants mode
-                SaveData.Instance.VariantMode = areaSettings.Variants;
-                SaveData.Instance.AssistMode = false;
-                SaveData.Instance.AssistModeChecks();
-                // mark as completed to spawn golden berry
-                // but only if we actually want the golden berry so otherwise we can see postcards
-                SaveData.Instance.Areas[newArea.ID].Modes[0].Completed = areaSettings.SpawnGolden;
-                // mark heart as not collected
-                SaveData.Instance.Areas[newArea.ID].Modes[0].HeartGem = false;
-                Entering = true;
-
-                var unused = new FadeWipe(Engine.Scene, false, () => {   // assign to variable to suppress compiler warning
-                    Session session;
-                    if (UseSession != null) {
-                        session = UseSession;
-                        UseSession = null;
-                    } else {
-                        session = new Session(newArea) {
-                            FirstLevel = true,
-                            StartedFromBeginning = true,
-                        };
-                        session.SeedCleanRandom(Settings.SeedType == SeedType.Random);
-                    }
-
-                    session.OldStats.Modes[0].HeartGem = false;
-
-                    var showPostcard = areaSettings.EndlessLevel == 0 && !areaSettings.SpawnGolden;
-                    string postcard = null;
-                    if (showPostcard) {
-                        int count = this.SavedData.StartCounter;
-                        if (count % 3 == 0) {
-                            int postnum = count / 3;
-                            if (Dialog.Has("RANDOCARD_" + postnum)) {
-                                postcard = Dialog.Get("RANDOCARD_" + postnum);
-                                count++;
-                            }
-                        } else {
-                            count++;
-                        }
-
-                        this.SavedData.StartCounter = count;
-                        this.SaveSettings();
-                    }
-
-                    if (postcard != null) {
-                        Dialog.Language.Dialog[area.Name + "_postcard"] = postcard;
-                    } else {
-                        Dialog.Language.Dialog.Remove(area.Name + "_postcard");
-                    }
-
-                    SaveData.Instance.StartSession(session);    // need to set this earlier than we would get otherwise
-                    StartMe = null;
-                    Entering = false;
-                    LevelEnter.Go(session, false);
-                });
-
-                /*foreach (AreaData area in AreaData.Areas) {
-                    Logger.Log("randomizer", $"Skeleton for {area.GetSID()}");
-                    RandoConfigFile.YamlSkeleton(area);
-
-                }*/
+                LaunchIntoRandoArea(StartMe.Value);
             }
 
             // update endless mode score
@@ -287,8 +214,98 @@ namespace Celeste.Mod.Randomizer {
             }
         }
 
-        // when we load the map editor, effectively change to a set seed speedrun
-        private void MarkSessionUnclean(On.Celeste.Editor.MapEditor.orig_ctor orig, Editor.MapEditor self, AreaKey area, bool reloadMapData) {
+        internal static void IngestNewArea(AreaData areaData) {
+			RandoModule.Instance.ResetCachedSettings();
+			if (areaData.ID < AreaData.Areas.Count) {
+				AreaData.Areas[areaData.ID] = areaData;
+			}
+			else if (areaData.ID == AreaData.Areas.Count) {
+				AreaData.Areas.Add(areaData);
+			}
+			else {
+				throw new Exception("Strange edge case in the randomizer, please report this bug");
+			}
+			var unused = new AreaKey(AreaData.Areas.Count - 1); // does this trigger some extra behavior
+		}
+
+        internal static void LaunchIntoRandoArea(AreaKey newArea) {
+			var area = AreaData.Get(newArea);
+			var dyn = new DynData<AreaData>(area);
+			var areaSettings = dyn.Get<RandoSettings>("RandoSettings");
+			Audio.SetMusic(null);
+			Audio.SetAmbience(null);
+			Audio.Play("event:/ui/main/savefile_begin");
+
+			// use the debug file
+			SaveData.InitializeDebugMode();  // TODO (corkr900) option to not change savefiles
+											 // turn on/off variants mode
+			SaveData.Instance.VariantMode = areaSettings.Variants;
+			SaveData.Instance.AssistMode = false;
+			SaveData.Instance.AssistModeChecks();
+			// mark as completed to spawn golden berry
+			// but only if we actually want the golden berry so otherwise we can see postcards
+			SaveData.Instance.Areas[newArea.ID].Modes[0].Completed = areaSettings.SpawnGolden;
+			// mark heart as not collected
+			SaveData.Instance.Areas[newArea.ID].Modes[0].HeartGem = false;
+			Instance.Entering = true;
+
+			var unused = new FadeWipe(Engine.Scene, false, () => {   // assign to variable to suppress compiler warning
+				Session session;
+				if (UseSession != null) {
+					session = UseSession;
+					UseSession = null;
+				}
+				else {
+					session = new Session(newArea) {
+						FirstLevel = true,
+						StartedFromBeginning = true,
+					};
+					session.SeedCleanRandom(Instance.Settings.SeedType == SeedType.Random);
+				}
+
+				session.OldStats.Modes[0].HeartGem = false;
+
+				var showPostcard = areaSettings.EndlessLevel == 0 && !areaSettings.SpawnGolden;
+				string postcard = null;
+				if (showPostcard) {
+					int count = Instance.SavedData.StartCounter;
+					if (count % 3 == 0) {
+						int postnum = count / 3;
+						if (Dialog.Has("RANDOCARD_" + postnum)) {
+							postcard = Dialog.Get("RANDOCARD_" + postnum);
+							count++;
+						}
+					}
+					else {
+						count++;
+					}
+
+					Instance.SavedData.StartCounter = count;
+					Instance.SaveSettings();
+				}
+
+				if (postcard != null) {
+					Dialog.Language.Dialog[area.Name + "_postcard"] = postcard;
+				}
+				else {
+					Dialog.Language.Dialog.Remove(area.Name + "_postcard");
+				}
+
+				SaveData.Instance.StartSession(session);    // need to set this earlier than we would get otherwise
+				StartMe = null;
+				Instance.Entering = false;
+				LevelEnter.Go(session, false);
+			});
+
+			/*foreach (AreaData area in AreaData.Areas) {
+				Logger.Log("randomizer", $"Skeleton for {area.GetSID()}");
+				RandoConfigFile.YamlSkeleton(area);
+
+			}*/
+		}
+
+		// when we load the map editor, effectively change to a set seed speedrun
+		private void MarkSessionUnclean(On.Celeste.Editor.MapEditor.orig_ctor orig, Editor.MapEditor self, AreaKey area, bool reloadMapData) {
             if (Engine.Scene is Level level) {
                 level.Session.SeedCleanRandom(false);
             }

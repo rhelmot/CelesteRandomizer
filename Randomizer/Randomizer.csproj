@@ -82,8 +82,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Builder.cs" />
     <Compile Include="Entities\FindTheoPhone.cs" />
     <Compile Include="Entities\LifeBerry.cs" />
+    <Compile Include="Interoperability\GenerationInterop.cs" />
+    <Compile Include="Interoperability\InteropHelper.cs" />
+    <Compile Include="Interoperability\SettingsInterop.cs" />
     <Compile Include="Oui\GenericOui.cs" />
     <Compile Include="Oui\OuiRandoDifficulty.cs" />
     <Compile Include="Oui\OuiRandoMode.cs" />
@@ -400,12 +404,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Config\" />
-    <Folder Include="Dialog\" />
-    <Folder Include="Graphics\" />
-    <Folder Include="RandoLogic\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <MonoDevelop>
@@ -416,4 +415,11 @@
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
+  <PropertyGroup Condition="'$(COPY_OUTPUT_TO_DIR)' != ''">
+    <PostBuildEvent>
+      echo POST-BUILD: Copying Randomizer.dll and Randomizer.pdb from "$(TargetDir)" to "$(COPY_OUTPUT_TO_DIR)"...
+      copy "$(TargetDir)\Randomizer.dll" "$(COPY_OUTPUT_TO_DIR)\Randomizer.dll"
+      copy "$(TargetDir)\Randomizer.pdb" "$(COPY_OUTPUT_TO_DIR)\Randomizer.pdb"
+    </PostBuildEvent>
+  </PropertyGroup>
 </Project>
