@@ -2,9 +2,6 @@ using System;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using System.Linq;
-using System.Xml;
-using Celeste.Mod.Meta;
 using Monocle;
 using Microsoft.Xna.Framework;
 using MonoMod.Cil;
@@ -177,7 +174,7 @@ namespace Celeste.Mod.Randomizer {
                 try {
                     return RandoLogic.GenerateMap(newSettings);
                 } catch (GenerationError e) {
-                    LevelEnterExt.ErrorMessage = e.Message ?? "Failed to generate area";
+                    LevelEnter.ErrorMessage = e.Message ?? "Failed to generate area";
                     LevelEnter.Go(new Session(new AreaKey(1).SetSID("")), false);
                     return AreaKey.None;
                 }

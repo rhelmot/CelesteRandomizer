@@ -4,7 +4,6 @@ using System.Reflection;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework;
 using Monocle;
@@ -28,7 +27,7 @@ namespace Celeste.Mod.Randomizer {
             LazyReload(settings.EnabledMaps);
 
             var newID = AreaData.Areas.Count;
-            if (AreaData.Areas.Last().GetSID().StartsWith("randomizer/")) {
+            if (AreaData.Areas.Last().SID.StartsWith("randomizer/")) {
                 newID--;
             }
 
@@ -53,7 +52,7 @@ namespace Celeste.Mod.Randomizer {
                 MountainSelect = AreaData.Areas[0].MountainSelect,
                 MountainCursorScale = AreaData.Areas[0].MountainCursorScale,
             };
-            newArea.SetMeta(new Meta.MapMeta {
+            newArea.Meta = new Meta.MapMeta {
                 Modes = new Meta.MapMetaModeProperties[] {
                     new Meta.MapMetaModeProperties {
                         HeartIsEnd = true,
@@ -61,14 +60,14 @@ namespace Celeste.Mod.Randomizer {
                     },
                     null, null
                 }
-            });
+            };
             newArea.OnLevelBegin = (level) => {
                 level.Add(new SeekerEffectsController());
             };
             var dyn = new DynData<AreaData>(newArea);
             dyn.Set<RandoSettings>("RandoSettings", settings.Copy());
 
-            newArea.SetSID($"randomizer/{newArea.Name}");
+            newArea.SID = $"randomizer/{newArea.Name}";
 
             // avert race condition
             RandoModule.AreaHandoff = newArea;
@@ -107,7 +106,7 @@ namespace Celeste.Mod.Randomizer {
                 }
             }
 
-            Logger.Log("randomizer", $"new area {newArea.GetSID()}");
+            Logger.Log("randomizer", $"new area {newArea.SID}");
 
             return key;
         }

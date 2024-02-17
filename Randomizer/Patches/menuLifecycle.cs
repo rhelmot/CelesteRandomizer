@@ -43,7 +43,7 @@ namespace Celeste.Mod.Randomizer {
         private void ModifyLevelMenu(Level level, TextMenu pausemenu, bool minimal) {
             var settings = this.InRandomizerSettings;
             if (settings != null) {
-                foreach (var item in new System.Collections.Generic.List<TextMenu.Item>(pausemenu.GetItems())) {
+                foreach (var item in new System.Collections.Generic.List<TextMenu.Item>(pausemenu.Items)) {
                     if (item.GetType() == typeof(TextMenu.Button)) {
                         var btn = (TextMenu.Button)item;
                         if (btn.Label == Dialog.Clean("MENU_PAUSE_SAVEQUIT") || btn.Label == Dialog.Clean("MENU_PAUSE_RETURN")) {
@@ -59,7 +59,7 @@ namespace Celeste.Mod.Randomizer {
                     }
                 }
 
-                int returnIdx = pausemenu.GetItems().Count;
+                int returnIdx = pausemenu.Items.Count;
                 pausemenu.Add(new TextMenu.Button(Dialog.Clean("MENU_PAUSE_QUITRANDO")).Pressed(() => {
                     level.PauseMainMenuOpen = false;
                     pausemenu.RemoveSelf();
@@ -148,7 +148,7 @@ namespace Celeste.Mod.Randomizer {
         }
 
         private void DontLoadRandoMaps(On.Celeste.MapData.orig_Load orig, MapData self) {
-            if (self.Data?.GetSID()?.StartsWith("randomizer/") ?? false) {
+            if (self.Data?.SID?.StartsWith("randomizer/") ?? false) {
                 return;
             }
             orig(self);

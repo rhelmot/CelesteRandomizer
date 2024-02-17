@@ -24,21 +24,21 @@ namespace Celeste.Mod.Randomizer {
         public List<RandoConfigRoom> CSide { get; set; }
 
         public static RandoConfigFile LoadAll(AreaData area, bool lazy=true) {
-            var result = LoadSingle($"Config/{area.GetSID()}.rando", false);
+            var result = LoadSingle($"Config/{area.SID}.rando", false);
             if (result != null) {
                 return result;
             }
 
             result = new RandoConfigFile();
-            var partialResult = LoadSingle($"Config/{area.GetSID()}.A.rando", lazy);
+            var partialResult = LoadSingle($"Config/{area.SID}.A.rando", lazy);
             if (partialResult?.ASide != null) {
                 result.ASide = partialResult.ASide;
             }
-            partialResult = LoadSingle($"Config/{area.GetSID()}.B.rando", lazy);
+            partialResult = LoadSingle($"Config/{area.SID}.B.rando", lazy);
             if (partialResult?.BSide != null) {
                 result.BSide = partialResult.BSide;
             }
-            partialResult = LoadSingle($"Config/{area.GetSID()}.C.rando", lazy);
+            partialResult = LoadSingle($"Config/{area.SID}.C.rando", lazy);
             if (partialResult?.CSide != null) {
                 result.CSide = partialResult.CSide;
             }
@@ -143,7 +143,7 @@ namespace Celeste.Mod.Randomizer {
 
         [Command("rando_skeleton", "Dumps a starting point for a rando.yaml configuration for a given map to log.txt")]
         public static void YamlSkeletonCommand(string sid, bool doUnknown=true) {
-            var area = AreaDataExt.Get(sid);
+            var area = AreaData.Get(sid);
             YamlSkeleton(area, doUnknown);
         }
 

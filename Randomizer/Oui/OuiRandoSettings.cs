@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
-using System.Threading;
 
 namespace Celeste.Mod.Randomizer {
     public class OuiRandoSettings : GenericOui {
@@ -456,7 +455,7 @@ namespace Celeste.Mod.Randomizer {
             Action AddLevelSetMenu(string levelSetID) {
                 List<AreaKey> keys = RandoLogic.LevelSets[levelSetID];
                 var syncFuncs = new List<Action>();
-                menu.Add(new TextMenu.SubHeader(DialogExt.CleanLevelSet(keys[0].GetLevelSet())));
+                menu.Add(new TextMenu.SubHeader(Dialog.CleanLevelSet(keys[0].GetLevelSet())));
                 foreach (var key in keys) {
                     var area = AreaData.Get(key);
                     var name = area.Name;
@@ -484,7 +483,7 @@ namespace Celeste.Mod.Randomizer {
 
             var campaigns = RandoModule.Instance.MetaConfig.Campaigns;
             foreach (RandoMetadataCampaign campaign in campaigns) {
-                menu.Add(new TextMenu.SubHeader(DialogExt.CleanLevelSet(campaign.Name)));
+                menu.Add(new TextMenu.SubHeader(Dialog.CleanLevelSet(campaign.Name)));
                 foreach (RandoMetadataLevelSet levelSet in campaign.LevelSets) {
                     var name = levelSet.Name;
                     if (RandoLogic.LevelSets.TryGetValue(levelSet.ID, out var keys)) {

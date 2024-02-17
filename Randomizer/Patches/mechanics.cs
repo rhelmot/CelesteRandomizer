@@ -614,7 +614,7 @@ namespace Celeste.Mod.Randomizer {
             var spPaths = new List<string>();
 
             foreach (var map in settings.EnabledMaps) {
-                var meta = AreaData.Get(map).GetMeta();
+                var meta = AreaData.Get(map).Meta;
                 var fgPath = meta?.ForegroundTiles;
                 var bgPath = meta?.BackgroundTiles;
                 var atPath = meta?.AnimatedTiles;
@@ -731,8 +731,8 @@ namespace Celeste.Mod.Randomizer {
                     SpriteData valueMod = kvpBank.Value;
 
                     if (bankOrig.SpriteData.TryGetValue(key, out SpriteData valueOrig)) {
-                        IDictionary animsOrig = valueOrig.Sprite.GetAnimations();
-                        IDictionary animsMod = valueMod.Sprite.GetAnimations();
+                        IDictionary animsOrig = valueOrig.Sprite.Animations;
+                        IDictionary animsMod = valueMod.Sprite.Animations;
                         foreach (DictionaryEntry kvpAnim in animsMod) {
                             animsOrig[kvpAnim.Key] = kvpAnim.Value;
                         }

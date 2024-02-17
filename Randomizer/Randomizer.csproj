@@ -63,7 +63,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="Steamworks.NET">
-      <HintPath>..\..\Everest\lib-stripped\Steamworks.NET.dll</HintPath>
+      <HintPath>..\packages\Steamworks.NET.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />

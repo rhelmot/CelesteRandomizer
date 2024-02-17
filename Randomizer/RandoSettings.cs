@@ -260,7 +260,7 @@ namespace Celeste.Mod.Randomizer {
             [YamlIgnore]
             public int ID {
                 get {
-                    var data = AreaDataExt.Get(this.SID);
+                    var data = AreaData.Get(this.SID);
                     if (data == null) {
                         return -1;
                     }
