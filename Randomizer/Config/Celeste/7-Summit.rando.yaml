@@ -632,12 +632,17 @@ ASide:
     InternalEdges:
     - Collectable: 0
       ReqIn:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect
       ReqOut:
         Or:
         - Dashes: two
         - Dashes: one
           Difficulty: expert
+        - Dashes: zero
+          Difficulty: perfect
   - Room: "b-05"
     Holes:
     - Side: Right

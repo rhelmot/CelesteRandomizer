@@ -2092,8 +2092,11 @@ BSide:
       ReqIn:
         Dashes: one
       ReqOut:
-        Dashes: two
-        Difficulty: hard
+        Or:
+        - Dashes: two
+          Difficulty: hard
+        - Dashes: one
+          Difficulty: perfect
     Tweaks:
     - Name: "jumpThru"
       ID: 218
@@ -2399,7 +2402,10 @@ BSide:
           - Dashes: two
   - Room: "d-05"
     ReqEnd:
-      Dashes: one
+      Or:
+      - Dashes: one
+      - Dashes: zero
+        Difficulty: perfect
     Holes:
     - Side: Left
       Idx: 0

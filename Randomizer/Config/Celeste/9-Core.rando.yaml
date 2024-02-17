@@ -401,7 +401,7 @@ ASide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
         Or:
         - Dashes: zero
@@ -409,7 +409,7 @@ ASide:
         - Dashes: one
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
       ReqIn:
         Dashes: one
     Tweaks:
@@ -418,6 +418,9 @@ ASide:
         Add: true
         X: 128
         Y: 16
+    - Name: "jumpThru"
+      Update:
+        Width: 24
   - Room: "c-00"
     Core:
       All: cold
@@ -1648,7 +1651,6 @@ BSide:
   - Room: "c-06"
     Core:
       All: cold
-      Right: hot
     Holes:
     - Side: Right
       Idx: 0
@@ -1672,6 +1674,8 @@ BSide:
           Difficulty: hard
         - Dashes: one
           Difficulty: hard
+        - Dashes: zero
+          Difficulty: perfect
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:

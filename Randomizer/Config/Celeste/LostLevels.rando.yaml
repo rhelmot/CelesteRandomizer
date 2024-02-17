@@ -1270,10 +1270,10 @@ ASide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
+      Kind: inout
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
     - Side: Down
       Idx: 0
       Kind: None
@@ -1676,7 +1676,7 @@ ASide:
     Holes:
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
     - Side: Down
       Idx: 0
       Kind: Unknown
@@ -1699,7 +1699,7 @@ ASide:
         Holes:
           - Side: Up
             Idx: 0
-            Kind: out
+            Kind: inout
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:
@@ -1985,7 +1985,15 @@ ASide:
       Idx: 0
       Kind: out
       ReqOut:
-        Dashes: one
+      Or:
+      - Dashes: one
+      - Dashes: zero
+        Difficulty: perfect
+      ExtraSpace:
+      - X: 44264
+        Y: -8656
+        Width: 200
+        Height: 32
     - Side: Left
       Idx: 0
       Kind: in
