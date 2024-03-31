@@ -24,6 +24,7 @@ namespace Celeste.Mod.Randomizer
             On.Celeste.Editor.MapEditor.ctor += MarkSessionUnclean;
             On.Celeste.LevelExit.Begin += HijackExitBegin;
             On.Celeste.Player.Die += DieInEndless;
+            On.Celeste.Player.UseRefill += NeverRefillZeroDashes;
             IL.Celeste.SpeedrunTimerDisplay.DrawTime += SetPlatinumColor;
             IL.Celeste.AreaComplete.ctor += SetEndlessTitle;
 
@@ -42,6 +43,7 @@ namespace Celeste.Mod.Randomizer
             On.Celeste.Editor.MapEditor.ctor -= MarkSessionUnclean;
             On.Celeste.LevelExit.Begin -= HijackExitBegin;
             On.Celeste.Player.Die -= DieInEndless;
+            On.Celeste.Player.UseRefill -= NeverRefillZeroDashes;
             IL.Celeste.SpeedrunTimerDisplay.DrawTime -= SetPlatinumColor;
             IL.Celeste.AreaComplete.ctor -= SetEndlessTitle;
 
@@ -579,6 +581,16 @@ namespace Celeste.Mod.Randomizer
                 ActiveFont.DrawOutline(scoreSpeedrunText, position + new Vector2(0.0f, 40f), new Vector2(0.0f, 1f), Vector2.One * 0.6f, Color.White, 2f, Color.Black);
                 SpeedrunTimerDisplay.DrawTime(position + new Vector2((float)((double)ActiveFont.Measure(scoreSpeedrunText).X * 0.6000000238418579 + 8.0), 40f), this.CurrentScore.ToString(), 0.6f);
             }
+        }
+
+        private bool NeverRefillZeroDashes(On.Celeste.Player.orig_UseRefill orig, Player self, bool twoDashes)
+        {
+            var settings = this.InRandomizerSettings;
+            if (settings != null && settings.Dashes == NumDashes.Zero)
+            {
+                twoDashes = false;
+            }
+            return orig(self, twoDashes);
         }
     }
 
