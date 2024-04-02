@@ -225,7 +225,7 @@ namespace Celeste.Mod.Randomizer
 
             if (MapBuilder?.Check() == true)
             {
-                MapBuilder.Dispose();
+                MapBuilder?.Dispose();
                 MapBuilder = null;
             }
 
