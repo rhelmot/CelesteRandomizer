@@ -1,14 +1,19 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 
-namespace Celeste.Mod.Randomizer {
-    public enum ScreenDirection {
+namespace Celeste.Mod.Randomizer
+{
+    public enum ScreenDirection
+    {
         Up, Down, Left, Right
     }
 
-    public static class ScreenDirectionMethods {
-        public static Vector2 Unit(this ScreenDirection self) {
-            switch (self) {
+    public static class ScreenDirectionMethods
+    {
+        public static Vector2 Unit(this ScreenDirection self)
+        {
+            switch (self)
+            {
                 case ScreenDirection.Up:
                     return -Vector2.UnitY;
                 case ScreenDirection.Down:
@@ -22,8 +27,10 @@ namespace Celeste.Mod.Randomizer {
             }
         }
 
-        public static ScreenDirection RotCW(this ScreenDirection self) {
-            switch (self) {
+        public static ScreenDirection RotCW(this ScreenDirection self)
+        {
+            switch (self)
+            {
                 case ScreenDirection.Up:
                     return ScreenDirection.Right;
                 case ScreenDirection.Down:
@@ -37,8 +44,10 @@ namespace Celeste.Mod.Randomizer {
             }
         }
 
-        public static ScreenDirection Opposite(this ScreenDirection self) {
-            switch (self) {
+        public static ScreenDirection Opposite(this ScreenDirection self)
+        {
+            switch (self)
+            {
                 case ScreenDirection.Up:
                     return ScreenDirection.Down;
                 case ScreenDirection.Down:
@@ -51,8 +60,10 @@ namespace Celeste.Mod.Randomizer {
             }
         }
 
-        public static ScreenDirection FromString(String str) {
-            switch (str.ToLower()) {
+        public static ScreenDirection FromString(String str)
+        {
+            switch (str.ToLower())
+            {
                 case "up":
                     return ScreenDirection.Up;
                 case "down":

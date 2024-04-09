@@ -3,28 +3,34 @@ using System.Collections;
 using Microsoft.Xna.Framework;
 using Monocle;
 
-namespace Celeste.Mod.Randomizer.Entities {
+namespace Celeste.Mod.Randomizer.Entities
+{
     [Mod.Entities.CustomEntity("randomizer/TheoPhone")]
-    public class FindTheoPhone : TheoPhone {
+    public class FindTheoPhone : TheoPhone
+    {
         private TalkComponent Talker;
         public EntityID ID;
 
-        public FindTheoPhone(EntityData data, Vector2 offset, EntityID id) : base(offset + data.Position) {
+        public FindTheoPhone(EntityData data, Vector2 offset, EntityID id) : base(offset + data.Position)
+        {
             this.Add(this.Talker = new TalkComponent(new Rectangle(-12, -8, 24, 8), new Vector2(99999, 99999), this.OnTalk));
             this.ID = id;
         }
 
-        private void OnTalk(Player obj) {
+        private void OnTalk(Player obj)
+        {
             this.Scene.Add(new CS_FindTheoPhone(this.Scene.Tracker.GetEntity<Player>(), this));
         }
     }
 
-    public class CS_FindTheoPhone : CutsceneEntity {
+    public class CS_FindTheoPhone : CutsceneEntity
+    {
         private Player Player;
         private float TargetX;
         private FindTheoPhone Phone;
 
-        public CS_FindTheoPhone(Player player, FindTheoPhone phone) {
+        public CS_FindTheoPhone(Player player, FindTheoPhone phone)
+        {
             this.Player = player;
             this.TargetX = phone.X + 8;
             this.Phone = phone;
@@ -33,12 +39,13 @@ namespace Celeste.Mod.Randomizer.Entities {
         public override void OnBegin(Level level) => this.Add(new Coroutine(this.Routine()));
 
         private bool SavedInvincible;
-        private IEnumerator Routine() {
+        private IEnumerator Routine()
+        {
             this.Player.Speed = Vector2.Zero;
             this.SavedInvincible = SaveData.Instance.Assists.Invincible;
             SaveData.Instance.Assists.Invincible = true;
             this.Player.StateMachine.State = 11;
-            this.Player.Facing = (Facings) Math.Sign(this.TargetX - this.Player.X);
+            this.Player.Facing = (Facings)Math.Sign(this.TargetX - this.Player.X);
             yield return 0.5f;
             var point = this.Level.Camera.CameraToScreen(this.Player.Position);
             point.X = Math.Min(Math.Max(point.X, this.Level.Camera.Viewport.Width / 4f), this.Level.Camera.Viewport.Width * 3f / 4f);
@@ -49,7 +56,8 @@ namespace Celeste.Mod.Randomizer.Entities {
             this.EndCutscene(this.Level);
         }
 
-        public override void OnEnd(Level level) {
+        public override void OnEnd(Level level)
+        {
             var reseter = new Entity {
                 new Coroutine(this.ResetInvincible()),
             };
@@ -60,14 +68,16 @@ namespace Celeste.Mod.Randomizer.Entities {
             this.Phone.RemoveSelf();
         }
 
-        private IEnumerator ResetInvincible() {
+        private IEnumerator ResetInvincible()
+        {
             yield return 1f;
             SaveData.Instance.Assists.Invincible = this.SavedInvincible;
         }
 
-        private IEnumerator WalkToPhone() {
+        private IEnumerator WalkToPhone()
+        {
             yield return 0.25f;
-            yield return this.Player.DummyWalkToExact((int) this.TargetX);
+            yield return this.Player.DummyWalkToExact((int)this.TargetX);
             this.Player.Facing = Facings.Left;
             yield return 0.5f;
             this.Player.DummyAutoAnimate = false;
@@ -75,11 +85,12 @@ namespace Celeste.Mod.Randomizer.Entities {
             yield return 0.5f;
         }
 
-        private IEnumerator StandBackUp() {
+        private IEnumerator StandBackUp()
+        {
             this.Phone.RemoveSelf();
-            yield return  0.6f;
+            yield return 0.6f;
             this.Player.Sprite.Play("idle");
-            yield return  0.2f;
+            yield return 0.2f;
         }
     }
 }

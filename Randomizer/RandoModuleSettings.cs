@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 
-namespace Celeste.Mod.Randomizer {
-    public class RandoModuleSettings : EverestModuleSettings {
+namespace Celeste.Mod.Randomizer
+{
+    public class RandoModuleSettings : EverestModuleSettings
+    {
         [SettingIgnore]
         public int StartCounter { get; set; }
 
@@ -25,12 +27,15 @@ namespace Celeste.Mod.Randomizer {
         public bool LazyLoading { get; set; } = true;
     }
 
-    public struct RecordTuple {
+    public struct RecordTuple
+    {
         public long Item1;
         public string Item2;
 
-        public static RecordTuple Create(long a, string b) {
-            return new RecordTuple {
+        public static RecordTuple Create(long a, string b)
+        {
+            return new RecordTuple
+            {
                 Item1 = a,
                 Item2 = b,
             };
