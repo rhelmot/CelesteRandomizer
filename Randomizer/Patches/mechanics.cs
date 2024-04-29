@@ -824,12 +824,14 @@ namespace Celeste.Mod.Randomizer
             foreach (var path in additions)
             {
                 XmlElement animatedData = Calc.LoadContentXML(path)["Data"];
-                foreach (XmlElement el in animatedData)
+                foreach (XmlNode node in animatedData)
                 {
-                    if (el == null)
+                    if (node == null || node.NodeType == XmlNodeType.Comment)
                     {
                         continue;
                     }
+
+                    XmlElement el = (XmlElement) node;
 
                     var name = el.Attr("name");
                     bool insert;
