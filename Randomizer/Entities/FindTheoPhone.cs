@@ -62,7 +62,7 @@ namespace Celeste.Mod.Randomizer.Entities
                 new Coroutine(this.ResetInvincible()),
             };
             reseter.Tag |= Tags.Global;
-            this.Scene.Add(reseter);
+            Engine.Scene.Add(reseter);
             this.Player.StateMachine.State = 0;
             this.Level.Session.DoNotLoad.Add(this.Phone.ID);
             this.Phone.RemoveSelf();
