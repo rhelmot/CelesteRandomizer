@@ -650,12 +650,16 @@ ASide:
     InternalEdges:
     - Collectable: 0
       ReqOut:
-        Dashes: one
+        Or:
+          - Dashes: one
+          - Dashes: zero
       ReqIn:
         Or:
           - Dashes: two
           - Dashes: one
             Difficulty: hard
+          - Dashes: zero
+            Difficulty: perfect
   - Room: "d-02"
     Holes:
     - Side: Down
@@ -670,7 +674,10 @@ ASide:
     InternalEdges:
     - Collectable: 0
       ReqOut:
-        Dashes: one
+        Or:
+          - Dashes: one
+          - Dashes: zero
+            Difficulty: perfect
         Flag: poweroff:set
   - Room: "d-03"
     Holes:
@@ -689,7 +696,10 @@ ASide:
     InternalEdges:
     - Collectable: 0
       ReqOut:
-        Dashes: one
+        Or:
+          - Dashes: one
+          - Dashes: zero
+            Difficulty: master
         Flag: poweroff:set
   - Room: "d-04"
     Holes:
