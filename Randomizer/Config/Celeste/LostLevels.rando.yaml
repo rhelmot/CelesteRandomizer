@@ -323,7 +323,7 @@ ASide:
       Idx: 0
       Kind: in
     - Side: Left
-      Idx: 0
+      Idx: 1
       Kind: None
   - Room: "b-07"
     Holes:
@@ -500,9 +500,6 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
-    - Side: Left
-      Idx: 1
-      Kind: inout
       ReqOut:
         Or:
           - Dashes: Zero
@@ -511,6 +508,9 @@ ASide:
             Difficulty: Easy
       ReqIn:
         Dashes: one
+    - Side: Left
+      Idx: 1
+      Kind: None
     - Side: Down
       Idx: 2
       Kind: None
