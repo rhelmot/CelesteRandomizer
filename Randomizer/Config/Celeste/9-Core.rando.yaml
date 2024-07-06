@@ -1768,7 +1768,7 @@ BSide:
     ReqEnd:
       Or:
         - Dashes: one
-          Difficulty: perfect
+          Difficulty: expert
         - Dashes: two
     Holes:
     - Side: Left
