@@ -110,6 +110,7 @@ namespace Celeste.Mod.Randomizer
             IL.Celeste.LightningRenderer.Track -= TrackExtraSpace;
             IL.Celeste.HeartGem.Awake -= SpecialHeartColors;
             On.Celeste.LockBlock.OnPlayer -= NoKeySkips;
+            On.Celeste.Level.UnloadEntities -= clearCutscene;
 
             foreach (var detour in this.SpecialHooksQol)
             {
