@@ -760,15 +760,10 @@ namespace Celeste.Mod.Randomizer
 
         public static void clearCutscene(On.Celeste.Level.orig_UnloadEntities orig, Level self, List<Entity> entities)
         {
-            for(int i = 0; i < entities.Count; i++)
+            if (self.InCutscene && entities.OfType<FindTheoPhone>().Any())
             {
-                if (entities[i] is FindTheoPhone && self.InCutscene)  
-                {
-                    self.SkipCutscene();
-                    break;
-                }
+                self.SkipCutscene();
             }
-            
             orig(self, entities);
         }
     }
