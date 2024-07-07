@@ -10,6 +10,10 @@ using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using MonoMod.Utils;
 using MonoMod.RuntimeDetour;
+using Celeste.Mod.Entities;
+using On.Celeste.Mod.Entities;
+using Celeste.Mod.Randomizer.Entities;
+using System.Runtime.Remoting.Contexts;
 
 namespace Celeste.Mod.Randomizer
 {
@@ -47,6 +51,7 @@ namespace Celeste.Mod.Randomizer
             IL.Celeste.CS06_Campfire.OnEnd += FuckUpWayLess;
             IL.Celeste.LightningRenderer.Track += TrackExtraSpace;
             On.Celeste.LockBlock.OnPlayer += NoKeySkips;
+            On.Celeste.Player.Update += PreventInvincibility;
 
             // https://github.com/EverestAPI/CelesteTAS-EverestInterop/blob/master/CelesteTAS-EverestInterop/EverestInterop/DisableAchievements.cs
             // Before hooking Achievements.Register, check the size of the method.
@@ -106,6 +111,8 @@ namespace Celeste.Mod.Randomizer
             IL.Celeste.LightningRenderer.Track -= TrackExtraSpace;
             IL.Celeste.HeartGem.Awake -= SpecialHeartColors;
             On.Celeste.LockBlock.OnPlayer -= NoKeySkips;
+            On.Celeste.Player.Update -= PreventInvincibility;
+
 
             foreach (var detour in this.SpecialHooksQol)
             {
@@ -752,6 +759,16 @@ namespace Celeste.Mod.Randomizer
                 Engine.Commands.Log($"{kv.Value} {kv.Key}");
             }
         }
+        public static void PreventInvincibility(On.Celeste.Player.orig_Update orig, Player self)
+        {
+            Level lvl = (Engine.Scene as Level);
+            if (lvl.InCutscene && lvl.Entities.OfType<CS_FindTheoPhone>().Any() && lvl.Entities.OfType<CS_FindTheoPhone>().ToList()[0].State == 1 && self.StateMachine == 0)
+            {
+                lvl.SkipCutscene();
+            }
+            orig(self);
+        }
+
     }
 
     public class DisablableTextMenu : TextMenu
