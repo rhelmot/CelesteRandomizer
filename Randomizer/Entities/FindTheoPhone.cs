@@ -46,6 +46,7 @@ namespace Celeste.Mod.Randomizer.Entities
             SaveData.Instance.Assists.Invincible = true;
             this.Player.StateMachine.State = 11;
             this.Player.Facing = (Facings)Math.Sign(this.TargetX - this.Player.X);
+            AddTag(Tags.Persistent);
             yield return 0.5f;
             var point = this.Level.Camera.CameraToScreen(this.Player.Position);
             point.X = Math.Min(Math.Max(point.X, this.Level.Camera.Viewport.Width / 4f), this.Level.Camera.Viewport.Width * 3f / 4f);
@@ -63,6 +64,7 @@ namespace Celeste.Mod.Randomizer.Entities
             };
             reseter.Tag |= Tags.Global;
             Engine.Scene.Add(reseter);
+            RemoveTag(Tags.Persistent);
             this.Player.StateMachine.State = 0;
             this.Level.Session.DoNotLoad.Add(this.Phone.ID);
             this.Phone.RemoveSelf();

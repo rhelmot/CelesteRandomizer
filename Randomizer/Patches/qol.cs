@@ -10,6 +10,9 @@ using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using MonoMod.Utils;
 using MonoMod.RuntimeDetour;
+using Celeste.Mod.Entities;
+using On.Celeste.Mod.Entities;
+using Celeste.Mod.Randomizer.Entities;
 
 namespace Celeste.Mod.Randomizer
 {
@@ -47,6 +50,7 @@ namespace Celeste.Mod.Randomizer
             IL.Celeste.CS06_Campfire.OnEnd += FuckUpWayLess;
             IL.Celeste.LightningRenderer.Track += TrackExtraSpace;
             On.Celeste.LockBlock.OnPlayer += NoKeySkips;
+            On.Celeste.Level.UnloadEntities += clearCutscene;
 
             // https://github.com/EverestAPI/CelesteTAS-EverestInterop/blob/master/CelesteTAS-EverestInterop/EverestInterop/DisableAchievements.cs
             // Before hooking Achievements.Register, check the size of the method.
@@ -751,6 +755,20 @@ namespace Celeste.Mod.Randomizer
             {
                 Engine.Commands.Log($"{kv.Value} {kv.Key}");
             }
+        }
+
+        public static void clearCutscene(On.Celeste.Level.orig_UnloadEntities orig, Level self, List<Entity> entities)
+        {
+            for(int i = 0; i < entities.Count; i++)
+            {
+                if (entities[i] is FindTheoPhone && self.InCutscene)  
+                {
+                    self.SkipCutscene();
+                    break;
+                }
+            }
+            
+            orig(self, entities);
         }
     }
 
