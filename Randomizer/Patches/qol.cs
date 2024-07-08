@@ -762,9 +762,10 @@ namespace Celeste.Mod.Randomizer
         public static void PreventInvincibility(On.Celeste.Player.orig_Update orig, Player self)
         {
             Level lvl = (Engine.Scene as Level);
-            if (lvl.InCutscene && lvl.Entities.OfType<CS_FindTheoPhone>().Any() && lvl.Entities.OfType<CS_FindTheoPhone>().ToList()[0].State == 1 && self.StateMachine == 0)
+            if (lvl.InCutscene && lvl.Entities.OfType<CS_FindTheoPhone>().Any() && lvl.Entities.OfType<CS_FindTheoPhone>().ToList()[0].State == 1 && self.StateMachine == 0 ||
+                lvl.InCutscene && lvl.Entities.OfType<CS_FindTheoPhone>().Any() && lvl.Entities.OfType<CutsceneEntity>().Count() > 1)
             {
-                lvl.SkipCutscene();
+                lvl.Entities.OfType<CS_FindTheoPhone>().ToList()[0].OnEnd(lvl);
             }
             orig(self);
         }
