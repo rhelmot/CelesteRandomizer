@@ -678,8 +678,8 @@ namespace Celeste.Mod.Randomizer
                                 y++;
                             }
                             var safe = !spinners.Where(e => e.Position.X / 8 + e.Width / 8 >= x && e.Position.X / 8 <= x && e.Position.Y / 8 == y).Any();
-                            //var NotInFloor = !lvl.FgDecals.Where(fg => (fg.Position.X + 8 * fg.Scale.X) / 8 == x  && (fg.Position.Y + 4)/8 == y).Any();
-                            if (at(x + 1, y - 1) == '0' && at(x + 1, y) != '0' &&  safe)
+                            var InsideRoof = lvl.FgDecals.Where(fg  => (fg.Position.X) / 8 <= x && (fg.Position.X + 8 * fg.Scale.X) / 8 <= x && (fg.Position.Y + 4) / 8 == y).Any();
+                            if (at(x + 1, y - 1) == '0' && at(x + 1, y) != '0' &&  safe && !InsideRoof)
                             {
                                 found = true;
                             }
