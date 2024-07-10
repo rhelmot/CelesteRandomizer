@@ -397,13 +397,15 @@ namespace Celeste.Mod.Randomizer
 
             // this cutscene hardcodes a reference to a windsnow fg
             // the level should only ever be last on the list, right?
-            if (effect.Effect != "windsnow" && map.Levels[map.Levels.Count - 1].Name.StartsWith("Celeste/4-GoldenRidge/A/d-10"))
+            if (effect.Effect != "windsnow" && map.Levels.Where(lvl => lvl.Name.StartsWith("Celeste/4-GoldenRidge/A/d-10")).Any())
             {
+                // There is a miniscule chance of this level being second to last due to fake end
+                var idx = map.Levels.FindIndex(lvl => lvl.Name.StartsWith("Celeste/4-GoldenRidge/A/d-10"));
                 map.Foreground.Children.Add(new BinaryPacker.Element
                 {
                     Name = "windsnow",
                     Attributes = new Dictionary<string, object> {
-                       {"only", map.Levels[map.Levels.Count - 1].Name }
+                       {"only", map.Levels[idx].Name }
                     }
                 });
             }
