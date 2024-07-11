@@ -84,6 +84,7 @@
   <ItemGroup>
     <Compile Include="Builder.cs" />
     <Compile Include="Entities\FindTheoPhone.cs" />
+    <Compile Include="Entities\ActivateSwitches.cs" />
     <Compile Include="Entities\LifeBerry.cs" />
     <Compile Include="Interoperability\GenerationInterop.cs" />
     <Compile Include="Interoperability\InteropHelper.cs" />
