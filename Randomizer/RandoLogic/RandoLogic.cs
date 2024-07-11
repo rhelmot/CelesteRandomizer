@@ -660,7 +660,8 @@ namespace Celeste.Mod.Randomizer
                 char at(int xx, int yy) => yy >= lines.Count ? '0' : xx >= lines[yy].Length ? '0' : lines[yy][xx];
                 var height = lines.Count;
                 var width = lines.Select(j => j.Length).Max();
-                IEnumerable<EntityData> spinners = lvl.Entities.Where(e => e.Name == "spinner" || e.Name == "spikesUp");
+                IEnumerable<EntityData> spinners = lvl.Entities.Where(e => e.Name == "spinner" || e.Name == "spikesUp" ||
+                                                                           e.Name == "greenBlocks" || e.Name == "redBlocks" || e.Name == "yellowBlocks");
                 var found = false;
                 int x = 0, y = 0;
                 for (int i = 0; i < 20 && !found; i++)
@@ -679,8 +680,21 @@ namespace Celeste.Mod.Randomizer
                             {
                                 y++;
                             }
-                            var safe = !spinners.Where(e => e.Position.X / 8 + e.Width / 8 >= x && e.Position.X / 8 <= x && e.Position.Y / 8 == y).Any();
-                            var InsideRoof = lvl.FgDecals.Where(fg  => (fg.Position.X) / 8 <= x && (fg.Position.X + 8 * fg.Scale.X) / 8 <= x && (fg.Position.Y + 4) / 8 == y).Any();
+                            var safe = !spinners.Where(e =>
+                            {
+                                var entWidth = e.Name != "spinner" ? e.Width : 8;
+                                var entHeight = e.Name != "spinner" && e.Name != "spikesUp" ? e.Height : 0;
+                                return e.Position.X / 8 + entWidth / 8 >= x && e.Position.X / 8 - 1 <= x && e.Position.Y / 8 + entHeight / 8 == y;
+                            }).Any();
+
+                            var InsideRoof = lvl.FgDecals.Where(fg =>
+                            {
+                                if (fg.Scale.X < 0)
+                                {
+                                    return (fg.Position.X) / 8 >= x && (fg.Position.X + 8 * fg.Scale.X) / 8 <= x && (fg.Position.Y + 4) / 8 == y;
+                                }
+                                return (fg.Position.X) / 8 <= x && (fg.Position.X + 8 * fg.Scale.X) / 8 >= x && (fg.Position.Y + 4) / 8 == y;
+                            }).Any();
                             if (at(x + 1, y - 1) == '0' && at(x + 1, y) != '0' &&  safe && !InsideRoof)
                             {
                                 found = true;
