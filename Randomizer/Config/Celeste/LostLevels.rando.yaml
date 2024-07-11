@@ -487,6 +487,17 @@ ASide:
       ID: 17
       Update:
         Width: 24
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 144
+        Y: 40
+        Width: 32
+        Height: 16
+        Values:
+          cameraX: 0.0
+          cameraY: 1.0
+        
   - Room: "c-alt-00"
     Holes:
     - Side: Right
