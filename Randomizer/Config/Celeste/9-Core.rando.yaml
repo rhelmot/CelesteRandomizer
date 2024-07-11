@@ -391,8 +391,18 @@ ASide:
         Width:  32
         Height: 16
         Values:
-          cameraX: 0
-          cameraY: 1.5
+          cameraX: 0.0
+          cameraY: 1.0
+    - Name: "cameraOffsetTrigger"                  
+      Update:
+        Add: true
+        X: 88
+        Y: 648
+        Width:  144
+        Height: 16
+        Values:
+          cameraX: 0.0
+          cameraY: -1.0
   - Room: "b-07"
     Core:
       All: hot
