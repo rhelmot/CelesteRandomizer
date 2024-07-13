@@ -288,6 +288,24 @@ ASide:
         Add: true
         X: 32
         Y: 40
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 24
+        Y: 0
+        Width: 32
+        Height: 40
+        Values:
+            type: "touchswitch"
+    - ID: 0
+      Name: jumpThru
+      Update:
+        Width: 16
+    - Decal: "bg"
+      X: 292
+      Y: 156
+      Update:
+        Remove: true
   - Room: "7"
     Holes:
     - Side: Up
@@ -303,6 +321,29 @@ ASide:
           - Dashes: one
           - Dashes: zero
             Difficulty: master
+    Tweaks:
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 280
+        Y: 0
+        Width: 24
+        Height: 32
+        Values:
+            type: "touchswitch"
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 288
+        Y: 16
+    - ID: 0
+      Name: "jumpThru"
+      Update:
+        Width: 16
+    - Name: "switchGate"
+      ID: 8
+      Update:
+        Y: 16
   - Room: "8"
     Holes:
     - Side: Up
@@ -446,6 +487,15 @@ ASide:
         Values:
           cameraX: 0.0
           cameraY: 1.0
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 488
+        Y: 288
+        Width: 24
+        Height: 32
+        Values:
+            type: "touchswitch"
   - Room: "9b"
     Holes:
     - Side: Down
@@ -1412,6 +1462,19 @@ BSide:
         Add: true
         X: 296
         Y: 24
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 280
+        Y: 0
+        Width: 24
+        Height: 96
+        Values:
+            type: "touchswitch"
+    - ID: 1
+      Name: jumpThru
+      Update:
+        Width: 16
   - Room: "04"
     Holes:
     - Side: Up
@@ -1480,6 +1543,24 @@ BSide:
         Add: true
         X: 328
         Y: 184
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 304
+        Y: 152
+        Width: 32
+        Height: 32
+        Values:
+            type: "touchswitch"
+    - ID: 0
+      Name: jumpThru
+      Update:
+        Width: 16
+    - Name: "spawn"
+      X: 20
+      Y: 176
+      Update:
+        Default: true
   - Room: "07"
     Holes:
     - Side: Up
@@ -1567,6 +1648,15 @@ BSide:
         Add: true
         X: 296
         Y: 24
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 272 
+        Y: 0
+        Width: 32
+        Height: 96
+        Values:
+            type: "touchswitch"
   - Room: "11"
     Holes:
     - Side: Up

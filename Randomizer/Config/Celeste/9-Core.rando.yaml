@@ -336,7 +336,7 @@ ASide:
           persistent: "false"
   - Room: "b-05"
     Core:
-      All: cold
+      All: cold # TODO: HELP
     Holes:
     - Side: Down
       Idx: 0
@@ -349,6 +349,20 @@ ASide:
     - Side: Down
       Idx: 1
       Kind: in
+    Tweaks:
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 40
+        Y: 168
+        Width: 32
+        Height: 16
+        Values:
+            type: "touchswitch"
+    - ID: 145
+      Name: jumpThru
+      Update:
+        Width: 16
   - Room: "b-06"  # TODO: Add fire/ice toggle in second version of room
     Core:
       All: none  # this is more fun as the barely-possible collectable in none-mode
@@ -1436,6 +1450,16 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: in
+    Tweaks:
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 880
+        Y: 24
+        Width: 32
+        Height: 32
+        Values:
+            type: "touchswitch"
   - Room: "b-03"
     Core:
       All: cold

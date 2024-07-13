@@ -700,6 +700,21 @@ ASide:
         - Dashes: one
         - Dashes: zero
           Difficulty: expert
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 304
+        Y: 152
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 280
+        Y: 120
+        Width: 32
+        Height: 64
+        Values:
+            type: "touchswitch"
   - Room: "08-b" # key loop 4
     Holes:
     - Side: Up
@@ -916,6 +931,15 @@ ASide:
       Name: "exitBlock"
       Update:
         Remove: true
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 72
+        Y: 160
+        Width: 32
+        Height: 24
+        Values:
+            type: "touchswitch"
   - Room: "11-y"  # chest 3
     Holes:
     - Side: Up
@@ -1371,6 +1395,15 @@ ASide:
         Add: true
         X: 8
         Y: 32
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 0
+        Y: 8
+        Width: 16
+        Height: 24
+        Values:
+            type: "touchswitch"
   - Room: "06-d"  # shaft 3
     Holes:
     - Side: Right
@@ -1776,6 +1809,40 @@ ASide:
     - ID: 2             # remove invisible barrier
       Update:
         Remove: true
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 960
+        Y: 160
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 936
+        Y: 136
+        Width: 40
+        Height: 24
+        Values:
+            type: "touchswitch"
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 936
+        Y: 136
+        Width: 40
+        Height: 24
+        Values:
+          cameraX: -1.2
+          cameraY: 0
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 0
+        Y: 0
+        Width: 64
+        Height: 160
+        Values:
+          cameraX: 1.2
+          cameraY: 0
   - Room: "roof04"  # interior
     Holes:
     - Side: Right
@@ -2606,6 +2673,15 @@ BSide:
         Add: true
         X: 448
         Y: 176
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 424
+        Y: 144
+        Width: 32
+        Height: 40
+        Values:
+            type: "touchswitch"
   - Room: "end"
     ReqEnd:
       Dashes: one

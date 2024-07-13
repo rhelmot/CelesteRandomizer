@@ -45,6 +45,17 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    Tweaks:
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 464
+        Y: 72
+        Width: 16
+        Height: 40
+        Values:
+            type: "button"
+            entID: 16
   - Room: "a-01"
     Hub: true
     Holes:
@@ -725,6 +736,17 @@ ASide:
     - Side: Down
       Idx: 1
       Kind: inout
+    Tweaks:
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 304
+        Y: 288
+        Width: 16
+        Height: 40
+        Values:
+            type: "button"
+            entID: 15
   - Room: "b-12"
     Holes:
     - Side: Up
@@ -752,6 +774,17 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    Tweaks:
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 304
+        Y: 200
+        Width: 216
+        Height: 32
+        Values:
+            type: "button"
+            entID: 56
   - Room: "b-17"  # TODO: seeded berry
     Holes:
     - Side: Right
@@ -1035,6 +1068,21 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+    Tweaks:
+    - Name: "templeGate"
+      ID: 122
+      Update:
+        Remove: true
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 328
+        Y: 16
+        Width: 48
+        Height: 32
+        Values:
+            type: "button"
+            entID: 124
   - Room: "c-08"
     Holes:
     - Side: Right
@@ -1070,6 +1118,16 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    Tweaks:
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 304
+        Y: 16
+        Width: 16
+        Height: 32
+        Values:
+            type: "touchswitch"
   - Room: "c-12"
     Holes:
     - Side: Right
@@ -1078,6 +1136,20 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+    Tweaks:
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 304
+        Y: 16
+        Width: 16
+        Height: 32
+        Values:
+            type: "touchswitch"
+    - Name: "templeGate"
+      ID: 145
+      Update:
+        Remove: true
   - Room: "c-07"
     Holes:
     - Side: Right
@@ -1086,6 +1158,20 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+    Tweaks:
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 456
+        Y: 72
+        Width: 16
+        Height: 40
+        Values:
+            type: "touchswitch"
+    - Name: "templeGate"
+      ID: 98
+      Update:
+        Remove: true
   - Room: "c-11"
     Holes:
     - Side: Right
@@ -1107,6 +1193,16 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    Tweaks:
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 304
+        Y: 16
+        Width: 16
+        Height: 32
+        Values:
+            type: "touchswitch"
   - Room: "c-13"
     Holes:
     - Side: Up
@@ -1121,6 +1217,15 @@ ASide:
         Add: true
         X: 200
         Y: 16
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 176
+        Y: 0
+        Width: 32
+        Height: 16
+        Values:
+            type: "touchswitch"
   - Room: "d-00"  # god this room is a mess
     Hub: true
     Holes:
@@ -1240,6 +1345,21 @@ ASide:
     - Side: Right
       Idx: 0
       Kind: inout
+    Tweaks:
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 40
+        Y: 0
+        Width: 32
+        Height: 88
+        Values:
+            type: "touchswitch"
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 48
+        Y: 24
   - Room: "d-04"
     Hub: true
     Holes:
@@ -1459,6 +1579,16 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: out
+    Tweaks:
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 0
+        Y: 64
+        Width: 24
+        Height: 32
+        Values:
+            type: "touchswitch"
   - Room: "d-09"
     Holes:
     - Side: Right
@@ -1627,6 +1757,20 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: in
+    Tweaks:
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 344
+        Y: 72
+        Width: 24
+        Height: 40
+        Values:
+            type: "touchswitch"
+    - Name: "jumpThru"
+      ID: 293
+      Update:
+        Width: 16
   - Room: "e-00"
     Holes:
     - Side: Right
@@ -1778,6 +1922,17 @@ BSide:
     - Side: Down
       Idx: 2
       Kind: none
+    Tweaks:
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 304
+        Y: 32
+        Width: 16
+        Height: 32
+        Values:
+            type: "button"
+            entID: 29
   - Room: "a-01"
     Holes:
     - Side: Right
@@ -2079,6 +2234,16 @@ BSide:
         Values:
           cameraX: 1.0
           cameraY: 0.0
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 0
+        Y: 96
+        Width: 24
+        Height: 32
+        Values:
+            type: "button"
+            entID: 290
   - Room: "b-04"
     Holes:
     - Side: Left
@@ -2182,6 +2347,21 @@ BSide:
       Y: 136
       Update:
         Default: true
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 32
+        Y: 0
+        Width: 32
+        Height: 48
+        Values:
+            type: "button"
+            entID: 231
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 40
+        Y: 48
   - Room: "b-09"
     Holes:
     - Side: Down

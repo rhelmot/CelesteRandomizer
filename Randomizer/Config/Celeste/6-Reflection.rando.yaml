@@ -1785,6 +1785,20 @@ BSide:
     - Side: Down
       Idx: 0
       Kind: in
+    Tweaks:
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 608
+        Y: 72
+        Width: 24
+        Height: 32
+        Values:
+            type: "touchswitch"
+    - ID: 228
+      Name: jumpThru
+      Update:
+        Width: 16
   - Room: "a-04"
     Holes:
     - Side: Right

@@ -257,6 +257,16 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: none
+    Tweaks:
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+         Add: true
+         X: 296
+         Y: 48
+         Width: 24 
+         Height: 24
+         Values:
+           type: "touchswitch"
   - Room: "b-03"
     Holes:
     - Side: Right
@@ -294,6 +304,16 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: none
+    Tweaks:
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 288
+        Y: 16
+        Width: 32
+        Height: 16
+        Values:
+            type: "touchswitch"
   - Room: "b-05"
     Holes:
     - Side: Right
@@ -836,6 +856,43 @@ ASide:
       Idx: 0
       Kind: in
       Launch: -1
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 280
+        Y: 16
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 272
+        Y: 0
+        Width: 16
+        Height: 24
+        Values:
+            type: "touchswitch"
+    - ID: 920
+      Name: exitBlock
+      Update:
+        Remove: true
+    - ID: 614
+      Name: jumpThru
+      Update:
+        Remove: true
+    - ID: 756
+      Name: jumpThru
+      Update:
+        Remove: true
+    - Decal: bg
+      X: 136
+      Y: 352
+      Update:
+        Remove: true
+    - Decal: bg
+      X: 148
+      Y: 352
+      Update:
+        Remove: true
   - Room: "e-00b"
     Holes:
     - Side: Up
@@ -933,6 +990,20 @@ ASide:
     - Side: Down
       Idx: 1
       Kind: None
+    Tweaks:
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 720
+        Y: 40
+        Width: 24
+        Height: 32
+        Values:
+            type: "touchswitch"
+    - Name: "jumpThru"
+      ID: 780
+      Update:
+        Remove: true
   - Room: "e-03"
     Holes:
     - Side: Right
@@ -1015,6 +1086,16 @@ ASide:
     - Side: Up
       Idx: 1
       Kind: None
+    Tweaks:
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 320
+        Y: 8
+        Width: 72
+        Height: 48
+        Values:
+            type: "touchswitch"
   - Room: "e-05b"
     Holes:
     - Side: Right
@@ -1075,6 +1156,16 @@ ASide:
          - Dashes: one
          - Dashes: zero
            Difficulty: expert
+    Tweaks:
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 840
+        Y: 64
+        Width: 40
+        Height: 32  
+        Values:
+            type: "touchswitch"
   - Room: "e-07"
     Holes:
     - Side: Right
@@ -1387,6 +1478,21 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: None  # TODO when we can edit the tilemap this can become an unknown hole
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 184
+        Y: 16
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 176
+        Y: 0
+        Width: 16
+        Height: 24
+        Values:
+            type: "touchswitch"
   - Room: "g-00"
     Holes:
     - Side: Up
@@ -1434,6 +1540,29 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: in
+    Tweaks:
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 16
+        Y: 0
+        Width: 24
+        Height: 24
+        Values:
+            type: "touchswitch"
+    - ID: 145
+      Name: jumpThru
+      Update:
+        Remove: true
+    - ID: 144
+      Name: jumpThru
+      Update:
+        Remove: true
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 24
+        Y: 24
   - Room: "g-02"
     Holes:
     - Side: Up
@@ -1756,6 +1885,16 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: in
+    Tweaks:
+    - ID: 1523
+      Name: jumpThru
+      Update:
+        Remove: true
+    - Name: "spawn"
+      X: 56
+      Y: 712
+      Update:
+        Default: true
   - Room: "h-07"
     Holes:
     - Side: Left
@@ -2024,6 +2163,16 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: None
+    Tweaks:
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 576
+        Y: 88
+        Width: 32
+        Height: 40
+        Values:
+            type: "touchswitch"
   - Room: "i-05"
     Holes:
     - Side: Right
