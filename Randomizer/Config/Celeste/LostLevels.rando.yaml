@@ -245,8 +245,10 @@ ASide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
+        Dashes: one
+      ReqIn:
         Dashes: one
     - Side: Left
       Idx: 0
@@ -292,9 +294,11 @@ ASide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
         Dashes: one
+      ReqIn:
+        Dashes: zero
     - Side: Left
       Idx: 0
       Kind: inout
@@ -849,12 +853,14 @@ ASide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
         Dashes: one
+      ReqIn:
+        Dashes: zero
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
       Launch: -1
     Tweaks:
     - Name: "spawn"
@@ -980,12 +986,15 @@ ASide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
         Dashes: one
+      ReqIn:
+        Dashes: two
+        Difficulty: master
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
       Launch: -1
     - Side: Down
       Idx: 1
@@ -1077,8 +1086,10 @@ ASide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
+        Dashes: one
+      ReqIn:
         Dashes: one
     - Side: Left
       Idx: 0
@@ -1156,6 +1167,9 @@ ASide:
          - Dashes: one
          - Dashes: zero
            Difficulty: expert
+      ReqIn:
+        Dashes: two
+        Difficulty: master
     Tweaks:
     - Name: "randomizer/ActivateSwitches"
       Update:
@@ -1468,10 +1482,12 @@ ASide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
         Dashes: one
         Difficulty: hard
+      ReqIn:
+        Dashes: one
     - Side: Left
       Idx: 0
       Kind: inout
@@ -1533,13 +1549,15 @@ ASide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
         Dashes: one
         Difficulty: hard
+      ReqIn: 
+        Dashes: zero
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
     Tweaks:
     - Name: "randomizer/ActivateSwitches"
       Update:
@@ -2143,12 +2161,17 @@ ASide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
-      Or:
-      - Dashes: one
-      - Dashes: zero
-        Difficulty: perfect
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect
+      ReqIn:
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: expert
       ExtraSpace:
       - X: 44264
         Y: -8656
