@@ -369,10 +369,10 @@ ASide:
           Dashes: one
         ReqIn:
           Or:
-            - Dashes: two
-              Difficulty: expert
-            - Dashes: one
-              Flag: poweroff:set
+          - Dashes: two
+            Difficulty: expert
+          - Dashes: one
+            Difficulty: perfect
   - Room: "c-00"
     Holes:
     - Side: Left
@@ -1899,7 +1899,10 @@ ASide:
       Idx: 0
       Kind: out
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect
     - Side: Down
       Idx: 0
       Kind: in
