@@ -691,15 +691,21 @@ ASide:
     Holes:
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
     - Side: Down
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
         Or:
         - Dashes: one
         - Dashes: zero
           Difficulty: expert
+      ReqIn:
+        Or:
+        - Dashes: one
+          Difficulty: master
+        - Dashes: two
+          Difficulty: master
     Tweaks:
     - Name: "spawn"
       Update:
@@ -919,13 +925,15 @@ ASide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
         Or:
           - Dashes: zero
             Flag: boxes:unset
           - Dashes: one
             Flag: towels:unset
+      ReqIn:
+        Dashes: zero
     Tweaks:
     - ID: 29
       Name: "exitBlock"
@@ -1373,11 +1381,11 @@ ASide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: in
+      Kind: inout
     - Side: Left
       Idx: 0
-      Kind: out
-      ReqOut:
+      Kind: inout
+      ReqBoth:
         Or:
         - Dashes: one
         - Dashes: zero
@@ -1788,12 +1796,17 @@ ASide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
         Or:
         - Dashes: one
         - Dashes: zero
           Difficulty: expert
+      ReqIn:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: master       
     - Side: Left
       Idx: 0
       Kind: inout
@@ -2655,12 +2668,17 @@ BSide:
       Kind: None
     - Side: Down
       Idx: 1
-      Kind: out
+      Kind: inout
       ReqOut:
-         Or:
-         - Dashes: one
-         - Dashes: zero
-           Difficulty: master
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: master
+      ReqIn:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: hard
     - Side: Down
       Idx: 2
       Kind: None
