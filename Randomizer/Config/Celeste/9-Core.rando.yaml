@@ -1441,15 +1441,21 @@ BSide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
         Or:
         - Dashes: one
           Difficulty: hard
         - Dashes: two
+      ReqIn:  
+        Or:
+        - Dashes: two
+          Difficulty: hard
+        - Dashes: one
+          Difficulty: expert
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
     Tweaks:
     - Name: "randomizer/ActivateSwitches"
       Update:
