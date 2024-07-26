@@ -2001,9 +2001,15 @@ BSide:
       Kind: inout
       ReqOut:
         Dashes: one
+      ReqIn:
+        Or:
+        - Dashes: two
+          Difficulty: perfect
+        - Dashes: one
+          Difficulty: perfect
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
     - Side: Down
       Idx: 0
       Kind: none
