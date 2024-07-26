@@ -647,15 +647,17 @@ ASide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
         Dashes: one
+      ReqIn:
+        Dashes: zero
     - Side: Left
       Idx: 0
       Kind: in
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
     - Side: Down
       Idx: 1
       Kind: none
@@ -1391,9 +1393,11 @@ ASide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
         Dashes: one
+      ReqIn: 
+        Dashes: zero
     - Side: Left
       Idx: 0
       Kind: inout
