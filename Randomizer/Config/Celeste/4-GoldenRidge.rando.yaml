@@ -267,6 +267,8 @@ ASide:
     - To: "Right"
       ReqOut:
         Dashes: one
+      ReqIn:
+        Dashes: zero
     Subrooms:
     - Room: "Right"
       Holes:
@@ -1355,6 +1357,9 @@ ASide:
       - To: "right"
         ReqOut:
           Dashes: zero
+        ReqIn:
+          Dashes: zero
+          Difficulty: Master
     Subrooms:
     - Room: "right"
       Holes:
@@ -1870,12 +1875,17 @@ BSide:
     Holes:
     - Side: Up
       Idx: 1
-      Kind: out
+      Kind: inout
       ReqOut:
         Or:
         - Dashes: one
         - Dashes: zero
           Difficulty: perfect # cornerslip roulette.
+      ReqIn:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: expert
     - Side: Down
       Idx: 0
       Kind: inout
