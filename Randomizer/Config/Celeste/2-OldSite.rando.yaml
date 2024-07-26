@@ -310,17 +310,19 @@ ASide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: out
+      Kind: inout
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
     InternalEdges:
     - Split: BottomToTop
-      ReqBoth:
+      ReqOut:
         Or:
           - Dashes: one
           - Dashes: zero
             Difficulty: master
+      ReqIn:
+        Dashes: zero
     Tweaks:
     - Name: "randomizer/ActivateSwitches"
       Update:
@@ -435,12 +437,15 @@ ASide:
           Dashes: one
       - Side: Down
         Idx: 1
-        Kind: out
+        Kind: inout
         ReqOut:
           Or:
           - Dashes: one
           - Dashes: zero
             Difficulty: hard
+        ReqIn:
+          Dashes: one
+          Difficulty: hard
     - Room: "outside"
       Holes:
       - Side: Up
@@ -1450,12 +1455,14 @@ BSide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
         Dashes: one
+      ReqIn:
+        Dashes: zero
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
     Tweaks:
     - Name: "spawn"
       Update:
@@ -1531,12 +1538,14 @@ BSide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
+        Dashes: one
+      ReqIn:
         Dashes: one
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
     Tweaks:
     - Name: "spawn"
       Update:
@@ -1636,9 +1645,14 @@ BSide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
         Dashes: one
+      ReqIn:
+        Or:
+          - Dashes: one
+            Difficulty: hard
+          - Dashes: two
     - Side: Left
       Idx: 0
       Kind: inout
