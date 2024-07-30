@@ -24,7 +24,7 @@
 
 Ensure your Celeste build is using FNA. Before you change it, make a backup of your orig folder. Delete the orig folder. Then you can open Steam and go to your library. Right click on Celeste and select 'Properties'. Under 'Betas' ensure that the 'Beta Participation' is set to 'opengl - opengl'.
 
-From there, you will need to reinstall Everest if you were previously on XNA. If it asks to remove residual builds, I would recommend doing so. You may need to add 'CelesteRandomzier/' to blacklist.txt to avoid conflicts.
+From there, you will need to reinstall Everest if you were previously on XNA. If it asks to remove residual builds, I would recommend doing so. You may need to add 'CelesteRandomzier/' to blacklist.txt to avoid conflicts. If you have not done so before, you will need to install legacyRef from Everest mod options menu.
 
 You will need to make two folders in the base directory. One named "dist" which will be where builds will be produced. The other name "packages" which will have a handful of references necessary for building.
 
