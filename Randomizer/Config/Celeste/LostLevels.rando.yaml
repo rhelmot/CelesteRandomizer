@@ -1912,10 +1912,10 @@ ASide:
       Update:
         Remove: true
     - Name: "spawn"
-      X: 56
+      X: 40
       Y: 712
       Update:
-        Default: true
+        X: 56
   - Room: "h-07"
     Holes:
     - Side: Left

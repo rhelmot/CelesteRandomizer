@@ -1566,10 +1566,10 @@ BSide:
       Update:
         Width: 16
     - Name: "spawn"
-      X: 20
+      X: 40
       Y: 176
       Update:
-        Default: true
+        X: 24
   - Room: "07"
     Holes:
     - Side: Up
