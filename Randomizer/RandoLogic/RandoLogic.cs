@@ -680,13 +680,15 @@ namespace Celeste.Mod.Randomizer
                             {
                                 y++;
                             }
-                            var safe = !spinners.Where(e =>
+                            var BehindEnt = lvl.Entities.Where(e =>
                             {
-                                var entWidth = e.Name != "spinner" ? e.Width : 8;
-                                var entHeight = e.Name != "spinner" && e.Name != "spikesUp" ? e.Height : 0;
-                                return e.Position.X / 8 + entWidth / 8 >= x && e.Position.X / 8 - 1 <= x && e.Position.Y / 8 + entHeight / 8 == y;
-                            }).Any();
+                                // entities that don't have these fields default to 0,
+                                // but to be certain the player can see the phone, check one tile over
+                                var entWidth = e.Width + 8;
+                                var entHeight = e.Height + 8;
 
+                                return e.Position.X / 8 + entWidth / 8 >= x && e.Position.X / 8 - 1 <= x && e.Position.Y / 8 + entHeight / 8 >= y && e.Position.Y / 8 - 1 <= y;
+                            }).Any();
                             var InsideRoof = lvl.FgDecals.Where(fg =>
                             {
                                 if (fg.Scale.X < 0)
@@ -695,7 +697,7 @@ namespace Celeste.Mod.Randomizer
                                 }
                                 return (fg.Position.X) / 8 <= x && (fg.Position.X + 8 * fg.Scale.X) / 8 >= x && (fg.Position.Y + 4) / 8 == y;
                             }).Any();
-                            if (at(x + 1, y - 1) == '0' && at(x + 1, y) != '0' &&  safe && !InsideRoof)
+                            if (at(x + 1, y - 1) == '0' && at(x + 1, y) != '0' && !BehindEnt && !InsideRoof)
                             {
                                 found = true;
                             }
