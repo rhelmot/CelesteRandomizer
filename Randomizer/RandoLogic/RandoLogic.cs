@@ -659,9 +659,7 @@ namespace Celeste.Mod.Randomizer
                 var lines = new List<string>(regex.Split(lvl.Solids));
                 char at(int xx, int yy) => yy >= lines.Count ? '0' : xx >= lines[yy].Length ? '0' : lines[yy][xx];
                 var height = lines.Count;
-                var width = lines.Select(j => j.Length).Max();
-                IEnumerable<EntityData> spinners = lvl.Entities.Where(e => e.Name == "spinner" || e.Name == "spikesUp" ||
-                                                                           e.Name == "greenBlocks" || e.Name == "redBlocks" || e.Name == "yellowBlocks");
+                var width = lines.Select(j => j.Length).Max();                                                                           e.Name == "greenBlocks" || e.Name == "redBlocks" || e.Name == "yellowBlocks");
                 var found = false;
                 int x = 0, y = 0;
                 for (int i = 0; i < 20 && !found; i++)
