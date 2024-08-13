@@ -139,7 +139,11 @@ namespace Celeste.Mod.Randomizer
             {
                 var caps = this.Logic.Caps.WithoutFlags();
                 var closure = LinkedNodeSet.Closure(this.Node, caps, null, true);
-                var available = closure.UnlinkedEdges(u => !this.TriedEdges.Contains(u.Static) && (u.Static.HoleTarget == null || (!this.ForceWarp && this.Logic.Map.HoleFree(this.Node.Room, u.Static.HoleTarget))));
+                var available = closure.UnlinkedEdges(u => {
+                    // ensure first hole is up or right
+                    var flag = this.Logic.CompletedTasks.Count != 1 || (u.Static.HoleTarget.Side != ScreenDirection.Down && u.Static.HoleTarget.Side != ScreenDirection.Left);
+                    return !this.TriedEdges.Contains(u.Static) && (u.Static.HoleTarget == null || (!this.ForceWarp && this.Logic.Map.HoleFree(this.Node.Room, u.Static.HoleTarget) && flag));
+                });
                 if (available.Count == 0)
                 {
                     Logger.Log("randomizer", $"Failure: No edges out of {Node.Room.Static.Name}:{Node.Static.Name}");
