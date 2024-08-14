@@ -474,7 +474,7 @@ namespace Celeste.Mod.Randomizer
                 }
             }
 
-            void beamHole(Hole hole)
+            void beamHole(Hole hole, String color)
             {
                 Vector2 center;
                 int rotation;
@@ -502,13 +502,14 @@ namespace Celeste.Mod.Randomizer
                 var e = new EntityData
                 {
                     ID = ++maxID,
-                    Name = "lightbeam",
+                    Name = "randomizer/CustomLightBeam",
                     Width = hole.Size * 8,
                     Height = 24,
                     Position = center,
                     Level = result,
                     Values = new Dictionary<string, object> {
                         {"rotation", (object)rotation},
+                        {"color", color },
                     }
                 };
                 result.Entities.Add(e);
@@ -597,7 +598,31 @@ namespace Celeste.Mod.Randomizer
                         (hole.Kind == HoleKind.Out || hole.Kind == HoleKind.InOut) &&
                         (hole2.Kind == HoleKind.In || hole2.Kind == HoleKind.Unknown || hole2.Kind == HoleKind.InOut))
                     {
-                        beamHole(hole);
+                        var illumType = RandoModule.Instance.Settings.Illuimation;
+                        var color = "CCFFFF";
+                        switch (RandoModule.Instance.Settings.Illuimation)
+                        {
+                            case IlluminationType.Default:
+                                break;
+                            case IlluminationType.Collectibles:
+                                color = hole.Objective == HoleObjective.Key ? "E1D417" :
+                                        hole.Objective == HoleObjective.Strawberry ? "DE2A2A" :
+                                        hole.Objective == HoleObjective.Gem ? "9EE9FF" :
+                                        hole.Objective == HoleObjective.Flag ? "09AE09" :
+                                        "CCFFFF";
+                                if (RandoModule.Instance.Settings.RepeatRooms == true) color = "CCFFFF"; // current method doesn't allow for it :(
+                                break;
+                            case IlluminationType.Custom:
+                                color = RandoModule.Instance.Settings.IlluminationColor;
+                                break;
+                            case IlluminationType.Random:
+                                color = random.Next(0x808080,0x1000000).ToString("X");
+                                break;
+                            default:
+                                break;
+                        }
+                            
+                        beamHole(hole,color);
                     }
                 }
 

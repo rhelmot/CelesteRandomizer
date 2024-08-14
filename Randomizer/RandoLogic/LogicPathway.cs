@@ -520,6 +520,7 @@ namespace Celeste.Mod.Randomizer
                                                 var cols = n.Collectables.Where(c => !c.MustFly).ToList();
                                                 cols.Shuffle(this.Logic.Random);
                                                 this.AddReceipt(PlaceCollectableReceipt.Do(receipt.NewRoom.Nodes[n.Name], cols[this.Logic.Random.Next(cols.Count)], LinkedCollectable.Key, false, keyReq.KeyholeID, this.OriginalNode.Room));
+                                                startEdge.Static.HoleTarget.Objective = HoleObjective.Key;
                                                 return true;
                                             }
                                         }
@@ -551,6 +552,7 @@ namespace Celeste.Mod.Randomizer
                                             if (receipt != null)
                                             {
                                                 this.AddReceipt(receipt);
+                                                startEdge.Static.HoleTarget.Objective = HoleObjective.Flag;
                                                 // TODO: check for reverse traversability back to orig node
                                                 return true;
                                             }
@@ -580,7 +582,7 @@ namespace Celeste.Mod.Randomizer
                         {
                             continue;
                         }
-
+                        outEdge.Static.HoleTarget.Objective = this.Req is KeyRequirement ? HoleObjective.Key: HoleObjective.Flag;
                         this.AddReceipt(mapped);
                         this.AddNextTask(new TaskPathwaySatisfyRequirement(this.Logic, mapped.EntryNode, this.Req, this.State, this.OriginalNode, true, this.Tries));
                         return true;
@@ -664,6 +666,7 @@ namespace Celeste.Mod.Randomizer
                         var pickedSpot = pickedSpotTup.Item1;
                         var berry = pickedSpot.Static.MustFly ? LinkedCollectable.WingedStrawberry : defaultBerry;
                         pickedSpot.Node.Collectables[pickedSpot.Static] = Tuple.Create(berry, pickedSpotTup.Item2);
+                        edge.Static.HoleTarget.Objective = HoleObjective.Strawberry;
                         break;
                     }
                 }

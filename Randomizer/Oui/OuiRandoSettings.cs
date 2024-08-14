@@ -9,6 +9,7 @@ namespace Celeste.Mod.Randomizer
     {
         private float JournalEase;
         private bool Entering = false;
+        private HashSet<string> ValidChars = new HashSet<string> { "A","B","C","D","E","F","1","2","3","4","5","6","7","8","9","0"};
 
         protected override bool IsDeeperThan(Oui other)
         {
@@ -213,15 +214,58 @@ namespace Celeste.Mod.Randomizer
             });
             pages[3].Add(variantstoggle);
 
+            var illumbutton = new TextMenu.Button(Dialog.Clean("MODOPTIONS_RANDOMIZER_COLOR") + ": #" + Settings.IlluminationColor);
+            illumbutton.Pressed(() =>
+            {
+                Audio.Play(SFX.ui_main_savefile_rename_start);
+                var prevColor = Settings.IlluminationColor;
+                menu.SceneAs<Overworld>().Goto<UI.OuiTextEntry>().Init<OuiRandoSettings>(
+                    Settings.IlluminationColor,
+                    (v => {
+                        var valid = true;
+                        foreach (char c in v)
+                        {
+                            if (!ValidChars.Contains(("" + c).ToUpperInvariant()))
+                            {
+                                valid = false;
+                                break;
+                            }
+                        }
+                        Settings.IlluminationColor = valid ? v : prevColor;
+                    }),
+                    6
+                );
+                illumbutton.Label = Dialog.Clean("MODOPTIONS_RANDOMIZER_COLOR") + ": #" + Settings.IlluminationColor;
+            });
+            illumbutton.Visible = Settings.Lights != ShineLights.Off && Settings.Illuimation == IlluminationType.Custom;
+
+
+            var illumstyletoggle = new TextMenu.Slider(Dialog.Clean("MODOPTIONS_RANDOMIZER_ILLUMINATION"), (i) =>
+            {
+                return Dialog.Clean("MODOPTIONS_RANDOMIZER_ILLUMINATION_" + Enum.GetNames(typeof(IlluminationType))[i].ToUpperInvariant());
+            }, 0, (int)IlluminationType.Last - 1, (int)Settings.Illuimation).Change((i) =>
+            {
+
+                Settings.Illuimation = (IlluminationType)i;
+                illumbutton.Visible = Settings.Lights != ShineLights.Off && Settings.Illuimation == IlluminationType.Custom;
+            });
+            illumstyletoggle.Visible = Settings.Lights != ShineLights.Off;
+
             var shinetoggle = new TextMenu.Slider(Dialog.Clean("MODOPTIONS_RANDOMIZER_SHINE"), (i) =>
             {
                 return Dialog.Clean("MODOPTIONS_RANDOMIZER_SHINE_" + Enum.GetNames(typeof(ShineLights))[i].ToUpperInvariant());
             }, 0, (int)ShineLights.Last - 1, (int)Settings.Lights).Change((i) =>
             {
                 Settings.Lights = (ShineLights)i;
+                illumstyletoggle.Visible = Settings.Lights != ShineLights.Off;
                 updateHashText();
             });
+
+            
+            pages[4].Add(illumbutton);
             pages[4].Add(shinetoggle);
+            pages[4].Add(illumstyletoggle);
+            
 
             var darktoggle = new TextMenu.Slider(Dialog.Clean("MODOPTIONS_RANDOMIZER_DARK"), (i) =>
             {
@@ -298,6 +342,8 @@ namespace Celeste.Mod.Randomizer
                 }
                 endlesslivespicker.Visible &= Settings.Algorithm == LogicType.Endless;
                 seedbutton.Visible &= Settings.SeedType == SeedType.Custom;
+                illumbutton.Visible &= Settings.Lights != ShineLights.Off && Settings.Illuimation == IlluminationType.Custom;
+                illumstyletoggle.Visible &= Settings.Lights != ShineLights.Off;
 
                 foreach (var kv in rulestoggles)
                 {
