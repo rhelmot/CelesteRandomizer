@@ -344,7 +344,10 @@ namespace Celeste.Mod.Randomizer
 
                 this.AddReceipt(receipt);
                 this.TriedRooms.Add(receipt.NewRoom.Static);
-                receipt.Edge.StaticB.HoleTarget.Objective = HoleObjective.Progression;
+                if (receipt.Edge.StaticB.HoleTarget != null)
+                {
+                    receipt.Edge.StaticB.HoleTarget.Objective = HoleObjective.Progression;
+                }
                 if (!this.IsEnd || this.FakeEnd)
                 {
                     var newNode = receipt.Edge.OtherNode(this.Edge.Node);
