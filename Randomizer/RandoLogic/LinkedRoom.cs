@@ -593,33 +593,29 @@ namespace Celeste.Mod.Randomizer
                     }
                     // Add beams
                     var shine = RandoModule.Instance.Settings.Lights;
-                    if ((shine == ShineLights.On || (shine == ShineLights.Hubs && this.Static.Hub)) &&
+                    var illumType = RandoModule.Instance.Settings.Illuimation;
+                    if (((shine == ShineLights.On || (shine == ShineLights.Hubs && this.Static.Hub)) &&
                         hole != null && hole2 != null &&
                         (hole.Kind == HoleKind.Out || hole.Kind == HoleKind.InOut) &&
-                        (hole2.Kind == HoleKind.In || hole2.Kind == HoleKind.Unknown || hole2.Kind == HoleKind.InOut))
+                        (hole2.Kind == HoleKind.In || hole2.Kind == HoleKind.Unknown || hole2.Kind == HoleKind.InOut)) ||
+                        (shine != ShineLights.Off && illumType == IlluminationType.Collectibles && hole != null && hole.Objective != HoleObjective.Progression ))
                     {
-                        var illumType = RandoModule.Instance.Settings.Illuimation;
                         var color = "CCFFFF";
-                        switch (RandoModule.Instance.Settings.Illuimation)
+                        // current method doesn't allow for endless and collectables on :(
+                        if (illumType == IlluminationType.Collectibles && RandoModule.Instance.Settings.RepeatRooms == false)
                         {
-                            case IlluminationType.Default:
-                                break;
-                            case IlluminationType.Collectibles:
-                                color = hole.Objective == HoleObjective.Key ? "E1D417" :
+
+                            color = hole.Objective == HoleObjective.Key ? "E1D417" :
                                         hole.Objective == HoleObjective.Strawberry ? "DE2A2A" :
                                         hole.Objective == HoleObjective.Gem ? "9EE9FF" :
                                         hole.Objective == HoleObjective.Flag ? "09AE09" :
                                         "CCFFFF";
-                                if (RandoModule.Instance.Settings.RepeatRooms == true) color = "CCFFFF"; // current method doesn't allow for it :(
-                                break;
-                            case IlluminationType.Custom:
-                                color = RandoModule.Instance.Settings.IlluminationColor;
-                                break;
-                            case IlluminationType.Random:
-                                color = random.Next(0x808080,0x1000000).ToString("X");
-                                break;
-                            default:
-                                break;
+                        } else if (illumType == IlluminationType.Custom)
+                        {
+                            color = RandoModule.Instance.Settings.IlluminationColor;
+                        } else if (illumType == IlluminationType.Random)
+                        {
+                            color = random.Next(0x808080, 0x1000000).ToString("X");
                         }
                             
                         beamHole(hole,color);
