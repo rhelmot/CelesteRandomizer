@@ -294,7 +294,10 @@ ASide:
     InternalEdges:
     - To: Right
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect
       ReqIn:
         Or:
         - Dashes: two
