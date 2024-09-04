@@ -296,7 +296,10 @@ ASide:
       ReqOut:
         Dashes: zero
       ReqIn:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect
   - Room: "a-11"
     Holes:
     - Side: Right
@@ -924,7 +927,10 @@ ASide:
         Remove: true
   - Room: "b-15"
     ReqEnd:
-      Dashes: one
+      Or:
+      - Dashes: one
+      - Dashes: zero
+        Difficulty: perfect
     Holes:
     - Side: Left
       Idx: 0
