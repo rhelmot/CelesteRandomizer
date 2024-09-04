@@ -4002,15 +4002,20 @@ BSide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
+      Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: inout
+    InternalEdges:
+    - Split: LeftToRight
       ReqOut:
         Or:
         - Dashes: two
         - Dashes: one
           Difficulty: hard
-    - Side: Left
-      Idx: 0
-      Kind: inout
+      ReqIn:
+        Dashes: two
+        Difficulty: expert
     Tweaks:
     - Name: "randomizer/ActivateSwitches"
       Update:
