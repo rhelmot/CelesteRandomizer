@@ -1387,6 +1387,8 @@ ASide:
           - Dashes: one
             Difficulty: hard
           - Dashes: two
+          - Dashes: zero
+            Difficulty: perfect
       ReqIn:
         Dashes: zero
   - Room: "d-02"
@@ -1395,7 +1397,10 @@ ASide:
       Idx: 0
       Kind: inout
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect
       ReqIn: 
         Dashes: zero
     - Side: Left
@@ -3319,7 +3324,12 @@ ASide:
         Dashes: one
     InternalEdges:
     - To: "left" 
-      ReqBoth:
+      ReqOut:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect
+      ReqIn:
         Dashes: one
     Subrooms:
     - Room: "left"
@@ -3533,7 +3543,10 @@ BSide:
       Kind: out
       Launch: 19
       ReqOut:
-        Dashes: two
+        Or:
+        - Dashes: two
+        - Dashes: one 
+          Difficulty: perfect
     - Side: Left
       Idx: 1
       Kind: inout
