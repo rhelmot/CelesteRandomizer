@@ -73,8 +73,11 @@ ASide:
     InternalEdges:
     - Collectable: 0
       ReqBoth:
-        Dashes: one
-        Difficulty: hard
+        Or:
+        - Dashes: one
+          Difficulty: hard
+        - Dashes: zero
+          Difficulty: perfect # aRTiA viable
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:
@@ -1474,8 +1477,11 @@ ASide:
         Dashes: one
         Difficulty: expert
       ReqIn:
-        Dashes: two
-        Difficulty: master
+        Or:
+        - Dashes: two
+          Difficulty: master
+        - Dashes: one
+          Difficulty: perfect
     - To: "right"
       ReqBoth:
         Dashes: one
