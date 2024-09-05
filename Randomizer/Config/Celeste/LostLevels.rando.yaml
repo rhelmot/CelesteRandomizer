@@ -1897,7 +1897,7 @@ ASide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
         Or:
         - Dashes: one
@@ -1905,7 +1905,7 @@ ASide:
           Difficulty: perfect
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
     Tweaks:
     - ID: 1523
       Name: jumpThru
@@ -1916,6 +1916,11 @@ ASide:
       Y: 712
       Update:
         X: 56
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 216
+        Y: 40
   - Room: "h-07"
     Holes:
     - Side: Left
