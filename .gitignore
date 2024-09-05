@@ -246,3 +246,4 @@ dist
 edited_maps
 .vscode
 promo
+!**/packages/lib-stripped/

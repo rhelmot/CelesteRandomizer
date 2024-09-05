@@ -35,49 +35,45 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Celeste">
-      <HintPath>..\packages\Celeste.exe</HintPath>
+      <HintPath>..\packages\lib-stripped\Celeste.exe</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="FNA">
-      <HintPath>..\packages\FNA.dll</HintPath>
+      <HintPath>..\packages\lib-stripped\FNA.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="MMHOOK_Celeste">
-      <HintPath>..\packages\MMHOOK_Celeste.dll</HintPath>
+      <HintPath>..\packages\lib-stripped\MMHOOK_Celeste.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Mono.Cecil">
-      <HintPath>..\packages\Mono.Cecil.dll</HintPath>
+      <HintPath>..\packages\lib-stripped\Mono.Cecil.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Mono.Cecil.Mdb">
-      <HintPath>..\packages\Mono.Cecil.Mdb.dll</HintPath>
+      <HintPath>..\packages\lib-stripped\Mono.Cecil.Mdb.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Mono.Cecil.Pdb">
-      <HintPath>..\packages\Mono.Cecil.Pdb.dll</HintPath>
+      <HintPath>..\packages\lib-stripped\Mono.Cecil.Pdb.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Mono.Cecil.Rocks">
-      <HintPath>..\packages\Mono.Cecil.Rocks.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Steamworks.NET">
-      <HintPath>..\packages\Steamworks.NET.dll</HintPath>
+      <HintPath>..\packages\lib-stripped\Mono.Cecil.Rocks.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="YamlDotNet">
-      <HintPath>..\packages\YamlDotNet.dll</HintPath>
+      <HintPath>..\packages\lib-stripped\YamlDotNet.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="MonoMod.Utils">
-      <HintPath>..\packages\MonoMod.Utils.dll</HintPath>
+      <HintPath>..\packages\lib-stripped\MonoMod.Utils.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="MonoMod.RuntimeDetour">
-      <HintPath>..\packages\MonoMod.RuntimeDetour.dll</HintPath>
+      <HintPath>..\packages\lib-stripped\MonoMod.RuntimeDetour.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
