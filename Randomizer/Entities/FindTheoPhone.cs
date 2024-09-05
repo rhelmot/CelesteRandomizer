@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Runtime.InteropServices;
 using Microsoft.Xna.Framework;
 using Monocle;
 
@@ -28,12 +29,14 @@ namespace Celeste.Mod.Randomizer.Entities
         private Player Player;
         private float TargetX;
         private FindTheoPhone Phone;
+        public int State; // 0 for not run, 1 for run but not end, 2 for finished
 
         public CS_FindTheoPhone(Player player, FindTheoPhone phone)
         {
             this.Player = player;
             this.TargetX = phone.X + 8;
             this.Phone = phone;
+            this.State = 0;
         }
 
         public override void OnBegin(Level level) => this.Add(new Coroutine(this.Routine()));
@@ -41,11 +44,13 @@ namespace Celeste.Mod.Randomizer.Entities
         private bool SavedInvincible;
         private IEnumerator Routine()
         {
+            this.State = 1;
             this.Player.Speed = Vector2.Zero;
             this.SavedInvincible = SaveData.Instance.Assists.Invincible;
             SaveData.Instance.Assists.Invincible = true;
             this.Player.StateMachine.State = 11;
             this.Player.Facing = (Facings)Math.Sign(this.TargetX - this.Player.X);
+            AddTag(Tags.Persistent);
             yield return 0.5f;
             var point = this.Level.Camera.CameraToScreen(this.Player.Position);
             point.X = Math.Min(Math.Max(point.X, this.Level.Camera.Viewport.Width / 4f), this.Level.Camera.Viewport.Width * 3f / 4f);
@@ -63,9 +68,11 @@ namespace Celeste.Mod.Randomizer.Entities
             };
             reseter.Tag |= Tags.Global;
             Engine.Scene.Add(reseter);
+            RemoveTag(Tags.Persistent);
             this.Player.StateMachine.State = 0;
             this.Level.Session.DoNotLoad.Add(this.Phone.ID);
             this.Phone.RemoveSelf();
+            this.State = 2;
         }
 
         private IEnumerator ResetInvincible()
@@ -91,6 +98,11 @@ namespace Celeste.Mod.Randomizer.Entities
             yield return 0.6f;
             this.Player.Sprite.Play("idle");
             yield return 0.2f;
+        }
+
+        public int GetState()
+        {
+            return this.State;
         }
     }
 }
