@@ -440,7 +440,10 @@ ASide:
       Idx: 0
       Kind: inout
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect
     - Side: Left
       Idx: 0
       Kind: inout
