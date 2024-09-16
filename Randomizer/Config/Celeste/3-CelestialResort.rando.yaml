@@ -73,8 +73,11 @@ ASide:
     InternalEdges:
     - Collectable: 0
       ReqBoth:
-        Dashes: one
-        Difficulty: hard
+        Or:
+        - Dashes: one
+          Difficulty: hard
+        - Dashes: zero
+          Difficulty: perfect # aRTiA viable
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:
@@ -691,15 +694,36 @@ ASide:
     Holes:
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
     - Side: Down
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
         Or:
         - Dashes: one
         - Dashes: zero
           Difficulty: expert
+      ReqIn:
+        Or:
+        - Dashes: one
+          Difficulty: master
+        - Dashes: two
+          Difficulty: master
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 304
+        Y: 152
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 280
+        Y: 120
+        Width: 32
+        Height: 64
+        Values:
+            type: "touchswitch"
   - Room: "08-b" # key loop 4
     Holes:
     - Side: Up
@@ -904,18 +928,29 @@ ASide:
       Kind: inout
     - Side: Down
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
         Or:
           - Dashes: zero
             Flag: boxes:unset
           - Dashes: one
             Flag: towels:unset
+      ReqIn:
+        Dashes: zero
     Tweaks:
     - ID: 29
       Name: "exitBlock"
       Update:
         Remove: true
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 72
+        Y: 160
+        Width: 32
+        Height: 24
+        Values:
+            type: "touchswitch"
   - Room: "11-y"  # chest 3
     Holes:
     - Side: Up
@@ -1349,11 +1384,11 @@ ASide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: in
+      Kind: inout
     - Side: Left
       Idx: 0
-      Kind: out
-      ReqOut:
+      Kind: inout
+      ReqBoth:
         Or:
         - Dashes: one
         - Dashes: zero
@@ -1371,6 +1406,15 @@ ASide:
         Add: true
         X: 8
         Y: 32
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 0
+        Y: 8
+        Width: 16
+        Height: 24
+        Values:
+            type: "touchswitch"
   - Room: "06-d"  # shaft 3
     Holes:
     - Side: Right
@@ -1433,8 +1477,11 @@ ASide:
         Dashes: one
         Difficulty: expert
       ReqIn:
-        Dashes: two
-        Difficulty: master
+        Or:
+        - Dashes: two
+          Difficulty: master
+        - Dashes: one
+          Difficulty: perfect
     - To: "right"
       ReqBoth:
         Dashes: one
@@ -1755,12 +1802,17 @@ ASide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
         Or:
         - Dashes: one
         - Dashes: zero
           Difficulty: expert
+      ReqIn:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: master       
     - Side: Left
       Idx: 0
       Kind: inout
@@ -1776,6 +1828,40 @@ ASide:
     - ID: 2             # remove invisible barrier
       Update:
         Remove: true
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 960
+        Y: 160
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 936
+        Y: 136
+        Width: 40
+        Height: 24
+        Values:
+            type: "touchswitch"
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 936
+        Y: 136
+        Width: 40
+        Height: 24
+        Values:
+          cameraX: -1.2
+          cameraY: 0
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 0
+        Y: 0
+        Width: 64
+        Height: 160
+        Values:
+          cameraX: 1.2
+          cameraY: 0
   - Room: "roof04"  # interior
     Holes:
     - Side: Right
@@ -2588,12 +2674,17 @@ BSide:
       Kind: None
     - Side: Down
       Idx: 1
-      Kind: out
+      Kind: inout
       ReqOut:
-         Or:
-         - Dashes: one
-         - Dashes: zero
-           Difficulty: master
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: master
+      ReqIn:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: hard
     - Side: Down
       Idx: 2
       Kind: None
@@ -2606,6 +2697,15 @@ BSide:
         Add: true
         X: 448
         Y: 176
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 424
+        Y: 144
+        Width: 32
+        Height: 40
+        Values:
+            type: "touchswitch"
   - Room: "end"
     ReqEnd:
       Dashes: one
