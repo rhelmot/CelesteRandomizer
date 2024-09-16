@@ -186,9 +186,16 @@ namespace Celeste.Mod.Randomizer
                 {
                     this.Logic.Map.RemoveRoom(room);
                 }
+                if (this.Edge.StaticA.HoleTarget != null)
+                {
+                    this.Edge.StaticA.HoleTarget.Objective = HoleObjective.Progression;
+                }
+                if (this.Edge.StaticB.HoleTarget != null)
+                {
+                    this.Edge.StaticB.HoleTarget.Objective = HoleObjective.Progression;
+                }
                 this.Edge.NodeA.Edges.Remove(this.Edge);
                 this.Edge.NodeB.Edges.Remove(this.Edge);
-
                 if (!this.Logic.Settings.RepeatRooms)
                 {
                     this.Logic.RemainingRooms.Add(this.NewRoom.Static);

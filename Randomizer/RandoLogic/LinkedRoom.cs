@@ -474,7 +474,7 @@ namespace Celeste.Mod.Randomizer
                 }
             }
 
-            void beamHole(Hole hole)
+            void beamHole(Hole hole, String color)
             {
                 Vector2 center;
                 int rotation;
@@ -502,13 +502,14 @@ namespace Celeste.Mod.Randomizer
                 var e = new EntityData
                 {
                     ID = ++maxID,
-                    Name = "lightbeam",
+                    Name = "randomizer/CustomLightBeam",
                     Width = hole.Size * 8,
                     Height = 24,
                     Position = center,
                     Level = result,
                     Values = new Dictionary<string, object> {
                         {"rotation", (object)rotation},
+                        {"color", color },
                     }
                 };
                 result.Entities.Add(e);
@@ -592,12 +593,32 @@ namespace Celeste.Mod.Randomizer
                     }
                     // Add beams
                     var shine = RandoModule.Instance.Settings.Lights;
-                    if ((shine == ShineLights.On || (shine == ShineLights.Hubs && this.Static.Hub)) &&
+                    var illumType = RandoModule.Instance.Settings.Illuimation;
+                    if (((shine == ShineLights.On || (shine == ShineLights.Hubs && this.Static.Hub)) &&
                         hole != null && hole2 != null &&
                         (hole.Kind == HoleKind.Out || hole.Kind == HoleKind.InOut) &&
-                        (hole2.Kind == HoleKind.In || hole2.Kind == HoleKind.Unknown || hole2.Kind == HoleKind.InOut))
+                        (hole2.Kind == HoleKind.In || hole2.Kind == HoleKind.Unknown || hole2.Kind == HoleKind.InOut)) ||
+                        (shine != ShineLights.Off && illumType == IlluminationType.Collectibles && hole != null && hole.Objective != HoleObjective.Progression ))
                     {
-                        beamHole(hole);
+                        var color = "CCFFFF";
+                        // current method doesn't allow for endless and collectables on :(
+                        if (illumType == IlluminationType.Collectibles && RandoModule.Instance.Settings.RepeatRooms == false)
+                        {
+
+                            color = hole.Objective == HoleObjective.Key ? "E1D417" :
+                                        hole.Objective == HoleObjective.Strawberry ? "DE2A2A" :
+                                        hole.Objective == HoleObjective.Gem ? "9EE9FF" :
+                                        hole.Objective == HoleObjective.Flag ? "09AE09" :
+                                        "CCFFFF";
+                        } else if (illumType == IlluminationType.Custom)
+                        {
+                            color = RandoModule.Instance.Settings.IlluminationColor;
+                        } else if (illumType == IlluminationType.Random)
+                        {
+                            color = random.Next(0x808080, 0x1000000).ToString("X");
+                        }
+                            
+                        beamHole(hole,color);
                     }
                 }
 

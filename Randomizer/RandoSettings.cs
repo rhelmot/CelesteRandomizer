@@ -81,6 +81,15 @@ namespace Celeste.Mod.Randomizer
         Last,
     }
 
+    public enum IlluminationType
+    {
+        Default,
+        Collectibles,
+        Custom,
+        Random,
+        Last,
+    }
+
     public class RandoSettings
     {
         public SeedType SeedType;
@@ -115,6 +124,8 @@ namespace Celeste.Mod.Randomizer
         public ShineLights Lights = ShineLights.Hubs;
         public Darkness Darkness = Darkness.Vanilla;
         public StrawberryDensity Strawberries = StrawberryDensity.Low;
+        public IlluminationType Illuimation = IlluminationType.Default;
+        public string IlluminationColor = "CCFFFF";
         [YamlIgnore]
         public HashSet<AreaKeyNotStupid> IncludedMaps = new HashSet<AreaKeyNotStupid>();
         [YamlIgnore]
@@ -178,6 +189,7 @@ namespace Celeste.Mod.Randomizer
                 this.Darkness = r.Darkness;
                 this.Strawberries = r.Strawberries;
                 this.EndlessLives = r.Lives;
+                this.Illuimation = r.Illumination;
             }
         }
 

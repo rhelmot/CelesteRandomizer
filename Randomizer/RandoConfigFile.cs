@@ -506,6 +506,7 @@ namespace Celeste.Mod.Randomizer
         public Difficulty Difficulty = Difficulty.Normal;
         public DifficultyEagerness DifficultyEagerness = DifficultyEagerness.Medium;
         public StrawberryDensity Strawberries = StrawberryDensity.None;
+        public IlluminationType Illumination = IlluminationType.Default;
         public int Lives = 0;
     }
 

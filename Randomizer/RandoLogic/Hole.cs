@@ -8,6 +8,11 @@ namespace Celeste.Mod.Randomizer
         None, In, Out, InOut, Unknown
     }
 
+    public enum HoleObjective
+    {
+        Progression, Strawberry, Key, Gem, Flag,  
+    }
+
     public static class HoleKindMethods
     {
         public static HoleKind FromString(String str)
@@ -30,10 +35,33 @@ namespace Celeste.Mod.Randomizer
         }
     }
 
+    public static class HoleObjectiveMethoids
+    {
+        public static HoleObjective FromString(String str)
+        {
+            switch (str.ToLower())
+            {
+                case "progression":
+                    return HoleObjective.Progression;
+                case "strawberry":
+                    return HoleObjective.Strawberry;
+                case "key":
+                    return HoleObjective.Key;
+                case "gem":
+                    return HoleObjective.Gem;
+                case "flag":
+                    return HoleObjective.Flag;
+                default:
+                    throw new Exception("Bad hole objective " + str);
+            }
+        }
+    }
+
     public class Hole
     {
         public ScreenDirection Side;
         public HoleKind Kind = HoleKind.Unknown;
+        public HoleObjective Objective = HoleObjective.Progression;
         public int LowBound;
         public int HighBound;
         public bool HighOpen;

@@ -348,6 +348,15 @@ namespace Celeste.Mod.Randomizer
 
                 this.AddReceipt(receipt);
                 this.TriedRooms.Add(receipt.NewRoom.Static);
+
+                if (receipt.Edge.StaticA.HoleTarget != null)
+                {
+                    receipt.Edge.StaticA.HoleTarget.Objective = HoleObjective.Progression;
+                }
+                if (receipt.Edge.StaticB.HoleTarget != null)
+                {
+                    receipt.Edge.StaticB.HoleTarget.Objective = HoleObjective.Progression;
+                }
                 if (!this.IsEnd || this.FakeEnd)
                 {
                     var newNode = receipt.Edge.OtherNode(this.Edge.Node);
@@ -524,6 +533,8 @@ namespace Celeste.Mod.Randomizer
                                                 var cols = n.Collectables.Where(c => !c.MustFly).ToList();
                                                 cols.Shuffle(this.Logic.Random);
                                                 this.AddReceipt(PlaceCollectableReceipt.Do(receipt.NewRoom.Nodes[n.Name], cols[this.Logic.Random.Next(cols.Count)], LinkedCollectable.Key, false, keyReq.KeyholeID, this.OriginalNode.Room));
+                                                startEdge.Static.HoleTarget.Objective = HoleObjective.Key;
+                                                Logger.Log("Randomizer", $"Adding Objective: Key to {startEdge.ToString()}");
                                                 return true;
                                             }
                                         }
@@ -555,6 +566,8 @@ namespace Celeste.Mod.Randomizer
                                             if (receipt != null)
                                             {
                                                 this.AddReceipt(receipt);
+                                                startEdge.Static.HoleTarget.Objective = HoleObjective.Flag;
+                                                Logger.Log("Randomizer", $"Adding Objective: Flag to {startEdge.ToString()}");
                                                 // TODO: check for reverse traversability back to orig node
                                                 return true;
                                             }
@@ -584,7 +597,8 @@ namespace Celeste.Mod.Randomizer
                         {
                             continue;
                         }
-
+                        outEdge.Static.HoleTarget.Objective = this.Req is KeyRequirement ? HoleObjective.Key: HoleObjective.Flag;
+                        Logger.Log("Randomizer", $"Adding Objective: {this.Req} to {outEdge.ToString()}");
                         this.AddReceipt(mapped);
                         this.AddNextTask(new TaskPathwaySatisfyRequirement(this.Logic, mapped.EntryNode, this.Req, this.State, this.OriginalNode, true, this.Tries));
                         return true;
@@ -668,6 +682,8 @@ namespace Celeste.Mod.Randomizer
                         var pickedSpot = pickedSpotTup.Item1;
                         var berry = pickedSpot.Static.MustFly ? LinkedCollectable.WingedStrawberry : defaultBerry;
                         pickedSpot.Node.Collectables[pickedSpot.Static] = Tuple.Create(berry, pickedSpotTup.Item2);
+                        edge.Static.HoleTarget.Objective = HoleObjective.Strawberry;
+                        Logger.Log("Randomizer", $"Adding Objective: Strawberry to {edge.ToString()}");
                         break;
                     }
                 }
