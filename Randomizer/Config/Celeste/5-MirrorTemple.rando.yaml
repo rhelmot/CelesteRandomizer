@@ -41,7 +41,10 @@ ASide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
+      Kind: inout
+      ReqIn:
+        Dashes: two
+        Difficulty: hard
     - Side: Left
       Idx: 0
       Kind: inout
@@ -720,10 +723,17 @@ ASide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
         Dashes: one
         Difficulty: hard
+      ReqIn:
+        Or:
+        - Dashes: zero
+          Difficulty: hard
+        - Dashes: one
+          Difficulty: hard
+        - Dashes: two
     - Side: Left
       Idx: 0
       Kind: inout
@@ -774,7 +784,7 @@ ASide:
         Dashes: one
     - Side: Right
       Idx: 1
-      Kind: out
+      Kind: inout
       ReqOut:
         Dashes: one
     - Side: Left
@@ -1071,12 +1081,12 @@ ASide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
         Dashes: one
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
     Tweaks:
     - Name: "templeGate"
       ID: 122
@@ -1917,7 +1927,7 @@ BSide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
          Or:
          - Dashes: one
@@ -2204,9 +2214,14 @@ BSide:
         - Dashes: two
     - Side: Left
       Idx: 0
-      Kind: out         # TODO: can enter if switch pressed
+      Kind: inout
       ReqOut:
         Dashes: one
+      ReqIn:
+        Or:
+        - Dashes: one
+          Difficulty: hard
+        - Dashes: two
     InternalEdges:
     - To: "right"
       ReqIn:
@@ -2340,7 +2355,7 @@ BSide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
         Or:
         - Dashes: two
