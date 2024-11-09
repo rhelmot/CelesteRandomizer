@@ -133,6 +133,7 @@ namespace Celeste.Mod.Randomizer
         private LinkedMap Map;
         private RandoSettings Settings;
         private Capabilities Caps;
+        private HashSet<String> CassetteSongs = new HashSet<string>();
         public static Dictionary<string, string> RandomDialogMappings = new Dictionary<string, string>();
 
         private void ResetRooms()
@@ -256,28 +257,15 @@ namespace Celeste.Mod.Randomizer
 
         private string PickCassetteAudio()
         {
-            switch (this.Random.Next(8))
+            foreach (var area in AreaData.Areas)
             {
-                case 0:
-                    return SFX.cas_01_forsaken_city;
-                case 1:
-                    return SFX.cas_02_old_site;
-                case 2:
-                    return SFX.cas_03_resort;
-                case 3:
-                    return SFX.cas_04_cliffside;
-                case 4:
-                    return SFX.cas_05_mirror_temple;
-                case 5:
-                    return SFX.cas_06_reflection;
-                case 6:
-                    return SFX.cas_07_summit;
-                case 7:
-                default:
-                    return SFX.cas_08_core;
+                if (area.CassetteSong == null) continue;
+                CassetteSongs.Add(area.CassetteSong);
             }
+            int songCount = CassetteSongs.Count;
+            return CassetteSongs.ElementAt(this.Random.Next(songCount));
         }
-
+        
         private string PickCompleteScreen()
         {
             uint seed = this.Settings.IntSeed;
