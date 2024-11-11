@@ -1779,12 +1779,31 @@ BSide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
         Dashes: one
+      ReqIn:
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: expert
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
+    Tweaks:
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 608
+        Y: 72
+        Width: 24
+        Height: 32
+        Values:
+            type: "touchswitch"
+    - ID: 228
+      Name: jumpThru
+      Update:
+        Width: 16
   - Room: "a-04"
     Holes:
     - Side: Right
@@ -1982,9 +2001,15 @@ BSide:
       Kind: inout
       ReqOut:
         Dashes: one
+      ReqIn:
+        Or:
+        - Dashes: two
+          Difficulty: perfect
+        - Dashes: one
+          Difficulty: perfect
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
     - Side: Down
       Idx: 0
       Kind: none
