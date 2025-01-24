@@ -8,6 +8,8 @@ using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework;
 using Monocle;
 using MonoMod.Utils;
+using Microsoft.Xna.Framework.Graphics;
+using System.Collections;
 
 namespace Celeste.Mod.Randomizer
 {
@@ -123,6 +125,43 @@ namespace Celeste.Mod.Randomizer
             }
 
             Logger.Log("randomizer", $"new area {newArea.SID}");
+
+
+            // sc2020 1.7.9 introduced a crash in rando due to how FlagTouchSwitches work.
+            // Each load, add our own map to their list of FlagTouchSwitches
+            if (Everest.Loader.TryGetDependency(new EverestModuleMetadata() { Name = "SpringCollab2020", Version = new Version(1, 7, 9) }, out EverestModule sc2020))
+            {
+                Assembly sc2020Assembly = sc2020.GetType().Assembly;
+                Type sc2020MapDataProcessor = sc2020Assembly.GetType("Celeste.Mod.SpringCollab2020.SpringCollab2020MapDataProcessor");
+                FieldInfo FlagTouchSwitchesDict = sc2020MapDataProcessor.GetField("FlagTouchSwitches", BindingFlags.Public | BindingFlags.Static);
+
+                Dictionary<string, List<Dictionary<string, List<EntityID>>>> ExistingDict = (Dictionary<string, List<Dictionary<string, List<EntityID>>>>) FlagTouchSwitchesDict.GetValue(null);
+                /*
+                 * Goal from here:
+                 *  - Iterate over the rando map data
+                 *      * Check if it matches the SID/mode
+                 *      * If so, make a duplicate with the rando SID as the initial key
+                 */
+
+                foreach (LevelData lvl in newArea.Mode[0].MapData.Levels)
+                {
+                    string pattern = @"^((SpringCollab2020)/(\d+-\w+)/.*)/A";
+                    Match match = Regex.Match(lvl.Name, pattern);
+                    if (match.Success && ExistingDict.ContainsKey(match.Groups[1].Value))
+                    {
+                        Dictionary<string, List<EntityID>> existingFlags = ExistingDict[match.Groups[1].Value][0];
+                        if (!ExistingDict.ContainsKey(newArea.SID))
+                        {
+                            ExistingDict.Add(newArea.SID, new List<Dictionary<string, List<EntityID>>>() { existingFlags });
+                        } else if (!existingFlags.Where(t => ExistingDict[newArea.SID][0].ContainsKey(t.Key)).Any())
+                        {
+                            ExistingDict[newArea.SID][0].AddRange(existingFlags);
+                        }
+                        
+                    }
+                }
+                FlagTouchSwitchesDict.SetValue(FlagTouchSwitchesDict, ExistingDict);
+            }
 
             return key;
         }
