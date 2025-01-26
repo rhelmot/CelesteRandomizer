@@ -150,17 +150,29 @@ namespace Celeste.Mod.Randomizer
                     if (match.Success && ExistingDict.ContainsKey(match.Groups[1].Value))
                     {
                         Dictionary<string, List<EntityID>> existingFlags = ExistingDict[match.Groups[1].Value][0];
+                        var flagKeys = existingFlags.Keys.ToList();
+                        for (int i = 0; i < flagKeys.Count; i++)
+                        {
+                            for (int j = 0; j < existingFlags[flagKeys[i]].Count; j++)
+                            {
+                                var flag = existingFlags[flagKeys[i]][j];
+                                flag.Level = lvl.Name;
+                                existingFlags[flagKeys[i]][j] = flag;
+                            }
+                        }
+
                         if (!ExistingDict.ContainsKey(newArea.SID))
                         {
                             ExistingDict.Add(newArea.SID, new List<Dictionary<string, List<EntityID>>>() { existingFlags });
-                        } else if (!existingFlags.Where(t => ExistingDict[newArea.SID][0].ContainsKey(t.Key)).Any())
+                        }
+                        else if (!existingFlags.Where(t => ExistingDict[newArea.SID][0].ContainsKey(t.Key)).Any())
                         {
                             ExistingDict[newArea.SID][0].AddRange(existingFlags);
                         }
                         
                     }
                 }
-                FlagTouchSwitchesDict.SetValue(FlagTouchSwitchesDict, ExistingDict);
+                FlagTouchSwitchesDict.SetValue(null, ExistingDict);
             }
 
             return key;
