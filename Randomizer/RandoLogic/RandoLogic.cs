@@ -133,6 +133,7 @@ namespace Celeste.Mod.Randomizer
         private LinkedMap Map;
         private RandoSettings Settings;
         private Capabilities Caps;
+        private HashSet<String> CassetteSongs = new HashSet<string>();
         public static Dictionary<string, string> RandomDialogMappings = new Dictionary<string, string>();
 
         private void ResetRooms()
@@ -256,28 +257,15 @@ namespace Celeste.Mod.Randomizer
 
         private string PickCassetteAudio()
         {
-            switch (this.Random.Next(8))
+            foreach (var area in AreaData.Areas)
             {
-                case 0:
-                    return SFX.cas_01_forsaken_city;
-                case 1:
-                    return SFX.cas_02_old_site;
-                case 2:
-                    return SFX.cas_03_resort;
-                case 3:
-                    return SFX.cas_04_cliffside;
-                case 4:
-                    return SFX.cas_05_mirror_temple;
-                case 5:
-                    return SFX.cas_06_reflection;
-                case 6:
-                    return SFX.cas_07_summit;
-                case 7:
-                default:
-                    return SFX.cas_08_core;
+                if (area.CassetteSong == null) continue;
+                CassetteSongs.Add(area.CassetteSong);
             }
+            int songCount = CassetteSongs.Count;
+            return CassetteSongs.ElementAt(this.Random.Next(songCount));
         }
-
+        
         private string PickCompleteScreen()
         {
             uint seed = this.Settings.IntSeed;
@@ -397,13 +385,15 @@ namespace Celeste.Mod.Randomizer
 
             // this cutscene hardcodes a reference to a windsnow fg
             // the level should only ever be last on the list, right?
-            if (effect.Effect != "windsnow" && map.Levels[map.Levels.Count - 1].Name.StartsWith("Celeste/4-GoldenRidge/A/d-10"))
+            if (effect.Effect != "windsnow" && map.Levels.Where(lvl => lvl.Name.StartsWith("Celeste/4-GoldenRidge/A/d-10")).Any())
             {
+                // There is a miniscule chance of this level being second to last due to fake end
+                var idx = map.Levels.FindIndex(lvl => lvl.Name.StartsWith("Celeste/4-GoldenRidge/A/d-10"));
                 map.Foreground.Children.Add(new BinaryPacker.Element
                 {
                     Name = "windsnow",
                     Attributes = new Dictionary<string, object> {
-                       {"only", map.Levels[map.Levels.Count - 1].Name }
+                       {"only", map.Levels[idx].Name }
                     }
                 });
             }
@@ -676,7 +666,24 @@ namespace Celeste.Mod.Randomizer
                             {
                                 y++;
                             }
-                            if (at(x + 1, y - 1) == '0' && at(x + 1, y) != '0')
+                            var BehindEnt = lvl.Entities.Where(e =>
+                            {
+                                // entities that don't have these fields default to 0,
+                                // but to be certain the player can see the phone, check one tile over
+                                var entWidth = e.Width + 8;
+                                var entHeight = e.Height + 8;
+
+                                return e.Position.X / 8 + entWidth / 8 >= x && e.Position.X / 8 - 1 <= x && e.Position.Y / 8 + entHeight / 8 >= y && e.Position.Y / 8 - 1 <= y;
+                            }).Any();
+                            var InsideRoof = lvl.FgDecals.Where(fg =>
+                            {
+                                if (fg.Scale.X < 0)
+                                {
+                                    return (fg.Position.X) / 8 >= x && (fg.Position.X + 8 * fg.Scale.X) / 8 <= x && (fg.Position.Y + 4) / 8 == y;
+                                }
+                                return (fg.Position.X) / 8 <= x && (fg.Position.X + 8 * fg.Scale.X) / 8 >= x && (fg.Position.Y + 4) / 8 == y;
+                            }).Any();
+                            if (at(x + 1, y - 1) == '0' && at(x + 1, y) != '0' && !BehindEnt && !InsideRoof)
                             {
                                 found = true;
                             }

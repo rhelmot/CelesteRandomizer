@@ -80,7 +80,7 @@ namespace Celeste.Mod.Randomizer
                 if (Status > BuilderStatus.WaitingForThread) return;
                 Status = BuilderStatus.WaitingForThread;
             }
-            this.settings = settings.Copy();
+            this.settings = settings;
             worker = new Thread(BackgroundThreadMain) { IsBackground = true };
             worker.Start();
         }

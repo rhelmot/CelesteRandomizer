@@ -267,6 +267,8 @@ ASide:
     - To: "Right"
       ReqOut:
         Dashes: one
+      ReqIn:
+        Dashes: zero
     Subrooms:
     - Room: "Right"
       Holes:
@@ -277,6 +279,16 @@ ASide:
       - Collectable: 0
         ReqBoth:
           Dashes: one
+    Tweaks:
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 272
+        Y: 16
+        Width: 48
+        Height: 112
+        Values:
+            type: "touchswitch"
   - Room: "a-08"
     Holes:
       - Side: Left
@@ -1345,6 +1357,9 @@ ASide:
       - To: "right"
         ReqOut:
           Dashes: zero
+        ReqIn:
+          Dashes: zero
+          Difficulty: Master
     Subrooms:
     - Room: "right"
       Holes:
@@ -1357,6 +1372,20 @@ ASide:
       - Side: Up
         Idx: 1
         Kind: unknown
+    Tweaks:
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 344
+        Y: 64
+        Width: 32
+        Height: 24
+        Values:
+            type: "touchswitch"
+    - ID: 13
+      Name: jumpThru
+      Update:
+        Remove: true
   - Room: "d-03"
     Holes:
     - Side: Right
@@ -1432,7 +1461,10 @@ ASide:
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
-        Dashes: one
+        Or:
+          - Dashes: one
+          - Dashes: zero
+            Difficulty: perfect
       ReqIn:
         Dashes: zero
     Tweaks:
@@ -1843,12 +1875,17 @@ BSide:
     Holes:
     - Side: Up
       Idx: 1
-      Kind: out
+      Kind: inout
       ReqOut:
         Or:
         - Dashes: one
         - Dashes: zero
           Difficulty: perfect # cornerslip roulette.
+      ReqIn:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: expert
     - Side: Down
       Idx: 0
       Kind: inout
@@ -1856,8 +1893,21 @@ BSide:
     - Name: "jumpThru"
       ID: 0
       Update:
-        X: 24
         Width: 16
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 376
+        Y: 0
+        Width: 24
+        Height: 40
+        Values:
+            type: "touchswitch"
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 382
+        Y: 40
   - Room: "b-04"
     Holes:
     - Side: Right

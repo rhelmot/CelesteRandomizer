@@ -245,8 +245,10 @@ ASide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
+        Dashes: one
+      ReqIn:
         Dashes: one
     - Side: Left
       Idx: 0
@@ -257,6 +259,16 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: none
+    Tweaks:
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+         Add: true
+         X: 296
+         Y: 48
+         Width: 24 
+         Height: 24
+         Values:
+           type: "touchswitch"
   - Room: "b-03"
     Holes:
     - Side: Right
@@ -282,9 +294,11 @@ ASide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
         Dashes: one
+      ReqIn:
+        Dashes: zero
     - Side: Left
       Idx: 0
       Kind: inout
@@ -294,6 +308,16 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: none
+    Tweaks:
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 288
+        Y: 16
+        Width: 32
+        Height: 16
+        Values:
+            type: "touchswitch"
   - Room: "b-05"
     Holes:
     - Side: Right
@@ -323,7 +347,7 @@ ASide:
       Idx: 0
       Kind: in
     - Side: Left
-      Idx: 0
+      Idx: 1
       Kind: None
   - Room: "b-07"
     Holes:
@@ -345,10 +369,10 @@ ASide:
           Dashes: one
         ReqIn:
           Or:
-            - Dashes: two
-              Difficulty: expert
-            - Dashes: one
-              Flag: poweroff:set
+          - Dashes: two
+            Difficulty: expert
+          - Dashes: one
+            Difficulty: perfect
   - Room: "c-00"
     Holes:
     - Side: Left
@@ -487,6 +511,17 @@ ASide:
       ID: 17
       Update:
         Width: 24
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 144
+        Y: 40
+        Width: 32
+        Height: 16
+        Values:
+          cameraX: 0.0
+          cameraY: 1.0
+        
   - Room: "c-alt-00"
     Holes:
     - Side: Right
@@ -500,9 +535,6 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
-    - Side: Left
-      Idx: 1
-      Kind: inout
       ReqOut:
         Or:
           - Dashes: Zero
@@ -511,6 +543,9 @@ ASide:
             Difficulty: Easy
       ReqIn:
         Dashes: one
+    - Side: Left
+      Idx: 1
+      Kind: None
     - Side: Down
       Idx: 2
       Kind: None
@@ -650,12 +685,16 @@ ASide:
     InternalEdges:
     - Collectable: 0
       ReqOut:
-        Dashes: one
+        Or:
+          - Dashes: one
+          - Dashes: zero
       ReqIn:
         Or:
           - Dashes: two
           - Dashes: one
             Difficulty: hard
+          - Dashes: zero
+            Difficulty: perfect
   - Room: "d-02"
     Holes:
     - Side: Down
@@ -670,7 +709,10 @@ ASide:
     InternalEdges:
     - Collectable: 0
       ReqOut:
-        Dashes: one
+        Or:
+          - Dashes: one
+          - Dashes: zero
+            Difficulty: perfect
         Flag: poweroff:set
   - Room: "d-03"
     Holes:
@@ -689,7 +731,10 @@ ASide:
     InternalEdges:
     - Collectable: 0
       ReqOut:
-        Dashes: one
+        Or:
+          - Dashes: one
+          - Dashes: zero
+            Difficulty: master
         Flag: poweroff:set
   - Room: "d-04"
     Holes:
@@ -808,13 +853,52 @@ ASide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
         Dashes: one
+      ReqIn:
+        Dashes: zero
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
       Launch: -1
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 280
+        Y: 16
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 272
+        Y: 0
+        Width: 16
+        Height: 24
+        Values:
+            type: "touchswitch"
+    - ID: 920
+      Name: exitBlock
+      Update:
+        Remove: true
+    - ID: 614
+      Name: jumpThru
+      Update:
+        Remove: true
+    - ID: 756
+      Name: jumpThru
+      Update:
+        Remove: true
+    - Decal: bg
+      X: 136
+      Y: 352
+      Update:
+        Remove: true
+    - Decal: bg
+      X: 148
+      Y: 352
+      Update:
+        Remove: true
   - Room: "e-00b"
     Holes:
     - Side: Up
@@ -902,16 +986,33 @@ ASide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
         Dashes: one
+      ReqIn:
+        Dashes: two
+        Difficulty: master
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
       Launch: -1
     - Side: Down
       Idx: 1
       Kind: None
+    Tweaks:
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 720
+        Y: 40
+        Width: 24
+        Height: 32
+        Values:
+            type: "touchswitch"
+    - Name: "jumpThru"
+      ID: 780
+      Update:
+        Remove: true
   - Room: "e-03"
     Holes:
     - Side: Right
@@ -985,8 +1086,10 @@ ASide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
+        Dashes: one
+      ReqIn:
         Dashes: one
     - Side: Left
       Idx: 0
@@ -994,6 +1097,16 @@ ASide:
     - Side: Up
       Idx: 1
       Kind: None
+    Tweaks:
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 320
+        Y: 8
+        Width: 72
+        Height: 48
+        Values:
+            type: "touchswitch"
   - Room: "e-05b"
     Holes:
     - Side: Right
@@ -1054,6 +1167,19 @@ ASide:
          - Dashes: one
          - Dashes: zero
            Difficulty: expert
+      ReqIn:
+        Dashes: two
+        Difficulty: master
+    Tweaks:
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 840
+        Y: 64
+        Width: 40
+        Height: 32  
+        Values:
+            type: "touchswitch"
   - Room: "e-07"
     Holes:
     - Side: Right
@@ -1356,16 +1482,33 @@ ASide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
         Dashes: one
         Difficulty: hard
+      ReqIn:
+        Dashes: one
     - Side: Left
       Idx: 0
       Kind: inout
     - Side: Down
       Idx: 0
       Kind: None  # TODO when we can edit the tilemap this can become an unknown hole
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 184
+        Y: 16
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 176
+        Y: 0
+        Width: 16
+        Height: 24
+        Values:
+            type: "touchswitch"
   - Room: "g-00"
     Holes:
     - Side: Up
@@ -1406,13 +1549,38 @@ ASide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
         Dashes: one
         Difficulty: hard
+      ReqIn: 
+        Dashes: zero
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
+    Tweaks:
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 16
+        Y: 0
+        Width: 24
+        Height: 24
+        Values:
+            type: "touchswitch"
+    - ID: 145
+      Name: jumpThru
+      Update:
+        Remove: true
+    - ID: 144
+      Name: jumpThru
+      Update:
+        Remove: true
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 24
+        Y: 24
   - Room: "g-02"
     Holes:
     - Side: Up
@@ -1729,12 +1897,30 @@ ASide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
+    Tweaks:
+    - ID: 1523
+      Name: jumpThru
+      Update:
+        Remove: true
+    - Name: "spawn"
+      X: 40
+      Y: 712
+      Update:
+        X: 56
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 216
+        Y: 40
   - Room: "h-07"
     Holes:
     - Side: Left
@@ -1983,12 +2169,17 @@ ASide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
-      Or:
-      - Dashes: one
-      - Dashes: zero
-        Difficulty: perfect
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect
+      ReqIn:
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: expert
       ExtraSpace:
       - X: 44264
         Y: -8656
@@ -2003,6 +2194,16 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: None
+    Tweaks:
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 576
+        Y: 88
+        Width: 32
+        Height: 40
+        Values:
+            type: "touchswitch"
   - Room: "i-05"
     Holes:
     - Side: Right
@@ -2385,13 +2586,19 @@ ASide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
         Dashes: one
         Difficulty: hard
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
+      ReqOut:
+        Or:
+        - Dashes: two
+          Difficulty: perfect
+        - Dashes: one
+          Difficulty: perfect
     - Side: Down
       Idx: 0
       Kind: none

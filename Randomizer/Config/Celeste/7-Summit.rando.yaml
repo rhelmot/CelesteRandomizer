@@ -647,18 +647,34 @@ ASide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
         Dashes: one
+      ReqIn:
+        Dashes: zero
     - Side: Left
       Idx: 0
       Kind: in
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
     - Side: Down
       Idx: 1
       Kind: none
+    Tweaks:
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 344
+        Y: 16
+        Width: 24
+        Height: 32
+        Values:
+            type: "touchswitch"
+    - ID: 74
+      Name: jumpThru
+      Update:
+        Width: 16
   - Room: "b-06"
     Holes:
     - Side: Right
@@ -1371,15 +1387,22 @@ ASide:
           - Dashes: one
             Difficulty: hard
           - Dashes: two
+          - Dashes: zero
+            Difficulty: perfect
       ReqIn:
         Dashes: zero
   - Room: "d-02"
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect
+      ReqIn: 
+        Dashes: zero
     - Side: Left
       Idx: 0
       Kind: inout
@@ -1389,6 +1412,15 @@ ASide:
         Add: true
         X: 304
         Y: 128
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 288
+        Y: 104
+        Width: 32
+        Height: 24
+        Values:
+            type: "touchswitch"
   - Room: "d-03"
     Holes:
     - Side: Up
@@ -2868,15 +2900,36 @@ ASide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
         Dashes: two
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
     - Side: Down
       Idx: 0
       Kind: none
+    Tweaks:
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 360
+        Y: 32
+        Width: 24
+        Height: 32
+        Values:
+            type: "button"
+            entID: 890
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 144
+        Y: 96
+        Width: 32
+        Height: 32
+        Values:
+            type: "button"
+            entID: 869
   - Room: "f-08c"
     Holes:
     - Side: Left
@@ -3271,7 +3324,12 @@ ASide:
         Dashes: one
     InternalEdges:
     - To: "left" 
-      ReqBoth:
+      ReqOut:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect
+      ReqIn:
         Dashes: one
     Subrooms:
     - Room: "left"
@@ -3485,7 +3543,10 @@ BSide:
       Kind: out
       Launch: 19
       ReqOut:
-        Dashes: two
+        Or:
+        - Dashes: two
+        - Dashes: one 
+          Difficulty: perfect
     - Side: Left
       Idx: 1
       Kind: inout
@@ -3941,15 +4002,30 @@ BSide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
+      Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: inout
+    InternalEdges:
+    - Split: LeftToRight
       ReqOut:
         Or:
         - Dashes: two
         - Dashes: one
           Difficulty: hard
-    - Side: Left
-      Idx: 0
-      Kind: inout
+      ReqIn:
+        Dashes: two
+        Difficulty: expert
+    Tweaks:
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 496
+        Y: 56
+        Width: 128
+        Height: 96
+        Values:
+            type: "touchswitch"
   - Room: "d-03"
     Holes:
     - Side: Up

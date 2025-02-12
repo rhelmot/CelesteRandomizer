@@ -294,7 +294,10 @@ ASide:
     InternalEdges:
     - To: Right
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect
       ReqIn:
         Or:
         - Dashes: two
@@ -336,7 +339,7 @@ ASide:
           persistent: "false"
   - Room: "b-05"
     Core:
-      All: cold
+      All: cold # TODO: HELP
     Holes:
     - Side: Down
       Idx: 0
@@ -349,6 +352,20 @@ ASide:
     - Side: Down
       Idx: 1
       Kind: in
+    Tweaks:
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 40
+        Y: 168
+        Width: 32
+        Height: 16
+        Values:
+            type: "touchswitch"
+    - ID: 145
+      Name: jumpThru
+      Update:
+        Width: 16
   - Room: "b-06"  # TODO: Add fire/ice toggle in second version of room
     Core:
       All: none  # this is more fun as the barely-possible collectable in none-mode
@@ -391,8 +408,18 @@ ASide:
         Width:  32
         Height: 16
         Values:
-          cameraX: 0
-          cameraY: 1.5
+          cameraX: 0.0
+          cameraY: 1.0
+    - Name: "cameraOffsetTrigger"                  
+      Update:
+        Add: true
+        X: 88
+        Y: 648
+        Width:  144
+        Height: 16
+        Values:
+          cameraX: 0.0
+          cameraY: -1.0
   - Room: "b-07"
     Core:
       All: hot
@@ -1417,15 +1444,31 @@ BSide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
+      Kind: inout
       ReqOut:
         Or:
         - Dashes: one
           Difficulty: hard
         - Dashes: two
+      ReqIn:  
+        Or:
+        - Dashes: two
+          Difficulty: hard
+        - Dashes: one
+          Difficulty: expert
     - Side: Left
       Idx: 0
-      Kind: in
+      Kind: inout
+    Tweaks:
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 880
+        Y: 24
+        Width: 32
+        Height: 32
+        Values:
+            type: "touchswitch"
   - Room: "b-03"
     Core:
       All: cold
@@ -1768,7 +1811,7 @@ BSide:
     ReqEnd:
       Or:
         - Dashes: one
-          Difficulty: perfect
+          Difficulty: expert
         - Dashes: two
     Holes:
     - Side: Left
