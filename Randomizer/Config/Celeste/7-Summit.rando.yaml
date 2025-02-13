@@ -4332,39 +4332,122 @@ BSide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: out
+      Kind: inout
       Launch: 19
       ReqOut:
         Dashes: two
     - Side: Down
       Idx: 0
-      Kind: in  # TODO: this can be inout if we can figure out how to make cameraOffsetTriggers persist through death
+      Kind: inout  # TODO: this can be inout if we can figure out how to make cameraOffsetTriggers persist through death
+    InternalEdges:
+    - Split: BottomToTop
       ReqOut:
         Or:
-          - Dashes: two
-          - Dashes: one
-            Difficulty: hard
+        - Dashes: two
+        - Dashes: one
+          difficulty: hard
+      ReqIn:
+        Or:
+        - Dashes: two
+          Difficulty: hard
+        - Dashes: one
+          Difficulty: expert
     Tweaks:
-      - Name: "jumpThru"
-        ID: 702
-        Update:
-          X: 160
-          Width: 16
       - Name: "spawn"
-        X: 160
-        Y: 2280
-        Update:
-          X: 168
-      - Name: "cameraOffsetTrigger"
         Update:
           Add: true
-          X: 0
-          Y: 0
-          Width: 136
-          Height: 240
+          X: 112
+          Y: 176
+      - Name: "cameraOffsetTrigger" # these camera offset triggers are a hacky workaround for the above TODO ^
+        Update:
+          Add: true
+          X: 120
+          Y: 176
+          Width: 80
+          Height: 8
           Values:
             cameraX: 0
             cameraY: 1
+      - Name: "cameraOffsetTrigger"
+        Update:
+          Add: true
+          X: 112
+          Y: 1184
+          Width: 160
+          Height: 8
+          Values:
+            cameraX: 0
+            cameraY: 1
+      - Name: "cameraOffsetTrigger"
+        Update:
+          Add: true
+          X: 120
+          Y: 1464
+          Width: 56
+          Height: 8
+          Values:
+            cameraX: 0
+            cameraY: 1
+      - Name: "cameraOffsetTrigger"
+        Update:
+          Add: true
+          X: 240
+          Y: 1616
+          Width: 24
+          Height: 8
+          Values:
+            cameraX: 0
+            cameraY: 1
+      - Name: "cameraOffsetTrigger"
+        Update:
+          Add: true
+          X: 32
+          Y: 2064
+          Width: 248
+          Height: 8
+          Values:
+            cameraX: 0
+            cameraY: 1
+      - Name: "cameraOffsetTrigger"
+        Update:
+          Add: true
+          X: 80
+          Y: 2040
+          Width: 232
+          Height: 8
+          Values:
+            cameraX: 0
+            cameraY: -1
+      - Name: "cameraOffsetTrigger"
+        Update:
+          Add: true
+          X: 24
+          Y: 1592
+          Width: 264
+          Height: 8
+          Values:
+            cameraX: 0
+            cameraY: -1
+      - Name: "cameraOffsetTrigger"
+        Update:
+          Add: true
+          X: 120
+          Y: 1440
+          Width: 88
+          Height: 8
+          Values:
+            cameraX: 0
+            cameraY: -1
+      - Name: "cameraOffsetTrigger"
+        Update:
+          Add: true
+          X: 216
+          Y: 1160
+          Width: 88
+          Height: 8
+          Values:
+            cameraX: 0
+            cameraY: -1
   - Room: "g-01"
     Holes:
     - Side: Up
