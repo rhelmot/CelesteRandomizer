@@ -3103,7 +3103,7 @@ ASide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: out
+      Kind: inout
       Launch: 34
       ReqOut:
         Or:
@@ -3112,7 +3112,7 @@ ASide:
           Difficulty: hard      # lots of neutrals
     - Side: Down
       Idx: 0
-      Kind: in
+      Kind: inout
     - Side: Up
       Idx: 1
       Kind: none
@@ -3122,6 +3122,42 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: none
+    Tweaks:
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 352
+        Y: 1232
+        Width: 32
+        Height: 8
+        Values:
+          cameraX: 0
+          cameraY: 1
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 320
+        Y: 1208
+        Width: 64
+        Height: 8
+        Values:
+          cameraX: 0
+          cameraY: -1
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 264
+        Y: 480
+        Width: 32
+        Height: 8
+        Values:
+          cameraX: 0
+          cameraY: 1
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 280
+        Y: 472
   - Room: "g-00b"
     Holes:
     - Side: Up
