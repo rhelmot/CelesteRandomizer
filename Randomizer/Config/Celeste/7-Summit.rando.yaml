@@ -4398,31 +4398,45 @@ BSide:
       Idx: 0
       Kind: in
       Launch: 87
-
+      
 CSide:
   - Room: "01"
     Holes:
     - Side: left
       Idx: 0
       Kind: inout
-    - Side: Up
-      Idx: 0
-      Kind: out
-      Launch: 85
+    - Side: Down
+      Idx: 1
+      Kind: None
+    InternalEdges:
+    - To: "top"
       ReqOut:
         Or:
         - Dashes: two
           Difficulty: hard
         - Dashes: one
-          Difficulty: perfect  # LORD HELP ME
-    - Side: Down
-      Idx: 1
-      Kind: None
+          Difficulty: perfect # LORD HELP ME
+      ReqIn:
+        Dashes: two
+        Difficulty: expert
+    Subrooms:
+    - Room: "top"
+      Holes:
+      - Side: Up
+        Idx: 0
+        Kind: inout
+        Launch: 85
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 688
+        Y: 24
   - Room: "02"
     Holes:
       - Side: Down
         Idx: 0
-        Kind: in
+        Kind: inout
         HighOpen: true
     InternalEdges:
       - To: "out"
@@ -4431,18 +4445,32 @@ CSide:
             - Dashes: two
             - Dashes: one
               Difficulty: perfect
+        ReqIn:
+          Dashes: two
+          Difficulty: perfect # may be possible in 1x idk
     Subrooms:
       - Room: "out"
         Holes:
           - Side: Up
             Idx: 0
-            Kind: out
+            Kind: inout
             Launch: 85
           - Side: Down
             New: true
             Kind: Unknown
             LowBound: 0
             HighBound: 89
+    Tweaks:
+    - Name: "badelineBoost"
+      ID: 374
+      Update:
+        Values:
+          lockCamera: false
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 696
+        Y: 24
   - Room: "03"
     ReqEnd:
       Dashes: two
