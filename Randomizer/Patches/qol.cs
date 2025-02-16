@@ -52,6 +52,7 @@ namespace Celeste.Mod.Randomizer
             IL.Celeste.LightningRenderer.Track += TrackExtraSpace;
             On.Celeste.LockBlock.OnPlayer += NoKeySkips;
             On.Celeste.Player.Update += PreventInvincibility;
+            On.Celeste.ClutterSwitch.Update += AllowClutterSwitchPress_ZeroDash;
 
             // https://github.com/EverestAPI/CelesteTAS-EverestInterop/blob/master/CelesteTAS-EverestInterop/EverestInterop/DisableAchievements.cs
             // Before hooking Achievements.Register, check the size of the method.
@@ -112,7 +113,7 @@ namespace Celeste.Mod.Randomizer
             IL.Celeste.HeartGem.Awake -= SpecialHeartColors;
             On.Celeste.LockBlock.OnPlayer -= NoKeySkips;
             On.Celeste.Player.Update -= PreventInvincibility;
-
+            On.Celeste.ClutterSwitch.Update -= AllowClutterSwitchPress_ZeroDash;
 
             foreach (var detour in this.SpecialHooksQol)
             {
@@ -768,6 +769,17 @@ namespace Celeste.Mod.Randomizer
                 lvl.Entities.OfType<CS_FindTheoPhone>().ToList()[0].OnEnd(lvl);
             }
             orig(self);
+        }
+
+        public void AllowClutterSwitchPress_ZeroDash(On.Celeste.ClutterSwitch.orig_Update orig, ClutterSwitch self)
+         {
+            orig(self);
+            if (self.HasPlayerOnTop() && (this.InRandomizerSettings?.Dashes ?? NumDashes.One) == NumDashes.Zero)
+            {
+                DynamicData clutterSwitchData = DynamicData.For(self);
+                Player player = Engine.Scene.Tracker.GetEntity<Player>();
+                clutterSwitchData.Invoke("OnDashed", player, Vector2.UnitY);
+            }
         }
 
     }
