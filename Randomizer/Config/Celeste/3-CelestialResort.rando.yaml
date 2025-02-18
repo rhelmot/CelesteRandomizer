@@ -304,7 +304,14 @@ ASide:
         - Dashes: zero
           Difficulty: hard
       ReqIn:
-        Dashes: zero
+        Or:
+        - Dashes: zero
+          Difficulty: hard
+          And:
+          - Flag: books:set
+        - Dashes: zero
+          And:
+          - Flag: books:unset
     Subrooms:
     - Room: "out"
       Holes:
@@ -373,8 +380,59 @@ ASide:
         - Dashes: one
         - Dashes: zero
           Difficulty: Perfect
+          And:
+            - Flag: towels:unset
+            - Flag: books:unset
+            - Flag: boxes:unset
+        - Dashes: zero
+          Or:
+          - And:
+            - Flag: towels:set
+            - Flag: books:set
+            - Flag: boxes:set
+          - And:
+            - Flag: boxes:unset
+            - Flag: books:set
+            - Flag: towels:set
+          - And:
+            - Flag: books:unset
+            - Flag: boxes:set
+            - Flag: towels:set
+          - And:
+            - Flag: towels:unset
+            - Flag: boxes:set
+            - Flag: books:set
+          - And:
+            - Flag: boxes:unset
+            - Flag: towels:unset
+            - Flag: books:set
       ReqOut:
-        Dashes: one     
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Or:
+          - And:
+            - Flag: towels:set
+            - Flag: books:set
+            - Flag: boxes:set
+          - And:
+            - Flag: books:unset
+            - Flag: boxes:set
+            - Flag: towels:set
+          - And:
+            - Flag: towels:unset
+            - Flag: boxes:set
+            - Flag: books:set
+          - And:
+            - Flag: books:unset
+            - Flag: towels:unset
+            - Flag: boxes:set
+        - Dashes: zero
+          Difficulty: perfect # clear this before merging 1
+          And:
+          - Flag: books:unset
+          - Flag: boxes:unset
+          - Flag: towels:set
   - Room: "0x-b" # fourth secret
     Holes:
     - Side: Right
@@ -514,12 +572,76 @@ ASide:
       Kind: none
     InternalEdges:
     - To: "right"
-      ReqBoth:
-        Key: true
-        KeyholeID: 11
+      ReqOut:
         Or:
-          - Flag: towels:unset
-          - Flag: boxes:unset
+        - Dashes: one
+          Key: true
+          KeyholeID: 11
+        - Dashes: zero
+          Key: true
+          KeyholeID: 11
+          Difficulty: perfect
+          And:
+          - Flag: books:unset
+          - Flag: boxes:set
+          - Flag: towels:set
+        - Dashes: zero
+          Key: true
+          KeyholeID: 11
+          Or:
+          - And:
+            - Flag: boxes:unset
+            - Flag: books:unset
+            - Flag: towels:set
+          - And:
+            - Flag: boxes:unset
+            - Flag: books:unset
+            - Flag: towels:set
+          - And:
+            - Flag: boxes:unset
+            - Flag: towels:unset
+            - Flag: books:set
+          - And:
+            - Flag: books:unset
+            - Flag: towels:unset
+            - Flag: boxes:set
+          - And:
+            - Flag: boxes:unset
+            - Flag: books:unset
+            - Flag: towels:unset
+      ReqIn:
+        Or:
+        - Dashes: one
+          Key: true
+          KeyholeID: 11
+        - Dashes: zero
+          Key: true
+          KeyholeID: 11
+          Or:
+          - And:
+            - Flag: boxes:unset
+            - Flag: books:set
+            - Flag: towels:set
+          - And:
+            - Flag: towels:unset
+            - Flag: boxes:set
+            - Flag: books:set
+          - And:
+            - Flag: boxes:unset
+            - Flag: books:unset
+            - Flag: towels:set
+          - And:
+            - Flag: boxes:unset
+            - Flag: towels:unset
+            - Flag: books:set
+          - And:
+            - Flag: books:unset
+            - Flag: towels:unset
+            - Flag: boxes:set
+          - And:
+            - Flag: boxes:unset
+            - Flag: books:unset
+            - Flag: towels:unset
     Subrooms:
     - Room: "right"
       Holes:
@@ -574,6 +696,12 @@ ASide:
             - Flag: towels:unset
             - Flag: books:unset
             - Flag: boxes:unset
+        - Dashes: zero
+          Difficulty: perfect # clear before pr
+          And:
+          - Flag: boxes:unset
+          - Flag: books:set
+          - Flag: towels:set
       ReqIn:
         Dashes: zero
     - Collectable: 0
@@ -606,7 +734,9 @@ ASide:
         Or:
         - Dashes: one
         - Dashes: zero
-          Difficulty: Perfect                               #hardest dashless room in randomizer
+          Difficulty: Perfect #(former) hardest dashless room in randomizer
+          And:
+          - Flag: towels:unset # can be done without, but hasnt yet.
     - Side: Down
       Idx: 0
       Kind: inout
@@ -619,6 +749,8 @@ ASide:
         - Dashes: one
         - Dashes: zero
           Difficulty: expert
+          And:
+          - Flag: boxes:unset
     - Collectable: 0
       ReqOut:
         Or:
@@ -752,10 +884,27 @@ ASide:
         ReqBoth:
           Or:
             - Dashes: zero
-              And:  # TODO you can maybe do this with zero dashes in some combination of these being set
+              Or:
+              - And:
+                - Flag: towels:unset
+                - Flag: boxes:set
+                - Flag: books:set
+              - And:
+                - Flag: boxes:unset
+                - Flag: books:unset
+                - Flag: towels:set
+              - And:
+                - Flag: boxes:unset
+                - Flag: towels:unset
+                - Flag: books:set
+              - And:
                 - Flag: books:unset
                 - Flag: towels:unset
+                - Flag: boxes:set
+              - And:
+                - Flag: books:unset
                 - Flag: boxes:unset
+                - Flag: towels
             - Dashes: one
               Or:
                 - Flag: books:unset
@@ -801,6 +950,19 @@ ASide:
     - Side: Up
       Idx: 2
       Kind: inout
+      ReqOut:
+        Or:
+        - Dashes: zero
+          Difficulty: master # just a 2x1
+          And:
+          - Flag: towels:set
+          - Flag: boxes:set
+          - Flag: books:set
+        - Dashes: zero
+          Or:
+          - Flag: towels:set
+          - Flag: boxes:set
+          - Flag: books:set
     - Side: Right
       Idx: 0
       Kind: inout
@@ -897,7 +1059,7 @@ ASide:
     InternalEdges:
       - To: "switch"
         ReqBoth:
-          Dashes: one
+          Dashes: zero
     Subrooms:
     - Room: "elbow"
       Holes:
@@ -958,8 +1120,14 @@ ASide:
       Kind: inout
     InternalEdges:
       - To: "bottom"
-        ReqBoth:
+        ReqOut:
           Difficulty: normal
+        ReqIn:
+          Or:
+          - Dashes: one
+          - Dashes: zero
+            And:
+            - Flag: boxes:unset
     Subrooms:
       - Room: "bottom"
         Holes:
@@ -975,6 +1143,18 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - Collectable: 0
+      ReqBoth:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          And:
+          - Flag: boxes:unset
+        - Dashes: zero
+          Difficulty: perfect # quite easy tbh
+          And:
+          - Flag: boxes:set
   - Room: "11-z"  # chest 4
     Holes:
     - Side: Up
@@ -1082,6 +1262,9 @@ ASide:
         - Dashes: one
         - Dashes: zero
           Difficulty: perfect
+          Or:
+          - Flag: boxes:unset
+          - Flag: towels:unset
     - To: "berry"
       ReqOut:
         Dashes: one
@@ -1094,7 +1277,6 @@ ASide:
         Collectables:
           - Idx: 0
             MustFly: true
-
   - Room: "13-a"  # towels 4
     Holes:
     - Side: Up
@@ -1153,7 +1335,7 @@ ASide:
     InternalEdges:
       - To: "switch"
         ReqBoth:
-          Dashes: one
+          Dashes: zero
     Subrooms:
       - Room: "switch"
         Flags:
@@ -1173,6 +1355,11 @@ ASide:
     - Side: Right
       Idx: 0
       Kind: inout
+      ReqBoth:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Flag: towels:unset
     - Side: Down
       Idx: 1
       Kind: inout
@@ -1231,12 +1418,27 @@ ASide:
           Remove: true
   - Room: "12-c"  # books 3
     Holes:
-    - Side: Up
-      Idx: 0
-      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - To: "out"
+      ReqBoth:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Or:
+          - And:
+            - Flag: books:set
+            - Flag: boxes:set
+          - Flag: books:set
+          - Flag: boxes:unset
+    Subrooms:
+    - Room: "out"
+      Holes:
+      - Side: Up
+        Idx: 0
+        Kind: inout
   - Room: "12-d"  # books 4
     Holes:
     - Side: Left
@@ -1295,7 +1497,7 @@ ASide:
     InternalEdges:
       - To: "switch"
         ReqBoth:
-          Dashes: one
+          Dashes: zero
     Subrooms:
       - Room: "switch"
         Flags:
@@ -2427,6 +2629,10 @@ BSide:
           Difficulty: hard
         - Dashes: zero
           Difficulty: expert
+        - Dashes: zero
+          Difficulty: perfect
+          And:
+          - Flag: towels:set
     Tweaks:
     - Name: "spawn"
       Update:
