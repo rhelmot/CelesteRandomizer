@@ -699,6 +699,9 @@ namespace Celeste.Mod.Randomizer
                     {
                         throw new Exception($"{this.Name}: could not find warp target {conf.Warp}");
                     }
+                    if (toRoom == null) {
+                        throw new Exception($"{this.Name}: warp target {conf.Warp} is duplicated... this can be overcome, please complain");
+                    }
                     if (!toRoom.Nodes.TryGetValue(conf.To ?? "main", out StaticNode toNode))
                     {
                         throw new Exception($"{this.Name}: warp target {conf.Warp} has no node {conf.To ?? "main"}");
