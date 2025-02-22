@@ -198,20 +198,6 @@ ASide:
         Values:
           cameraX: -1.0
           cameraY: 0.0
-  - Room: "a-05x"  # dummy room
-    Holes:
-    - Side: Up
-      Idx: 0
-      Kind: None
-    - Side: Up
-      Idx: 1
-      Kind: None
-    - Side: Down
-      Idx: 0
-    - Kind: None
-      Side: Right
-      Idx: 0
-      Kind: None
   - Room: "a-06"
     Holes:
     - Side: Left

@@ -1039,17 +1039,6 @@ ASide:
         - Dashes: one
         - Dashes: zero
           Difficulty: hard
-  - Room: "e-03-dummy"
-    Holes:
-    - Side: Up
-      Idx: 0
-      Kind: none
-    - Side: Up
-      Idx: 1
-      Kind: none
-    - Side: Up
-      Idx: 2
-      Kind: none
   - Room: "e-04"
     Holes:
     - Side: Left
