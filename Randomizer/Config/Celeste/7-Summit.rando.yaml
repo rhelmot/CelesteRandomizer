@@ -316,6 +316,52 @@ ASide:
       - Collectable: 0
         ReqBoth:
           Dashes: two
+  - Room: "a-06" # a-06 copy
+    Holes:
+    - Side: Up
+      Idx: 0
+      Kind: in
+    - Side: Left
+      Idx: 0
+      Kind: None
+    - Side: Left
+      Idx: 1
+      Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: Unknown
+      Launch: -1
+    - Side: Right
+      Idx: 0
+      Kind: None
+    InternalEdges:
+      - Collectable: 0
+        ReqBoth:
+          Dashes: one
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 160
+        Y: 24
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 120
+        Y: 24
+        Width: 64
+        Height: 8
+        Values:
+          cameraX: 0
+          cameraY: 1.4
+    - Name: "SummitBackgroundManager"
+      ID: 112
+      Update:
+        Remove: true
+    - Name: "badelineBoost"
+      ID: 59
+      Update: 
+        Remove: true
   - Room: "b-00"
     Holes:
     - Side: Up
@@ -818,6 +864,69 @@ ASide:
         ID: 1
         Update:
           Y: 0
+  - Room: "b-09" # b-09 copy
+    Holes:
+    - Side: Up
+      Idx: 0
+      Kind: in
+    - Side: Left
+      Idx: 0
+      Kind: none
+    - Side: Left
+      Idx: 1
+      Kind: none
+    - Side: Left
+      Idx: 2
+      Kind: inout
+      ReqOut:
+        Dashes: one
+    - Side: Right
+      Idx: 0
+      Kind: none
+    - Side: Right
+      Idx: 1
+      Kind: none
+    - Side: Right
+      Idx: 2
+      Kind: none
+    - Side: Right
+      Idx: 3
+      Kind: none
+    - Side: Right
+      Idx: 4
+      Kind: none
+    InternalEdges:
+    - Collectable: 0
+      ReqBoth:
+        Dashes: one
+    Tweaks:
+      - Name: "spawn"
+        Update:
+          Add: true
+          X: 160
+          Y: 24
+      - Name: "cameraOffsetTrigger"
+        Update:
+          Add: true
+          X: 104
+          Y: 24
+          Width: 120
+          Height: 8
+          Values:
+            cameraX: 0
+            cameraY: 1.4
+      - Name: "cameraTargetTrigger"
+        ID: 1
+        Update:
+          Y: 0
+      - Name: "SummitBackgroundManager"
+        ID: 166
+        Update:
+          Remove: true
+      - Name: "badelineBoost"
+        ID: 142
+        Update:
+          Remove: true
   - Room: "c-00"
     Holes:
     - Side: Up
@@ -1208,13 +1317,16 @@ ASide:
       Kind: out
       Launch: 19
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: two
+        - Dashes: One
+          Difficulty: hard
     - Side: Left
       Idx: 0
       Kind: None
     - Side: Left
       Idx: 1
-      Kind: inout
+      Kind: in
     - Side: Right
       Idx: 0
       Kind: None
@@ -1222,6 +1334,50 @@ ASide:
     - Collectable: 0
       ReqBoth:
         Dashes: one
+  - Room: "c-09" # c-09 copy
+    Holes:
+    - Side: Up
+      Idx: 0
+      Kind: in
+    - Side: Left
+      Idx: 0
+      Kind: None
+    - Side: Left
+      Idx: 1
+      Kind: out
+      ReqOut:
+        Dashes: one
+    - Side: Right
+      Idx: 0
+      Kind: None
+    InternalEdges:
+    - Collectable: 0
+      ReqBoth:
+        Dashes: one
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 160
+        Y: 24
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 144
+        Y: 32
+        Width: 32
+        Height: 8
+        Values:
+          cameraX: 0
+          cameraY: 1.4
+    - Name: "SummitBackgroundManager"
+      ID: 352
+      Update:
+        Remove: true
+    - Name: "badelineBoost"
+      ID: 328
+      Update:
+        Remove: true
   - Room: "d-00"
     Holes:
     - Side: Up
@@ -1864,8 +2020,8 @@ ASide:
       Launch: 19
       ReqOut:
         Or:
-        - Dashes: two
         - Dashes: one
+        - Dashes: zero
           Difficulty: hard
     - Side: Left
       Idx: 0
@@ -1879,6 +2035,50 @@ ASide:
     - Side: down
       Idx: 0
       Kind: None
+  - Room: "d-11" # d-11 copy
+    Holes:
+    - Side: Up
+      Idx: 0
+      Kind: in
+    - Side: Left
+      Idx: 0
+      Kind: none
+    - Side: Left
+      Idx: 1
+      Kind: inout
+      ReqOut:
+        Dashes: One
+        Difficulty: hard
+    - Side: right
+      Idx: 0
+      Kind: None
+    - Side: down
+      Idx: 0
+      Kind: None
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 160
+        Y: 24
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 40
+        Y: 32
+        Width: 200
+        Height: 8
+        Values:
+          cameraX: 0
+          cameraY: 1.4
+    - Name: "SummitBackgroundManager"
+      ID: 1106
+      Update:
+        Remove: true
+    - Name: "badelineBoost"
+      ID: 615
+      Update:
+        Remove: true
   - Room: "e-00b"
     Holes:
     - Side: Up
@@ -2525,6 +2725,51 @@ ASide:
         - Dashes: two
         - Dashes: one
           Difficulty: perfect
+  - Room: "e-13" # e-13 copy
+    Holes:
+    - Side: Up
+      Idx: 0
+      Kind: in
+    - Side: Left
+      Idx: 1
+      Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: None
+    - Side: Right
+      Idx: 0
+      Kind: None
+    - Side: Down
+      Idx: 0
+      Kind: none
+    InternalEdges:
+    - Collectable: 0
+      ReqBoth:
+        Dashes: one
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 160
+        Y: 24
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 80
+        Y: 32
+        Width: 96
+        Height: 8
+        Values:
+          cameraX: 0
+          cameraY: 1.4
+    - Name: "SummitBackgroundManager"
+      ID: 568
+      Update:
+        Remove: true
+    - Name: "badelineBoost"
+      ID: 504
+      Update:
+        Remove: true
   - Room: "f-00"
     Hub: true
     Holes:
@@ -3099,11 +3344,94 @@ ASide:
         - Dashes: two
         - Dashes: one
           Difficulty: perfect
+  - Room: "f-11" # f-11 copy
+    Holes:
+    - Side: Up
+      Idx: 0
+      Kind: in
+    - Side: Left
+      Idx: 1
+      Kind: inout
+      ReqOut:
+        Dashes: one
+        Difficulty: hard
+    - Side: Left
+      Idx: 0
+      Kind: none
+    - Side: Right
+      Idx: 0
+      Kind: none
+    InternalEdges:
+    - Collectable: 0
+      ReqBoth:
+        Dashes: one
+    - Collectable: 1
+      ReqBoth:
+        Dashes: one
+    - Collectable: 2
+      ReqBoth:
+        Dashes: one
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 96
+        Y: 536
+    - Name: "jumpThru"
+      ID: 918
+      Update:
+        X: 264
+        Y: 1192
+        Width: 24
+    - Name: "jumpThru"
+      ID: 779
+      Update:
+        X: 240
+        Y: 1496
+        Width: 24
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 80
+        Y: 504
+        Width: 32
+        Height: 32
+        Values:
+          cameraX: 0
+          cameraY: 1.4
+    - Name: "SummitBackgroundManager"
+      ID: 1009
+      Update:
+        Remove: true
+    - Name: "badelineBoost"
+      ID: 738
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 4
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 5
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 6
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 8
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 7
+      Update:
+        Remove: true
   - Room: "g-00"
     Holes:
     - Side: Up
       Idx: 0
-      Kind: inout
+      Kind: out
       Launch: 34
       ReqOut:
         Or:
@@ -3112,7 +3440,7 @@ ASide:
           Difficulty: hard      # lots of neutrals
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in
     - Side: Up
       Idx: 1
       Kind: none
@@ -3160,15 +3488,6 @@ ASide:
         Y: 472
   - Room: "g-00b"
     Holes:
-    - Side: Up
-      Idx: 0
-      Kind: out
-      Launch: 39
-      ReqOut:
-        Or:
-        - Dashes: two
-        - Dashes: one
-          Difficulty: master
     - Side: Down
       Idx: 0
       Kind: in
@@ -3193,6 +3512,29 @@ ASide:
     - Side: Right
       Idx: 2
       Kind: none
+    InternalEdges:
+    - To: "top"
+      ReqOut:
+        Or:
+        - Dashes: two
+        - Dashes: one
+      ReqIn:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect # ? not sure
+    Subrooms:
+    - Room: "top"
+      Holes:
+      - Side: Up
+        Idx: 0
+        Kind: out
+        Launch: 39
+        ReqOut:
+          Or:
+          - Dashes: two
+          - Dashes: one
+            Difficulty: master
     Tweaks:
     - ID: 153
       Name: "refill"
@@ -3229,14 +3571,92 @@ ASide:
       Update:
         Values:
           twoDash: true
-  - Room: "g-01"
+  - Room: "g-00b"
     Holes:
-    - Side: Up
+    - Side: Down
       Idx: 0
       Kind: out
-      Launch: 163
-      ReqOut:
-        Dashes: two
+    - Side: Left
+      Idx: 0
+      Kind: none
+    - Side: Left
+      Idx: 1
+      Kind: none
+    - Side: Left
+      Idx: 2
+      Kind: none
+    - Side: Left
+      Idx: 3
+      Kind: none
+    - Side: Right
+      Idx: 0
+      Kind: none
+    - Side: Right
+      Idx: 1
+      Kind: none
+    - Side: Right
+      Idx: 2
+      Kind: none
+    InternalEdges:
+    - To: "top"
+      ReqIn:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect # ? not sure
+    Subrooms:
+    - Room: "top"
+      Holes:
+      - Side: Up
+        Idx: 0
+        Kind: in
+    Tweaks:
+    - Name: "jumpThru"
+      ID: 0
+      Update:
+        X: 200
+        Y: 3240
+        Width: 16
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 0
+        Y: 0
+        Width: 640
+        Height: 3256
+        Values:
+          cameraX: 0
+          cameraY: 1.4
+    - Name: "cameraOffsetTrigger"
+      ID: 22
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 21
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 13
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 12
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 11
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 10
+      Update:
+        Remove: true
+    - Name: "badelineBoost"
+      ID: 165
+      Update:
+        Remove: true
+  - Room: "g-01"
+    Holes:
     - Side: Up
       Idx: 1
       Kind: None
@@ -3246,6 +3666,116 @@ ASide:
     - Side: Down
       Idx: 1
       Kind: none
+    InternalEdges:
+    - To: "top"
+      ReqOut:
+        Dashes: two
+    Subrooms:
+    - Room: "top"
+      Holes:
+      - Side: Up
+        Idx: 0
+        Kind: out
+        Launch: 163
+  - Room: "g-01" # g-01 copy (just for camera offset purposes)
+    Holes:
+    - Side: Up
+      Idx: 1
+      Kind: None
+    - Side: Down
+      Idx: 0
+      Kind: out
+    - Side: Down
+      Idx: 1
+      Kind: none
+    InternalEdges:
+    - To: "top"
+      ReqIn:
+        Dashes: two # while you *can* do this 1x, you can also softlock if you go to the wrong flag
+        difficulty: expert
+    Subrooms:
+    - Room: "top"
+      Holes:
+      - Side: Up
+        Idx: 0
+        Kind: in
+        Launch: 163
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 1320
+        Y: 32
+    - Name: "cameraTargetTrigger"
+      Update:
+        Add: true
+        X: 0
+        Y: 0
+        Width: 2560
+        Height: 3256
+        Values:
+          cameraX: 0
+          cameraY: 1.4
+    - Name: "cameraOffsetTrigger"
+      ID: 49
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 48
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 45
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 42
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 24
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 20
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 16
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 14
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 13
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 12
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 11
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 17
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 8
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 4
+      Update:
+        Remove: true
+    - Name: "badelineBoost"
+      ID: 1313
+      Update:
+        Remove: true
   - Room: "g-02"
     Holes:
     - Side: Up
@@ -3592,6 +4122,12 @@ BSide:
     - Side: Right
       Idx: 0
       Kind: None
+    Tweaks:
+    - Name: "badelineBoost"
+      ID: 451
+      Update:
+        Values:
+          lockCamera: false
   - Room: "b-00"
     Holes:
     - Side: Up
@@ -3897,7 +4433,45 @@ BSide:
       Kind: None
     - Side: Right
       Idx: 0
+      Kind: none
+  - Room: "b-03" # b-03 copy
+    Holes:
+    - Side: Up
+      Idx: 0
+      Kind: in
+    - Side: Left
+      Idx: 1
+      Kind: inout
+    - Side: Left
+      Idx: 0
       Kind: None
+    - Side: Right
+      Idx: 0
+      Kind: none
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 160
+        Y: 24
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 0
+        Y: 40
+        Width: 240
+        Height: 8
+        Values:
+          cameraX: 0
+          cameraY: 1.4
+    - Name: "SummitBackgroundManager"
+      ID: 898
+      Update: 
+        Remove: true
+    - Name: "badelineBoost"
+      ID: 800
+      Update:
+        Remove: true
   - Room: "c-01"
     Holes:
     - Side: Up
@@ -3977,6 +4551,44 @@ BSide:
     - Side: right
       Idx: 0
       Kind: None
+  - Room: "c-03" # c-03 copy
+    Holes:
+    - Side: Up
+      Idx: 0
+      Kind: in
+    - Side: Left
+      Idx: 1
+      Kind: out
+    - Side: left
+      Idx: 0
+      Kind: none
+    - Side: right
+      Idx: 0
+      Kind: None
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 160
+        Y: 24
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 0
+        Y: 32
+        Width: 320
+        Height: 8
+        Values:
+          cameraX: 0
+          cameraY: 1.4
+    - Name: "SummitBackgroundManager"
+      ID: 1062
+      Update:
+        Remove: true
+    - Name: "badelineBoost"
+      ID: 1014
+      Update:
+        Remove: true
   - Room: "d-00"
     Holes:
     - Side: Right
@@ -4079,6 +4691,46 @@ BSide:
     - Side: right
       Idx: 0
       Kind: None
+  - Room: "d-03" # d-03 copy
+    Holes:
+    - Side: Up
+      Idx: 0
+      Kind: in
+    - Side: Left
+      Idx: 1
+      Kind: out
+      ReqOut:
+        Difficulty: hard
+    - Side: left
+      Idx: 0
+      Kind: None
+    - Side: right
+      Idx: 0
+      Kind: None
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 160
+        Y: 24
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 120
+        Y: 32
+        Width: 32
+        Height: 8
+        Values:
+          cameraX: 0
+          cameraY: 1.4
+    - Name: "SummitBackgroundManager"
+      ID: 1544
+      Update: 
+        Remove: true
+    - Name: "badelineBoost"
+      ID: 1481
+      Update:
+        Remove: true
   - Room: "e-00"
     Holes:
     - Side: Up
@@ -4210,6 +4862,59 @@ BSide:
     - Side: right
       Idx: 0
       Kind: None
+  - Room: "e-03" # e-03 copy
+    Holes:
+    - Side: Up
+      Idx: 0
+      Kind: in
+    - Side: Left
+      Idx: 1
+      Kind: out
+      ReqOut:
+        Or:
+        - Dashes: two
+          Difficulty: master
+        - Dashes: One
+          Difficulty: perfect
+    - Side: left
+      Idx: 0
+      Kind: None
+    - Side: right
+      Idx: 0
+      Kind: None
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 160
+        Y: 24
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 144
+        Y: 32
+        Width: 32
+        Height: 8
+        Values:
+          cameraX: 0
+          cameraY: 1.4
+    - Name: "SummitBackgroundManager"
+      ID: 2205
+      Update:
+        Remove: true
+    - Name: "badelineBoost"
+      ID: 1834
+      Update: 
+        Remove: true
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 144
+        Y: 592
+        Width: 32
+        Height: 32
+        Values:
+            type: "touchswitch"
   - Room: "f-00"
     Holes:
     - Side: Right
@@ -4364,17 +5069,72 @@ BSide:
       Idx: 0
       Kind: Unknown
       HighOpen: true
+  - Room: "f-03" # f-03 copy
+    Holes:
+    - Side: Up
+      Idx: 0
+      Kind: in
+    - Side: Left
+      Idx: 1
+      Kind: out
+      ReqOut:
+        Dashes: two
+        Difficulty: perfect
+    - Side: left
+      Idx: 0
+      Kind: None
+    - Side: right
+      Idx: 0
+      Kind: None
+    - Side: Down
+      Idx: 0
+      Kind: Unknown
+      HighOpen: true
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 160
+        Y: 24
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 104
+        Y: 24
+        Width: 96
+        Height: 8
+        Values:
+          cameraX: 0
+          cameraY: 1.4
+    - Name: "SummitBackgroundManager"
+      ID: 711
+      Update:
+        Remove: true
+    - Name: "badelineBoost"
+      ID: 334
+      Update:
+        Remove: true
+    - Name: "jumpThru"
+      ID: 621
+      Update:
+        Remove: true
+    - Name: "jumpThru"
+      ID: 590
+      Update:
+        X: 272
+        Y: 944
+        Width: 24
   - Room: "g-00"
     Holes:
     - Side: Up
       Idx: 0
-      Kind: inout
+      Kind: out
       Launch: 19
       ReqOut:
         Dashes: two
     - Side: Down
       Idx: 0
-      Kind: inout  # TODO: this can be inout if we can figure out how to make cameraOffsetTriggers persist through death
+      Kind: in  # TODO: this can be inout if we can figure out how to make cameraOffsetTriggers persist through death
     InternalEdges:
     - Split: BottomToTop
       ReqOut:
@@ -4382,6 +5142,16 @@ BSide:
         - Dashes: two
         - Dashes: one
           difficulty: hard
+  - Room: "g-00" # g-00 copy (just for better camera offsets tbh)
+    Holes:
+    - Side: Up
+      Idx: 0
+      Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: out  # TODO: this can be inout if we can figure out how to make cameraOffsetTriggers persist through death
+    InternalEdges:
+    - Split: BottomToTop
       ReqIn:
         Or:
         - Dashes: two
@@ -4394,96 +5164,16 @@ BSide:
           Add: true
           X: 112
           Y: 176
-      - Name: "cameraOffsetTrigger" # these camera offset triggers are a hacky workaround for the above TODO ^
-        Update:
-          Add: true
-          X: 120
-          Y: 176
-          Width: 80
-          Height: 8
-          Values:
-            cameraX: 0
-            cameraY: 1
       - Name: "cameraOffsetTrigger"
         Update:
           Add: true
-          X: 112
-          Y: 1184
-          Width: 160
-          Height: 8
+          X: 0
+          Y: 0
+          Width: 320
+          Height: 2304
           Values:
             cameraX: 0
-            cameraY: 1
-      - Name: "cameraOffsetTrigger"
-        Update:
-          Add: true
-          X: 120
-          Y: 1464
-          Width: 56
-          Height: 8
-          Values:
-            cameraX: 0
-            cameraY: 1
-      - Name: "cameraOffsetTrigger"
-        Update:
-          Add: true
-          X: 240
-          Y: 1616
-          Width: 24
-          Height: 8
-          Values:
-            cameraX: 0
-            cameraY: 1
-      - Name: "cameraOffsetTrigger"
-        Update:
-          Add: true
-          X: 32
-          Y: 2064
-          Width: 248
-          Height: 8
-          Values:
-            cameraX: 0
-            cameraY: 1
-      - Name: "cameraOffsetTrigger"
-        Update:
-          Add: true
-          X: 80
-          Y: 2040
-          Width: 232
-          Height: 8
-          Values:
-            cameraX: 0
-            cameraY: -1
-      - Name: "cameraOffsetTrigger"
-        Update:
-          Add: true
-          X: 24
-          Y: 1592
-          Width: 264
-          Height: 8
-          Values:
-            cameraX: 0
-            cameraY: -1
-      - Name: "cameraOffsetTrigger"
-        Update:
-          Add: true
-          X: 120
-          Y: 1440
-          Width: 88
-          Height: 8
-          Values:
-            cameraX: 0
-            cameraY: -1
-      - Name: "cameraOffsetTrigger"
-        Update:
-          Add: true
-          X: 216
-          Y: 1160
-          Width: 88
-          Height: 8
-          Values:
-            cameraX: 0
-            cameraY: -1
+            cameraY: 1.4
   - Room: "g-01"
     Holes:
     - Side: Up
@@ -4509,6 +5199,104 @@ BSide:
       Launch: 209
       ReqOut:
         Dashes: two
+  - Room: "g-02" # g-02 copy
+    Holes:
+    - Side: Down
+      Idx: 0
+      Kind: out
+    - Side: Down
+      Idx: 1
+      Kind: none
+    InternalEdges:
+    - To: "top"
+      ReqIn:
+        Dashes: two
+        Difficulty: perfect # probably
+    Subrooms:
+    - Room: "top"
+      Holes:
+      - Side: Up
+        Idx: 0
+        Kind: in
+        Launch: 209
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 1680
+        Y: 504
+    - Name: "killbox"
+      ID: 2442
+      Update:
+        Remove: true
+    - Name: "SummitBackgroundManager"
+      ID: 2796
+      Update:
+        Remove: true
+    - Name: "badelineBoost" 
+      ID: 2742
+      Update:
+        Remove: true
+    - Name: "killbox"
+      ID: 2424
+      Update:
+        Remove: true
+    - Name: "crumbleBlock"
+      ID: 2277
+      Update:
+        X: 1032
+        Y: 2256
+        Width: 16
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 0
+        Y: 0
+        Width: 2344
+        Height: 2696
+        Values:
+          cameraX: 0
+          cameraY: 1.4
+    - Name: "cameraOffsetTrigger"
+      ID: 56
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 49
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 45
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 44
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 41
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 40
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 39
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 33
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 30
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 29
+      Update:
+        Remove: true
   - Room: "g-03"
     ReqEnd:
       Dashes: two
@@ -4517,7 +5305,7 @@ BSide:
       Idx: 0
       Kind: in
       Launch: 87
-      
+
 CSide:
   - Room: "01"
     Holes:
