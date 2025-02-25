@@ -617,7 +617,7 @@ ASide:
       ReqOut:
         Or:
         - Dashes: two
-          Diffculty: expert
+          Difficulty: expert
         - Dashes: one
           Difficulty: perfect
     Subrooms:
@@ -840,6 +840,33 @@ ASide:
           Add: true
           X: 168
           Y: 40
+  - Room: "b-22" # b-22 copy
+    Holes:
+    - Side: Left
+      Idx: 0
+      Kind: out
+      ReqOut:
+        Or:
+        - Dashes: two
+          Difficulty: hard
+        - Dashes: one
+          Difficulty: expert
+        - Dashes: zero
+          Difficulty: master
+    Tweaks:
+      - ID: 69
+        Name: "cassette"
+        Update:
+          Remove: true
+      - Name: "spawn"
+        Update: 
+          Add: true
+          X: 168
+          Y: 72
+      - Name: "spawn"
+        ID: 68
+        Update:
+          Remove: true
   - Room: "b-06"
     Holes:
     - Side: Left
@@ -2406,6 +2433,31 @@ BSide:
       Kind: out
       ReqOut:
         Dashes: one
+  - Room: "c-00" # c-00 copy
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: in
+    InternalEdges:
+    - CustomWarp: true
+      ReqOut:
+        Dashes: one
+        Difficulty: expert
+    Tweaks:
+    - Name: "eventTrigger"
+      Update:
+        Add: true
+        X: 152
+        Y: 96
+        Width: 16
+        Height: 8
+        Values:
+          event: end_oldsite_dream
+    - Name: payphone
+      Update:
+        Add: true
+        X: 0
+        Y: 0
   - Room: "c-01"
     Holes:
     - Side: Right
@@ -2618,7 +2670,38 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: in
-
+  - Room: "d-05" # d-05 copy
+    Holes:
+    - Side: Left
+      Idx: 0
+      Kind: out
+      ReqOut:
+        Or:
+        - Dashes: two
+          Difficulty: hard
+        - Dashes: one
+          Difficulty: expert
+    Tweaks:
+    - Name: "blackGem"
+      ID: 17
+      Update:
+        Values:
+          fake: true
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 278
+        Y: 152
+    - Name: "theoCrystal"
+      ID: 19
+      Update:
+        X: 648
+        Y: 168
+    - Name: "spawn"
+      ID: 3
+      Update:
+        Remove: true
+      
 CSide:
   - Room: "00"
     Holes:

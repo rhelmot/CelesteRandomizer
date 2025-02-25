@@ -1693,6 +1693,48 @@ ASide:
           Add: true
           X: 1056
           Y: 40
+  - Room: "d-03b" # d-03b copy
+    Holes:
+    - Side: Down
+      Idx: 0
+      Kind: out
+      ReqOut: 
+        Dashes: One
+        Difficulty: hard
+    - Side: Down
+      Idx: 1
+      Kind: out
+      ReqOut: 
+        Dashes: One
+        Difficulty: hard
+    Tweaks:
+      - ID: 384
+        Name: "cassette"
+        Update:
+          Remove: true
+      - ID: 560
+        Name: "crumbleBlock"
+        Update:
+          Remove: true
+      - Name: "jumpThru"
+        Update:
+          Add: true
+          X: 24
+          Y: 168
+          Width: 16
+      - Name: "jumpThru"
+        ID: 381
+        Update:
+          Width: 8
+      - Name: "spawn"
+        Update:
+          Add: true
+          X: 1056
+          Y: 64
+      - Name: "spawn"
+        ID: 380
+        Update: 
+          Remove: true
   - Room: "d-04"
     Holes:
     - Side: Left
@@ -3812,6 +3854,102 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: None
+  - Room: "g-03" # g-03 copy
+    Holes:
+    - Side: Down
+      Idx: 0
+      Kind: inout
+      ReqOut:
+        Dashes: two
+        Difficulty: expert
+    - Side: Down
+      Idx: 1
+      Kind: None
+    - Side: Right
+      Idx: 0
+      Kind: None
+    - Side: Right
+      Idx: 1
+      Kind: None
+    - Side: Left
+      Idx: 0
+      Kind: None
+    - Side: Up
+      Idx: 0
+      Kind: None
+    Tweaks:
+    - Name: "eventTrigger"
+      ID: 28
+      Update:
+        Remove: true
+    - Name: "spawn"
+      ID: 2041
+      X: 1752
+      Y: 456
+      Update:
+        Default: true
+    - Name: "killbox"
+      ID: 2156
+      Update:
+        Remove: true
+    - Name: "killbox"
+      ID: 2172
+      Update:
+        Remove: true
+    - Name: "killbox"
+      ID: 2171
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 13
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 14
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 12
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 32
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 10
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 8
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 7
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 4
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 5
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 3
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 0
+        Y: 0
+        Width: 2096
+        Height: 3256
+        Values:
+          cameraX: 0
+          cameraY: 1.4
   - Room: "credits-city"
     Holes:
     - Side: Left
@@ -5305,6 +5443,62 @@ BSide:
       Idx: 0
       Kind: in
       Launch: 87
+  - Room: "g-03" # g-03 copy
+    Holes:
+    - Side: Down
+      Idx: 0
+      Kind: out
+      ReqOut:
+        Or:
+        - Dashes: two
+          Difficulty: hard
+        - Dashes: One
+          Difficulty: expert
+        - Dashes: zero
+          Difficulty: master # cassette boost
+    Tweaks:
+    - Name: "blackGem"
+      ID: 2891
+      Update:
+        Values:
+          fake: true
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 376
+        Y: 160
+    - Name: "spawn"
+      ID: 2797
+      Update: 
+        Remove: true
+    - Name: "killbox"
+      ID: 2863
+      Update:
+        Remove: true
+    - Name: "killbox"
+      ID: 2847
+      Update:
+        X: -8
+        Y: 688
+        Width: 640
+    - Name: "cameraOffsetTrigger"
+      ID: 64
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 63
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 0
+        Y: 0
+        Width: 1064
+        Hight: 856
+        Values:
+          cameraX: 0
+          cameraY: 1.4
 
 CSide:
   - Room: "01"

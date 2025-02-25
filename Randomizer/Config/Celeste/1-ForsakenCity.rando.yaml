@@ -908,6 +908,30 @@ ASide:
           Add: true
           X: 232
           Y: 32
+  - Room: "11z" # 11z copy
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: out
+      ReqOut:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: expert
+    Tweaks:
+      - ID: 12
+        Name: "cassette"
+        Update:
+          Remove: true
+      - Name: "spawn"
+        ID: 0
+        Update:
+          Remove: true
+      - Name: "spawn"
+        Update:
+          Add: true
+          X: 232
+          Y: 56
   - Room: "12"
     Holes:
     - Side: Down
@@ -1676,6 +1700,79 @@ BSide:
         X: 680
         Y: 136
         Width: 64
+  - Room: "end" # end copy
+    Holes:
+    - Side: Down
+      Idx: 0
+      Kind: out
+    - Side: Left
+      Idx: 0
+      Kind: out
+    - Side: Down
+      Idx: 1
+      Kind: None
+    - Side: Down
+      Idx: 2
+      Kind: None
+    - Side: Down
+      Idx: 3
+      Kind: None
+    - Side: Down
+      Idx: 4
+      Kind: None
+    - Side: Up
+      Idx: 1
+      Kind: None
+    - Side: Up
+      Idx: 2
+      Kind: None
+    - Side: Up
+      Idx: 3
+      Kind: None
+    - Side: Up
+      Idx: 4
+      Kind: None
+    - Side: Right
+      Idx: 0
+      Kind: None
+    - Side: Right
+      Idx: 1
+      Kind: None
+    - Side: Right
+      Idx: 2
+      Kind: None
+    - Side: Right
+      Idx: 3
+      Kind: None
+    Tweaks:
+    - Name: "spikesUp"
+      ID: 20
+      Update:
+        Width: 72
+    - Name: "spikesUp"
+      Update:
+        Add: true
+        X: 680
+        Y: 136
+        Width: 64
+    - Name: "blackGem"
+      ID: 20
+      Update:
+        Values:
+          fake: true
+    - Name: "spawn"
+      ID: 5
+      Update: 
+        Remove: true
+    - Name: "spawn"
+      ID: 2
+      Update:
+        Remove: true
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 744
+        Y: 88
 
 CSide:
   - Room: "00"
@@ -1775,7 +1872,7 @@ CSide:
     Holes:
     - Side: Right
       Idx: 0
-      Kind: out
+      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
@@ -1787,6 +1884,28 @@ CSide:
           Difficulty: hard
         - Dashes: two
           Difficulty: normal
+      ReqIn:
+        Dashes: two
+        Difficulty: perfect # nyoooooom!
+    Tweaks:
+    - Name: "spawn"
+      Update: 
+        Add: true
+        X: 784
+        Y: 32
+    - Name: "changeRespawnTrigger"
+      Update: 
+        Add: true
+        X: 776
+        Y: 16
+        Width: 16
+        Height: 16
+    - Name: "jumpThru"
+      ID: 62
+      Update:
+        X: 776
+        Y: 32
+        Width: 8
   - Room: "02"
     ReqEnd:
       Or:
@@ -1867,3 +1986,76 @@ CSide:
 #        - Dashes: one
 #        - Dashes: zero
 #          Difficulty: perfect
+  - Room: "02" # 02 copy
+    Holes:
+    - Side: Left
+      Idx: 0
+      Kind: inout
+      ReqOut:
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: master
+    - Side: Up
+      Idx: 0
+      Kind: None
+    - Side: Up
+      Idx: 1
+      Kind: None
+    - Side: Up
+      Idx: 2
+      Kind: None
+    - Side: Up
+      Idx: 3
+      Kind: None
+    - Side: Up
+      Idx: 4
+      Kind: None
+    - Side: Up
+      Idx: 5
+      Kind: None
+    - Side: Up
+      Idx: 6
+      Kind: None
+    - Side: Up
+      Idx: 7
+      Kind: None
+    - Side: Up
+      Idx: 8
+      Kind: None
+    - Side: Up
+      Idx: 9
+      Kind: None
+    - Side: Up
+      Idx: 10
+      Kind: None
+    - Side: Up
+      Idx: 11
+      Kind: None
+    - Side: Down
+      Idx: 0
+      Kind: None
+    - Side: Down
+      Idx: 1
+      Kind: None
+    - Side: Down
+      Idx: 2
+      Kind: None
+    - Side: Down
+      Idx: 3
+      Kind: None
+    - Side: Down
+      Idx: 4
+      Kind: None
+    Tweaks:
+    - Name: "blackGem"
+      ID: 83
+      Update:
+        Values:
+          fake: true
+    - Name: "spawn"
+      ID: 87
+      X: 912
+      Y: 168
+      Update:
+        Default: true

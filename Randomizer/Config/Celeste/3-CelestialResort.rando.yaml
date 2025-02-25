@@ -1806,6 +1806,32 @@ ASide:
           Add: true
           X: 24
           Y: 80
+  - Room: "01-c"  # 01-c copy
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: out
+    - Side: Left
+      Idx: 0
+      Kind: None
+    Tweaks:
+      - ID: 42
+        Name: "cassette"
+        Update:
+          Remove: true
+      - Name: "spawn"
+        Update:
+          Add: true
+          X: 24
+          Y: 104
+      - Name: "spawn"
+        ID: 8
+        Update:
+          Remove: true
+      - Name: "spawn"
+        ID: 0
+        Update:
+          Remove: true
   - Room: "03-b"  # double berry room
     Holes:
     - Side: Up
@@ -2232,6 +2258,25 @@ ASide:
     - Side: Right
       Idx: 0
       Kind: none
+  - Room: "roof07" # room07 copy
+    ReqEnd:
+      Difficulty: easy
+    Holes:
+    - Side: Left
+      Idx: 0
+      Kind: out
+      HighBound: 10
+    - Side: Left
+      Idx: 1
+      Kind: in
+    - Side: Right
+      Idx: 0
+      Kind: none
+    Tweaks:
+    - Name: "friendlyGhost"
+      ID: 2
+      Update:
+        Remove: true
 
 BSide:
   - Room: "00"
@@ -2924,7 +2969,36 @@ BSide:
       ID: 3
       Update:
         Remove: true
-
+    - Name: "spawn"
+      ID: 1
+      X: 400
+      Y: 168
+      Update:
+        Remove: true
+  - Room: "end" # end copy
+    Holes:
+    - Side: Up
+      Idx: 0
+      Kind: out
+      ReqOut:
+        Dashes: one
+        Difficulty: master
+    Tweaks:
+    - Name: "blackGem"
+      ID: 0
+      Update:
+        Values:
+          fake: true
+    - Name: "invisibleBarrier"
+      ID: 3
+      Update:
+        Remove: true
+    - Name: spawn
+      ID: 1
+      X: 400
+      Y: 168
+      Update:
+        Default: true
 CSide:
   - Room: "00"
     Holes:
@@ -3028,3 +3102,50 @@ CSide:
     - Side: Down
       Idx: 2
       Kind: None
+  - Room: "02" # 02 copy
+    Holes:
+    - Side: Left
+      Idx: 0
+      Kind: out
+      ReqOut:
+        Or:
+        - Dashes: two
+          Difficulty: hard
+        - Dashes: one
+          Difficulty: expert # might replace with master
+    - Side: Down
+      Idx: 0
+      Kind: None
+    - Side: Down
+      Idx: 1
+      Kind: None
+    - Side: Down
+      Idx: 2
+      Kind: None
+    Tweaks:
+    - Name: "blackGem"
+      ID: 490
+      Update:
+        Values:
+          fake: true
+          persistent: false
+    - Name: "oshiroTrigger"
+      ID: 0
+      Update:
+        X: 1472
+        Y: 0
+        Width: 16
+        Height: 184
+    - Name: "spawn"
+      ID: 500
+      Update:
+        Remove: true
+    - Name: "spawn"
+      ID: 18
+      Update:
+        Remove: true
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 1480
+        Y: 64

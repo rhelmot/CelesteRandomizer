@@ -300,6 +300,30 @@ ASide:
           Add: true
           X: 48
           Y: 96
+  - Room: "04e" # 04e copy
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: out
+      ReqOut:
+        Dashes: one
+    Tweaks:
+      - ID: 1
+        Name: "cassette"
+        Update:
+          Remove: true
+      - Name: "spawn"
+        X: 48
+        Y: 128
+        Update:
+          Add: true
+          Default: true
+          X: 48
+          Y: 128
+      - Name: "spawn"
+        ID: 0
+        Update:
+          Remove: true
   - Room: "05"
     Holes:
     - Side: Right
@@ -2274,6 +2298,32 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: in
+  - Room: "d-05" # d-05 copy
+    Holes:
+    - Side: Left
+      Idx: 0
+      Kind: out
+      ReqOut:
+        Or:
+        - Dashes: two
+          Difficulty: hard
+        - Dashes: one
+          Difficulty: expert
+    Tweaks:
+    - Name: "blackGem"
+      ID: 2244
+      Update:
+        Values:
+          fake: true
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 1000
+        Y: 88
+    - Name: "spawn"
+      ID: 2223
+      Update:
+        Remove: true
 
 CSide:
   - Room: "00"

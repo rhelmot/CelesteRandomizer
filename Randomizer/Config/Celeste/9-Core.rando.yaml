@@ -554,6 +554,36 @@ ASide:
         Values:
           cameraX: -1
           cameraY: 0
+  - Room: "c-01"
+    Core:
+      All: cold
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: inout
+    InternalEdges:
+    - Split: LeftToRight
+      ReqOut:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: master
+      ReqIn:
+        Dashes: zero
+    Tweaks:
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 640
+        Y: 88
+        Width: 16
+        Height: 56
+        Values:
+          cameraX: -1
+          cameraY: 0
   - Room: "c-02"
     Core:
       All: cold
@@ -1823,6 +1853,46 @@ BSide:
     - Side: Down
       Idx: 0
       Kind: None
+  - Room: "space" # space copy
+    Holes:
+    - Side: Left
+      Idx: 0
+      Kind: out
+      ReqOut:
+        Or:
+        - Dashes: two
+          Difficulty: hard
+        - Dashes: one
+          Difficulty: expert
+    - Side: Up
+      Idx: 0
+      Kind: None
+    - Side: Down
+      Idx: 0
+      Kind: None
+    Tweaks:
+    - Name: "invisibleBarrier"
+      ID: 287
+      Update:
+        Remove: true
+    - Name: "blackGem"
+      ID: 1
+      Update:
+        Values:
+          fake: true
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 1896
+        Y: 144
+    - Name: "spawn"
+      ID: 39
+      Update:
+        Remove: true
+    - Name: "spawn"
+      ID: 0
+      Update:
+        Remove: true
 
 CSide:
   - Room: "intro"  # TODO: hearts

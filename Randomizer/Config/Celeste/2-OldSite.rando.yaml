@@ -974,6 +974,28 @@ ASide:
           Add: true
           X: 56
           Y: 104
+  - Room: "d9" # d9 copy
+    Holes:
+    - Side: Up
+      Idx: 0
+      Kind: out
+      ReqOut:
+        Dashes: one
+        Difficulty: hard
+    Tweaks:
+      - ID: 41
+        Name: "cassette"
+        Update:
+          Remove: true
+      - Name: "spawn"
+        Update:
+          Add: true
+          X: 56
+          Y: 144
+      - Name: "spawn"
+        ID: 0
+        Update:
+          Remove: true
   - Room: "end_0"
     Holes:
     - Side: Up
