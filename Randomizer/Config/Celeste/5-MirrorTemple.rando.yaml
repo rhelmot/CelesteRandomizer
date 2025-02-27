@@ -3106,10 +3106,6 @@ BSide:
       HighBound: 15
     Tweaks:
     - Name: "invisibleBarrier"
-      ID: 585
-      Update:
-        Remove: true
-    - Name: "invisibleBarrier"
       ID: 498
       Update:
         Remove: true
@@ -3187,6 +3183,10 @@ BSide:
             Difficulty: hard
           - Dashes: two
     Tweaks:
+    - Name: "invisibleBarrier"
+      ID: 585
+      Update:
+        Remove: true
     - Name: "templeGate"
       ID: 400
       Update:
@@ -3200,7 +3200,7 @@ BSide:
     - Name: "spawn"
       ID: 397
       Update:
-        X: 448
+        X: 408
         Y: 112
     - Name: "theoCrystal"
       ID: 399
@@ -3237,7 +3237,7 @@ BSide:
     - Name: "spawn"
       Update:
         Add: true
-        X: 278
+        X: 728
         Y: 152
     - Name: "theoCrystal"
       ID: 19
