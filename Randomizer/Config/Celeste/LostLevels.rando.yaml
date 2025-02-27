@@ -2251,6 +2251,59 @@ ASide:
         Update:
           Values:
             music_session: true
+  - Room: "j-00" # j-00 copy
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: in
+    - Side: Left
+      Idx: 0
+      Kind: out
+      ReqOut:
+        Dashes: two
+        Difficulty: perfect
+    - Side: Down
+      Idx: 0
+      Kind: None
+    - Side: Down
+      Idx: 1
+      Kind: None
+    Tweaks:
+      - Name: "cameraOffsetTrigger"
+        Update:
+          Add: true
+          X: 1040
+          Y: 0
+          Width: 16
+          Height: 184
+          Values:
+            cameraX: -1.4
+            cameraY: 0
+      - Name: "lightningBlock"
+        ID: 89
+        Update:
+          Values:
+            music_session: true
+      - Name: "lightning"
+        ID: 95
+        Update:
+          Remove: true
+      - Name: "crumbleWallOnRumble"
+        ID: 216
+        Update:
+          Remove: true
+      - Name: "crumbleWallOnRumble"
+        ID: 217
+        Update:
+          Remove: true
+      - Name: "flingBirdIntro" # cassette needs to stay on
+        ID: 128
+        Update:
+          Remove: true
+      - Name: "exitBlock"
+        ID: 213
+        Update:
+          Remove: true
   - Room: "j-00b"
     Holes:
     - Side: Right
@@ -2270,6 +2323,66 @@ ASide:
     - Side: Down
       Idx: 1
       Kind: none
+  - Room: "j-00b" # j-00b copy
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: in
+    - Side: Left
+      Idx: 0
+      Kind: out
+      ReqOut:
+        Or:
+        - Dashes: two
+          Difficulty: hard
+        - Dashes: one
+          Difficulty: expert
+    - Side: Down
+      Idx: 0
+      Kind: None
+    - Side: Down
+      Idx: 1
+      Kind: none
+    Tweaks:
+      - Name: "cameraOffsetTrigger"
+        Update:
+          Add: true
+          X: 1048
+          Y: -40
+          Width: 16
+          Height: 264
+          Values:
+            cameraX: -1.4
+            cameraY: 0
+      - Name: "lightning"
+        ID: 167
+        Update:
+          Remove: true
+      - Name: "lightning"
+        ID: 169
+        Update:
+          Remove: true
+      - Name: "invisibleBarrier"
+        ID: 87
+        Update:
+          Remove: true
+      - Name: "spawn"
+        Update:
+          Add: true
+          X: 1568
+          Y: 88
+      - Name: "spawn"
+        Update:
+          Add: true
+          X: 880
+          Y: 96
+      - Name: "changeRespawnTrigger"
+        Update:
+          Add: true
+          X: 1048
+          Y: -40
+          Width: 16
+          Height: 264
   - Room: "j-01"
     Holes:
     - Side: Right
@@ -2366,6 +2479,52 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: None
+  - Room: "j-06" # j-06 copy
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: in
+    - Side: Left
+      Idx: 0
+      Kind: out
+      ReqOut:
+        Dashes: two
+        Difficulty: perfect
+    - Side: Down
+      Idx: 0
+      Kind: None
+    Tweaks:
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 1480
+        Y: -16
+        Width: 16
+        Height: 216
+        Values:
+          cameraX: -1.4
+          cameraY: 0 
+    - Name: "lightning"
+      ID: 80
+      Update: 
+        Remove: true 
+    - Name: "lightning"
+      ID: 74
+      Update: 
+        Remove: true 
+    - Name: "lightning"
+      ID: 81
+      Update: 
+        Remove: true
+    - Name: "invisibleBarrier"
+      ID: 70
+      Update: 
+        Remove: true
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 1536
+        Y: 88
   - Room: "j-07"
     Holes:
     - Side: Left
@@ -2470,6 +2629,80 @@ ASide:
     - Side: Up
       Idx: 1
       Kind: None
+  - Room: "j-10" # j-10 copy
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: in
+    - Side: Left
+      Idx: 0
+      Kind: out
+      ReqOut:
+        Dashes: two
+        Difficulty: perfect # rethink this later
+    - Side: Down
+      Idx: 0
+      Kind: Unknown
+      HighOpen: true
+    - Side: Up
+      Idx: 1
+      Kind: None
+    Tweaks: 
+    - Name: "cameraOffsetTrigger"
+      ID: 1
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 3
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 4
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 5
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 1632
+        Y: -16
+        Width: 16
+        Height: 224
+        Values:
+          cameraX: -1.4
+          cameraY: 0 
+    - Name: "lightning"
+      ID: 286
+      Update: 
+        Remove: true 
+    - Name: "lightning"
+      ID: 311
+      Update: 
+        Remove: true 
+    - Name: "lightning"
+      ID: 285
+      Update: 
+        Remove: true
+    - Name: "lightning"
+      ID: 375
+      Update: 
+        Remove: true 
+    - Name: "lightning"
+      ID: 374
+      Update: 
+        Remove: true
+    - Name: "invisibleBarrier"
+      ID: 214
+      Update: 
+        Remove: true
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 1728
+        Y: 112
   - Room: "j-11"
     Holes:
     - Side: Right
@@ -2571,6 +2804,63 @@ ASide:
       Idx: 1
       Kind: Unknown
       HighOpen: true
+  - Room: "j-14" # j-14 copy
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: in
+    - Side: Left
+      Idx: 0
+      Kind: out
+      ReqOut:
+        Dashes: two
+        Difficulty: master # perfect?
+    - Side: Left
+      Idx: 1
+      Kind: none
+    - Side: Down
+      Idx: 0
+      Kind: none
+    - Side: Down
+      Idx: 1
+      Kind: Unknown
+      HighOpen: true
+    Tweaks: 
+    - Name: "cameraOffsetTrigger"
+      ID: 4
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 5
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 1360
+        Y: -8
+        Width: 16
+        Height: 200
+        Values:
+          cameraX: -1.4
+          cameraY: 0
+    - Name: "lightning"
+      ID: 365
+      Update: 
+        Remove: true 
+    - Name: "lightning"
+      ID: 364
+      Update: 
+        Remove: true 
+    - Name: "invisibleBarrier"
+      ID: 372
+      Update: 
+        Remove: true
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 1448
+        Y: 48
   - Room: "j-14b"
     Holes:
     - Side: Right
@@ -2591,6 +2881,16 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: none
+    Tweaks:
+    - Name: "invisibleBarrier"
+      ID: 333
+      Update:
+        Remove: true
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 1050
+        Y: 120
   - Room: "j-15"
     Holes:
     - Side: Right
@@ -2608,6 +2908,54 @@ ASide:
     - Side: Up
       Idx: 1
       Kind: none
+  - Room: "j-15" # j-15 copy
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: in
+    - Side: Left
+      Idx: 0
+      Kind: out
+      ReqOut:
+        Dashes: two
+        Difficulty: perfect
+    - Side: Down
+      Idx: 0
+      Kind: none
+    - Side: Up
+      Idx: 1
+      Kind: none
+    Tweaks: 
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 1344
+        Y: -24
+        Width: 16
+        Height: 168
+        Values:
+          cameraX: -1.4
+          cameraY: 0
+    - Name: "lightning"
+      ID: 406
+      Update: 
+        Remove: true 
+    - Name: "lightning"
+      ID: 405
+      Update: 
+        Remove: true 
+    - Name: "lightning"
+      ID: 394
+      Update: 
+        Remove: true 
+    - Name: "lightning"
+      ID: 410
+      Update: 
+        Remove: true 
+    - Name: "invisibleBarrier"
+      ID: 373
+      Update: 
+        Remove: true
   - Room: "j-16"
     ReqEnd:
       Dashes: one
