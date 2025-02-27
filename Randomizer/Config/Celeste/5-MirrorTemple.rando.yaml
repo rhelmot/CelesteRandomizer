@@ -1845,6 +1845,39 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+  - Room: "e-01" # e-01 copy
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: in
+    - Side: Left
+      Idx: 0
+      Kind: out
+    Tweaks:
+    - Name: "invisibleBarrier"
+      ID: 14
+      Update:
+        Remove: true
+    - Name: "templeGate"
+      ID: 10
+      Update:
+        Values:
+          sprite: theo
+          type: HoldingTheo
+    - Name: "templeGate"
+      ID: 13
+      Update:
+        Remove: true
+    - Name: "spawn"
+      ID: 0
+      Update:
+        X: 296
+        Y: 168
+    - Name: "theoCrystal"
+      ID: 3
+      Update:
+        X: 272
+        Y: 168
   - Room: "e-02"
     Holes:
     - Side: Right
@@ -1853,6 +1886,49 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+  - Room: "e-02" # e-02 copy
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: in
+    - Side: Left
+      Idx: 0
+      Kind: out
+    Tweaks:
+    - Name: "invisibleBarrier"
+      ID: 21
+      Update:
+        Remove: true
+    - Name: "templeGate"
+      ID: 10
+      Update:
+        Values:
+          sprite: theo
+          type: HoldingTheo
+    - Name: "templeGate"
+      ID: 20
+      Update:
+        Remove: true
+    - Name: "spawn"
+      ID: 0
+      Update:
+        X: 352
+        Y: 168
+    - Name: "theoCrystal"
+      ID: 3
+      Update:
+        X: 328
+        Y: 168
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 312
+        Y: 120
+        Width: 64
+        Height: 48
+        Values:
+            type: "button"
+            entID: 19
   - Room: "e-03"
     Holes:
     - Side: Right
@@ -1861,6 +1937,49 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+  - Room: "e-03" # e-03 copy
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: in
+    - Side: Left
+      Idx: 0
+      Kind: out
+    Tweaks:
+    - Name: "invisibleBarrier"
+      ID: 21
+      Update:
+        Remove: true
+    - Name: "templeGate"
+      ID: 10
+      Update:
+        Values:
+          sprite: theo
+          type: HoldingTheo
+    - Name: "templeGate"
+      ID: 25
+      Update:
+        Remove: true
+    - Name: "spawn"
+      ID: 0
+      Update:
+        X: 488
+        Y: 168
+    - Name: "theoCrystal"
+      ID: 3
+      Update:
+        X: 464
+        Y: 168
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 432
+        Y: 120
+        Width: 80
+        Height: 48
+        Values:
+            type: "button"
+            entID: 26
   - Room: "e-04"
     Holes:
     - Side: Right
@@ -1869,6 +1988,48 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+  - Room: "e-04" # e-04 copy
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: in
+    - Side: Left
+      Idx: 0
+      Kind: out
+    Tweaks:
+    - Name: "invisibleBarrier"
+      ID: 21
+      Update:
+        Remove: true
+    - Name: "templeGate"
+      ID: 10
+      Update:
+        Values:
+          sprite: theo
+          type: HoldingTheo
+    - Name: "templeGate"
+      ID: 47
+      Update:
+        Remove: true
+    - Name: "spawn"
+      ID: 0
+      Update:
+        X: 472
+        Y: 168
+    - Name: "theoCrystal"
+      ID: 3
+      Update:
+        X: 448
+        Y: 168
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 432
+        Y: 120
+        Width: 64
+        Height: 48
+        Values:
+            type: "touchswitch"
   - Room: "e-06"
     Holes:
     - Side: Right
@@ -1877,6 +2038,49 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+  - Room: "e-06" # e-06 copy
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: in
+    - Side: Left
+      Idx: 0
+      Kind: out
+    Tweaks:
+    - Name: "invisibleBarrier"
+      ID: 21
+      Update:
+        Remove: true
+    - Name: "templeGate"
+      ID: 10
+      Update:
+        Values:
+          sprite: theo
+          type: HoldingTheo
+    - Name: "templeGate"
+      ID: 57
+      Update:
+        Remove: true
+    - Name: "spawn"
+      ID: 0
+      Update:
+        X: 640
+        Y: 168
+    - Name: "theoCrystal"
+      ID: 3
+      Update:
+        X: 616
+        Y: 168
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 384
+        Y: 120
+        Width: 80
+        Height: 48
+        Values:
+            type: "button"
+            entID: 49
   - Room: "e-05"
     Holes:
     - Side: Right
@@ -1898,6 +2102,43 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+  - Room: "e-07" # e-07 copy
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: in
+    - Side: Left
+      Idx: 0
+      Kind: out
+    Tweaks:
+    - Name: "invisibleBarrier"
+      ID: 21
+      Update:
+        Remove: true
+    - Name: "templeGate"
+      ID: 10
+      Update:
+        Values:
+          sprite: theo
+          type: HoldingTheo
+    - Name: "templeGate"
+      ID: 57
+      Update:
+        Remove: true
+    - Name: "templeGate"
+      ID: 66
+      Update:
+        Remove: true
+    - Name: "spawn"
+      ID: 0
+      Update:
+        X: 664
+        Y: 168
+    - Name: "theoCrystal"
+      ID: 3
+      Update:
+        X: 640
+        Y: 168
   - Room: "e-08"
     Holes:
     - Side: Right
@@ -1908,6 +2149,41 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+  - Room: "e-08" # e-08 copy
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: in
+    - Side: Left
+      Idx: 0
+      Kind: out
+      ReqOut:
+        Dashes: one
+    Tweaks:
+    - Name: "invisibleBarrier"
+      ID: 21
+      Update:
+        Remove: true
+    - Name: "templeGate"
+      ID: 10
+      Update:
+        Values:
+          sprite: theo
+          type: HoldingTheo
+    - Name: "templeGate"
+      ID: 80
+      Update:
+        Remove: true
+    - Name: "spawn"
+      ID: 0
+      Update:
+        X: 520
+        Y: 176
+    - Name: "theoCrystal"
+      ID: 3
+      Update:
+        X: 496
+        Y: 176
   - Room: "e-09"
     Holes:
     - Side: Right
@@ -1918,6 +2194,43 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+  - Room: "e-09" # e-09 copy
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: in
+    - Side: Left
+      Idx: 0
+      Kind: out
+      ReqOut:
+        Or:
+        - Dashes: one
+        - Difficulty: hard
+    Tweaks:
+    - Name: "invisibleBarrier"
+      ID: 21
+      Update:
+        Remove: true
+    - Name: "templeGate"
+      ID: 10
+      Update:
+        Values:
+          sprite: theo
+          type: HoldingTheo
+    - Name: "templeGate"
+      ID: 103
+      Update:
+        Remove: true
+    - Name: "spawn"
+      ID: 0
+      Update:
+        X: 416
+        Y: 168
+    - Name: "theoCrystal"
+      ID: 3
+      Update:
+        X: 392
+        Y: 168
   - Room: "e-10"
     Holes:
     - Side: Right
@@ -1926,6 +2239,39 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+  - Room: "e-10"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: in
+    - Side: Left
+      Idx: 0
+      Kind: out
+    Tweaks:
+    - Name: "invisibleBarrier"
+      ID: 21
+      Update:
+        Remove: true
+    - Name: "templeGate"
+      ID: 10
+      Update:
+        Values:
+          sprite: theo
+          type: HoldingTheo
+    - Name: "templeGate"
+      ID: 41
+      Update:
+        Remove: true
+    - Name: "spawn"
+      ID: 0
+      Update:
+        X: 688
+        Y: 80
+    - Name: "theoCrystal"
+      ID: 3
+      Update:
+        X: 616
+        Y: 112
   - Room: "e-11"
     ReqEnd:
       Difficulty: easy
@@ -2595,6 +2941,33 @@ BSide:
     - Side: Down
       Idx: 0
       Kind: in
+  - Room: "d-00" # d-00 copy
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: out
+    Tweaks:
+    - Name: "templeGate"
+      ID: 400
+      Update:
+        Remove: true
+    - Name: "spawn"
+      ID: 397
+      Update:
+        X: 344
+        Y: 168
+    - Name: "theoCrystal"
+      ID: 399
+      Update:
+        X: 320
+        Y: 168
+    - Name: "jumpThru"
+      ID: 396
+      Update: 
+        Width: 16
   - Room: "d-01"
     Holes:
     - Side: Right
@@ -2608,6 +2981,49 @@ BSide:
     - Side: Down
       Idx: 2
       Kind: none # remove if the barrier is ever removed (ie to do the room backwards)
+  - Room: "d-01" # d-01 copy
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: in
+      ReqOut:
+        Difficulty: normal
+    - Side: Left
+      Idx: 0
+      Kind: out
+    Tweaks:
+    - Name: "invisibleBarrier"
+      ID: 455
+      Update:
+        Remove: true
+    - Name: "templeGate"
+      ID: 400
+      Update:
+        Values:
+          sprite: theo
+          type: HoldingTheo
+    - Name: "templeGate"
+      ID: 406
+      Update:
+        Remove: true
+    - Name: "templeGate"
+      ID: 432
+      Update:
+        Remove: true
+    - Name: "templeGate"
+      ID: 407
+      Update:
+        Remove: true
+    - Name: "spawn"
+      ID: 397
+      Update:
+        X: 672
+        Y: 168
+    - Name: "theoCrystal"
+      ID: 399
+      Update:
+        X: 648
+        Y: 168
   - Room: "d-02"
     Holes:
     - Side: Right
@@ -2621,6 +3037,43 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: in
+  - Room: "d-02" # d-02 copy
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: in
+    - Side: Left
+      Idx: 0
+      Kind: out
+    Tweaks:
+    - Name: "invisibleBarrier"
+      ID: 487
+      Update:
+        Remove: true
+    - Name: "templeGate"
+      ID: 400
+      Update:
+        Values:
+          sprite: theo
+          type: HoldingTheo
+    - Name: "templeGate"
+      ID: 407
+      Update:
+        Remove: true
+    - Name: "templeGate"
+      ID: 438
+      Update:
+        Remove: true
+    - Name: "spawn"
+      ID: 397
+      Update:
+        X: 776
+        Y: 152
+    - Name: "theoCrystal"
+      ID: 399
+      Update:
+        X: 744
+        Y: 136
   - Room: "d-03"
     Holes:
     - Side: Right
@@ -2636,13 +3089,64 @@ BSide:
       Kind: unknown
       LowBound: 13
       HighBound: 15
+  - Room: "d-03" # d-03 copy
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: in
+    - Side: Left
+      Idx: 0
+      Kind: out
+      ReqOut:
+        Dashes: one
+    - Side: Down
+      Idx: 1
+      Kind: unknown
+      LowBound: 13
+      HighBound: 15
+    Tweaks:
+    - Name: "invisibleBarrier"
+      ID: 585
+      Update:
+        Remove: true
+    - Name: "invisibleBarrier"
+      ID: 498
+      Update:
+        Remove: true
+    - Name: "templeGate"
+      ID: 400
+      Update:
+        Values:
+          sprite: theo
+          type: HoldingTheo
+    - Name: "templeGate"
+      ID: 407
+      Update:
+        Remove: true
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 560
+        Y: 80
+        Width: 88
+        Height: 88
+        Values:
+            type: "touchswitch"
+    - Name: "spawn"
+      ID: 397
+      Update:
+        X: 624
+        Y: 168
+    - Name: "theoCrystal"
+      ID: 399
+      Update:
+        X: 592
+        Y: 152
   - Room: "d-04"
     Holes:
     - Side: Right
       Idx: 0
       Kind: out
-      ReqOut:
-        Dashes: one
     - Side: Left
       Idx: 0
       Kind: in
@@ -2660,6 +3164,49 @@ BSide:
           - Dashes: one
             Difficulty: hard
           - Dashes: two
+  - Room: "d-04" # d-04 copy
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: in
+    - Side: Left
+      Idx: 0
+      Kind: out
+    - Side: Up
+      Idx: 0
+      Kind: Unknown
+      HighOpen: true
+    - Side: Up
+      New: true
+      Kind: Unknown
+      LowBound: 45
+      HighBound: 48
+      ReqIn:
+        Or:
+          - Dashes: one
+            Difficulty: hard
+          - Dashes: two
+    Tweaks:
+    - Name: "templeGate"
+      ID: 400
+      Update:
+        Values:
+          sprite: theo
+          type: HoldingTheo
+    - Name: "templeGate"
+      ID: 565
+      Update:
+        Remove: true
+    - Name: "spawn"
+      ID: 397
+      Update:
+        X: 448
+        Y: 112
+    - Name: "theoCrystal"
+      ID: 399
+      Update:
+        X: 384
+        Y: 112
   - Room: "d-05"
     ReqEnd:
       Or:
