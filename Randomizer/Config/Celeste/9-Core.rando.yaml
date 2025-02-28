@@ -569,6 +569,28 @@ ASide:
       Name: jumpThru
       Update:
         Width: 16
+    - Name: dashBlock
+      Update:
+        Add: true
+        X: 72
+        Y: 160
+        Width: 56
+        Height: 16
+        Values:
+          tiletype: k
+          blendin: true
+          canDash: false
+    - Name: dashBlock
+      Update:
+        Add: true
+        X: 24
+        Y: 160
+        Width: 16
+        Height: 16
+        Values:
+          tiletype: k
+          blendin: true
+          canDash: false
   - Room: "b-05" # b-05 copy
     Core:
       All: hot

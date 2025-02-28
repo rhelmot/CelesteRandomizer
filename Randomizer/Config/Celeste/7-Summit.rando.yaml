@@ -919,6 +919,10 @@ ASide:
         ID: 1
         Update:
           Y: 0
+      - Name: "cameraTargetTrigger"
+        ID: 0
+        Update:
+          Remove: true
       - Name: "SummitBackgroundManager"
         ID: 166
         Update:
@@ -2062,8 +2066,8 @@ ASide:
       Launch: 19
       ReqOut:
         Or:
-        - Dashes: one
-        - Dashes: zero
+        - Dashes: two
+        - Dashes: One
           Difficulty: hard
     - Side: Left
       Idx: 0
@@ -2089,8 +2093,10 @@ ASide:
       Idx: 1
       Kind: inout
       ReqOut:
-        Dashes: One
-        Difficulty: hard
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: hard
     - Side: right
       Idx: 0
       Kind: None
