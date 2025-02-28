@@ -714,11 +714,6 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: inout
-    - Side: Right
-      Idx: 0
-      Kind: inout
-      ReqBoth:
-        Dashes: one
     - Side: Left
       Idx: 0
       Kind: inout
@@ -729,9 +724,17 @@ ASide:
     - To: "lower"
       ReqOut:
         Dashes: zero
-    - To: "middle_right"
+      ReqIn:
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: expert
+    - To: "top_right"
       ReqBoth:
         Dashes: one
+    - To: "middle_right"
+      ReqOut:
+        Dashes: zero
     - Collectable: 0
       ReqBoth:
         Dashes: one
@@ -768,6 +771,13 @@ ASide:
       - Side: Right
         Idx: 1
         Kind: inout
+    - Room: "top_right"
+      Holes:
+      - Side: Right
+        Idx: 0
+        Kind: inout
+        ReqIn:
+          Dashes: one
     Tweaks:
     - ID: 6             # remove change respawn trigger
       Update:
