@@ -521,6 +521,10 @@ ASide:
         Values:
           cameraX: -1.2
           cameraY: 0
+    - Name: "fireBarrier"
+      ID: 149
+      Update:
+        Remove: true
     - Name: "coreModeToggle"
       Update:
         Add: true
@@ -548,6 +552,10 @@ ASide:
       ReqBoth:
         Dashes: one
     Tweaks:
+    - Name: "switchGate"
+      ID: 155
+      Update:
+        Height: 24
     - Name: "randomizer/ActivateSwitches"
       Update:
         Add: true
