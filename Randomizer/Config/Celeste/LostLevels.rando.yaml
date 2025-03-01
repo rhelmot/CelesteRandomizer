@@ -578,11 +578,6 @@ ASide:
     Hub: true
     Holes:
     - Side: Up
-      Idx: 0
-      Kind: inout
-      ReqBoth:
-        Dashes: one
-    - Side: Up
       Idx: 1
       Kind: inout
       ReqOut:
@@ -610,17 +605,13 @@ ASide:
       Kind: inout
       ReqBoth:
         Flag: poweroff:set
-    - Side: Right
-      Idx: 1
-      Kind: inout
-      ReqIn:
-        Or:
-        - Dashes: two
-        - Flag: poweroff:set
     - Side: Left
       Idx: 0
       Kind: inout
-      ReqBoth:
+      ReqOut:
+        Flag: poweroff:set
+      ReqIn:
+        Dashes: one
         Flag: poweroff:set
     - Side: Down
       Idx: 1
@@ -638,12 +629,47 @@ ASide:
       - Room: "box"
         Flags:
           - poweroff:set
+      - Room: "top"
+        Holes:
+        - Side: Up
+          Idx: 0
+          Kind: inout
+      - Room: "right"
+        Holes:
+        - Side: Right
+          Idx: 1
+          Kind: inout
+        InternalEdges:
+          - To: "box"
+            ReqOut:
+              Or:
+              - Dashes: two
+              - Dashes: one
+                Difficulty: master
     InternalEdges:
       - To: "box"
-        ReqOut:
-          Dashes: two
         ReqIn:
           Dashes: zero
+      - To: "right"
+        ReqOut:
+          Dashes: zero
+        ReqIn:
+          Or:
+          - Dashes: one
+            Difficulty: expert
+          - Flag: poweroff:set
+      - To: "top"
+        ReqOut:
+          Or:
+          - Dashes: two
+          - Dashes: one
+            Difficulty: hard
+          - Flag: poweroff:set
+        ReqIn:
+          Or:
+          - Dashes: two
+            Difficulty: hard
+          - Flag: poweroff:set
     Tweaks:
     - Name: "spawn"
       X: 528
