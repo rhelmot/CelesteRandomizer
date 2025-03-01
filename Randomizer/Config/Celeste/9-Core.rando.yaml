@@ -606,18 +606,12 @@ ASide:
         Kind: inout
     InternalEdges:
     - To: "out"
-      ReqOut:
+      ReqBoth:
         Or:
         - Dashes: two
           Difficulty: expert
         - Dashes: one
-          Difficulty: perfect # uh its just a dultra idk 
-      ReqIn:
-        Or:
-        - Dashes: two
-          Difficulty: expert
-        - Dashes: one
-          Difficulty: master # hyper cb bhop, no other difficulty.
+          Difficulty: master # hyper cb bhop ltr, 6f bhop rtl maybe perfect?
     Tweaks:
     - Name: "switchGate"
       ID: 155
@@ -1637,6 +1631,7 @@ ASide:
   - Room: "d-10c"
     Core:
       All: hot
+      Right: cold
     Holes:
     - Side: Right
       Idx: 0
@@ -1666,6 +1661,17 @@ ASide:
     - Side: Down
       Idx: 3
       Kind: None
+    Tweaks:
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 1928
+        Y: 0
+        Width: 8
+        Height: 184
+        Values:
+          cameraX: -1.4
+          cameraY: 0 
   - Room: "d-11"
     Core:
       All: hot

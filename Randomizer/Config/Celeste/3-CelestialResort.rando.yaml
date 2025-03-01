@@ -427,6 +427,7 @@ ASide:
             - Flag: books:unset
             - Flag: towels:unset
             - Flag: boxes:set
+            - Difficulty: master
         - Dashes: zero
           Difficulty: perfect # clear this before merging 1
           And:

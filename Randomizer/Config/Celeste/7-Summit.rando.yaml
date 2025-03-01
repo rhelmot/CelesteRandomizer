@@ -340,8 +340,8 @@ ASide:
           Dashes: one
     Tweaks:
     - Name: "spawn"
+      ID: 35
       Update:
-        Add: true
         X: 160
         Y: 24
     - Name: "cameraOffsetTrigger"
@@ -901,8 +901,8 @@ ASide:
         Dashes: one
     Tweaks:
       - Name: "spawn"
+        ID: 99
         Update:
-          Add: true
           X: 160
           Y: 24
       - Name: "cameraOffsetTrigger"
@@ -1360,8 +1360,8 @@ ASide:
         Dashes: one
     Tweaks:
     - Name: "spawn"
+      ID: 203
       Update:
-        Add: true
         X: 160
         Y: 24
     - Name: "cameraOffsetTrigger"
@@ -2105,8 +2105,8 @@ ASide:
       Kind: None
     Tweaks:
     - Name: "spawn"
+      ID: 489
       Update:
-        Add: true
         X: 160
         Y: 24
     - Name: "cameraOffsetTrigger"
@@ -2796,8 +2796,8 @@ ASide:
         Dashes: one
     Tweaks:
     - Name: "spawn"
+      ID: 499
       Update:
-        Add: true
         X: 160
         Y: 24
     - Name: "cameraOffsetTrigger"
@@ -3421,8 +3421,8 @@ ASide:
         Dashes: one
     Tweaks:
     - Name: "spawn"
+      ID: 652
       Update:
-        Add: true
         X: 96
         Y: 536
     - Name: "jumpThru"
@@ -3619,7 +3619,7 @@ ASide:
       Update:
         Values:
           twoDash: true
-  - Room: "g-00b"
+  - Room: "g-00b" # g-00b copy
     Holes:
     - Side: Down
       Idx: 0
@@ -3703,6 +3703,15 @@ ASide:
       ID: 165
       Update:
         Remove: true
+    - Name: windTrigger
+      ID: 23
+      Update:
+        Remove: true
+    - Name: spawn
+      X: 344
+      Y: 680
+      Update:
+        Default: true
   - Room: "g-01"
     Holes:
     - Side: Up
@@ -3754,6 +3763,11 @@ ASide:
         Add: true
         X: 1320
         Y: 32
+    - Name: "spawn"
+      X: 1280
+      Y: 992
+      Update:
+        Default: true
     - Name: "cameraTargetTrigger"
       Update:
         Add: true
@@ -4594,8 +4608,8 @@ BSide:
       Kind: none
     Tweaks:
     - Name: "spawn"
+      ID: 797
       Update:
-        Add: true
         X: 160
         Y: 24
     - Name: "cameraOffsetTrigger"
@@ -4711,8 +4725,8 @@ BSide:
       Kind: None
     Tweaks:
     - Name: "spawn"
+      ID: 917
       Update:
-        Add: true
         X: 160
         Y: 24
     - Name: "cameraOffsetTrigger"
@@ -4853,8 +4867,8 @@ BSide:
       Kind: None
     Tweaks:
     - Name: "spawn"
+      ID: 1365
       Update:
-        Add: true
         X: 160
         Y: 24
     - Name: "cameraOffsetTrigger"
@@ -5028,8 +5042,8 @@ BSide:
       Kind: None
     Tweaks:
     - Name: "spawn"
+      ID: 1833
       Update:
-        Add: true
         X: 160
         Y: 24
     - Name: "cameraOffsetTrigger"
@@ -5236,8 +5250,8 @@ BSide:
       HighOpen: true
     Tweaks:
     - Name: "spawn"
+      ID: 137
       Update:
-        Add: true
         X: 160
         Y: 24
     - Name: "cameraOffsetTrigger"
@@ -5304,6 +5318,11 @@ BSide:
           Difficulty: expert
     Tweaks:
       - Name: "spawn"
+        X: 288
+        Y: 1184
+        Update: 
+          Default: true
+      - Name: "spawn"
         Update:
           Add: true
           X: 112
@@ -5364,6 +5383,11 @@ BSide:
         Kind: in
         Launch: 209
     Tweaks:
+    - Name: "spawn"
+      X: 1152
+      Y: 1120
+      Update:
+        Default: true
     - Name: "spawn"
       Update:
         Add: true

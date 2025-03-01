@@ -1447,7 +1447,17 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: in
-    Tweaks: 
+    Tweaks:
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 488
+        Y: 0
+        Width: 8
+        Height: 184
+        Values:
+          cameraX: -1.4
+          cameraY: 0   
     - Name: "spawn"
       ID: 68
       Update:
@@ -1491,6 +1501,16 @@ ASide:
       Idx: 0
       Kind: in
     Tweaks: 
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 608
+        Y: 0
+        Width: 8
+        Height: 184
+        Values:
+          cameraX: -1.4
+          cameraY: 0  
     - Name: "spawn"
       ID: 1
       Update:
@@ -1531,7 +1551,17 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: in
-    Tweaks: 
+    Tweaks:
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 448
+        Y: 0
+        Width: 8
+        Height: 184
+        Values:
+          cameraX: -1.4
+          cameraY: 0   
     - Name: "spawn"
       ID: 1
       Update:
@@ -1568,6 +1598,16 @@ ASide:
       Idx: 0
       Kind: in
     Tweaks: 
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 504
+        Y: 0
+        Width: 8
+        Height: 184
+        Values:
+          cameraX: -1.4
+          cameraY: 0  
     - Name: "spawn"
       ID: 73
       Update:
@@ -1607,6 +1647,16 @@ ASide:
       Update:
         X: 280
         Y: 96
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 256
+        Y: 0
+        Width: 8
+        Height: 184
+        Values:
+          cameraX: -1.4
+          cameraY: 0  
     - Name: "invisibleBarrier"
       ID: 76
       Update:
@@ -1640,6 +1690,16 @@ ASide:
       Idx: 0
       Kind: in
     Tweaks: 
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 192
+        Y: 64
+        Width: 40
+        Height: 8
+        Values:
+          cameraX: -1.4
+          cameraY: 0  
     - Name: "spawn"
       ID: 73
       Update:
@@ -1681,6 +1741,16 @@ ASide:
       Idx: 0
       Kind: in
     Tweaks: 
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 392
+        Y: 0
+        Width: 8
+        Height: 184
+        Values:
+          cameraX: -1.4
+          cameraY: 0  
     - Name: "spawn"
       ID: 73
       Update:
@@ -1716,7 +1786,17 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: in
-    Tweaks: 
+    Tweaks:
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 584
+        Y: 0
+        Width: 8
+        Height: 184
+        Values:
+          cameraX: -1.4
+          cameraY: 0  
     - Name: "spawn"
       ID: 73
       Update:
@@ -1758,6 +1838,16 @@ ASide:
       Idx: 0
       Kind: in
     Tweaks: 
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 0
+        Y: 392
+        Width: 320
+        Height: 8
+        Values:
+          cameraX: 0
+          cameraY: -1.4
     - Name: "spawn"
       ID: 73
       Update:
@@ -1797,6 +1887,16 @@ ASide:
       Idx: 0
       Kind: in
     Tweaks: 
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 480
+        Y: 0
+        Width: 8
+        Height: 184
+        Values:
+          cameraX: -1.4
+          cameraY: 0 
     - Name: "spawn"
       ID: 152
       Update:
@@ -1841,6 +1941,16 @@ ASide:
         - Dashes: zero
           Difficulty: expert
     Tweaks: 
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 352
+        Y: 0
+        Width: 8
+        Height: 184
+        Values:
+          cameraX: -1.4
+          cameraY: 0 
     - Name: "spawn"
       ID: 152
       Update:
@@ -1879,6 +1989,16 @@ ASide:
       Idx: 0
       Kind: in
     Tweaks: 
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 624
+        Y: 0
+        Width: 8
+        Height: 184
+        Values:
+          cameraX: -1.4
+          cameraY: 0
     - Name: "spawn"
       ID: 73
       Update:
@@ -1918,6 +2038,16 @@ ASide:
       Idx: 0
       Kind: in
     Tweaks: 
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 0
+        Y: 448
+        Width: 320
+        Height: 8
+        Values:
+          cameraX: 0
+          cameraY: -1.4
     - Name: "spawn"
       ID: 73
       Update:
@@ -1960,6 +2090,16 @@ ASide:
       Idx: 0
       Kind: out
     Tweaks: 
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 224
+        Y: 0
+        Width: 8
+        Height: 184
+        Values:
+          cameraX: -1.4
+          cameraY: 0
     - Name: "spawn"
       ID: 454
       Update:
@@ -1999,6 +2139,16 @@ ASide:
       Idx: 0
       Kind: in
     Tweaks: 
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 224
+        Y: 0
+        Width: 8
+        Height: 184
+        Values:
+          cameraX: -1.4
+          cameraY: 0
     - Name: "spawn"
       ID: 454
       Update:
@@ -2035,6 +2185,16 @@ ASide:
       Idx: 0
       Kind: in
     Tweaks: 
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 600
+        Y: 0
+        Width: 8
+        Height: 184
+        Values:
+          cameraX: -1.4
+          cameraY: 0
     - Name: "spawn"
       ID: 454
       Update:
@@ -2071,6 +2231,16 @@ ASide:
       Idx: 0
       Kind: in
     Tweaks: 
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 600
+        Y: 0
+        Width: 8
+        Height: 184
+        Values:
+          cameraX: -1.4
+          cameraY: 0
     - Name: "spawn"
       ID: 454
       Update:
@@ -2609,6 +2779,16 @@ BSide:
       Idx: 4
       Kind: None
     Tweaks: 
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 544
+        Y: 0
+        Width: 8
+        Height: 184
+        Values:
+          cameraX: -1.4
+          cameraY: 0  
     - Name: "spawn"
       ID: 0
       Update:
@@ -2647,7 +2827,17 @@ BSide:
       ReqOut:
         Dashes: two
         Difficulty: master
-    Tweaks: 
+    Tweaks:
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 560
+        Y: 0
+        Width: 8
+        Height: 184
+        Values:
+          cameraX: -1.4
+          cameraY: 0  
     - Name: "spawn"
       ID: 121
       Update:
@@ -2748,6 +2938,16 @@ BSide:
         Dashes: two
         Difficulty: expert
     Tweaks: 
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 624
+        Y: 0
+        Width: 8
+        Height: 184
+        Values:
+          cameraX: -1.4
+          cameraY: 0  
     - Name: "spawn"
       ID: 121
       Update:
@@ -2775,7 +2975,12 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: in
-  - Room: "c-03" # c-03 copy TODO: add extraspace below block
+  - Room: "c-03" # c-03 copy
+    ExtraSpace:
+    - X: 568
+      Y: 184
+      Width: 48
+      Height: 48
     Holes:
     - Side: Right
       Idx: 0
@@ -2786,7 +2991,17 @@ BSide:
       ReqOut:
         Dashes: one # both 1x and 2x need to do the funny feather thing
         Difficulty: perfect
-    Tweaks: 
+    Tweaks:
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 688
+        Y: 0
+        Width: 8
+        Height: 184
+        Values:
+          cameraX: -1.4
+          cameraY: 0   
     - Name: "spawn"
       ID: 511
       Update:
@@ -2875,7 +3090,17 @@ BSide:
       ReqOut:
         Dashes: one
         Difficulty: expert
-    Tweaks: 
+    Tweaks:
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 864
+        Y: 0
+        Width: 8
+        Height: 184
+        Values:
+          cameraX: -1.4
+          cameraY: 0  
     - Name: "spawn"
       ID: 1086
       Update:
@@ -2917,6 +3142,16 @@ BSide:
         - Dashes: one
           Difficulty: master # demo
     Tweaks: 
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 680
+        Y: 0
+        Width: 8
+        Height: 184
+        Values:
+          cameraX: -1.4
+          cameraY: 0  
     - Name: "spawn"
       ID: 1411
       Update:

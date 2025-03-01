@@ -2269,6 +2269,11 @@ ASide:
       Idx: 1
       Kind: None
     Tweaks:
+      - Name: "spawn"
+        X: 976
+        Y: 160
+        Update:
+          Default: true
       - Name: "cameraOffsetTrigger"
         Update:
           Add: true
