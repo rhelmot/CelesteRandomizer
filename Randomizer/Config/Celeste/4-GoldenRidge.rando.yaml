@@ -966,7 +966,7 @@ ASide:
         - Dashes: two
           Difficulty: master
         - Dashes: one
-          Difficulty: perfect
+          Difficulty: master
     Subrooms:
       - Room: "right"
         Holes:
@@ -1002,7 +1002,7 @@ ASide:
         Or:
         - Dashes: one
         - Dashes: zero
-          Difficulty: perfect
+          Difficulty: master
     Subrooms:
     - Room: "top"
       Holes:
@@ -1088,7 +1088,7 @@ ASide:
         Or:
           - Dashes: one
           - Dashes: zero
-            Difficulty: perfect
+            Difficulty: master
       ReqIn:
         Dashes: one
   - Room: "c-09"  # fwiw this room is doable in two dashes with core mode
@@ -1194,7 +1194,7 @@ ASide:
           Or:
             - Dashes: one
             - Dashes: zero
-              Difficulty: perfect
+              Difficulty: master
         ReqIn:
           Dashes: one
       - To: "top"
@@ -1828,7 +1828,7 @@ BSide:
       ReqIn:
         Or:
         - Dashes: zero
-          Difficulty: perfect
+          Difficulty: master
         - Dashes: one
           Difficulty: hard
         - Dashes: two

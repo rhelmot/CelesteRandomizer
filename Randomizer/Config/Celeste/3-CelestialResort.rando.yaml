@@ -762,7 +762,7 @@ ASide:
         Or:
           - Dashes: one
           - Dashes: zero
-            Difficulty: perfect
+            Difficulty: master
     Subrooms:
     - Room: "right"
       Holes:
@@ -871,7 +871,7 @@ ASide:
         Or:
         - Dashes: one
         - Dashes: zero
-          Difficulty: perfect
+          Difficulty: master
       ReqIn:
         Dashes: two
         Difficulty: master
@@ -1262,7 +1262,7 @@ ASide:
         Or:
         - Dashes: one
         - Dashes: zero
-          Difficulty: perfect
+          Difficulty: master
           Or:
           - Flag: boxes:unset
           - Flag: towels:unset

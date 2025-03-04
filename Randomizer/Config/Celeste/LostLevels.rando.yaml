@@ -738,7 +738,7 @@ ASide:
         Or:
           - Dashes: one
           - Dashes: zero
-            Difficulty: perfect
+            Difficulty: master
         Flag: poweroff:set
   - Room: "d-03"
     Holes:
@@ -2187,7 +2187,9 @@ ASide:
       Kind: inout
       ReqOut:
         Or:
+        - Dashes: two
         - Dashes: one
+          Difficulty: hard
         - Dashes: zero
           Difficulty: perfect
       ReqIn:
@@ -2196,8 +2198,8 @@ ASide:
         - Dashes: one
           Difficulty: expert
       ExtraSpace:
-      - X: 44264
-        Y: -8656
+      - X: 112
+        Y: -32
         Width: 200
         Height: 32
     - Side: Left

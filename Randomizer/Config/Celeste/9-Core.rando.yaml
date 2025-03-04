@@ -1932,7 +1932,7 @@ BSide:
         Or:
         - Dashes: two
         - Dashes: one
-          Difficulty: perfect
+          Difficulty: master
       ReqIn:
         Or:
         - Dashes: two
@@ -2040,7 +2040,7 @@ BSide:
         - Dashes: two
           Difficulty: expert
         - Dashes: one
-          Difficulty: perfect
+          Difficulty: master
   - Room: "b-02"
     Core:
       All: cold

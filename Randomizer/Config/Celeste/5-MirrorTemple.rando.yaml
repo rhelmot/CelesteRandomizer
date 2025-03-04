@@ -879,8 +879,6 @@ ASide:
       ReqIn:
         Or:
         - Dashes: zero
-          Difficulty: perfect
-        - Dashes: one
           Difficulty: master
         - Dashes: two
     - To: "right"
@@ -2370,7 +2368,7 @@ BSide:
         Dashes: one
       ReqIn:
         Dashes: two
-        Difficulty: perfect
+        Difficulty: master
   - Room: "a-02"
     Holes:
     - Side: Left
@@ -2405,7 +2403,7 @@ BSide:
         - Dashes: two
           Difficulty: hard
         - Dashes: one
-          Difficulty: perfect
+          Difficulty: master
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:

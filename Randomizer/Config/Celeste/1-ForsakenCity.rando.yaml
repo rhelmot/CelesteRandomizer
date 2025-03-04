@@ -1553,7 +1553,7 @@ BSide:
         Or:
         - Dashes: one
         - Dashes: zero
-          Difficulty: Perfect
+          Difficulty: master
       ReqIn:
         Dashes: zero
     Tweaks:
