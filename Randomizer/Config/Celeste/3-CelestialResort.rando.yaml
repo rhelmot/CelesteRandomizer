@@ -581,7 +581,7 @@ ASide:
         - Dashes: zero
           Key: true
           KeyholeID: 11
-          Difficulty: perfect
+          Difficulty: master
           And:
           - Flag: books:unset
           - Flag: boxes:set

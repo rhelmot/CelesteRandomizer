@@ -5029,11 +5029,8 @@ BSide:
       Idx: 1
       Kind: out
       ReqOut:
-        Or:
-        - Dashes: two
-          Difficulty: master
-        - Dashes: One
-          Difficulty: perfect
+        Dashes: One
+        Difficulty: master
     - Side: left
       Idx: 0
       Kind: None
@@ -5237,7 +5234,7 @@ BSide:
       Kind: out
       ReqOut:
         Dashes: two
-        Difficulty: perfect
+        Difficulty: master
     - Side: left
       Idx: 0
       Kind: None

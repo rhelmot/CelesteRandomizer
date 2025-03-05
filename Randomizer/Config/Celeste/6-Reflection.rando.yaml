@@ -2989,8 +2989,11 @@ BSide:
       Idx: 0
       Kind: out
       ReqOut:
-        Dashes: one # both 1x and 2x need to do the funny feather thing
-        Difficulty: perfect
+        Or:
+        - Dashes: two
+          Difficulty: master
+        - Dashes: one
+          Difficulty: perfect
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:
