@@ -1350,7 +1350,10 @@ ASide:
       Idx: 1
       Kind: out
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: two
+        - Dashes: One
+          Difficulty: hard
     - Side: Right
       Idx: 0
       Kind: None
@@ -3568,9 +3571,11 @@ ASide:
         - Dashes: one
       ReqIn:
         Or:
+        - Dashes: two
         - Dashes: one
+          Difficulty: expert
         - Dashes: zero
-          Difficulty: perfect # ? not sure
+          Difficulty: master # ? not sure
     Subrooms:
     - Room: "top"
       Holes:

@@ -2260,24 +2260,106 @@ ASide:
       Idx: 0
       Kind: none
   - Room: "roof07" # room07 copy
-    ReqEnd:
-      Difficulty: easy
     Holes:
     - Side: Left
       Idx: 0
-      Kind: out
+      Kind: none
+      ReqOut:
+        Dashes: two
+        Difficulty: expert
       HighBound: 10
     - Side: Left
       Idx: 1
-      Kind: in
+      Kind: none
     - Side: Right
       Idx: 0
       Kind: none
     Tweaks:
-    - Name: "friendlyGhost"
+    - Name: "friendlyGhost" # you could do this 1x probably if you leave him on, i think thats bad though.
       ID: 2
       Update:
         Remove: true
+    - Name: "resortRoofEnding"
+      ID: 3
+      Update:
+        Remove: true
+#    - Decal: fg # so much work just because the ending entity HAD to be the tiles :sob: uncomment if i can add decals without crashing.
+#      Update:
+#        Add: true
+#        X: 216
+#        Y: 92
+#        Values:
+#          texture: 3-resort/roofEdge
+#    - Decal: fg
+#      Update:
+#        Add: true
+#        X: 200
+#        Y: 92
+#        Values:
+#          texture: 3-resort/roofCenter_d
+#    - Decal: fg
+#      Update:
+#        Add: true
+#        X: 184
+#        Y: 92
+#        Values:
+#          texture: 3-resort/roofCenter_c
+#    - Decal: fg
+#      Update:
+#        Add: true
+#        X: 168
+#        Y: 92
+#        Values:
+#          texture: 3-resort/roofCenter_c
+#    - Decal: fg
+#      Update:
+#        Add: true
+#        X: 152
+#        Y: 92
+#        Values:
+#          texture: 3-resort/roofCenter_d
+#    - Decal: fg
+#      Update:
+#        Add: true
+#        X: 136
+#        Y: 92
+#        Values:
+#          texture: 3-resort/roofCenter_d
+#    - Decal: fg
+#      Update:
+#        Add: true
+#        X: 120
+#        Y: 92
+#        Values:
+#          texture: 3-resort/roofCenter_b
+#    - Decal: fg
+#      Update:
+#        Add: true
+#        X: 104
+#        Y: 92
+#        Values:
+#          texture: 3-resort/roofCenter_d
+#    - Decal: fg
+#      Update:
+#        Add: true
+#        X: 88
+#        Y: 92
+#        Values:
+#          texture: 3-resort/roofCenter_b
+#    - Decal: fg
+#      Update:
+#        Add: true
+#        X: 72
+#        Y: 92
+#        Values:
+#          texture: 3-resort/roofCenter_b
+#    - Decal: fg
+#      Update:
+#        Add: true
+#        X: 56
+#        Y: 92
+#        Values:
+#          texture: 3-resort/roofCenter_d
 
 BSide:
   - Room: "00"

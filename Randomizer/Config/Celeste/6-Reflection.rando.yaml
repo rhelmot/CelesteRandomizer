@@ -816,6 +816,7 @@ ASide:
       ReqIn:
         Or:
         - Dashes: two
+          Difficulty: hard
         - Dashes: one
           Difficulty: expert
     Tweaks:

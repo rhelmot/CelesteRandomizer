@@ -1806,24 +1806,37 @@ ASide:
             Difficulty: expert
   - Room: "h-04"
     Holes:
-    - Side: Right
-      Idx: 0
-      Kind: out
-      ReqOut:
-        Dashes: one
-        Difficulty: expert
-    - Side: Right
-      Idx: 1
-      Kind: out
-      ReqOut:
-        Dashes: one
-        Difficulty: hard
     - Side: Left
       Idx: 0
       Kind: in
     - Side: Down
       Idx: 0
       Kind: None
+    InternalEdges: 
+    - To: "right"
+      ReqOut:
+        Dashes: one
+        Difficulty: expert
+    - To: "bottom"
+      ReqOut:
+        Dashes: One
+        Difficulty: hard
+    Subrooms:
+    - Room: "right"
+      Holes:
+      - Side: Right
+        Idx: 0
+        Kind: inout
+      InternalEdges:
+      - To: "bottom"
+        ReqOut:
+          Dashes: two
+          Difficulty: expert
+    - Room: "bottom"
+      Holes:
+      - Side: Right
+        Idx: 1
+        Kind: out
   - Room: "h-04b"
     Holes:
     - Side: Left
@@ -2079,7 +2092,231 @@ ASide:
     - X: 219
       Y: -44
       Width: 365
-      Height: 44         
+      Height: 44
+  - Room: "h-10"
+    SpinnersShatter: true
+    Holes:
+    - Side: Up
+      Idx: 0
+      Kind: out
+      Launch: 333
+      ReqOut:
+        Dashes: one
+    - Side: Left
+      Idx: 0
+      Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: none
+  - Room: "i-00"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    - Side: Right
+      Idx: 1
+      Kind: none
+    - Side: Down
+      Idx: 0
+      Kind: in
+      Launch: 66
+      HighBound: 92
+  - Room: "i-00b"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: inout
+    - Side: Left
+      Idx: 1
+      Kind: none
+    - Side: Down
+      Idx: 0
+      Kind: None
+    - Side: Up
+      Idx: 0
+      Kind: None
+    - Side: Up
+      Idx: 1
+      Kind: None
+    InternalEdges:
+      - Split: LeftToRight
+        ReqOut:
+          Or:
+          - Dashes: two
+          - Dashes: one
+            Difficulty: hard
+        ReqIn:
+          Dashes: two
+          Difficulty: perfect 
+    ExtraSpace:
+    - X: 219
+      Y: -44
+      Width: 365
+      Height: 44
+  - Room: "h-10"
+    SpinnersShatter: true
+    Holes:
+    - Side: Up
+      Idx: 0
+      Kind: out
+      Launch: 333
+      ReqOut:
+        Dashes: one
+    - Side: Left
+      Idx: 0
+      Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: none
+  - Room: "i-00"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    - Side: Right
+      Idx: 1
+      Kind: none
+    - Side: Down
+      Idx: 0
+      Kind: in
+      Launch: 66
+      HighBound: 92
+  - Room: "h-10"
+    SpinnersShatter: true
+    Holes:
+    - Side: Up
+      Idx: 0
+      Kind: out
+      Launch: 333
+      ReqOut:
+        Dashes: one
+    - Side: Left
+      Idx: 0
+      Kind: inout
+    - Side: Down
+      Idx: 0
+      Kind: none
+  - Room: "h-10" # h-10 copy
+    Holes:
+    - Side: Up
+      Idx: 0
+      Kind: in
+    - Side: Left
+      Idx: 0
+      Kind: out
+      ReqOut:
+        Dashes: one 
+        Difficulty: expert
+    - Side: Down
+      Idx: 0
+      Kind: none
+    Tweaks: 
+    - Name: spinner
+      ID: 840
+      Update: 
+        Remove: true
+    - Name: spinner
+      ID: 841
+      Update: 
+        Remove: true
+    - Name: spinner
+      ID: 838
+      Update: 
+        Remove: true
+    - Name: spinner
+      ID: 836
+      Update: 
+        Remove: true
+    - Name: spinner
+      ID: 837
+      Update: 
+        Remove: true
+    - Name: spinner
+      ID: 834
+      Update: 
+        Remove: true
+    - Name: spinner
+      ID: 832
+      Update: 
+        Remove: true
+    - Name: spinner
+      ID: 818
+      Update: 
+        Remove: true
+    - Name: spinner
+      ID: 821
+      Update: 
+        Remove: true
+    - Name: spawn
+      ID: 1046
+      Update:
+        X: 2672
+        Y: 1136
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 2648
+        Y: -24
+        Width: 8
+        Height: 1296
+        Values:
+          cameraX: 1.4
+          cameraY: 0
+    - Name: "cameraOffsetTrigger"
+      ID: 1
+      Update:
+        Remove: true
+  - Room: "i-00"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    - Side: Right
+      Idx: 1
+      Kind: none
+    - Side: Down
+      Idx: 0
+      Kind: in
+      Launch: 66
+      HighBound: 92
+  - Room: "i-00b"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: inout
+    - Side: Left
+      Idx: 0
+      Kind: inout
+    - Side: Left
+      Idx: 1
+      Kind: none
+    - Side: Down
+      Idx: 0
+      Kind: None
+    - Side: Up
+      Idx: 0
+      Kind: None
+    - Side: Up
+      Idx: 1
+      Kind: None
+    InternalEdges:
+      - Split: LeftToRight
+        ReqOut:
+          Or:
+          - Dashes: two
+          - Dashes: one
+            Difficulty: hard
+        ReqIn:
+          Dashes: two
+          Difficulty: perfect 
+    ExtraSpace:
+    - X: 219
+      Y: -44
+      Width: 365
+      Height: 44             
   - Room: "i-01"
     Holes:
     - Side: Left

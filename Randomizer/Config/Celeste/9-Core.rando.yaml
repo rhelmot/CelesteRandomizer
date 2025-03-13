@@ -368,6 +368,12 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: in
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 160
+        Y: 24
   - Room: "b-00" # b-00 copy
     Core:
       All: cold
@@ -384,6 +390,12 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: in
+    Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 160
+        Y: 24
   - Room: "b-01"
     Core:
       All: hot
@@ -552,6 +564,16 @@ ASide:
       ReqBoth:
         Dashes: one
     Tweaks:
+    - Name: cameraOffsetTrigger
+      Update:
+        Add: true
+        X: 216
+        Y: 0
+        Width: 8
+        Height: 184
+        Values:
+          cameraX: 1.4
+          cameraY: 0
     - Name: "switchGate"
       ID: 155
       Update:
@@ -611,8 +633,18 @@ ASide:
         - Dashes: two
           Difficulty: expert
         - Dashes: one
-          Difficulty: master # hyper cb bhop ltr, 6f bhop rtl maybe perfect?
+          Difficulty: master 
     Tweaks:
+    - Name: cameraOffsetTrigger
+      Update:
+        Add: true
+        X: 216
+        Y: 0
+        Width: 8
+        Height: 184
+        Values:
+          cameraX: 1.4
+          cameraY: 0
     - Name: "switchGate"
       ID: 155
       Update:
