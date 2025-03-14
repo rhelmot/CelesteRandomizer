@@ -929,7 +929,11 @@ namespace Celeste.Mod.Randomizer
             if (this.InRandomizer)
             {
                 TheoCrystal entity = Engine.Scene.Tracker.GetEntity<TheoCrystal>();
-                return entity == null || entity.X > self.X ? entity.X - self.X <= 25f : self.X - entity.X <= 10f;
+                if (entity == null)
+                    return true;
+        
+                DynamicData gateData = DynamicData.For(self);
+                return (entity.X > self.X ? entity.X - self.X <= 25f : self.X - entity.X <= 10f) || Vector2.DistanceSquared(gateData.Get<Vector2>("holdingCheckFrom"), entity.Center) < (gateData.Get<bool>("open") ? 6400f : 4096f);
             }
             return orig(self);
         }
