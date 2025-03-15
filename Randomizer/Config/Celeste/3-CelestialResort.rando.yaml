@@ -2290,98 +2290,99 @@ ASide:
         Y: 92
         ScaleX: 1
         ScaleY: 1
-        Values:
-          texture: 3-resort/roofEdge
-    - Decal: fg
-      Update:
-        Add: true
-        X: 200
-        Y: 92
-        ScaleX: 1
-        ScaleY: 1
-        Values:
-          texture: 3-resort/roofCenter_d
-    - Decal: fg
-      Update:
-        Add: true
-        X: 184
-        Y: 92
-        ScaleX: 1
-        ScaleY: 1
-        Values:
-          texture: 3-resort/roofCenter_c
-    - Decal: fg
-      Update:
-        Add: true
-        X: 168
-        Y: 92
-        ScaleX: 1
-        ScaleY: 1
-        Values:
-          texture: 3-resort/roofCenter_c
-    - Decal: fg
-      Update:
-        Add: true
-        X: 152
-        Y: 92
-        ScaleX: 1
-        ScaleY: 1
-        Values:
-          texture: 3-resort/roofCenter_d
-    - Decal: fg
-      Update:
-        Add: true
-        X: 136
-        Y: 92
-        ScaleX: 1
-        ScaleY: 1
-        Values:
-          texture: 3-resort/roofCenter_d
-    - Decal: fg
-      Update:
-        Add: true
-        X: 120
-        Y: 92
-        ScaleX: 1
-        ScaleY: 1
-        Values:
-          texture: 3-resort/roofCenter_b
-    - Decal: fg
-      Update:
-        Add: true
-        X: 104
-        Y: 92
-        ScaleX: 1
-        ScaleY: 1
-        Values:
-          texture: 3-resort/roofCenter_d
-    - Decal: fg
-      Update:
-        Add: true
-        X: 88
-        Y: 92
-        ScaleX: 1
-        ScaleY: 1
-        Values:
-          texture: 3-resort/roofCenter_b
-    - Decal: fg
-      Update:
-        Add: true
-        X: 72
-        Y: 92
-        ScaleX: 1
-        ScaleY: 1
-        Values:
-          texture: 3-resort/roofCenter_b
-    - Decal: fg
-      Update:
-        Add: true
-        X: 56
-        Y: 92
-        ScaleX: 1
-        ScaleY: 1
-        Values:
-          texture: 3-resort/roofCenter_d
+        Texture: 3-resort/roofEdge
+#        Values:
+#          texture: 3-resort/roofEdge
+#    - Decal: fg
+#      Update:
+#        Add: true
+#        X: 200
+#        Y: 92
+#        ScaleX: 1
+#        ScaleY: 1
+#        Values:
+#          texture: 3-resort/roofCenter_d
+#    - Decal: fg
+#      Update:
+#        Add: true
+#        X: 184
+#        Y: 92
+#        ScaleX: 1
+#        ScaleY: 1
+#        Values:
+#          texture: 3-resort/roofCenter_c
+#    - Decal: fg
+#      Update:
+#        Add: true
+#        X: 168
+#        Y: 92
+#        ScaleX: 1
+#       ScaleY: 1
+#        Values:
+#          texture: 3-resort/roofCenter_c
+#    - Decal: fg
+#      Update:
+#        Add: true
+#        X: 152
+#        Y: 92
+#        ScaleX: 1
+#        ScaleY: 1
+#        Values:
+#          texture: 3-resort/roofCenter_d
+#    - Decal: fg
+#      Update:
+#        Add: true
+#        X: 136
+#        Y: 92
+#        ScaleX: 1
+#        ScaleY: 1
+#        Values:
+#          texture: 3-resort/roofCenter_d
+#    - Decal: fg
+#      Update:
+#        Add: true
+#        X: 120
+#        Y: 92
+#        ScaleX: 1
+#        ScaleY: 1
+#        Values:
+#          texture: 3-resort/roofCenter_b
+#    - Decal: fg
+#      Update:
+#        Add: true
+#        X: 104
+#        Y: 92
+#        ScaleX: 1
+#        ScaleY: 1
+#        Values:
+#          texture: 3-resort/roofCenter_d
+#    - Decal: fg
+#      Update:
+#        Add: true
+#        X: 88
+#        Y: 92
+#        ScaleX: 1
+#        ScaleY: 1
+#        Values:
+#          texture: 3-resort/roofCenter_b
+#    - Decal: fg
+#      Update:
+#        Add: true
+#        X: 72
+#        Y: 92
+#        ScaleX: 1
+#        ScaleY: 1
+#        Values:
+#          texture: 3-resort/roofCenter_b
+#    - Decal: fg
+#      Update:
+#        Add: true
+#        X: 56
+#        Y: 92
+#        ScaleX: 1
+#        ScaleY: 1
+#        Values:
+#          texture: 3-resort/roofCenter_d
 
 BSide:
   - Room: "00"
