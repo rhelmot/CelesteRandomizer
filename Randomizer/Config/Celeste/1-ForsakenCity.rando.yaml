@@ -830,31 +830,39 @@ ASide:
     Subrooms:
     - Room: "secret"
       Holes:
-      - Side: Left
-        Idx: 0
-        Kind: inout
-        ReqOut:
-          Dashes: one
-          Difficulty: easy
       - Side: Down
         Idx: 0
         Kind: inout
       InternalEdges:
-      - To: "secretRight"
+      - To: "secretLeft"
         ReqOut:
           Dashes: one
-          Difficulty: easy
         ReqIn:
-          Or:
-          - Dashes: one
-            Difficulty: easy
-          - Dashes: zero
-            Difficulty: expert
+          Dashes: zero
     - Room: "secretRight"
       Holes:
       - Side: Down
         Idx: 1
         Kind: inout
+      InternalEdges:
+      - To: "secret"
+        ReqOut:
+          Or:
+          - Dashes: one
+          - Dashes: zero
+            Difficulty: hard
+    - Room: "secretLeft"
+      Holes:
+      - Side: Left
+        Idx: 0
+        Kind: inout
+      InternalEdges:
+      - To: "secretRight"
+        ReqOut:
+          Or:
+          - Dashes: one
+          - Dashes: zero
+            Difficulty: hard
     Tweaks:
     - ID: 11
       Update:
@@ -880,6 +888,11 @@ ASide:
       X: 368
       Update:
         X: 360
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 4
+        Y: 200
     - Name: "cameraOffsetTrigger"
       Update:
         Add: true
