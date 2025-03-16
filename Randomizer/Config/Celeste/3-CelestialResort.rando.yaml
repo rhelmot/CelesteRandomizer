@@ -2293,6 +2293,10 @@ ASide:
         Y: 92
         ScaleX: 1
         ScaleY: 1
+#        Values:
+#          depth: 0
+#          rotation: 0
+#          colour_Hex: ffffffff
 #        Name: 3-resort/roofEdge
 #        Values:
 #          texture: 3-resort/roofEdge
