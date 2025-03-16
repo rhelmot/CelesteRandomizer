@@ -2265,17 +2265,17 @@ ASide:
     Holes:
     - Side: Left
       Idx: 0
-      Kind: none
+      Kind: out
       ReqOut:
         Dashes: two
         Difficulty: expert
       HighBound: 10
     - Side: Left
       Idx: 1
-      Kind: none
+      Kind: in
     - Side: Right
       Idx: 0
-      Kind: none
+      Kind: in
     Tweaks:
     - Name: "friendlyGhost" # you could do this 1x probably if you leave him on, i think thats bad though.
       ID: 2
@@ -2285,13 +2285,14 @@ ASide:
       ID: 3
       Update:
         Remove: true
-#    - Decal: fg # so much work just because the ending entity HAD to be the tiles :sob: yea this still doesnt work.
-#      Update:
-#        Add: true
-#        X: 216
-#        Y: 92
-#        ScaleX: 1
-#        ScaleY: 1
+    - Decal: fg # so much work just because the ending entity HAD to be the tiles :sob: yea this still doesnt work.
+      Name: "3-resort/roofEdge"    
+      Update:
+        Add: true
+        X: 216
+        Y: 92
+        ScaleX: 1
+        ScaleY: 1
 #        Name: 3-resort/roofEdge
 #        Values:
 #          texture: 3-resort/roofEdge
