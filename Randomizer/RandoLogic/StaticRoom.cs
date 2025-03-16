@@ -320,9 +320,9 @@ namespace Celeste.Mod.Randomizer
                         Texture = tweak.Name,
                         Position = new Vector2(tweak.Update.X.Value, tweak.Update.Y.Value),
                         Scale = new Vector2(tweak.Update.ScaleX.Value, tweak.Update.ScaleY.Value),
-                        Depth = 0
-                        Rotation = 0
-                        Colour_Hex = ffffffff
+                        Depth = 0,
+                        Rotation = 0,
+                        Colour_Hex = ffffffff,
                     };
                     (tweak.Decal == RandoConfigDecalType.BG ? BgDecals : FgDecals).Add(newDecal);
                 }
