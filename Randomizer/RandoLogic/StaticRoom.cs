@@ -298,8 +298,6 @@ namespace Celeste.Mod.Randomizer
                                 if (tweak.Update?.Y != null) decal.Position.Y = tweak.Update.Y.Value;
                                 if (tweak.Update?.ScaleX != null) decal.Position.X = tweak.Update.ScaleX.Value;
                                 if (tweak.Update?.ScaleY != null) decal.Position.Y = tweak.Update.ScaleY.Value;
-                                if (tweak.Update?.Depth != null) decal.Depth = tweak.ScaleY.Value;
-                                if (tweak.Update?.Colour_Hex != null) decal.Colour_Hex = tweak.Colour_Hex.Value;
                             }
 
                             break;
@@ -322,9 +320,6 @@ namespace Celeste.Mod.Randomizer
                         Texture = tweak.Name,
                         Position = new Vector2(tweak.Update.X.Value, tweak.Update.Y.Value),
                         Scale = new Vector2(tweak.Update.ScaleX.Value, tweak.Update.ScaleY.Value),
-                        Depth = 0,
-                        Rotation = 0,
-                        Colour_Hex = ffffffff,
                     };
                     (tweak.Decal == RandoConfigDecalType.BG ? BgDecals : FgDecals).Add(newDecal);
                 }
