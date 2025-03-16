@@ -326,6 +326,8 @@ namespace Celeste.Mod.Randomizer
         public int? Height { get; set; }
         public float? ScaleX { get; set; }
         public float? ScaleY { get; set; }
+        public int? Depth { get; set; }
+        public string Colour_Hex;
         public List<RandoConfigNode> Nodes { get; set; }
         public Dictionary<string, string> Values { get; set; }
         public string Tile;
