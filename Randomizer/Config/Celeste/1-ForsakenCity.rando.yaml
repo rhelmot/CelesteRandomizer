@@ -1994,6 +1994,7 @@ CSide:
       ReqOut:
         Or:
         - Dashes: two
+          Difficulty: expert
         - Dashes: one
           Difficulty: master
     - Side: Up
