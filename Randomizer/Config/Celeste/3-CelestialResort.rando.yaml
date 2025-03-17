@@ -2272,10 +2272,11 @@ ASide:
       HighBound: 10
     - Side: Left
       Idx: 1
-      Kind: in
+      Kind: inout
     - Side: Right
       Idx: 0
-      Kind: in
+      Kind: inout
+      HighOpen: true
     Tweaks:
     - Name: "friendlyGhost" # you could do this 1x probably if you leave him on, i think thats bad though.
       ID: 2
@@ -2285,7 +2286,7 @@ ASide:
       ID: 3
       Update:
         Remove: true
-    - Decal: fg # so much work just because the ending entity HAD to be the tiles :sob: yea this still doesnt work.
+    - Decal: fg # so much work just because the ending entity HAD to be the tiles :sob:
       Name: "3-resort/roofEdge"    
       Update:
         Add: true
@@ -2293,83 +2294,86 @@ ASide:
         Y: 92
         ScaleX: 1
         ScaleY: 1
-#        Values:
-#          depth: 0
-#          rotation: 0
-#          colour_Hex: ffffffff
-#        Name: 3-resort/roofEdge
-#        Values:
-#          texture: 3-resort/roofEdge
-#    - Decal: fg
-#      Update:
-#        Add: true
-#        X: 200
-#        Y: 92
-#        Values:
-#          texture: 3-resort/roofCenter_d
-#    - Decal: fg
-#      Update:
-#        Add: true
-#        X: 184
-#        Y: 92
-#        Values:
-#          texture: 3-resort/roofCenter_c
-#    - Decal: fg
-#      Update:
-#        Add: true
-#        X: 168
-#        Y: 92
-#        Values:
-#          texture: 3-resort/roofCenter_c
-#    - Decal: fg
-#      Update:
-#        Add: true
-#        X: 152
-#        Y: 92
-#        Values:
-#          texture: 3-resort/roofCenter_d
-#    - Decal: fg
-#      Update:
-#        Add: true
-#        X: 136
-#        Y: 92
-#        Values:
-#          texture: 3-resort/roofCenter_d
-#    - Decal: fg
-#      Update:
-#        Add: true
-#        X: 120
-#        Y: 92
-#        Values:
-#          texture: 3-resort/roofCenter_b
-#    - Decal: fg
-#      Update:
-#        Add: true
-#        X: 104
-#        Y: 92
-#        Values:
-#          texture: 3-resort/roofCenter_d
-#    - Decal: fg
-#      Update:
-#        Add: true
-#        X: 88
-#        Y: 92
-#        Values:
-#          texture: 3-resort/roofCenter_b
-#    - Decal: fg
-#      Update:
-#        Add: true
-#        X: 72
-#        Y: 92
-#        Values:
-#          texture: 3-resort/roofCenter_b
-#    - Decal: fg
-#      Update:
-#        Add: true
-#        X: 56
-#        Y: 92
-#        Values:
-#          texture: 3-resort/roofCenter_d
+    - Decal: fg
+      Name: 3-resort/roofCenter_d
+      Update:
+        Add: true
+        X: 200
+        Y: 92
+        ScaleX: 1
+        ScaleY: 1
+    - Decal: fg
+      Name: 3-resort/roofCenter_c
+      Update:
+        Add: true
+        X: 184
+        Y: 92
+        ScaleX: 1
+        ScaleY: 1
+    - Decal: fg
+      Name: 3-resort/roofCenter_c
+      Update:
+        Add: true
+        X: 168
+        Y: 92
+        ScaleX: 1
+        ScaleY: 1
+    - Decal: fg
+      Name: 3-resort/roofCenter_d
+      Update:
+        Add: true
+        X: 152
+        Y: 92
+        ScaleX: 1
+        ScaleY: 1
+    - Decal: fg
+      Name: 3-resort/roofCenter_d
+      Update:
+        Add: true
+        X: 136
+        Y: 92
+        ScaleX: 1
+        ScaleY: 1
+    - Decal: fg
+      Name: 3-resort/roofCenter_b
+      Update:
+        Add: true
+        X: 120
+        Y: 92
+        ScaleX: 1
+        ScaleY: 1
+    - Decal: fg
+      Name: 3-resort/roofCenter_d
+      Update:
+        Add: true
+        X: 104
+        Y: 92
+        ScaleX: 1
+        ScaleY: 1
+    - Decal: fg
+      Name: 3-resort/roofCenter_b
+      Update:
+        Add: true
+        X: 88
+        Y: 92
+        ScaleX: 1
+        ScaleY: 1
+    - Decal: fg
+      Name: 3-resort/roofCenter_b
+      Update:
+        Add: true
+        X: 72
+        Y: 92
+        ScaleX: 1
+        ScaleY: 1
+    - Decal: fg
+      Name: 3-resort/roofCenter_d
+      Update:
+        Add: true
+        X: 56
+        Y: 92
+        ScaleX: 1
+        ScaleY: 1
 
 BSide:
   - Room: "00"
