@@ -2045,171 +2045,19 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: none
-  - Room: "i-00"
-    Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
-    - Side: Right
-      Idx: 1
-      Kind: none
-    - Side: Down
-      Idx: 0
-      Kind: in
-      Launch: 66
-      HighBound: 92
-  - Room: "i-00b"
-    Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
-    - Side: Left
-      Idx: 0
-      Kind: inout
-    - Side: Left
-      Idx: 1
-      Kind: none
-    - Side: Down
-      Idx: 0
-      Kind: None
-    - Side: Up
-      Idx: 0
-      Kind: None
-    - Side: Up
-      Idx: 1
-      Kind: None
-    InternalEdges:
-      - Split: LeftToRight
-        ReqOut:
-          Or:
-          - Dashes: two
-          - Dashes: one
-            Difficulty: hard
-        ReqIn:
-          Dashes: two
-          Difficulty: perfect 
-    ExtraSpace:
-    - X: 219
-      Y: -44
-      Width: 365
-      Height: 44
-  - Room: "h-10"
-    SpinnersShatter: true
-    Holes:
-    - Side: Up
-      Idx: 0
-      Kind: out
-      Launch: 333
-      ReqOut:
-        Dashes: one
-    - Side: Left
-      Idx: 0
-      Kind: inout
-    - Side: Down
-      Idx: 0
-      Kind: none
-  - Room: "i-00"
-    Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
-    - Side: Right
-      Idx: 1
-      Kind: none
-    - Side: Down
-      Idx: 0
-      Kind: in
-      Launch: 66
-      HighBound: 92
-  - Room: "i-00b"
-    Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
-    - Side: Left
-      Idx: 0
-      Kind: inout
-    - Side: Left
-      Idx: 1
-      Kind: none
-    - Side: Down
-      Idx: 0
-      Kind: None
-    - Side: Up
-      Idx: 0
-      Kind: None
-    - Side: Up
-      Idx: 1
-      Kind: None
-    InternalEdges:
-      - Split: LeftToRight
-        ReqOut:
-          Or:
-          - Dashes: two
-          - Dashes: one
-            Difficulty: hard
-        ReqIn:
-          Dashes: two
-          Difficulty: perfect 
-    ExtraSpace:
-    - X: 219
-      Y: -44
-      Width: 365
-      Height: 44
-  - Room: "h-10"
-    SpinnersShatter: true
-    Holes:
-    - Side: Up
-      Idx: 0
-      Kind: out
-      Launch: 333
-      ReqOut:
-        Dashes: one
-    - Side: Left
-      Idx: 0
-      Kind: inout
-    - Side: Down
-      Idx: 0
-      Kind: none
-  - Room: "i-00"
-    Holes:
-    - Side: Right
-      Idx: 0
-      Kind: inout
-    - Side: Right
-      Idx: 1
-      Kind: none
-    - Side: Down
-      Idx: 0
-      Kind: in
-      Launch: 66
-      HighBound: 92
-  - Room: "h-10"
-    SpinnersShatter: true
-    Holes:
-    - Side: Up
-      Idx: 0
-      Kind: out
-      Launch: 333
-      ReqOut:
-        Dashes: one
-    - Side: Left
-      Idx: 0
-      Kind: inout
-    - Side: Down
-      Idx: 0
-      Kind: none
   - Room: "h-10" # h-10 copy
     Holes:
     - Side: Up
       Idx: 0
       Kind: in
+      LowBound: 331
+      HighBound: 336
     - Side: Left
       Idx: 0
       Kind: out
       ReqOut:
         Dashes: one 
-        Difficulty: expert
+        Difficulty: master # that fall is actually terrible lol
     - Side: Down
       Idx: 0
       Kind: none
@@ -2254,19 +2102,38 @@ ASide:
       ID: 1046
       Update:
         X: 2672
-        Y: 1136
+        Y: 24 # really mean spawn :3
+    - Name: "badelineBoost"
+      ID: 330
+      Update:
+        Values:
+          lockCamera: false
     - Name: "cameraOffsetTrigger"
       Update:
         Add: true
         X: 2648
-        Y: -24
-        Width: 8
-        Height: 1296
+        Y: 32
+        Width: 48
+        Height: 8
         Values:
-          cameraX: 1.4
+          cameraX: 0
+          cameraY: 1.6
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 2648
+        Y: 1072
+        Width: 48
+        Height: 8
+        Values:
+          cameraX: -2
           cameraY: 0
     - Name: "cameraOffsetTrigger"
       ID: 1
+      Update:
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 6
       Update:
         Remove: true
   - Room: "i-00"
