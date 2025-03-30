@@ -2957,6 +2957,24 @@ BSide:
         Add: true
         X: 163
         Y: 104
+    - Name: "cameraOffsetTrigger"
+      Update:
+        Add: true
+        X: 0
+        Y: 928
+        Width: 320
+        Height: 8
+        Values:
+          cameraX: 0
+          cameraY: -1.4
+    - Name: "cameraOffsetTrigger"
+      ID: 5
+      Update: 
+        Remove: true
+    - Name: "cameraOffsetTrigger"
+      ID: 4
+      Update:
+        Remove: true
   - Room: "c-01"
     Holes:
     - Side: Right
