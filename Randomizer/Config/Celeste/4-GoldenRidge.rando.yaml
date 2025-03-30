@@ -99,9 +99,9 @@ ASide:
           Dashes: zero
         ReqIn:
           Or:
-            - Dashes: one
-            - Dashes: zero
-              Difficulty: hard
+          - Dashes: one
+          - Dashes: zero
+            Difficulty: hard
     - Room: "Berry"
       Collectables:
       - Idx: 0

@@ -2943,7 +2943,7 @@ BSide:
         Dashes: one
         Difficulty: expert
     Tweaks:
-    - Name: "eventTrigger"
+    - Name: "eventTrigger" # this is a hack. please fix
       Update:
         Add: true
         X: 152
@@ -2955,8 +2955,8 @@ BSide:
     - Name: payphone
       Update:
         Add: true
-        X: 0
-        Y: 0
+        X: 163
+        Y: 104
   - Room: "c-01"
     Holes:
     - Side: Right

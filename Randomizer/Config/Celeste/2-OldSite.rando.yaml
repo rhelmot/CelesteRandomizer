@@ -730,14 +730,24 @@ ASide:
         - Dashes: one
           Difficulty: expert
     - To: "top_right"
-      ReqBoth:
+      ReqOut:
         Dashes: one
+      ReqIn:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect
     - To: "middle_right"
       ReqOut:
         Dashes: zero
-    - Collectable: 0
-      ReqBoth:
+    - To: "berry"
+      ReqOut:
         Dashes: one
+      ReqIn:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect
     Subrooms:
     - Room: "lower"
       Holes:
@@ -776,8 +786,18 @@ ASide:
       - Side: Right
         Idx: 0
         Kind: inout
+      InternalEdges:
+      - To: "berry"
+        ReqOut:
+          Or:
+          - Dashes: one
+          - Dashes: zero
+            Difficulty: master # this is master because you can get it as a key with a bubble back
         ReqIn:
           Dashes: one
+    - Room: "berry"
+      Collectables:
+      - Idx: 0
     Tweaks:
     - ID: 6             # remove change respawn trigger
       Update:
