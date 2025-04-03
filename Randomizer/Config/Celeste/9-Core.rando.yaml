@@ -2671,9 +2671,21 @@ CSide:
           Difficulty: hard
         - Dashes: one
           Difficulty: expert
-      ReqIn:   
+  - Room: "01" # 01 copy
+    Core:
+      All: cold
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: out
+    - Side: Left
+      Idx: 0
+      Kind: in
+    InternalEdges:
+    - Split: LeftToRight
+      ReqOut:
         Dashes: two
-        Difficulty: hard
+        Difficulty: master
   - Room: "02"
     ReqEnd:
       Dashes: two
