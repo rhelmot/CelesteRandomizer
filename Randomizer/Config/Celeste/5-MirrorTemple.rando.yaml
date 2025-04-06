@@ -437,10 +437,8 @@ ASide:
       Kind: inout
     InternalEdges:
     - Collectable: 0
-      ReqOut:
-        Dashes: zero
-      ReqIn:
-        Dashes: one
+      ReqBoth:
+        Dashes: one # while you can get to the berry dashless you can't get bubbled in time.
   - Room: "b-01"
     Hub: true
     Holes:
