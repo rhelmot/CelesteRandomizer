@@ -3267,7 +3267,10 @@ BSide:
       Idx: 0
       Kind: out
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect
     - Side: Down
       Idx: 1
       Kind: unknown
@@ -3293,8 +3296,8 @@ BSide:
         Add: true
         X: 560
         Y: 80
-        Width: 88
-        Height: 88
+        Width: 8
+        Height: 48
         Values:
             type: "touchswitch"
     - Name: "spawn"

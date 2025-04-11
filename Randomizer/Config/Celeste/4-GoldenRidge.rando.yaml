@@ -1163,6 +1163,8 @@ ASide:
         - Dashes: two
         - Dashes: one
           Difficulty: hard
+        - Dashes: zero
+          Difficulty: perfect
     Tweaks:
     - Name: "jumpThru"
       ID: 0

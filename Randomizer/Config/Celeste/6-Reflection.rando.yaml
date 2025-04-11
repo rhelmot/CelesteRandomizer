@@ -1940,7 +1940,7 @@ ASide:
         Or:
         - Dashes: one
         - Dashes: zero
-          Difficulty: expert
+          Difficulty: perfect
     Tweaks: 
     - Name: "cameraOffsetTrigger"
       Update:
