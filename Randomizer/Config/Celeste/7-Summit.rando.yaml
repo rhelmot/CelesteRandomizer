@@ -3574,8 +3574,8 @@ ASide:
         - Dashes: two
         - Dashes: one
           Difficulty: expert
-        - Dashes: zero
-          Difficulty: master # ? not sure
+#        - Dashes: zero
+#          Difficulty: master # this is just like spikejump spam, but im not clearing it, so im not adding it.
     Subrooms:
     - Room: "top"
       Holes:
