@@ -1005,7 +1005,7 @@ ASide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: out # really wanna minimize the possiblity of getting this anywhere BUT dashless perfect
+      Kind: none # really wanna minimize the possiblity of getting this anywhere BUT dashless perfect
     - Side: Left
       Idx: 0
       Kind: out

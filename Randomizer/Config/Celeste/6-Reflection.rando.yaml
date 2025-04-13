@@ -2496,10 +2496,8 @@ BSide:
       ReqOut:
         Dashes: one
       ReqIn:
-        Or:
-        - Dashes: two
-        - Dashes: one
-          Difficulty: expert
+        Dashes: two
+        Difficulty: perfect
     - Side: Down
       Idx: 0
       Kind: inout
@@ -2513,10 +2511,10 @@ BSide:
         Height: 32
         Values:
             type: "touchswitch"
-    - ID: 228
-      Name: jumpThru
-      Update:
-        Width: 16
+#    - ID: 228 # feather clip is cooler and harder
+#      Name: jumpThru
+#      Update:
+#        Width: 16
   - Room: "a-04"
     Holes:
     - Side: Right
