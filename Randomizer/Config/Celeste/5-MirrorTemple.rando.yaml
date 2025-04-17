@@ -762,8 +762,8 @@ ASide:
         Difficulty: hard
       ReqIn:
         Or:
-        - Dashes: zero
-          Difficulty: hard
+#        - Dashes: zero # this will softlock you if you get up exit.
+#          Difficulty: hard
         - Dashes: one
           Difficulty: hard
         - Dashes: two
