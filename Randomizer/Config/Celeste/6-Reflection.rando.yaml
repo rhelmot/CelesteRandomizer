@@ -2373,6 +2373,17 @@ ASide:
     - Side: Down
       Idx: 0
       Kind: inout
+  - Room: "after-01" # after-01 copy
+    Holes:
+    - Side: Up
+      Idx: 0
+      Kind: inout
+      Launch: 19
+      ReqOut:
+        Dashes: one
+    - Side: Down
+      Idx: 0
+      Kind: inout
     Tweaks:
     - Name: "jumpthru"
       ID: 991
@@ -2395,6 +2406,10 @@ ASide:
         Add: true
         X: 168
         Y: 352
+    - Name: "badelineBoost"
+      ID: 1014
+      Update:
+        Remove: true
   - Room: "after-02"
     ReqEnd:
       Difficulty: easy

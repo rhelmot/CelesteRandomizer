@@ -2784,6 +2784,12 @@ ASide:
     - Side: Left
       Idx: 1
       Kind: inout
+      ReqOut:
+        Or:
+        - Dashes: two
+          Difficulty: hard
+        - Dashes: one
+          Difficulty: expert
     - Side: Left
       Idx: 0
       Kind: None
@@ -3569,13 +3575,6 @@ ASide:
         Or:
         - Dashes: two
         - Dashes: one
-      ReqIn:
-        Or:
-        - Dashes: two
-        - Dashes: one
-          Difficulty: expert
-#        - Dashes: zero
-#          Difficulty: master # this is just like spikejump spam, but im not clearing it, so im not adding it.
     Subrooms:
     - Room: "top"
       Holes:
@@ -3654,9 +3653,11 @@ ASide:
     - To: "top"
       ReqIn:
         Or:
+        - Dashes: two
         - Dashes: one
-        - Dashes: zero
-          Difficulty: perfect # ? not sure
+          Difficulty: expert
+#        - Dashes: zero
+#          Difficulty: master # this is just like spikejump spam, but im not clearing it, so im not adding it.
     Subrooms:
     - Room: "top"
       Holes:
@@ -5339,6 +5340,10 @@ BSide:
           Values:
             cameraX: 0
             cameraY: 1.4
+      - Name: "badelineBoost"
+        ID: 336
+        Update:
+          Remove: true
   - Room: "g-01"
     Holes:
     - Side: Up
