@@ -2106,8 +2106,7 @@ ASide:
     - Name: "badelineBoost"
       ID: 330
       Update:
-        Values:
-          lockCamera: false
+        Remove: true
     - Name: "cameraOffsetTrigger"
       Update:
         Add: true

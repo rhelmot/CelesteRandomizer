@@ -5584,8 +5584,8 @@ CSide:
             - Dashes: one
               Difficulty: perfect
         ReqIn:
-          Dashes: two
-          Difficulty: perfect # may be possible in 1x idk
+          Dashes: one
+          Difficulty: perfect
     Subrooms:
       - Room: "out"
         Holes:

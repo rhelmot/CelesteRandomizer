@@ -2881,7 +2881,7 @@ BSide:
         Kind: in
       - Side: Down
         Idx: 0
-        Kind: inout
+        Kind: in
     InternalEdges:
     - To: "left"
       ReqIn:
