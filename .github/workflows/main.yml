@@ -35,17 +35,15 @@ jobs:
       shell: bash
       run: |
         VERSION=$(grep '^  Version' Randomizer/everest.yaml | cut -d' ' -f 4)
-        echo "VERSION=$VERSION" >> $GITHUB_ENV
 
         if [[ "$CONFIGURATION" == "Release" ]]; then
-          FILENAME="dist/Randomizer_${VERSION}.zip"
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
         else
-          FILENAME="dist/Randomizer_${VERSION}-devbuild.zip"
+          echo "VERSION=${VERSION}-devbuild" >> $GITHUB_ENV
         fi
-        echo "FILENAME=$FILENAME" >> $GITHUB_ENV
 
         BUILD_DIR="Randomizer/bin/$CONFIGURATION"
-        echo "BUILD_DIR=$BUILD_DIR" >> $GITHUB_ENV
+        echo "BUILD_DIR=${BUILD_DIR}" >> $GITHUB_ENV
 
     - name: Build Randomizer
       shell: bash
@@ -58,5 +56,5 @@ jobs:
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: CelesteRandomizer_${{ env.VERSION }}
+        name: Randomizer_${{ env.VERSION }}
         path: ${{ env.BUILD_DIR }}
