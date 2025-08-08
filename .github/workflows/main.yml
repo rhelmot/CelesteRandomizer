@@ -1,4 +1,4 @@
-name: CI
+name: Build and Package Randomizer
 
 on:
   push:
@@ -11,23 +11,52 @@ on:
     paths: 
       - 'Randomizer/**'
       - '.github/**'
+  workflow_dispatch:
+    inputs:
+      configuration:
+        description: 'Build configuration (Debug/Release)'
+        required: false
+        default: 'Debug'
+        options:
+        - Release
+        - Debug
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
+    env:
+      CONFIGURATION: ${{ github.event.inputs.configuration || 'Debug' }} # For PRs and commits
 
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Prepare
-      run: mkdir -p ${{ github.workspace }}/dist
+    - name: Checkout Source Code
+      uses: actions/checkout@v4
 
-    - name: Build and Bundle
-      run: bash ${{ github.workspace }}/bundle.sh
+    - name: Prepare Build Variables
+      shell: bash
+      run: |
+        VERSION=$(grep '^  Version' Randomizer/everest.yaml | cut -d' ' -f 4)
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+        if [[ "$CONFIGURATION" == "Release" ]]; then
+          FILENAME="dist/Randomizer_${VERSION}.zip"
+        else
+          FILENAME="dist/Randomizer_${VERSION}-devbuild.zip"
+        fi
+        echo "FILENAME=$FILENAME" >> $GITHUB_ENV
+
+        BUILD_DIR="Randomizer/bin/$CONFIGURATION"
+        echo "BUILD_DIR=$BUILD_DIR" >> $GITHUB_ENV
+
+    - name: Build Randomizer
+      shell: bash
+      env:
+        CONFIGURATION: ${{ env.CONFIGURATION }}
+      run: |
+        mkdir -p dist
+        dotnet build -c ${CONFIGURATION}
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: CelesteRandomizer
-        path: ${{ github.workspace }}/dist/Randomizer_*.zip
-
+        name: CelesteRandomizer_${{ env.VERSION }}
+        path: ${{ env.BUILD_DIR }}
