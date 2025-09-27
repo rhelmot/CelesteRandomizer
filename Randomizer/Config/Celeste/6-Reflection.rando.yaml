@@ -2132,10 +2132,8 @@ ASide:
       Idx: 0
       Kind: out
       ReqOut:
-        Or: 
-        - Dashes: two
-        - Dashes: one
-          Difficulty: expert
+        Dashes: two
+        Difficulty: hard
     - Side: Down
       Idx: 0
       Kind: in
@@ -2366,24 +2364,24 @@ ASide:
     Holes:
     - Side: Up
       Idx: 0
-      Kind: inout
+      Kind: out
       Launch: 19
       ReqOut:
         Dashes: one
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "after-01" # after-01 copy
     Holes:
     - Side: Up
       Idx: 0
-      Kind: inout
+      Kind: in
       Launch: 19
       ReqOut:
         Dashes: one
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: out
     Tweaks:
     - Name: "jumpthru"
       ID: 991
