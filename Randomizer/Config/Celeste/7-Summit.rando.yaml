@@ -2669,6 +2669,7 @@ ASide:
       - Side: Down
         Idx: 1
         Kind: inout
+        Launch: 34
       Collectables:
       - Idx: 0
     Tweaks:
@@ -2682,6 +2683,12 @@ ASide:
         Values:
           cameraX: -1
           cameraY: 0
+    - Name: jumpThru
+      Update:
+        Add: true
+        X: 464
+        Y: 208
+        Width: 8
   - Room: "e-12"
     Holes:
     - Side: Down
