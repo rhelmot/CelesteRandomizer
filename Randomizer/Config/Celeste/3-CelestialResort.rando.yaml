@@ -2819,12 +2819,15 @@ BSide:
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
-         Or:
-         - Dashes: one
-         - Dashes: zero
-           Difficulty: master
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: master
       ReqIn:
-           Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:
