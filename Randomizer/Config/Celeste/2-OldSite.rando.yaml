@@ -765,8 +765,6 @@ ASide:
         Kind: inout
         ReqOut:
           Dashes: one
-        ReqIn:
-          Dashes: one # 0x LtMR requires the dashblock. coming from this side removes it.
       InternalEdges:
       - To: "middle_right"
         ReqOut:

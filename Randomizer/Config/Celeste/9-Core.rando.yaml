@@ -1815,7 +1815,7 @@ BSide:
           cameraY: 0
   - Room: "a-00" # a-00 copy
     Core:
-      All: hot
+      All: cold
     Holes:
     - Side: Right
       Idx: 0
