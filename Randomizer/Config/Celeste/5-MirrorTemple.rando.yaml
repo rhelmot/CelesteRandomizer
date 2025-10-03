@@ -425,11 +425,14 @@ ASide:
         Values:
             type: "button"
             entID: 15
-    - Name: templeMirror
-      ID: 11
+    - Name: templeGate # this just gets in the way, and there isnt a second button
+      ID: 1
       Update:
-        Values:
-          started: true
+        Remove: true
+    - Name: npc # theo causes cutscene, you dont really want this from this entry.
+      ID: 12
+      Update:
+        Remove: true
   - Room: "b-18"
     Holes:
     - Side: Down
