@@ -418,7 +418,7 @@ ASide:
     - Name: "randomizer/ActivateSwitches"
       Update:
         Add: true
-        X: 304
+        X: 536
         Y: 88
         Width: 48
         Height: 48
