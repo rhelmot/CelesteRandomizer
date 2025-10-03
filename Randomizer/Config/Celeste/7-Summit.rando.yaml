@@ -5388,7 +5388,7 @@ BSide:
     - To: "top"
       ReqIn:
         Dashes: two
-        Difficulty: perfect # probably
+        Difficulty: master # probably
     Subrooms:
     - Room: "top"
       Holes:
@@ -5561,6 +5561,23 @@ CSide:
           Difficulty: hard
         - Dashes: one
           Difficulty: perfect # LORD HELP ME
+    Subrooms:
+    - Room: "top"
+      Holes:
+      - Side: Up
+        Idx: 0
+        Kind: out
+        Launch: 85
+  - Room: "01" # 01 copy
+    Holes:
+    - Side: left
+      Idx: 0
+      Kind: inout
+    - Side: Down
+      Idx: 1
+      Kind: None
+    InternalEdges:
+    - To: "top"
       ReqIn:
         Dashes: two
         Difficulty: expert
@@ -5569,7 +5586,7 @@ CSide:
       Holes:
       - Side: Up
         Idx: 0
-        Kind: inout
+        Kind: in
         Launch: 85
     Tweaks:
     - Name: "spawn"
@@ -5590,15 +5607,38 @@ CSide:
             - Dashes: two
             - Dashes: one
               Difficulty: perfect
-        ReqIn:
-          Dashes: one
-          Difficulty: perfect
     Subrooms:
       - Room: "out"
         Holes:
           - Side: Up
             Idx: 0
-            Kind: inout
+            Kind: out
+            Launch: 85
+          - Side: Down
+            New: true
+            Kind: Unknown
+            LowBound: 0
+            HighBound: 89
+  - Room: "02" # 02 copy
+    Holes:
+      - Side: Down
+        Idx: 0
+        Kind: out
+        HighOpen: true
+    InternalEdges:
+      - To: "out"
+        ReqIn:
+          Or:
+          - Dashes: two
+            Difficulty: master
+          - Dashes: one
+            Difficulty: perfect
+    Subrooms:
+      - Room: "out"
+        Holes:
+          - Side: Up
+            Idx: 0
+            Kind: in
             Launch: 85
           - Side: Down
             New: true
