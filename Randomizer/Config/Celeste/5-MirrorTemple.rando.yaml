@@ -400,7 +400,7 @@ ASide:
         Dashes: one
     - Side: Left
       Idx: 0
-      Kind: inout
+      Kind: in
   - Room: "b-00" # b-00 copy
     Holes:
     - Side: Up
