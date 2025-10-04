@@ -2266,7 +2266,10 @@ ASide:
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect
       ReqIn:
         Or:
         - Dashes: one
