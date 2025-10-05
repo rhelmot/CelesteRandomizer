@@ -3132,6 +3132,34 @@ ASide:
       Name: "floatySpaceBlock"
       Update:
         Remove: true
+  - Room: "j-16" # j-16 copy
+    Holes:
+    - Side: Up
+      Idx: 0
+      Kind: None
+    - Side: Up
+      Idx: 1
+      Kind: out  # yes moon berry route :)
+      ReqOut:
+        Dashes: one
+        Difficulty: hard
+    - Side: Up
+      Idx: 2
+      Kind: None
+    - Side: Left
+      Idx: 0
+      Kind: in
+    Tweaks:
+    - ID: 56            # remove cutscene trigger as it changes your dash inventory
+      Name: "eventTrigger"
+      Update:
+        Remove: true
+    - ID: 434
+      Name: "badelineBoost"
+      Update:
+        Nodes:
+        - Idx: 3
+          Y: 1424
   - Room: "j-17"
     Holes:
     - Side: Up
