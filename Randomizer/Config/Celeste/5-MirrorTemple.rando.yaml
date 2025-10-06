@@ -2933,49 +2933,49 @@ BSide:
       Kind: out
       ReqOut:
         Dashes: one
-  - Room: "c-00" # c-00 copy
-    Holes:
-    - Side: Right
-      Idx: 0
-      Kind: in
-    InternalEdges:
-    - CustomWarp: true
-      ReqOut:
-        Dashes: one
-        Difficulty: expert
-    Tweaks:
-    - Name: "eventTrigger" # this is a hack. please fix
-      Update:
-        Add: true
-        X: 152
-        Y: 96
-        Width: 16
-        Height: 8
-        Values:
-          event: end_oldsite_dream
-    - Name: payphone
-      Update:
-        Add: true
-        X: 163
-        Y: 104
-    - Name: "cameraOffsetTrigger"
-      Update:
-        Add: true
-        X: 0
-        Y: 928
-        Width: 320
-        Height: 8
-        Values:
-          cameraX: 0
-          cameraY: -1.4
-    - Name: "cameraOffsetTrigger"
-      ID: 5
-      Update: 
-        Remove: true
-    - Name: "cameraOffsetTrigger"
-      ID: 4
-      Update:
-        Remove: true
+#  - Room: "c-00" # c-00 copy # readd this if the cutscene can be done better
+#    Holes:
+#    - Side: Right
+#      Idx: 0
+#      Kind: in
+#    InternalEdges:
+#    - CustomWarp: true
+#      ReqOut:
+#        Dashes: one
+#        Difficulty: expert
+#    Tweaks:
+#    - Name: "eventTrigger" # this is a hack. please fix
+#      Update:
+#        Add: true
+#        X: 152
+#        Y: 96
+#        Width: 16
+#        Height: 8
+#        Values:
+#          event: end_oldsite_dream
+#    - Name: payphone
+#      Update:
+#        Add: true
+#        X: 163
+#        Y: 104
+#    - Name: "cameraOffsetTrigger"
+#      Update:
+#        Add: true
+#        X: 0
+#        Y: 928
+#        Width: 320
+#        Height: 8
+#        Values:
+#          cameraX: 0
+#          cameraY: -1.4
+#    - Name: "cameraOffsetTrigger"
+#      ID: 5
+#      Update: 
+#        Remove: true
+#    - Name: "cameraOffsetTrigger"
+#      ID: 4
+#      Update:
+#        Remove: true
   - Room: "c-01"
     Holes:
     - Side: Right
