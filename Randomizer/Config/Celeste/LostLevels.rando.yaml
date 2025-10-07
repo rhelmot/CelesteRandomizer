@@ -2952,8 +2952,11 @@ ASide:
       Idx: 0
       Kind: out
       ReqOut:
-        Dashes: two
-        Difficulty: master # perfect?
+        Or:
+        - Dashes: two
+          Difficulty: master
+        - Dashes: one
+          Difficulty: perfect
     - Side: Left
       Idx: 1
       Kind: none
@@ -2984,7 +2987,7 @@ ASide:
           cameraX: -1.4
           cameraY: 0
     - Name: "lightning"
-      ID: 365
+      ID: 363
       Update: 
         Remove: true 
     - Name: "lightning"
