@@ -618,7 +618,6 @@ namespace Celeste.Mod.Randomizer
                 var defaultBerry = this.Logic.Settings.HasLives ? LinkedCollectable.LifeBerry : LinkedCollectable.Strawberry;
                 if (this.Logic.Random.Next(3) == 0 && !this.Logic.Settings.HasLives)
                 {
-                    caps = this.Logic.Caps.Copy().WithFlags(this.State).WithoutKey();
                     caps.Dashes = NumDashes.Zero;
                     defaultBerry = LinkedCollectable.WingedStrawberry;
                     Logger.Log("randomizer", "Placing a winged berry instead of a regular strawberry");
