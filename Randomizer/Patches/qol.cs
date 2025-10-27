@@ -52,6 +52,7 @@ namespace Celeste.Mod.Randomizer
             IL.Celeste.LightningRenderer.Track += TrackExtraSpace;
             On.Celeste.LockBlock.OnPlayer += NoKeySkips;
             On.Celeste.Player.Update += PreventInvincibility;
+            On.Celeste.RisingLava.Update += StopTheLava;
 
             // https://github.com/EverestAPI/CelesteTAS-EverestInterop/blob/master/CelesteTAS-EverestInterop/EverestInterop/DisableAchievements.cs
             // Before hooking Achievements.Register, check the size of the method.
@@ -112,6 +113,7 @@ namespace Celeste.Mod.Randomizer
             IL.Celeste.HeartGem.Awake -= SpecialHeartColors;
             On.Celeste.LockBlock.OnPlayer -= NoKeySkips;
             On.Celeste.Player.Update -= PreventInvincibility;
+            On.Celeste.RisingLava.Update -= StopTheLava;
 
 
             foreach (var detour in this.SpecialHooksQol)
@@ -770,6 +772,22 @@ namespace Celeste.Mod.Randomizer
             orig(self);
         }
 
+        public void StopTheLava(On.Celeste.RisingLava.orig_Update orig, RisingLava self)
+        {
+            if (this.InRandomizer)
+            {
+                var level = (Engine.Scene as Level);
+                var player = level.Tracker.GetEntity<Player>();
+                HashSet<int> launchStates = new HashSet<int>() { 7, 10, 13, 23 }; //TODO: Double check these states
+                if (player != null && launchStates.Contains(player.StateMachine.State))
+                {
+                    var lavaData = DynamicData.For(self);
+                    lavaData.Set("waiting", true);
+                }
+                    
+            }
+            orig(self);
+        }
     }
 
     public class DisablableTextMenu : TextMenu
