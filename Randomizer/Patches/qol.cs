@@ -778,7 +778,9 @@ namespace Celeste.Mod.Randomizer
             {
                 var level = (Engine.Scene as Level);
                 var player = level.Tracker.GetEntity<Player>();
-                HashSet<int> launchStates = new HashSet<int>() { 7, 10, 13, 23 }; //TODO: Double check these states
+
+                // The four intro states that restrict player movement
+                HashSet<int> launchStates = new HashSet<int>() { 13, 15, 23, 25 }; 
                 if (player != null && launchStates.Contains(player.StateMachine.State))
                 {
                     var lavaData = DynamicData.For(self);
