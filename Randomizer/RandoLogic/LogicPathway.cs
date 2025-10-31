@@ -140,8 +140,9 @@ namespace Celeste.Mod.Randomizer
                 var caps = this.Logic.Caps.WithoutFlags();
                 var closure = LinkedNodeSet.Closure(this.Node, caps, null, true);
                 var available = closure.UnlinkedEdges(u => {
-                    // ensure first hole is up or right
-                    var flag = this.Logic.CompletedTasks.Count != 1 || (u.Static.HoleTarget?.Side != ScreenDirection.Down && u.Static.HoleTarget?.Side != ScreenDirection.Left);
+                    // ensure first hole is up or right if on lower difficulty
+                    bool firstRoom = this.Logic.CompletedTasks.Count == 1;
+                    var flag = this.Logic.Settings.Difficulty >= Difficulty.Master || !firstRoom || (u.Static.HoleTarget?.Side != ScreenDirection.Down && u.Static.HoleTarget?.Side != ScreenDirection.Left);
                     return !this.TriedEdges.Contains(u.Static) && (u.Static.HoleTarget == null || (!this.ForceWarp && this.Logic.Map.HoleFree(this.Node.Room, u.Static.HoleTarget) && flag));
                 });
                 if (available.Count == 0)
@@ -155,8 +156,8 @@ namespace Celeste.Mod.Randomizer
                 var caps2 = caps.Copy();
                 for (int i = 0; ; i++, picked = available[this.Logic.Random.Next(available.Count)])
                 {
-                    // bias against picking left-facing holes
-                    if (picked.Static.HoleTarget != null && picked.Static.HoleTarget.Side == ScreenDirection.Left && this.Logic.Random.Next(4) == 0)
+                    // bias against picking left-facing holes on easier difficulties
+                    if (picked.Static.HoleTarget != null && picked.Static.HoleTarget.Side == ScreenDirection.Left && this.Logic.Random.Next(4) == 0 && this.Logic.Settings.Difficulty < Difficulty.Master)
                     {
                         continue;
                     }
