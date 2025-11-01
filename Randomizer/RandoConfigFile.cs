@@ -91,7 +91,7 @@ namespace Celeste.Mod.Randomizer
             }
         }
 
-        public static Dictionary<string, RandoConfigRoom> LazyReload(AreaKey key)
+        public static List<RandoConfigRoom> LazyReload(AreaKey key)
         {
             char side;
             switch (key.Mode)
@@ -111,7 +111,7 @@ namespace Celeste.Mod.Randomizer
 
             var path = $"Config/{key.GetSID()}.{side}.rando";
             var result = LoadSingle(path, false);
-            return result?.GetRoomMapping(key.Mode);
+            return result?.GetRooms(key.Mode);
         }
 
         public static void YamlSkeleton(MapData map, bool doUnknown = true)
@@ -182,35 +182,18 @@ namespace Celeste.Mod.Randomizer
             YamlSkeleton(area, doUnknown);
         }
 
-        public Dictionary<String, RandoConfigRoom> GetRoomMapping(AreaMode mode)
+        public List<RandoConfigRoom> GetRooms(AreaMode mode)
         {
-            List<RandoConfigRoom> rooms;
             switch (mode)
             {
                 case AreaMode.Normal:
                 default:
-                    rooms = this.ASide;
-                    break;
+                    return this.ASide;
                 case AreaMode.BSide:
-                    rooms = this.BSide;
-                    break;
+                    return this.BSide;
                 case AreaMode.CSide:
-                    rooms = this.CSide;
-                    break;
+                    return this.CSide;
             }
-
-            if (rooms == null)
-            {
-                return null;
-            }
-
-            var result = new Dictionary<String, RandoConfigRoom>();
-            foreach (RandoConfigRoom room in rooms)
-            {
-                result.Add(room.Room, room);
-            }
-
-            return result;
         }
     }
 

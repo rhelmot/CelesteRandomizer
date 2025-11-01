@@ -304,7 +304,14 @@ ASide:
         - Dashes: zero
           Difficulty: hard
       ReqIn:
-        Dashes: zero
+        Or:
+        - Dashes: zero
+          Difficulty: hard
+          And:
+          - Flag: books:set
+        - Dashes: zero
+          And:
+          - Flag: books:unset
     Subrooms:
     - Room: "out"
       Holes:
@@ -373,8 +380,60 @@ ASide:
         - Dashes: one
         - Dashes: zero
           Difficulty: Perfect
+          And:
+            - Flag: towels:unset
+            - Flag: books:unset
+            - Flag: boxes:unset
+        - Dashes: zero
+          Or:
+          - And:
+            - Flag: towels:set
+            - Flag: books:set
+            - Flag: boxes:set
+          - And:
+            - Flag: boxes:unset
+            - Flag: books:set
+            - Flag: towels:set
+          - And:
+            - Flag: books:unset
+            - Flag: boxes:set
+            - Flag: towels:set
+          - And:
+            - Flag: towels:unset
+            - Flag: boxes:set
+            - Flag: books:set
+          - And:
+            - Flag: boxes:unset
+            - Flag: towels:unset
+            - Flag: books:set
       ReqOut:
-        Dashes: one     
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Or:
+          - And:
+            - Flag: towels:set
+            - Flag: books:set
+            - Flag: boxes:set
+          - And:
+            - Flag: books:unset
+            - Flag: boxes:set
+            - Flag: towels:set
+          - And:
+            - Flag: towels:unset
+            - Flag: boxes:set
+            - Flag: books:set
+          - And:
+            - Flag: books:unset
+            - Flag: towels:unset
+            - Flag: boxes:set
+            - Difficulty: master
+        - Dashes: zero
+          Difficulty: perfect # clear this before merging 1
+          And:
+          - Flag: books:unset
+          - Flag: boxes:unset
+          - Flag: towels:set
   - Room: "0x-b" # fourth secret
     Holes:
     - Side: Right
@@ -514,12 +573,76 @@ ASide:
       Kind: none
     InternalEdges:
     - To: "right"
-      ReqBoth:
-        Key: true
-        KeyholeID: 11
+      ReqOut:
         Or:
-          - Flag: towels:unset
-          - Flag: boxes:unset
+        - Dashes: one
+          Key: true
+          KeyholeID: 11
+        - Dashes: zero
+          Key: true
+          KeyholeID: 11
+          Difficulty: master
+          And:
+          - Flag: books:unset
+          - Flag: boxes:set
+          - Flag: towels:set
+        - Dashes: zero
+          Key: true
+          KeyholeID: 11
+          Or:
+          - And:
+            - Flag: boxes:unset
+            - Flag: books:unset
+            - Flag: towels:set
+          - And:
+            - Flag: boxes:unset
+            - Flag: books:unset
+            - Flag: towels:set
+          - And:
+            - Flag: boxes:unset
+            - Flag: towels:unset
+            - Flag: books:set
+          - And:
+            - Flag: books:unset
+            - Flag: towels:unset
+            - Flag: boxes:set
+          - And:
+            - Flag: boxes:unset
+            - Flag: books:unset
+            - Flag: towels:unset
+      ReqIn:
+        Or:
+        - Dashes: one
+          Key: true
+          KeyholeID: 11
+        - Dashes: zero
+          Key: true
+          KeyholeID: 11
+          Or:
+          - And:
+            - Flag: boxes:unset
+            - Flag: books:set
+            - Flag: towels:set
+          - And:
+            - Flag: towels:unset
+            - Flag: boxes:set
+            - Flag: books:set
+          - And:
+            - Flag: boxes:unset
+            - Flag: books:unset
+            - Flag: towels:set
+          - And:
+            - Flag: boxes:unset
+            - Flag: towels:unset
+            - Flag: books:set
+          - And:
+            - Flag: books:unset
+            - Flag: towels:unset
+            - Flag: boxes:set
+          - And:
+            - Flag: boxes:unset
+            - Flag: books:unset
+            - Flag: towels:unset
     Subrooms:
     - Room: "right"
       Holes:
@@ -574,6 +697,12 @@ ASide:
             - Flag: towels:unset
             - Flag: books:unset
             - Flag: boxes:unset
+        - Dashes: zero
+          Difficulty: perfect # clear before pr
+          And:
+          - Flag: boxes:unset
+          - Flag: books:set
+          - Flag: towels:set
       ReqIn:
         Dashes: zero
     - Collectable: 0
@@ -606,7 +735,9 @@ ASide:
         Or:
         - Dashes: one
         - Dashes: zero
-          Difficulty: Perfect                               #hardest dashless room in randomizer
+          Difficulty: Perfect #(former) hardest dashless room in randomizer
+          And:
+          - Flag: towels:unset # can be done without, but hasnt yet.
     - Side: Down
       Idx: 0
       Kind: inout
@@ -619,6 +750,8 @@ ASide:
         - Dashes: one
         - Dashes: zero
           Difficulty: expert
+          And:
+          - Flag: boxes:unset
     - Collectable: 0
       ReqOut:
         Or:
@@ -629,7 +762,7 @@ ASide:
         Or:
           - Dashes: one
           - Dashes: zero
-            Difficulty: perfect
+            Difficulty: master
     Subrooms:
     - Room: "right"
       Holes:
@@ -738,7 +871,7 @@ ASide:
         Or:
         - Dashes: one
         - Dashes: zero
-          Difficulty: perfect
+          Difficulty: master
       ReqIn:
         Dashes: two
         Difficulty: master
@@ -752,10 +885,27 @@ ASide:
         ReqBoth:
           Or:
             - Dashes: zero
-              And:  # TODO you can maybe do this with zero dashes in some combination of these being set
+              Or:
+              - And:
+                - Flag: towels:unset
+                - Flag: boxes:set
+                - Flag: books:set
+              - And:
+                - Flag: boxes:unset
+                - Flag: books:unset
+                - Flag: towels:set
+              - And:
+                - Flag: boxes:unset
+                - Flag: towels:unset
+                - Flag: books:set
+              - And:
                 - Flag: books:unset
                 - Flag: towels:unset
+                - Flag: boxes:set
+              - And:
+                - Flag: books:unset
                 - Flag: boxes:unset
+                - Flag: towels
             - Dashes: one
               Or:
                 - Flag: books:unset
@@ -801,6 +951,19 @@ ASide:
     - Side: Up
       Idx: 2
       Kind: inout
+      ReqOut:
+        Or:
+        - Dashes: zero
+          Difficulty: master # just a 2x1
+          And:
+          - Flag: towels:set
+          - Flag: boxes:set
+          - Flag: books:set
+        - Dashes: zero
+          Or:
+          - Flag: towels:set
+          - Flag: boxes:set
+          - Flag: books:set
     - Side: Right
       Idx: 0
       Kind: inout
@@ -897,7 +1060,7 @@ ASide:
     InternalEdges:
       - To: "switch"
         ReqBoth:
-          Dashes: one
+          Dashes: zero
     Subrooms:
     - Room: "elbow"
       Holes:
@@ -958,8 +1121,14 @@ ASide:
       Kind: inout
     InternalEdges:
       - To: "bottom"
-        ReqBoth:
+        ReqOut:
           Difficulty: normal
+        ReqIn:
+          Or:
+          - Dashes: one
+          - Dashes: zero
+            And:
+            - Flag: boxes:unset
     Subrooms:
       - Room: "bottom"
         Holes:
@@ -975,6 +1144,18 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - Collectable: 0
+      ReqBoth:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          And:
+          - Flag: boxes:unset
+        - Dashes: zero
+          Difficulty: perfect # quite easy tbh
+          And:
+          - Flag: boxes:set
   - Room: "11-z"  # chest 4
     Holes:
     - Side: Up
@@ -1081,7 +1262,10 @@ ASide:
         Or:
         - Dashes: one
         - Dashes: zero
-          Difficulty: perfect
+          Difficulty: master
+          Or:
+          - Flag: boxes:unset
+          - Flag: towels:unset
     - To: "berry"
       ReqOut:
         Dashes: one
@@ -1094,7 +1278,6 @@ ASide:
         Collectables:
           - Idx: 0
             MustFly: true
-
   - Room: "13-a"  # towels 4
     Holes:
     - Side: Up
@@ -1153,7 +1336,7 @@ ASide:
     InternalEdges:
       - To: "switch"
         ReqBoth:
-          Dashes: one
+          Dashes: zero
     Subrooms:
       - Room: "switch"
         Flags:
@@ -1173,6 +1356,11 @@ ASide:
     - Side: Right
       Idx: 0
       Kind: inout
+      ReqBoth:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Flag: towels:unset
     - Side: Down
       Idx: 1
       Kind: inout
@@ -1231,12 +1419,27 @@ ASide:
           Remove: true
   - Room: "12-c"  # books 3
     Holes:
-    - Side: Up
-      Idx: 0
-      Kind: inout
     - Side: Left
       Idx: 0
       Kind: inout
+    InternalEdges:
+    - To: "out"
+      ReqBoth:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Or:
+          - And:
+            - Flag: books:set
+            - Flag: boxes:set
+          - Flag: books:set
+          - Flag: boxes:unset
+    Subrooms:
+    - Room: "out"
+      Holes:
+      - Side: Up
+        Idx: 0
+        Kind: inout
   - Room: "12-d"  # books 4
     Holes:
     - Side: Left
@@ -1295,7 +1498,7 @@ ASide:
     InternalEdges:
       - To: "switch"
         ReqBoth:
-          Dashes: one
+          Dashes: zero
     Subrooms:
       - Room: "switch"
         Flags:
@@ -1604,6 +1807,32 @@ ASide:
           Add: true
           X: 24
           Y: 80
+  - Room: "01-c"  # 01-c copy
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: out
+    - Side: Left
+      Idx: 0
+      Kind: None
+    Tweaks:
+      - ID: 42
+        Name: "cassette"
+        Update:
+          Remove: true
+      - Name: "spawn"
+        Update:
+          Add: true
+          X: 24
+          Y: 104
+      - Name: "spawn"
+        ID: 8
+        Update:
+          Remove: true
+      - Name: "spawn"
+        ID: 0
+        Update:
+          Remove: true
   - Room: "03-b"  # double berry room
     Holes:
     - Side: Up
@@ -1734,6 +1963,7 @@ ASide:
       Idx: 0
       Kind: inout
       HighBound: 19
+      LowBound: 15
     - Side: Left
       Idx: 0
       Kind: inout
@@ -1779,6 +2009,7 @@ ASide:
       Idx: 0
       Kind: inout
       HighBound: 19
+      LowBound: 15
     Tweaks:
     - ID: 1             # remove invisible barrier
       Update:
@@ -2030,6 +2261,119 @@ ASide:
     - Side: Right
       Idx: 0
       Kind: none
+  - Room: "roof07" # room07 copy
+    Holes:
+    - Side: Left
+      Idx: 0
+      Kind: out
+      ReqOut:
+        Dashes: two
+        Difficulty: expert
+      HighBound: 10
+    - Side: Left
+      Idx: 1
+      Kind: inout
+    - Side: Right
+      Idx: 0
+      Kind: inout
+      HighOpen: true
+    Tweaks:
+    - Name: "friendlyGhost" # you could do this 1x probably if you leave him on, i think thats bad though.
+      ID: 2
+      Update:
+        Remove: true
+    - Name: "resortRoofEnding"
+      ID: 3
+      Update:
+        Remove: true
+    - Decal: fg # so much work just because the ending entity HAD to be the tiles :sob:
+      Name: "3-resort/roofEdge"    
+      Update:
+        Add: true
+        X: 216
+        Y: 92
+        ScaleX: 1
+        ScaleY: 1
+    - Decal: fg
+      Name: 3-resort/roofCenter_d
+      Update:
+        Add: true
+        X: 200
+        Y: 92
+        ScaleX: 1
+        ScaleY: 1
+    - Decal: fg
+      Name: 3-resort/roofCenter_c
+      Update:
+        Add: true
+        X: 184
+        Y: 92
+        ScaleX: 1
+        ScaleY: 1
+    - Decal: fg
+      Name: 3-resort/roofCenter_c
+      Update:
+        Add: true
+        X: 168
+        Y: 92
+        ScaleX: 1
+        ScaleY: 1
+    - Decal: fg
+      Name: 3-resort/roofCenter_d
+      Update:
+        Add: true
+        X: 152
+        Y: 92
+        ScaleX: 1
+        ScaleY: 1
+    - Decal: fg
+      Name: 3-resort/roofCenter_d
+      Update:
+        Add: true
+        X: 136
+        Y: 92
+        ScaleX: 1
+        ScaleY: 1
+    - Decal: fg
+      Name: 3-resort/roofCenter_b
+      Update:
+        Add: true
+        X: 120
+        Y: 92
+        ScaleX: 1
+        ScaleY: 1
+    - Decal: fg
+      Name: 3-resort/roofCenter_d
+      Update:
+        Add: true
+        X: 104
+        Y: 92
+        ScaleX: 1
+        ScaleY: 1
+    - Decal: fg
+      Name: 3-resort/roofCenter_b
+      Update:
+        Add: true
+        X: 88
+        Y: 92
+        ScaleX: 1
+        ScaleY: 1
+    - Decal: fg
+      Name: 3-resort/roofCenter_b
+      Update:
+        Add: true
+        X: 72
+        Y: 92
+        ScaleX: 1
+        ScaleY: 1
+    - Decal: fg
+      Name: 3-resort/roofCenter_d
+      Update:
+        Add: true
+        X: 56
+        Y: 92
+        ScaleX: 1
+        ScaleY: 1
 
 BSide:
   - Room: "00"
@@ -2427,6 +2771,10 @@ BSide:
           Difficulty: hard
         - Dashes: zero
           Difficulty: expert
+        - Dashes: zero
+          Difficulty: perfect
+          And:
+          - Flag: towels:set
     Tweaks:
     - Name: "spawn"
       Update:
@@ -2471,12 +2819,15 @@ BSide:
     InternalEdges:
     - Split: LeftToRight
       ReqOut:
-         Or:
-         - Dashes: one
-         - Dashes: zero
-           Difficulty: master
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: master
       ReqIn:
-           Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:
@@ -2718,7 +3069,36 @@ BSide:
       ID: 3
       Update:
         Remove: true
-
+    - Name: "spawn"
+      ID: 1
+      X: 400
+      Y: 168
+      Update:
+        Remove: true
+  - Room: "end" # end copy
+    Holes:
+    - Side: Up
+      Idx: 0
+      Kind: out
+      ReqOut:
+        Dashes: one
+        Difficulty: master
+    Tweaks:
+    - Name: "blackGem"
+      ID: 0
+      Update:
+        Values:
+          fake: true
+    - Name: "invisibleBarrier"
+      ID: 3
+      Update:
+        Remove: true
+    - Name: spawn
+      ID: 1
+      X: 400
+      Y: 168
+      Update:
+        Default: true
 CSide:
   - Room: "00"
     Holes:
@@ -2822,3 +3202,50 @@ CSide:
     - Side: Down
       Idx: 2
       Kind: None
+  - Room: "02" # 02 copy
+    Holes:
+    - Side: Left
+      Idx: 0
+      Kind: out
+      ReqOut:
+        Or:
+        - Dashes: two
+          Difficulty: hard
+        - Dashes: one
+          Difficulty: expert # might replace with master
+    - Side: Down
+      Idx: 0
+      Kind: None
+    - Side: Down
+      Idx: 1
+      Kind: None
+    - Side: Down
+      Idx: 2
+      Kind: None
+    Tweaks:
+    - Name: "blackGem"
+      ID: 490
+      Update:
+        Values:
+          fake: true
+          persistent: false
+    - Name: "oshiroTrigger"
+      ID: 0
+      Update:
+        X: 1472
+        Y: 0
+        Width: 16
+        Height: 184
+    - Name: "spawn"
+      ID: 500
+      Update:
+        Remove: true
+    - Name: "spawn"
+      ID: 18
+      Update:
+        Remove: true
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 1480
+        Y: 64

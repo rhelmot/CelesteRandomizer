@@ -10,6 +10,8 @@ using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using MonoMod.Utils;
 using MonoMod.RuntimeDetour;
+using System.Security.Cryptography.X509Certificates;
+using IL.MonoMod;
 
 namespace Celeste.Mod.Randomizer
 {
@@ -45,6 +47,7 @@ namespace Celeste.Mod.Randomizer
             On.Celeste.Key.OnPlayer += PatchCollectKey;
             On.Celeste.Strawberry.OnPlayer += PatchCollectBerry;
             On.Celeste.SummitGem.SmashRoutine += PatchCollectGem;
+            On.Celeste.TempleGate.TheoIsNearby += TheoGateBW;
 
             this.SpecialHooksMechanics.Add(new ILHook(typeof(HeartGem).GetMethod("CollectRoutine", BindingFlags.Instance | BindingFlags.NonPublic).GetStateMachineTarget(), FakeoutHeart));
         }
@@ -111,6 +114,7 @@ namespace Celeste.Mod.Randomizer
             On.Celeste.Key.OnPlayer -= PatchCollectKey;
             On.Celeste.Strawberry.OnPlayer -= PatchCollectBerry;
             On.Celeste.SummitGem.SmashRoutine -= PatchCollectGem;
+            On.Celeste.TempleGate.TheoIsNearby -= TheoGateBW;
 
             foreach (var detour in this.SpecialHooksMechanics)
             {
@@ -919,5 +923,20 @@ namespace Celeste.Mod.Randomizer
 
             }
         }
+
+        public bool TheoGateBW(On.Celeste.TempleGate.orig_TheoIsNearby orig, TempleGate self)
+        {
+            if (this.InRandomizer)
+            {
+                TheoCrystal entity = Engine.Scene.Tracker.GetEntity<TheoCrystal>();
+                if (entity == null)
+                    return true;
+        
+                DynamicData gateData = DynamicData.For(self);
+                return (entity.X > self.X ? entity.X - self.X <= 25f : self.X - entity.X <= 10f) || Vector2.DistanceSquared(gateData.Get<Vector2>("holdingCheckFrom"), entity.Center) < (gateData.Get<bool>("open") ? 6400f : 4096f);
+            }
+            return orig(self);
+        }
+
     }
 }

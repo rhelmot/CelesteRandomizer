@@ -400,10 +400,37 @@ ASide:
         Dashes: one
     - Side: Left
       Idx: 0
-      Kind: inout
+      Kind: in
+  - Room: "b-00" # b-00 copy
+    Holes:
+    - Side: Up
+      Idx: 0
+      Kind: out
+      ReqOut:
+        Dashes: one
+    - Side: Right
+      Idx: 0
+      Kind: in
+    - Side: Left
+      Idx: 0
+      Kind: out
     Tweaks:
-    - Name: "templeGate"
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 536
+        Y: 88
+        Width: 48
+        Height: 48
+        Values:
+            type: "button"
+            entID: 15
+    - Name: templeGate # this just gets in the way, and there isnt a second button
       ID: 1
+      Update:
+        Remove: true
+    - Name: npc # theo causes cutscene, you dont really want this from this entry.
+      ID: 12
       Update:
         Remove: true
   - Room: "b-18"
@@ -413,10 +440,8 @@ ASide:
       Kind: inout
     InternalEdges:
     - Collectable: 0
-      ReqOut:
-        Dashes: zero
-      ReqIn:
-        Dashes: one
+      ReqBoth:
+        Dashes: one # while you can get to the berry dashless you can't get bubbled in time.
   - Room: "b-01"
     Hub: true
     Holes:
@@ -611,15 +636,24 @@ ASide:
       Idx: 0
       Kind: inout
     InternalEdges:
-    - To: "top"
+    - To: "berry"
       ReqIn:
         Dashes: zero
       ReqOut:
         Or:
         - Dashes: two
-          Diffculty: expert
+          Difficulty: expert
         - Dashes: one
           Difficulty: perfect
+    - To: "top"
+      ReqOut:
+        Dashes: two
+        Difficulty: master
+      ReqIn:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: master
     Subrooms:
     - Room: "top"
       Holes:
@@ -634,17 +668,19 @@ ASide:
           - Dashes: one 
           - Dashes: zero
             Difficulty: master
+    - Room: "berry"
+      Collectables:
+      - Idx: 0
       InternalEdges:
-      - Collectable: 0
-        ReqIn:
-          Dashes: zero
-          Difficulty: master
+      - To: "top" # top to berry to top would be 1x, but how would i add that AND keep bottom to top 1x from occuring?
         ReqOut:
+          Dashes: two
+          Difficulty: master
+        ReqIn:
           Or:
-          - Dashes: two
-            Difficulty: expert
           - Dashes: one
-            Difficulty: perfect  
+          - Dashes: zero
+            Difficulty: master
   - Room: "b-05"
     Holes:
     - Side: Left
@@ -729,8 +765,8 @@ ASide:
         Difficulty: hard
       ReqIn:
         Or:
-        - Dashes: zero
-          Difficulty: hard
+#        - Dashes: zero # this will softlock you if you get up exit.
+#          Difficulty: hard
         - Dashes: one
           Difficulty: hard
         - Dashes: two
@@ -840,6 +876,33 @@ ASide:
           Add: true
           X: 168
           Y: 40
+  - Room: "b-22" # b-22 copy
+    Holes:
+    - Side: Left
+      Idx: 0
+      Kind: out
+      ReqOut:
+        Or:
+        - Dashes: two
+          Difficulty: hard
+        - Dashes: one
+          Difficulty: expert
+        - Dashes: zero
+          Difficulty: master
+    Tweaks:
+      - ID: 69
+        Name: "cassette"
+        Update:
+          Remove: true
+      - Name: "spawn"
+        Update: 
+          Add: true
+          X: 168
+          Y: 72
+      - Name: "spawn"
+        ID: 68
+        Update:
+          Remove: true
   - Room: "b-06"
     Holes:
     - Side: Left
@@ -852,8 +915,6 @@ ASide:
       ReqIn:
         Or:
         - Dashes: zero
-          Difficulty: perfect
-        - Dashes: one
           Difficulty: master
         - Dashes: two
     - To: "right"
@@ -918,17 +979,57 @@ ASide:
       Kind: inout
       ReqOut:
         Dashes: one
-    - Side: Right
-      Idx: 0
-      Kind: out  # TODO this could theoretically be inout
-      ReqOut:
-        Dashes: one
-        Key: true
-        KeyholeID: 3
     - Side: Left
       Idx: 0
       Kind: inout
+    Subrooms:
+    - Room: "right"
+      Holes:
+      - Side: Right
+        Idx: 0
+        Kind: inout
+    InternalEdges:
+    - To: "right"
+      ReqBoth:
+        Dashes: one
+        Key: true
+        KeyholeID: 3
     Tweaks:
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 128
+        Y: 64
+    - Name: "templeGate"
+      ID: 19
+      Update:
+        Remove: true
+  - Room: "b-14" # b-14 copy
+    Holes:
+    - Side: Up
+      Idx: 0
+      Kind: none # really wanna minimize the possiblity of getting this anywhere BUT dashless perfect
+    - Side: Left
+      Idx: 0
+      Kind: out
+    Subrooms:
+    - Room: "right"
+      Holes:
+      - Side: Right
+        Idx: 0
+        Kind: inout
+    InternalEdges:
+    - To: "right"
+      ReqIn:
+        Dashes: zero
+        Difficulty: perfect
+        Key: true
+        KeyholeID: 3
+    Tweaks:
+    - Name: "dashBlock"
+      ID: 20
+      Update:
+        Remove: true
     - Name: "spawn"
       Update:
         Add: true
@@ -1818,6 +1919,39 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+  - Room: "e-01" # e-01 copy
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: in
+    - Side: Left
+      Idx: 0
+      Kind: out
+    Tweaks:
+    - Name: "invisibleBarrier"
+      ID: 14
+      Update:
+        Remove: true
+    - Name: "templeGate"
+      ID: 10
+      Update:
+        Values:
+          sprite: theo
+          type: HoldingTheo
+    - Name: "templeGate"
+      ID: 13
+      Update:
+        Remove: true
+    - Name: "spawn"
+      ID: 0
+      Update:
+        X: 296
+        Y: 168
+    - Name: "theoCrystal"
+      ID: 3
+      Update:
+        X: 272
+        Y: 168
   - Room: "e-02"
     Holes:
     - Side: Right
@@ -1826,6 +1960,49 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+  - Room: "e-02" # e-02 copy
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: in
+    - Side: Left
+      Idx: 0
+      Kind: out
+    Tweaks:
+    - Name: "invisibleBarrier"
+      ID: 21
+      Update:
+        Remove: true
+    - Name: "templeGate"
+      ID: 10
+      Update:
+        Values:
+          sprite: theo
+          type: HoldingTheo
+    - Name: "templeGate"
+      ID: 20
+      Update:
+        Remove: true
+    - Name: "spawn"
+      ID: 0
+      Update:
+        X: 352
+        Y: 168
+    - Name: "theoCrystal"
+      ID: 3
+      Update:
+        X: 328
+        Y: 168
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 312
+        Y: 120
+        Width: 64
+        Height: 48
+        Values:
+            type: "button"
+            entID: 19
   - Room: "e-03"
     Holes:
     - Side: Right
@@ -1834,6 +2011,49 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+  - Room: "e-03" # e-03 copy
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: in
+    - Side: Left
+      Idx: 0
+      Kind: out
+    Tweaks:
+    - Name: "invisibleBarrier"
+      ID: 21
+      Update:
+        Remove: true
+    - Name: "templeGate"
+      ID: 10
+      Update:
+        Values:
+          sprite: theo
+          type: HoldingTheo
+    - Name: "templeGate"
+      ID: 25
+      Update:
+        Remove: true
+    - Name: "spawn"
+      ID: 0
+      Update:
+        X: 488
+        Y: 168
+    - Name: "theoCrystal"
+      ID: 3
+      Update:
+        X: 464
+        Y: 168
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 432
+        Y: 120
+        Width: 80
+        Height: 48
+        Values:
+            type: "button"
+            entID: 26
   - Room: "e-04"
     Holes:
     - Side: Right
@@ -1842,6 +2062,48 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+  - Room: "e-04" # e-04 copy
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: in
+    - Side: Left
+      Idx: 0
+      Kind: out
+    Tweaks:
+    - Name: "invisibleBarrier"
+      ID: 21
+      Update:
+        Remove: true
+    - Name: "templeGate"
+      ID: 10
+      Update:
+        Values:
+          sprite: theo
+          type: HoldingTheo
+    - Name: "templeGate"
+      ID: 47
+      Update:
+        Remove: true
+    - Name: "spawn"
+      ID: 0
+      Update:
+        X: 472
+        Y: 168
+    - Name: "theoCrystal"
+      ID: 3
+      Update:
+        X: 448
+        Y: 168
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 432
+        Y: 120
+        Width: 64
+        Height: 48
+        Values:
+            type: "touchswitch"
   - Room: "e-06"
     Holes:
     - Side: Right
@@ -1850,6 +2112,49 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+  - Room: "e-06" # e-06 copy
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: in
+    - Side: Left
+      Idx: 0
+      Kind: out
+    Tweaks:
+    - Name: "invisibleBarrier"
+      ID: 21
+      Update:
+        Remove: true
+    - Name: "templeGate"
+      ID: 10
+      Update:
+        Values:
+          sprite: theo
+          type: HoldingTheo
+    - Name: "templeGate"
+      ID: 57
+      Update:
+        Remove: true
+    - Name: "spawn"
+      ID: 0
+      Update:
+        X: 640
+        Y: 168
+    - Name: "theoCrystal"
+      ID: 3
+      Update:
+        X: 616
+        Y: 168
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 384
+        Y: 120
+        Width: 80
+        Height: 48
+        Values:
+            type: "button"
+            entID: 49
   - Room: "e-05"
     Holes:
     - Side: Right
@@ -1871,6 +2176,43 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+  - Room: "e-07" # e-07 copy
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: in
+    - Side: Left
+      Idx: 0
+      Kind: out
+    Tweaks:
+    - Name: "invisibleBarrier"
+      ID: 21
+      Update:
+        Remove: true
+    - Name: "templeGate"
+      ID: 10
+      Update:
+        Values:
+          sprite: theo
+          type: HoldingTheo
+    - Name: "templeGate"
+      ID: 57
+      Update:
+        Remove: true
+    - Name: "templeGate"
+      ID: 66
+      Update:
+        Remove: true
+    - Name: "spawn"
+      ID: 0
+      Update:
+        X: 664
+        Y: 168
+    - Name: "theoCrystal"
+      ID: 3
+      Update:
+        X: 640
+        Y: 168
   - Room: "e-08"
     Holes:
     - Side: Right
@@ -1881,6 +2223,41 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+  - Room: "e-08" # e-08 copy
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: in
+    - Side: Left
+      Idx: 0
+      Kind: out
+      ReqOut:
+        Dashes: one
+    Tweaks:
+    - Name: "invisibleBarrier"
+      ID: 21
+      Update:
+        Remove: true
+    - Name: "templeGate"
+      ID: 10
+      Update:
+        Values:
+          sprite: theo
+          type: HoldingTheo
+    - Name: "templeGate"
+      ID: 80
+      Update:
+        Remove: true
+    - Name: "spawn"
+      ID: 0
+      Update:
+        X: 520
+        Y: 176
+    - Name: "theoCrystal"
+      ID: 3
+      Update:
+        X: 496
+        Y: 176
   - Room: "e-09"
     Holes:
     - Side: Right
@@ -1891,6 +2268,43 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+  - Room: "e-09" # e-09 copy
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: in
+    - Side: Left
+      Idx: 0
+      Kind: out
+      ReqOut:
+        Or:
+        - Dashes: one
+        - Difficulty: hard
+    Tweaks:
+    - Name: "invisibleBarrier"
+      ID: 21
+      Update:
+        Remove: true
+    - Name: "templeGate"
+      ID: 10
+      Update:
+        Values:
+          sprite: theo
+          type: HoldingTheo
+    - Name: "templeGate"
+      ID: 103
+      Update:
+        Remove: true
+    - Name: "spawn"
+      ID: 0
+      Update:
+        X: 416
+        Y: 168
+    - Name: "theoCrystal"
+      ID: 3
+      Update:
+        X: 392
+        Y: 168
   - Room: "e-10"
     Holes:
     - Side: Right
@@ -1899,6 +2313,39 @@ ASide:
     - Side: Left
       Idx: 0
       Kind: in
+  - Room: "e-10"
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: in
+    - Side: Left
+      Idx: 0
+      Kind: out
+    Tweaks:
+    - Name: "invisibleBarrier"
+      ID: 21
+      Update:
+        Remove: true
+    - Name: "templeGate"
+      ID: 10
+      Update:
+        Values:
+          sprite: theo
+          type: HoldingTheo
+    - Name: "templeGate"
+      ID: 41
+      Update:
+        Remove: true
+    - Name: "spawn"
+      ID: 0
+      Update:
+        X: 688
+        Y: 80
+    - Name: "theoCrystal"
+      ID: 3
+      Update:
+        X: 616
+        Y: 112
   - Room: "e-11"
     ReqEnd:
       Difficulty: easy
@@ -1997,7 +2444,7 @@ BSide:
         Dashes: one
       ReqIn:
         Dashes: two
-        Difficulty: perfect
+        Difficulty: master
   - Room: "a-02"
     Holes:
     - Side: Left
@@ -2032,7 +2479,7 @@ BSide:
         - Dashes: two
           Difficulty: hard
         - Dashes: one
-          Difficulty: perfect
+          Difficulty: master
     Tweaks:
     - Name: "cameraOffsetTrigger"
       Update:
@@ -2320,6 +2767,35 @@ BSide:
       Kind: out
       ReqOut:
         Dashes: one
+  - Room: "b-05" # b-05 copy
+    Holes: 
+    - Side: Right
+      Idx: 0
+      Kind: out
+      ReqOut:
+        Dashes: one
+    - Side: Right
+      Idx: 1
+      Kind: inout
+    Tweaks:
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 296
+        Y: 216
+        Width: 24
+        Height: 32
+        Values:
+            type: "touchswitch"
+    - Name: "spawn"
+      X: 312
+      Y: 248
+      Update:
+        Default: true
+    - Name: exitBlock
+      ID: 250
+      Update:
+        Remove: true
   - Room: "b-06"
     Holes:
     - Side: Right
@@ -2353,28 +2829,79 @@ BSide:
           cameraY: 1
   - Room: "b-08"
     Holes:
-    - Side: Up
-      Idx: 0
-      Kind: inout
-      ReqOut:
-        Or:
-        - Dashes: two
-        - Dashes: one
-          Difficulty: hard
-    - Side: Down
-      Idx: 0
-      Kind: out
-      ReqOut:
-        Dashes: one
     - Side: Down
       Idx: 1
       Kind: in
+    Subrooms:
+    - Room: "left"
+      Holes:
+      - Side: Up
+        Idx: 0
+        Kind: inout
+        ReqOut:
+          Or:
+          - Dashes: two
+          - Dashes: one
+            Difficulty: hard
+      - Side: Down
+        Idx: 0
+        Kind: out
+    InternalEdges:
+    - To: "left"
+      ReqOut:
+        Dashes: One
     Tweaks:
     - Name: "spawn"
       X: 544
       Y: 136
       Update:
         Default: true
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 32
+        Y: 0
+        Width: 32
+        Height: 48
+        Values:
+            type: "button"
+            entID: 231
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 40
+        Y: 48
+  - Room: "b-08" # b-08 copy
+    Holes:
+    - Side: Down
+      Idx: 1
+      Kind: out
+    Subrooms:
+    - Room: "left"
+      Holes:
+      - Side: Up
+        Idx: 0
+        Kind: in
+      - Side: Down
+        Idx: 0
+        Kind: in
+    InternalEdges:
+    - To: "left"
+      ReqIn:
+        Or:
+        - Dashes: two
+          Difficulty: hard
+        - Dashes: one
+          Difficulty: expert
+    Tweaks:
+    - Name: "jumpThru"
+      ID: 234
+      Update:
+        Width: 16
+    - Name: "crumbleBlock"
+      ID: 276
+      Update:
+        Remove: true
     - Name: "randomizer/ActivateSwitches"
       Update:
         Add: true
@@ -2406,6 +2933,49 @@ BSide:
       Kind: out
       ReqOut:
         Dashes: one
+#  - Room: "c-00" # c-00 copy # readd this if the cutscene can be done better
+#    Holes:
+#    - Side: Right
+#      Idx: 0
+#      Kind: in
+#    InternalEdges:
+#    - CustomWarp: true
+#      ReqOut:
+#        Dashes: one
+#        Difficulty: expert
+#    Tweaks:
+#    - Name: "eventTrigger" # this is a hack. please fix
+#      Update:
+#        Add: true
+#        X: 152
+#        Y: 96
+#        Width: 16
+#        Height: 8
+#        Values:
+#          event: end_oldsite_dream
+#    - Name: payphone
+#      Update:
+#        Add: true
+#        X: 163
+#        Y: 104
+#    - Name: "cameraOffsetTrigger"
+#      Update:
+#        Add: true
+#        X: 0
+#        Y: 928
+#        Width: 320
+#        Height: 8
+#        Values:
+#          cameraX: 0
+#          cameraY: -1.4
+#    - Name: "cameraOffsetTrigger"
+#      ID: 5
+#      Update: 
+#        Remove: true
+#    - Name: "cameraOffsetTrigger"
+#      ID: 4
+#      Update:
+#        Remove: true
   - Room: "c-01"
     Holes:
     - Side: Right
@@ -2543,6 +3113,33 @@ BSide:
     - Side: Down
       Idx: 0
       Kind: in
+  - Room: "d-00" # d-00 copy
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: in
+    - Side: Down
+      Idx: 0
+      Kind: out
+    Tweaks:
+    - Name: "templeGate"
+      ID: 400
+      Update:
+        Remove: true
+    - Name: "spawn"
+      ID: 397
+      Update:
+        X: 344
+        Y: 168
+    - Name: "theoCrystal"
+      ID: 399
+      Update:
+        X: 320
+        Y: 168
+    - Name: "jumpThru"
+      ID: 396
+      Update: 
+        Width: 16
   - Room: "d-01"
     Holes:
     - Side: Right
@@ -2556,6 +3153,49 @@ BSide:
     - Side: Down
       Idx: 2
       Kind: none # remove if the barrier is ever removed (ie to do the room backwards)
+  - Room: "d-01" # d-01 copy
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: in
+      ReqOut:
+        Difficulty: normal
+    - Side: Left
+      Idx: 0
+      Kind: out
+    Tweaks:
+    - Name: "invisibleBarrier"
+      ID: 455
+      Update:
+        Remove: true
+    - Name: "templeGate"
+      ID: 400
+      Update:
+        Values:
+          sprite: theo
+          type: HoldingTheo
+    - Name: "templeGate"
+      ID: 406
+      Update:
+        Remove: true
+    - Name: "templeGate"
+      ID: 432
+      Update:
+        Remove: true
+    - Name: "templeGate"
+      ID: 407
+      Update:
+        Remove: true
+    - Name: "spawn"
+      ID: 397
+      Update:
+        X: 672
+        Y: 168
+    - Name: "theoCrystal"
+      ID: 399
+      Update:
+        X: 648
+        Y: 168
   - Room: "d-02"
     Holes:
     - Side: Right
@@ -2569,6 +3209,43 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: in
+  - Room: "d-02" # d-02 copy
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: in
+    - Side: Left
+      Idx: 0
+      Kind: out
+    Tweaks:
+    - Name: "invisibleBarrier"
+      ID: 487
+      Update:
+        Remove: true
+    - Name: "templeGate"
+      ID: 400
+      Update:
+        Values:
+          sprite: theo
+          type: HoldingTheo
+    - Name: "templeGate"
+      ID: 407
+      Update:
+        Remove: true
+    - Name: "templeGate"
+      ID: 438
+      Update:
+        Remove: true
+    - Name: "spawn"
+      ID: 397
+      Update:
+        X: 776
+        Y: 152
+    - Name: "theoCrystal"
+      ID: 399
+      Update:
+        X: 744
+        Y: 136
   - Room: "d-03"
     Holes:
     - Side: Right
@@ -2584,13 +3261,63 @@ BSide:
       Kind: unknown
       LowBound: 13
       HighBound: 15
+  - Room: "d-03" # d-03 copy
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: in
+    - Side: Left
+      Idx: 0
+      Kind: out
+      ReqOut:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect
+    - Side: Down
+      Idx: 1
+      Kind: unknown
+      LowBound: 13
+      HighBound: 15
+    Tweaks:
+    - Name: "invisibleBarrier"
+      ID: 498
+      Update:
+        Remove: true
+    - Name: "templeGate"
+      ID: 400
+      Update:
+        Values:
+          sprite: theo
+          type: HoldingTheo
+    - Name: "templeGate"
+      ID: 407
+      Update:
+        Remove: true
+    - Name: "randomizer/ActivateSwitches"
+      Update:
+        Add: true
+        X: 560
+        Y: 80
+        Width: 8
+        Height: 48
+        Values:
+            type: "touchswitch"
+    - Name: "spawn"
+      ID: 397
+      Update:
+        X: 624
+        Y: 168
+    - Name: "theoCrystal"
+      ID: 399
+      Update:
+        X: 592
+        Y: 152
   - Room: "d-04"
     Holes:
     - Side: Right
       Idx: 0
       Kind: out
-      ReqOut:
-        Dashes: one
     - Side: Left
       Idx: 0
       Kind: in
@@ -2608,6 +3335,53 @@ BSide:
           - Dashes: one
             Difficulty: hard
           - Dashes: two
+  - Room: "d-04" # d-04 copy
+    Holes:
+    - Side: Right
+      Idx: 0
+      Kind: in
+    - Side: Left
+      Idx: 0
+      Kind: out
+    - Side: Up
+      Idx: 0
+      Kind: Unknown
+      HighOpen: true
+    - Side: Up
+      New: true
+      Kind: Unknown
+      LowBound: 45
+      HighBound: 48
+      ReqIn:
+        Or:
+          - Dashes: one
+            Difficulty: hard
+          - Dashes: two
+    Tweaks:
+    - Name: "invisibleBarrier"
+      ID: 585
+      Update:
+        Remove: true
+    - Name: "templeGate"
+      ID: 400
+      Update:
+        Values:
+          sprite: theo
+          type: HoldingTheo
+    - Name: "templeGate"
+      ID: 565
+      Update:
+        Remove: true
+    - Name: "spawn"
+      ID: 397
+      Update:
+        X: 408
+        Y: 112
+    - Name: "theoCrystal"
+      ID: 399
+      Update:
+        X: 384
+        Y: 112
   - Room: "d-05"
     ReqEnd:
       Or:
@@ -2618,7 +3392,38 @@ BSide:
     - Side: Left
       Idx: 0
       Kind: in
-
+  - Room: "d-05" # d-05 copy
+    Holes:
+    - Side: Left
+      Idx: 0
+      Kind: out
+      ReqOut:
+        Or:
+        - Dashes: two
+          Difficulty: hard
+        - Dashes: one
+          Difficulty: expert
+    Tweaks:
+    - Name: "blackGem"
+      ID: 17
+      Update:
+        Values:
+          fake: true
+    - Name: "spawn"
+      Update:
+        Add: true
+        X: 728
+        Y: 152
+    - Name: "theoCrystal"
+      ID: 19
+      Update:
+        X: 648
+        Y: 168
+    - Name: "spawn"
+      ID: 3
+      Update:
+        Remove: true
+      
 CSide:
   - Room: "00"
     Holes:

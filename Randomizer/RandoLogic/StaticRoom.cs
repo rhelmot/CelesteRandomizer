@@ -320,6 +320,8 @@ namespace Celeste.Mod.Randomizer
                         Texture = tweak.Name,
                         Position = new Vector2(tweak.Update.X.Value, tweak.Update.Y.Value),
                         Scale = new Vector2(tweak.Update.ScaleX.Value, tweak.Update.ScaleY.Value),
+                        Rotation = float.Parse(tweak.Update?.Values?["Rotation"] ?? "0"),
+                        ColorHex = tweak.Update?.Values?["ColorHex"] ?? "0"
                     };
                     (tweak.Decal == RandoConfigDecalType.BG ? BgDecals : FgDecals).Add(newDecal);
                 }
@@ -698,6 +700,9 @@ namespace Celeste.Mod.Randomizer
                     if (!mapRooms.TryGetValue(conf.Warp, out StaticRoom toRoom))
                     {
                         throw new Exception($"{this.Name}: could not find warp target {conf.Warp}");
+                    }
+                    if (toRoom == null) {
+                        throw new Exception($"{this.Name}: warp target {conf.Warp} is duplicated... this can be overcome, please complain");
                     }
                     if (!toRoom.Nodes.TryGetValue(conf.To ?? "main", out StaticNode toNode))
                     {

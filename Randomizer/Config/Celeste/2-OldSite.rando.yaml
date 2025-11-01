@@ -714,11 +714,6 @@ ASide:
     - Side: Up
       Idx: 0
       Kind: inout
-    - Side: Right
-      Idx: 0
-      Kind: inout
-      ReqBoth:
-        Dashes: one
     - Side: Left
       Idx: 0
       Kind: inout
@@ -729,12 +724,30 @@ ASide:
     - To: "lower"
       ReqOut:
         Dashes: zero
+      ReqIn:
+        Or:
+        - Dashes: two
+        - Dashes: one
+          Difficulty: expert
+    - To: "top_right"
+      ReqOut:
+        Dashes: one
+      ReqIn:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect
     - To: "middle_right"
-      ReqBoth:
+      ReqOut:
+        Dashes: zero
+    - To: "berry"
+      ReqOut:
         Dashes: one
-    - Collectable: 0
-      ReqBoth:
-        Dashes: one
+      ReqIn:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect
     Subrooms:
     - Room: "lower"
       Holes:
@@ -752,8 +765,6 @@ ASide:
         Kind: inout
         ReqOut:
           Dashes: one
-        ReqIn:
-          Dashes: one # 0x LtMR requires the dashblock. coming from this side removes it.
       InternalEdges:
       - To: "middle_right"
         ReqOut:
@@ -768,6 +779,23 @@ ASide:
       - Side: Right
         Idx: 1
         Kind: inout
+    - Room: "top_right"
+      Holes:
+      - Side: Right
+        Idx: 0
+        Kind: inout
+      InternalEdges:
+      - To: "berry"
+        ReqOut:
+          Or:
+          - Dashes: one
+          - Dashes: zero
+            Difficulty: master # this is master because you can get it as a key with a bubble back
+        ReqIn:
+          Dashes: one
+    - Room: "berry"
+      Collectables:
+      - Idx: 0
     Tweaks:
     - ID: 6             # remove change respawn trigger
       Update:
@@ -974,6 +1002,28 @@ ASide:
           Add: true
           X: 56
           Y: 104
+  - Room: "d9" # d9 copy
+    Holes:
+    - Side: Up
+      Idx: 0
+      Kind: out
+      ReqOut:
+        Dashes: one
+        Difficulty: hard
+    Tweaks:
+      - ID: 41
+        Name: "cassette"
+        Update:
+          Remove: true
+      - Name: "spawn"
+        Update:
+          Add: true
+          X: 56
+          Y: 144
+      - Name: "spawn"
+        ID: 0
+        Update:
+          Remove: true
   - Room: "end_0"
     Holes:
     - Side: Up

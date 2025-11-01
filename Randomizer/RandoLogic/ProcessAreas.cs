@@ -119,29 +119,31 @@ namespace Celeste.Mod.Randomizer
             return result;
         }
 
-        private static List<StaticRoom> ProcessMap(MapData map, Dictionary<String, RandoConfigRoom> config)
+        private static List<StaticRoom> ProcessMap(MapData map, List<RandoConfigRoom> config)
         {
             var result = new List<StaticRoom>();
             var resultMap = new Dictionary<string, StaticRoom>();
 
-            foreach (LevelData level in map.Levels)
-            {
-                if (level.Dummy)
-                {
+            var levelMapping = new Dictionary<string, LevelData>();
+            foreach (LevelData level in map.Levels) {
+                if (level.Dummy) {
                     continue;
                 }
-                if (!config.TryGetValue(level.Name, out RandoConfigRoom roomConfig))
-                {
-                    continue;
-                }
-                if (roomConfig == null)
-                {
-                    continue;
+                levelMapping[level.Name] = level;
+            }
+
+            foreach (var roomConfig in config) {
+                if (!levelMapping.TryGetValue(roomConfig.Room, out var level)) {
+                    throw new Exception($"Nonexistent room {roomConfig.Room}");
                 }
                 var holes = RandoLogic.FindHoles(level);
                 var room = new StaticRoom(map.Area, roomConfig, level, holes);
                 result.Add(room);
-                resultMap[level.Name] = room;
+                if (resultMap.ContainsKey(level.Name)) {
+                    resultMap[level.Name] = null;
+                } else {
+                    resultMap[level.Name] = room;
+                }
             }
 
             foreach (var room in result)
@@ -166,7 +168,7 @@ namespace Celeste.Mod.Randomizer
                 {
                     continue;
                 }
-                var mapConfig = config.GetRoomMapping((AreaMode)i);
+                var mapConfig = config.GetRooms((AreaMode)i);
                 if (mapConfig == null)
                 {
                     continue;

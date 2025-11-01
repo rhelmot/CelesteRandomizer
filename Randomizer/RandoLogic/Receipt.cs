@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -17,18 +17,24 @@ namespace Celeste.Mod.Randomizer
             private RandoLogic Logic;
             public LinkedRoom NewRoom;
             private List<LinkedRoom> ExtraRooms;
+            private List<StaticRoom> DupeRooms;
 
             public static StartRoomReceipt Do(RandoLogic logic, StaticRoom newRoomStatic)
             {
                 Logger.Log("randomizer", $"Adding room {newRoomStatic.Name} at start");
                 var newRoom = new LinkedRoom(newRoomStatic, Vector2.Zero);
                 var extras = ConnectAndMapReceipt.WarpClosure(logic, newRoom.Nodes["main"]);
+                var dupes = logic.RemainingRooms.Where(r => r.Name == newRoomStatic.Name && r != newRoomStatic).ToList();
 
                 logic.Map.AddRoom(newRoom);
 
                 if (!logic.Settings.RepeatRooms)
                 {
                     logic.RemainingRooms.Remove(newRoomStatic);
+                    foreach (var dupeRoom in dupes)
+                    {
+                        logic.RemainingRooms.Remove(dupeRoom);
+                    }
                     foreach (var extra in extras)
                     {
                         logic.RemainingRooms.Remove(extra.Static);
@@ -40,6 +46,7 @@ namespace Celeste.Mod.Randomizer
                     Logic = logic,
                     NewRoom = newRoom,
                     ExtraRooms = extras,
+                    DupeRooms = dupes,
                 };
             }
 
@@ -59,6 +66,10 @@ namespace Celeste.Mod.Randomizer
                     {
                         this.Logic.RemainingRooms.Add(room.Static);
                     }
+                    foreach (var dupeRoom in this.DupeRooms)
+                    {
+                        this.Logic.RemainingRooms.Add(dupeRoom);
+                    }
                 }
             }
         }
@@ -70,7 +81,7 @@ namespace Celeste.Mod.Randomizer
             public LinkedEdge Edge;
             public LinkedNode EntryNode;
             private List<LinkedRoom> ExtraRooms;
-
+            private List<StaticRoom> DupeRooms;
             public static ConnectAndMapReceipt Do(RandoLogic logic, UnlinkedEdge fromEdge, StaticEdge toEdge, bool isBacktrack = false)
             {
                 var toRoomStatic = toEdge.FromNode.ParentRoom;
@@ -113,9 +124,15 @@ namespace Celeste.Mod.Randomizer
                 newEdge.NodeA.Edges.Add(newEdge);
                 newEdge.NodeB.Edges.Add(newEdge);
 
+                var dupes = logic.RemainingRooms.Where(r => r.Name == toRoomStatic.Name && r != toRoomStatic).ToList();
+
                 if (!logic.Settings.RepeatRooms)
                 {
                     logic.RemainingRooms.Remove(toRoomStatic);
+                    foreach (var dupeRoom in dupes)
+                    {
+                        logic.RemainingRooms.Remove(dupeRoom);
+                    }
                     foreach (var extra in extras)
                     {
                         logic.RemainingRooms.Remove(extra.Static);
@@ -130,6 +147,7 @@ namespace Celeste.Mod.Randomizer
                     Edge = newEdge,
                     EntryNode = toRoom.Nodes[toEdge.FromNode.Name],
                     ExtraRooms = extras,
+                    DupeRooms = dupes,
                 };
             }
 
@@ -158,9 +176,15 @@ namespace Celeste.Mod.Randomizer
                 newEdge.NodeA.Edges.Add(newEdge);
                 newEdge.NodeB.Edges.Add(newEdge);
 
+                var dupes = logic.RemainingRooms.Where(r => r.Name == toRoomStatic.Name && r != toRoomStatic).ToList();
+
                 if (!logic.Settings.RepeatRooms)
                 {
                     logic.RemainingRooms.Remove(toRoomStatic);
+                    foreach (var dupeRoom in dupes)
+                    {
+                        logic.RemainingRooms.Remove(dupeRoom);
+                    }
                     foreach (var extra in extras)
                     {
                         logic.RemainingRooms.Remove(extra.Static);
@@ -175,6 +199,7 @@ namespace Celeste.Mod.Randomizer
                     Edge = newEdge,
                     EntryNode = toRoom.Nodes["main"],
                     ExtraRooms = extras,
+                    DupeRooms = dupes,
                 };
             }
 
@@ -195,6 +220,10 @@ namespace Celeste.Mod.Randomizer
                     foreach (var room in this.ExtraRooms)
                     {
                         this.Logic.RemainingRooms.Add(room.Static);
+                    }
+                    foreach (var dupeRoom in this.DupeRooms)
+                    {
+                        this.Logic.RemainingRooms.Add(dupeRoom);
                     }
                 }
             }
