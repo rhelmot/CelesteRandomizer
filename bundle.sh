@@ -1,4 +1,5 @@
-#!/bin/bash -e
+#!/usr/bin/env bash
+set -e
 
 dotnet build
 VERSION=$(cat Randomizer/everest.yaml | grep '^  Version' | cut -d' ' -f 4)

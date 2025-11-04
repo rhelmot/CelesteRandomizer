@@ -2333,6 +2333,10 @@ ASide:
           sprite: theo
           type: HoldingTheo
     - Name: "templeGate"
+      ID: 45
+      Update:
+        Remove: true
+    - Name: "templeGate"
       ID: 41
       Update:
         Remove: true
