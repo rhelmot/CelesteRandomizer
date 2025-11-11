@@ -3408,6 +3408,12 @@ BSide:
         - Dashes: one
           Difficulty: expert
     Tweaks:
+    - Name: "templeGate"
+      ID: 0
+      Update:
+        Values:
+          sprite: theo
+          type: HoldingTheo
     - Name: "blackGem"
       ID: 17
       Update:
