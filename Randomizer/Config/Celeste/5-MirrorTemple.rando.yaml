@@ -3408,6 +3408,10 @@ BSide:
         - Dashes: one
           Difficulty: expert
     Tweaks:
+    - Name: "invisibleBarrier"
+      ID: 18
+      Update:
+        Remove: true
     - Name: "templeGate"
       ID: 0
       Update:
