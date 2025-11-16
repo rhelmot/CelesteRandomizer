@@ -4613,6 +4613,11 @@ BSide:
     - Side: Left
       Idx: 1
       Kind: out
+      ReqOut:
+        Or:
+        - Dashes: One
+        - Dashes: zero
+          Difficulty: expert
     - Side: Left
       Idx: 0
       Kind: None
@@ -4730,6 +4735,8 @@ BSide:
     - Side: Left
       Idx: 1
       Kind: out
+      ReqOut:
+        Dashes: two
     - Side: left
       Idx: 0
       Kind: none
