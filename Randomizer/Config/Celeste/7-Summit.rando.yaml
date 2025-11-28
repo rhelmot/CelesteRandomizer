@@ -326,7 +326,7 @@ ASide:
       Kind: None
     - Side: Left
       Idx: 1
-      Kind: inout
+      Kind: out
     - Side: Down
       Idx: 0
       Kind: Unknown
@@ -877,7 +877,7 @@ ASide:
       Kind: none
     - Side: Left
       Idx: 2
-      Kind: inout
+      Kind: out
       ReqOut:
         Dashes: one
     - Side: Right
@@ -2094,7 +2094,7 @@ ASide:
       Kind: none
     - Side: Left
       Idx: 1
-      Kind: inout
+      Kind: out
       ReqOut:
         Or:
         - Dashes: one
@@ -2790,7 +2790,7 @@ ASide:
       Kind: in
     - Side: Left
       Idx: 1
-      Kind: inout
+      Kind: out
       ReqOut:
         Or:
         - Dashes: two
@@ -3415,7 +3415,7 @@ ASide:
       Kind: in
     - Side: Left
       Idx: 1
-      Kind: inout
+      Kind: out
       ReqOut:
         Dashes: one
         Difficulty: hard
@@ -3891,7 +3891,7 @@ ASide:
     Holes:
     - Side: Down
       Idx: 0
-      Kind: inout
+      Kind: out
       ReqOut:
         Dashes: two
         Difficulty: expert
@@ -4612,7 +4612,12 @@ BSide:
       Kind: in
     - Side: Left
       Idx: 1
-      Kind: inout
+      Kind: out
+      ReqOut:
+        Or:
+        - Dashes: One
+        - Dashes: zero
+          Difficulty: expert
     - Side: Left
       Idx: 0
       Kind: None
@@ -4730,6 +4735,8 @@ BSide:
     - Side: Left
       Idx: 1
       Kind: out
+      ReqOut:
+        Dashes: two
     - Side: left
       Idx: 0
       Kind: none
@@ -5572,7 +5579,7 @@ CSide:
     Holes:
     - Side: left
       Idx: 0
-      Kind: inout
+      Kind: out
     - Side: Down
       Idx: 1
       Kind: None

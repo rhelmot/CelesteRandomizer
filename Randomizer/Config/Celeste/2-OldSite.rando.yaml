@@ -742,7 +742,10 @@ ASide:
         Dashes: zero
     - To: "berry"
       ReqOut:
-        Dashes: one
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: master
       ReqIn:
         Or:
         - Dashes: one
@@ -796,6 +799,16 @@ ASide:
     - Room: "berry"
       Collectables:
       - Idx: 0
+      ReqOut:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: master
+      ReqIn:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect # dont bubble on perfect
     Tweaks:
     - ID: 6             # remove change respawn trigger
       Update:

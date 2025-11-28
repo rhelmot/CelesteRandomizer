@@ -1476,6 +1476,11 @@ ASide:
     - To: "berry"
       ReqOut:
         Dashes: zero
+      ReqIn:
+        Or:
+        - Dashes: one
+        - Dashes: zero
+          Difficulty: perfect # go my spikefall
     Subrooms:
       - Room: "left"
         Holes:

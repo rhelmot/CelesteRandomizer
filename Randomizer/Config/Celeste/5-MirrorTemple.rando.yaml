@@ -3303,20 +3303,20 @@ BSide:
         Add: true
         X: 560
         Y: 80
-        Width: 8
-        Height: 48
+        Width: 88
+        Height: 88
         Values:
             type: "touchswitch"
     - Name: "spawn"
       ID: 397
       Update:
-        X: 624
-        Y: 168
+        X: 544
+        Y: 128
     - Name: "theoCrystal"
       ID: 399
       Update:
-        X: 592
-        Y: 152
+        X: 528
+        Y: 128
   - Room: "d-04"
     Holes:
     - Side: Right
@@ -3408,6 +3408,16 @@ BSide:
         - Dashes: one
           Difficulty: expert
     Tweaks:
+    - Name: "invisibleBarrier"
+      ID: 18
+      Update:
+        Remove: true
+    - Name: "templeGate"
+      ID: 0
+      Update:
+        Values:
+          sprite: theo
+          type: HoldingTheo
     - Name: "blackGem"
       ID: 17
       Update:

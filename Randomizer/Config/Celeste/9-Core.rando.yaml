@@ -1488,16 +1488,10 @@ ASide:
         - Dashes: two
     Tweaks:
     - Name: "spawn"
-      X: 256
-      Y: 144
-      Update:
-        Default: true
-    - Name: "spawn"
       X: 160
       Y: 160
       Update:
-        X: 256
-        Y: 144
+        Default: true
     - Name: "jumpThru"
       ID: 328
       Update:
@@ -1505,11 +1499,6 @@ ASide:
         Width: 16
     - Name: "changeRespawnTrigger"
       ID: 0
-      Update:
-        Remove: true
-    - Name: "spawn"
-      X: 392
-      Y: 120
       Update:
         Remove: true
     - Name: "cameraOffsetTrigger"
@@ -1686,8 +1675,11 @@ ASide:
       Idx: 0
       Kind: inout
       ReqOut:
-        Dashes: one
-        Difficulty: expert
+        Or:
+        - Dashes: one
+          Difficulty: expert
+        - Dashes: zero
+          Difficulty: perfect # wtf are you on arti
     - Side: Down
       Idx: 0
       Kind: None
