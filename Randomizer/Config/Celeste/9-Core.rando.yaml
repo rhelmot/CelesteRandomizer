@@ -1675,8 +1675,11 @@ ASide:
       Idx: 0
       Kind: inout
       ReqOut:
-        Dashes: one
-        Difficulty: expert
+        Or:
+        - Dashes: one
+          Difficulty: expert
+        - Dashes: zero
+          Difficulty: perfect # wtf are you on arti
     - Side: Down
       Idx: 0
       Kind: None

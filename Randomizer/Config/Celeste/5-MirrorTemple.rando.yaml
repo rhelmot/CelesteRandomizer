@@ -3303,20 +3303,20 @@ BSide:
         Add: true
         X: 560
         Y: 80
-        Width: 8
-        Height: 48
+        Width: 88
+        Height: 88
         Values:
             type: "touchswitch"
     - Name: "spawn"
       ID: 397
       Update:
-        X: 624
-        Y: 168
+        X: 544
+        Y: 128
     - Name: "theoCrystal"
       ID: 399
       Update:
-        X: 592
-        Y: 152
+        X: 528
+        Y: 128
   - Room: "d-04"
     Holes:
     - Side: Right
