@@ -134,7 +134,7 @@ namespace Celeste.Mod.Randomizer
 
             foreach (var roomConfig in config) {
                 if (!levelMapping.TryGetValue(roomConfig.Room, out var level)) {
-                    throw new Exception($"Nonexistent room {roomConfig.Room}");
+                    throw new Exception($"Nonexistent room {roomConfig.Room} in {map.Filename}");
                 }
                 var holes = RandoLogic.FindHoles(level);
                 var room = new StaticRoom(map.Area, roomConfig, level, holes);
