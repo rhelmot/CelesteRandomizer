@@ -119,7 +119,7 @@ namespace Celeste.Mod.Randomizer
             return result;
         }
 
-        private static List<StaticRoom> ProcessMap(MapData map, List<RandoConfigRoom> config)
+        private static List<StaticRoom> ProcessMap(RandoConfigFile configFile, MapData map, List<RandoConfigRoom> config)
         {
             var result = new List<StaticRoom>();
             var resultMap = new Dictionary<string, StaticRoom>();
@@ -134,7 +134,7 @@ namespace Celeste.Mod.Randomizer
 
             foreach (var roomConfig in config) {
                 if (!levelMapping.TryGetValue(roomConfig.Room, out var level)) {
-                    throw new Exception($"Nonexistent room {roomConfig.Room}");
+                    throw new Exception($"Nonexistent room {roomConfig.Room} referenced by randomizer config {configFile.ConfigPath} in {configFile.ModName}");
                 }
                 var holes = RandoLogic.FindHoles(level);
                 var room = new StaticRoom(map.Area, roomConfig, level, holes);
@@ -194,7 +194,7 @@ namespace Celeste.Mod.Randomizer
                 }
                 else
                 {
-                    RandoLogic.AllRooms.AddRange(RandoLogic.ProcessMap(area.Mode[i].MapData, mapConfig));
+                    RandoLogic.AllRooms.AddRange(RandoLogic.ProcessMap(config, area.Mode[i].MapData, mapConfig));
                 }
 
             }
@@ -208,8 +208,9 @@ namespace Celeste.Mod.Randomizer
                 if (LazyLoaded.Contains(notstupid))
                 {
                     LazyLoaded.Remove(notstupid);
-                    var mapping = RandoConfigFile.LazyReload(key);
-                    RandoLogic.AllRooms.AddRange(RandoLogic.ProcessMap(AreaData.Get(key).Mode[(int)key.Mode].MapData, mapping));
+                    var configfile = RandoConfigFile.LazyReload(key);
+                    var mapping = configfile.GetRooms(key.Mode);
+                    RandoLogic.AllRooms.AddRange(RandoLogic.ProcessMap(configfile, AreaData.Get(key).Mode[(int)key.Mode].MapData, mapping));
                 }
             }
             CountRooms();

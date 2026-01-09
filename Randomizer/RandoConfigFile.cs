@@ -25,6 +25,9 @@ namespace Celeste.Mod.Randomizer
         public List<RandoConfigRoom> BSide { get; set; }
         public List<RandoConfigRoom> CSide { get; set; }
 
+        public string ConfigPath;
+        public string ModName;
+
         public static RandoConfigFile LoadAll(AreaData area, bool lazy = true)
         {
             var result = LoadSingle($"Config/{area.SID}.rando", false);
@@ -70,6 +73,8 @@ namespace Celeste.Mod.Randomizer
             {
                 return new RandoConfigFile
                 {
+                    ConfigPath = asset.PathVirtual,
+                    ModName = asset.Source.Name,
                     ASide = new List<RandoConfigRoom>(),
                     BSide = new List<RandoConfigRoom>(),
                     CSide = new List<RandoConfigRoom>(),
@@ -81,7 +86,10 @@ namespace Celeste.Mod.Randomizer
                 {
                     try
                     {
-                        return YamlHelper.Deserializer.Deserialize<RandoConfigFile>(reader);
+                        var result = YamlHelper.Deserializer.Deserialize<RandoConfigFile>(reader);
+                        result.ConfigPath = asset.PathVirtual;
+                        result.ModName = asset.Source.Name;
+                        return result;
                     }
                     catch (YamlException e)
                     {
@@ -91,7 +99,7 @@ namespace Celeste.Mod.Randomizer
             }
         }
 
-        public static List<RandoConfigRoom> LazyReload(AreaKey key)
+        public static RandoConfigFile LazyReload(AreaKey key)
         {
             char side;
             switch (key.Mode)
@@ -110,8 +118,7 @@ namespace Celeste.Mod.Randomizer
             }
 
             var path = $"Config/{key.GetSID()}.{side}.rando";
-            var result = LoadSingle(path, false);
-            return result?.GetRooms(key.Mode);
+            return LoadSingle(path, false);
         }
 
         public static void YamlSkeleton(MapData map, bool doUnknown = true)
@@ -375,6 +382,8 @@ namespace Celeste.Mod.Randomizer
 
     public class RandoMetadataFile
     {
+        public string ConfigPath;
+        public string ModName;
         public List<string> CollectableNames = new List<string>();
         public List<RandoMetadataMusic> Music = new List<RandoMetadataMusic>();
         public List<RandoMetadataCampaign> Campaigns = new List<RandoMetadataCampaign>();
@@ -433,7 +442,10 @@ namespace Celeste.Mod.Randomizer
             // do not catch errors, they should crash on load
             using (StreamReader reader = new StreamReader(asset.Stream))
             {
-                return YamlHelper.Deserializer.Deserialize<RandoMetadataFile>(reader);
+                var result = YamlHelper.Deserializer.Deserialize<RandoMetadataFile>(reader);
+                result.ConfigPath = asset.PathVirtual;
+                result.ModName = asset.Source.Name;
+                return result;
             }
         }
     }
