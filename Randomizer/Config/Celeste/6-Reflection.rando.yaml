@@ -3269,6 +3269,10 @@ BSide:
       ID: 2223
       Update:
         Remove: true
+    - Name: "InvisibleBarrier"
+      ID: 2224
+      Update:
+        Remove: true
 
 CSide:
   - Room: "00"
