@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 using Monocle;
 using YamlDotNet.Core;
 using YamlDotNet.Serialization;
-
+using Microsoft.Xna.Framework;
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 // ReSharper disable CollectionNeverUpdated.Global
@@ -206,9 +206,22 @@ namespace Celeste.Mod.Randomizer
 
     public class RandoConfigRoom
     {
-        public String Room;
+
+        public string Room;
         public List<RandoConfigCollectable> Collectables = new List<RandoConfigCollectable>();
         public List<RandoConfigHole> Holes { get; set; } = new List<RandoConfigHole>();
+        public List<RandoConfigHolesOfSide> HoldsOfSide {
+            get => null; set {
+                foreach (RandoConfigHolesOfSide side in value) {
+                    foreach (var hold in side.Holes) {
+                        hold.Side = side.Side;
+                        Holes.Add(hold);
+                    }
+                }
+            }
+        }
+
+
         public List<RandoConfigRoom> Subrooms { get; set; }
         public List<RandoConfigInternalEdge> InternalEdges { get; set; }
 
@@ -234,22 +247,31 @@ namespace Celeste.Mod.Randomizer
         public int Width, Height;
     }
 
-    public class RandoConfigHole
-    {
+    public class RandoConfigHole {
+
         public ScreenDirection Side { get; set; }
         public int Idx { get; set; }
+
         public int? LowBound { get; set; }
         public int? HighBound { get; set; }
+        public string Bound {
+            get => null; set {
+                if (value.Split(new char[] { ',' }, 2, StringSplitOptions.None) is string[] array && array.Length == 2 && int.TryParse(array[0], out int lowBound) && int.TryParse(array[1], out int highBound)) {
+                    LowBound = lowBound;
+                    HighBound = highBound;
+                }
+            }
+        }
+
+
         public bool? HighOpen { get; set; }
 
         public RandoConfigReq ReqIn { get; set; }
         public RandoConfigReq ReqOut { get; set; }
-        public RandoConfigReq ReqBoth
-        {
+        public RandoConfigReq ReqBoth {
             get => null;
 
-            set
-            {
+            set {
                 this.ReqIn = value;
                 this.ReqOut = value;
             }
@@ -523,5 +545,10 @@ namespace Celeste.Mod.Randomizer
         public string BlendMode = "alphablend";
 
         public RandoMetadataBackground AndThen;
+    }
+
+    public class RandoConfigHolesOfSide {
+        public ScreenDirection Side { get; set; }
+        public List<RandoConfigHole> Holes { get; set; } = new List<RandoConfigHole>();
     }
 }
