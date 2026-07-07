@@ -219,6 +219,7 @@ namespace Celeste.Mod.Randomizer
                     if (col.ReqIn != null || col.ReqOut != null) {
                         InternalEdges.Add(new RandoConfigInternalEdge() {
                             Collectable = col.Idx,
+                            MustFly = col.MustFly,
                             ReqIn = col.ReqIn,
                             ReqOut = col.ReqOut,
                         });
@@ -346,6 +347,7 @@ namespace Celeste.Mod.Randomizer
         public SplitKind? Split;
 
         public int? Collectable;
+        public bool MustFly;
         public bool CustomWarp;
     }
 

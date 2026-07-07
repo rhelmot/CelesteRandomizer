@@ -521,10 +521,12 @@ namespace Celeste.Mod.Randomizer
                     node.ParentRoom.Nodes[toNode.Name] = toNode;
 
                     var thing = this.Collectables[edge.Collectable.Value];
+
                     if (thing.ParentNode != null)
                     {
                         throw new Exception($"[{this.Name}.{node.Name}] Can only assign a collectable to one owner");
                     }
+                    thing.MustFly = edge.MustFly;
                     thing.ParentNode = toNode;
                     toNode.Collectables.Add(thing);
                 }
