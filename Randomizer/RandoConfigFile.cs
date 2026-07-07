@@ -212,7 +212,25 @@ namespace Celeste.Mod.Randomizer
     {
 
         public string Room;
-        public List<RandoConfigCollectable> Collectables = new List<RandoConfigCollectable>();
+        public List<RandoConfigCollectable> Collectables {
+            get => _Collectables;
+            set {
+                foreach (RandoConfigCollectable col in value) {
+                    if (col.ReqIn != null || col.ReqOut != null) {
+                        InternalEdges.Add(new RandoConfigInternalEdge() {
+                            Collectable = col.Idx,
+                            ReqIn = col.ReqIn,
+                            ReqOut = col.ReqOut,
+                        });
+                    } else {
+                        _Collectables.Add(col);
+                    }
+                }
+            }
+        }
+        private List<RandoConfigCollectable> _Collectables = new List<RandoConfigCollectable>();
+
+
         public List<RandoConfigHole> Holes { get; set; } = new List<RandoConfigHole>();
         public List<RandoConfigHolesOfSide> HoldsOfSide {
             get => null; set {
@@ -227,7 +245,7 @@ namespace Celeste.Mod.Randomizer
 
 
         public List<RandoConfigRoom> Subrooms { get; set; }
-        public List<RandoConfigInternalEdge> InternalEdges { get; set; }
+        public List<RandoConfigInternalEdge> InternalEdges { get; set; } = new List<RandoConfigInternalEdge>();
 
         public bool End
         {
@@ -273,9 +291,7 @@ namespace Celeste.Mod.Randomizer
         public RandoConfigReq ReqIn { get; set; }
         public RandoConfigReq ReqOut { get; set; }
         public RandoConfigReq ReqBoth {
-            get => null;
-
-            set {
+            get => null; set {
                 this.ReqIn = value;
                 this.ReqOut = value;
             }
@@ -286,12 +302,20 @@ namespace Celeste.Mod.Randomizer
         public RandoConfigHole Split;
     }
 
-    public class RandoConfigCollectable
-    {
+    public class RandoConfigCollectable {
         public int? Idx;
         public int? X;
         public int? Y;
         public bool MustFly;
+
+        public RandoConfigReq ReqIn { get; set; }
+        public RandoConfigReq ReqOut { get; set; }
+        public RandoConfigReq ReqBoth {
+            get => null; set {
+                this.ReqIn = value;
+                this.ReqOut = value;
+            }
+        }
     }
 
     public class RandoConfigInternalEdge
