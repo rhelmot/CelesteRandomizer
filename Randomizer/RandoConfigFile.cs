@@ -145,6 +145,7 @@ namespace Celeste.Mod.Randomizer
                         holeIdx = 0;
                         lastDirection = hole.Side;
                         SkeletonOutput += $"    - Side: {lastDirection}\n";
+                        SkeletonOutput += $"      Holes:\n";
                     }
 
                     LevelData targetLvl = map.GetAt(hole.LowCoord(lvl.Bounds)) ?? map.GetAt(hole.HighCoord(lvl.Bounds));
