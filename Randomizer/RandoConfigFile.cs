@@ -132,33 +132,28 @@ namespace Celeste.Mod.Randomizer
                 List<Hole> holes = RandoLogic.FindHoles(lvl);
                 if (holes.Count > 0)
                 {
-                    Logger.Log("randomizer", $"  - Room: \"{lvl.Name}\"");
-                    Logger.Log("randomizer", "    Holes:");
+                    SkeletonOutput += $"  - Room: \"{lvl.Name}\"\n";
+                    SkeletonOutput += $"    HoldsOfSide:\n";
                 }
-                ScreenDirection lastDirection = ScreenDirection.Up;
+
+                ScreenDirection lastDirection = (ScreenDirection)(-1);
                 int holeIdx = -1;
-                foreach (Hole hole in holes)
-                {
-                    if (hole.Side == lastDirection)
-                    {
+                foreach (Hole hole in holes) {
+                    if (hole.Side == lastDirection) {
                         holeIdx++;
-                    }
-                    else
-                    {
+                    } else {
                         holeIdx = 0;
                         lastDirection = hole.Side;
+                        SkeletonOutput += $"    - Side: {lastDirection}\n";
                     }
 
                     LevelData targetLvl = map.GetAt(hole.LowCoord(lvl.Bounds)) ?? map.GetAt(hole.HighCoord(lvl.Bounds));
                     var unknown = targetLvl == null || targetLvl.Dummy;
-                    if (unknown && !doUnknown)
-                    {
+                    if (unknown && !doUnknown) {
                         continue;
                     }
-
-                    Logger.Log("randomizer", $"    - Side: {hole.Side}");
-                    Logger.Log("randomizer", $"      Idx: {holeIdx}");
-                    Logger.Log("randomizer", "      Kind: " + (unknown ? "unknown" : "inout"));
+                    SkeletonOutput += $"      - Idx: {holeIdx}\n";
+                    SkeletonOutput += $"        Kind: {(unknown ? "unknown" : "inout")}\n";
                 }
             }
         }
@@ -167,27 +162,35 @@ namespace Celeste.Mod.Randomizer
         {
             if (area.Mode[0] != null)
             {
-                Logger.Log("randomizer", "ASide:");
+                SkeletonOutput += "ASide:\n";
                 YamlSkeleton(area.Mode[0].MapData, doUnknown);
             }
             if (area.Mode.Length > 1 && area.Mode[1] != null)
             {
-                Logger.Log("randomizer", "BSide:");
+                SkeletonOutput += "BSide:\n";
                 YamlSkeleton(area.Mode[1].MapData, doUnknown);
             }
             if (area.Mode.Length > 2 && area.Mode[2] != null)
             {
-                Logger.Log("randomizer", "CSide:");
+                SkeletonOutput += "CSide:\n";
                 YamlSkeleton(area.Mode[2].MapData, doUnknown);
             }
         }
 
         [Command("rando_skeleton", "Dumps a starting point for a rando.yaml configuration for a given map to log.txt")]
-        public static void YamlSkeletonCommand(string sid, bool doUnknown = true)
-        {
+        public static void YamlSkeletonCommand(string sid, bool doUnknown = true) {
+
+            sid = (sid == "*" || string.IsNullOrEmpty(sid)) && Engine.Scene is Level level ? level.Session.Area.GetSID() : sid;
             var area = AreaData.Get(sid);
+            if (area == null) {
+                Logger.Log("randomizer", $"Does {sid} not exist");
+            }
+
+            SkeletonOutput = "\n";
             YamlSkeleton(area, doUnknown);
+            Logger.Log("randomizer", $"{sid}.rando.yaml skeleton: {SkeletonOutput}");
         }
+        public static string SkeletonOutput;
 
         public List<RandoConfigRoom> GetRooms(AreaMode mode)
         {
