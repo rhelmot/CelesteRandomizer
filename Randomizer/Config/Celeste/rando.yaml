@@ -218,3 +218,15 @@ Rulesets:
     Lights: On
     Strawberries: High
     Lives: 5
+  - Name: I
+    LongName: "Hard 0 dash (I)"
+    Algorithm: Pathway
+    Dashes: Zero
+    Difficulty: Hard
+    Darkness: Never
+  - Name: J
+    LongName: "Expert 0 dash (J)"
+    Algorithm: Pathway
+    Dashes: Zero
+    Difficulty: Expert
+    Darkness: Never
