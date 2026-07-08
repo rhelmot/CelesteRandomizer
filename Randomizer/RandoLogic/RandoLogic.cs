@@ -8,6 +8,8 @@ using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework;
 using Monocle;
 using MonoMod.Utils;
+using FMOD;
+using FMOD.Studio;
 
 namespace Celeste.Mod.Randomizer
 {
@@ -101,6 +103,11 @@ namespace Celeste.Mod.Randomizer
                     newArea.Wipe = r.PickWipe();
                     newArea.CompleteScreenName = r.PickCompleteScreen();
                     newArea.CassetteSong = r.PickCassetteAudio();
+                    if (Audio.CreateInstance(newArea.CassetteSong, null) is null) {
+                        // Invalid cassette song? ugh
+                        newArea.CassetteSong = "event:/music/cassette/01_forsaken_city";
+                    }
+
                     newArea.Mode[0].AudioState = r.PickAudioState();
                     if (settings.RandomColors)
                     {
