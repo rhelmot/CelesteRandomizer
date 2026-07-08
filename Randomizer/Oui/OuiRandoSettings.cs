@@ -542,15 +542,24 @@ namespace Celeste.Mod.Randomizer
                 List<AreaKey> keys = RandoLogic.LevelSets[levelSetID];
                 var syncFuncs = new List<Action>();
                 menu.Add(new TextMenu.SubHeader(Dialog.CleanLevelSet(keys[0].GetLevelSet())));
-                foreach (var key in keys)
-                {
+
+                string[] suffixs = new string[3] { "A", "B", "C" };
+
+                for (int i = 0; i < 3; i++) {
+                    if ((keys[0].GetLevelSet() + "_rando_album_" + suffixs[i]).DialogCleanOrNull() is string suffix) {
+                        suffixs[i] = suffix;
+                    }
+                }
+                foreach (var key in keys) {
                     var area = AreaData.Get(key);
                     var name = area.Name;
-                    name = name.DialogCleanOrNull() ?? name.SpacedPascalCase();
-                    if (key.Mode != AreaMode.Normal || (area.Mode.Length != 1 && area.Mode[1] != null))
-                    {
-                        name += " " + Char.ToString((char)('A' + (int)key.Mode));
+
+                    string suffix = null;
+                    if (key.Mode != AreaMode.Normal || (area.Mode.Length != 1 && area.Mode[1] != null)) {
+                        suffix = suffixs[(int)key.Mode];
                     }
+                    name = name.DialogCleanOrNull() ?? name.SpacedPascalCase();
+                    name += $" {suffix}";
 
                     syncFuncs.Add(AddAreaToggle(name, key));
                 }
