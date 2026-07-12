@@ -14,24 +14,25 @@ namespace Celeste.Mod.Randomizer
 
         public RandoSettings Settings => RandoModule.Instance.Settings;
 
-        public override IEnumerator Enter(Oui from)
-        {
+        public override IEnumerator Enter(Oui from) {
             this.Visible = true;
             this.Menu = this.ReloadMenu();
             this.Scene.Add(this.Menu);
 
+            InputSearchUI.RegisterMenuEvents(this.Menu as TextMenu, this is OuiRandoSettings);
+
             var fromRight = this.IsDeeperThan(from);
             var OffScreenX = fromRight ? OffScreenXGeneric : -OffScreenXGeneric;
-
-            for (float p = 0f; p < 1f; p += Engine.DeltaTime * 4f)
-            {
+            for (float p = 0f; p < 1f; p += Engine.DeltaTime * 4f) {
                 this.Menu.X = OffScreenX + (OnScreenX - OffScreenX) * Ease.CubeOut(p);
                 yield return null;
             }
             this.Menu.X = OnScreenX;
             this.Menu.Active = true;
         }
-
+        public override void Update() {
+            base.Update();
+        }
         public override IEnumerator Leave(Oui next)
         {
             this.Menu.Active = false;
@@ -45,6 +46,7 @@ namespace Celeste.Mod.Randomizer
                 yield return null;
             }
 
+            InputSearchUI.RegisterMenuEvents(this.Menu as TextMenu, false);
             this.Menu.RemoveSelf();
             this.Menu = null;
             this.Visible = false;
