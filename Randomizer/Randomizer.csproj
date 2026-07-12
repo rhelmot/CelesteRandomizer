@@ -8,11 +8,12 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Celeste.Mod.Randomizer</RootNamespace>
     <AssemblyName>Randomizer</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <OutputPath Condition=" '$(TravisCore)' == 'true' ">Artifact\</OutputPath>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -99,8 +100,8 @@
     <Compile Include="Deque.cs" />
     <Compile Include="PriorityQueue.cs" />
     <Compile Include="RandoModuleSettings.cs" />
-    <Compile Include="Oui/OuiRandoSettings.cs" />
-    <Compile Include="Oui/OuiRandoRecords.cs" />
+    <Compile Include="Oui\OuiRandoSettings.cs" />
+    <Compile Include="Oui\OuiRandoRecords.cs" />
     <Compile Include="RandoLogic\LogicPathway.cs" />
     <Compile Include="RandoLogic\LinkedRoom.cs" />
     <Compile Include="RandoLogic\Receipt.cs" />
@@ -112,10 +113,11 @@
     <Compile Include="RandoLogic\RandoTask.cs" />
     <Compile Include="RandoLogic\LogicLabyrinth.cs" />
     <Compile Include="RandoLogic\Requirements.cs" />
-    <Compile Include="Patches/qol.cs" />
-    <Compile Include="Patches/sessionLifecycle.cs" />
-    <Compile Include="Patches/mechanics.cs" />
-    <Compile Include="Patches/menuLifecycle.cs" />
+    <Compile Include="Patches\qol.cs" />
+    <Compile Include="Patches\sessionLifecycle.cs" />
+    <Compile Include="Patches\mechanics.cs" />
+    <Compile Include="Patches\menuLifecycle.cs" />
+    <Compile Include="Oui\InputSearchUI.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="everest.yaml">
