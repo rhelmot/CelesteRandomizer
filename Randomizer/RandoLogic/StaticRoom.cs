@@ -17,7 +17,10 @@ namespace Celeste.Mod.Randomizer
         public readonly bool Hub;
         public readonly bool HasHeart;
         public readonly float Worth;
+
         public readonly bool SpinnersShatter;
+        public readonly bool ForceMovingSpinnerToDust;
+
         private List<RandoConfigEdit> Tweaks;
         private RandoConfigCoreMode CoreModes;
         public Dictionary<string, StaticNode> Nodes;
@@ -54,6 +57,7 @@ namespace Celeste.Mod.Randomizer
             this.ExtraSpace = config.ExtraSpace ?? new List<RandoConfigRectangle>();
             this.Worth = config.Worth ?? (float)Math.Sqrt(Level.Bounds.Width * Level.Bounds.Width + Level.Bounds.Height * Level.Bounds.Height) / 369.12870384189847f + 1;
             this.SpinnersShatter = config.SpinnersShatter;
+            this.ForceMovingSpinnerToDust = config.ForceMovingSpinnerToDust;
 
             this.Collectables = new List<StaticCollectable>();
             foreach (var entity in Level.Entities)
@@ -796,9 +800,6 @@ namespace Celeste.Mod.Randomizer
                             entity.Values["small"] = "true";
                         }
                         break;
-                    case "lightning":
-                        entity.Values["perLevel"] = "false";
-                        break;
                 }
 
                 foreach (var econfig in this.Tweaks)
@@ -965,12 +966,7 @@ namespace Celeste.Mod.Randomizer
                     }
                     if (econfig.Name.ToLower() == "spawn")
                     {
-                        var s = new Vector2(econfig.Update.X.Value + result.Position.X, econfig.Update.Y.Value + result.Position.Y);
-                        if (econfig.Update.Default) {
-                            result.Spawns.Insert(0, s);
-                        } else {
-                            result.Spawns.Add(s);
-                        }
+                        result.Spawns.Add(new Vector2(econfig.Update.X.Value + result.Position.X, econfig.Update.Y.Value + result.Position.Y));
                     }
                     else
                     {

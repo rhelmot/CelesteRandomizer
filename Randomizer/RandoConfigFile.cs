@@ -7,6 +7,7 @@ using Monocle;
 using YamlDotNet.Core;
 using YamlDotNet.Serialization;
 using Microsoft.Xna.Framework;
+using MonoMod.Utils;
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 // ReSharper disable CollectionNeverUpdated.Global
@@ -193,6 +194,21 @@ namespace Celeste.Mod.Randomizer
         }
         public static string SkeletonOutput;
 
+        [Command("rando_test", "test")]
+        public static void Test() {
+            Level level = Engine.Scene as Level;
+            CassetteBlockManager c = level.Tracker.GetEntity<CassetteBlockManager>();
+
+            if (c != null) {
+                DynamicData d = DynamicData.For(c);
+
+                Logger.Log(LogLevel.Error, "randomizer", $"{AreaData.Get(level.Session.Area).CassetteSong} --- {d.Get("beatIndexOffset")}");
+            } else {
+                Logger.Log(LogLevel.Error, "randomizer", $"not CassetteBlockManager");
+            }
+        }
+
+
         public List<RandoConfigRoom> GetRooms(AreaMode mode)
         {
             switch (mode)
@@ -261,6 +277,8 @@ namespace Celeste.Mod.Randomizer
         public List<RandoConfigRectangle> ExtraSpace { get; set; }
         public float? Worth;
         public bool SpinnersShatter;
+        public bool ForceMovingSpinnerToDust;
+
         public List<string> Flags;
     }
 

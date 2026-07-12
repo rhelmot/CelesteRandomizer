@@ -341,34 +341,25 @@ namespace Celeste.Mod.Randomizer
                             spinnercolor = pickSpinnerColor();
                         }
                         if (e.Values == null) e.Values = new Dictionary<string, object>();
-                        if (settings.RandomDecorations)
-                        {
-                            if (spinnercolor == "star")
+
+                        // Single room can contain hundreds of the track dust (e.g. 3D of monika d-side pack). but if them is blades or stars then game will be freeze.
+                        if (this.Static.ForceMovingSpinnerToDust) {
+                            e.Values.Remove("star");
+                            e.Values["dust"] = true;
+
+                        } else if (settings.RandomDecorations) 
                             {
-                                e.Values["star"] = true;
-                            }
-                            else if (spinnercolor == "dust")
-                            {
-                                e.Values["dust"] = true;
-                            }
-                            else
-                            {
+                            if (spinnercolor == "star" || spinnercolor == "dust") {
+                                e.Values[spinnercolor] = true;
+                            } else {
                                 e.Values.Remove("star");
                                 e.Values.Remove("dust");
                             }
-                        }
-                        else if (!e.Has("star") && !e.Has("dust"))
-                        {
-                            if (canonSpinnerColor == "star")
-                            {
-                                e.Values["star"] = true;
-                            }
-                            else if (canonSpinnerColor == "dust")
-                            {
-                                e.Values["dust"] = true;
-                            }
-                            else
-                            {
+
+                        } else if (!e.Has("star") && !e.Has("dust")) {
+                            if (canonSpinnerColor == "star" || canonSpinnerColor == "dust") {
+                                e.Values[canonSpinnerColor] = true;
+                            } else {
                                 // no action
                             }
                         }
