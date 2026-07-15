@@ -389,6 +389,18 @@ namespace Celeste.Mod.Randomizer
         public float? Y { get; set; }
         public RandoConfigDecalType Decal { get; set; }
         public RandoConfigUpdate Update { get; set; }
+
+        [YamlIgnore]
+        public bool Done;
+
+        public override string ToString() {
+            string o = $"{Name ?? "*"}:{(ID == null ? "*" : ID.ToString())}, X:{(X == null ? "*" : X.ToString())}, Y:{(Y == null ? "*" : Y.ToString())}";
+            if (Decal != RandoConfigDecalType.None) {
+                o += $" {Decal}";
+            }
+
+            return o;
+        }
     }
 
     public class RandoConfigUpdate

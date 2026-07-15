@@ -269,6 +269,7 @@ namespace Celeste.Mod.Randomizer
             {
                 if (tweak.Name == "fgTiles")
                 {
+                    tweak.Done = true;
                     setTile((int)tweak.X, (int)tweak.Y, tweak.Update.Tile[0]);
                 }
             }
@@ -319,6 +320,7 @@ namespace Celeste.Mod.Randomizer
             {
                 if ((tweak.Update?.Add ?? false) && tweak.Decal != RandoConfigDecalType.None)
                 {
+                    tweak.Done = true;
                     var newDecal = new DecalData
                     {
                         Texture = tweak.Name,
@@ -815,6 +817,7 @@ namespace Celeste.Mod.Randomizer
                         (econfig.X == null || nearlyEqual(econfig.X.Value, entity.Position.X)) &&
                         (econfig.Y == null || nearlyEqual(econfig.Y.Value, entity.Position.Y)))
                     {
+                        econfig.Done = true;
                         if (econfig.Update?.Remove ?? false)
                         {
                             removals.Add(entity);
@@ -872,6 +875,7 @@ namespace Celeste.Mod.Randomizer
                         (econfig.X == null || nearlyEqual(econfig.X.Value, spawn.X - newPosition.X)) &&
                         (econfig.Y == null || nearlyEqual(econfig.Y.Value, spawn.Y - newPosition.Y)))
                     {
+                        econfig.Done = true;
                         if (econfig.Update?.Remove ?? false)
                         {
                             toRemoveSpawns.Add(spawn);
@@ -976,9 +980,11 @@ namespace Celeste.Mod.Randomizer
                         } else {
                             result.Spawns.Add(s);
                         }
+                        econfig.Done = true;
                     }
                     else
                     {
+
                         var entity = new EntityData()
                         {
                             Name = econfig.Name,
@@ -1019,7 +1025,11 @@ namespace Celeste.Mod.Randomizer
                         {
                             result.Entities.Add(entity);
                         }
+                        econfig.Done = true;
                     }
+                }
+                if (!econfig.Done) {
+                    Logger.Log(LogLevel.Warn, "randomizer", $"[{result.Name}]: Unable to process the tweak item: [{econfig.ToString()}]");
                 }
             }
             return result;
