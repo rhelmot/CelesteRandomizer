@@ -118,6 +118,7 @@
     <Compile Include="Patches\mechanics.cs" />
     <Compile Include="Patches\menuLifecycle.cs" />
     <Compile Include="Oui\InputSearchUI.cs" />
+    <Compile Include="Entities\DestroyDashBlock.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="everest.yaml">
