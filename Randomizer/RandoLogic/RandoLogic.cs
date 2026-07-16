@@ -441,7 +441,7 @@ namespace Celeste.Mod.Randomizer
                         {"loopx", element.LoopX}, {"loopy", element.LoopY},
                         {"flipx", element.FlipX}, {"flipy", element.FlipY},
                         {"speedx", element.SpeedX}, {"speedy", element.SpeedY},
-                        {"scrollx", scrollX * element.ScrollFactorY}, {"scrolly", scrollY * element.ScrollFactorY},
+                        {"scrollx", scrollX * element.ScrollFactorX}, {"scrolly", scrollY * element.ScrollFactorY},
                         {"x", element.OffX}, {"y", y + element.OffY},
                         {"color", $"{color.R:X2}{color.G:X2}{color.B:X2}"},
                         {"alpha", element.Alpha},
@@ -454,7 +454,7 @@ namespace Celeste.Mod.Randomizer
                 {
                     Name = element.Effect,
                     Attributes = new Dictionary<string, object> {
-                        {"scrollx", scrollX * element.ScrollFactorY}, {"scrolly", scrollY * element.ScrollFactorY},
+                        {"scrollx", scrollX * element.ScrollFactorX}, {"scrolly", scrollY * element.ScrollFactorY},
                         {"color", $"{color.R:X2}{color.G:X2}{color.B:X2}"},
                     },
                 };
