@@ -8,6 +8,7 @@ using YamlDotNet.Core;
 using YamlDotNet.Serialization;
 using Microsoft.Xna.Framework;
 using MonoMod.Utils;
+using Microsoft.Xna.Framework.Graphics;
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 // ReSharper disable CollectionNeverUpdated.Global
@@ -193,21 +194,6 @@ namespace Celeste.Mod.Randomizer
             Logger.Log("randomizer", $"{sid}.rando.yaml skeleton: {SkeletonOutput}");
         }
         public static string SkeletonOutput;
-
-        [Command("rando_test", "test")]
-        public static void Test() {
-            Level level = Engine.Scene as Level;
-            CassetteBlockManager c = level.Tracker.GetEntity<CassetteBlockManager>();
-
-            if (c != null) {
-                DynamicData d = DynamicData.For(c);
-
-                Logger.Log(LogLevel.Error, "randomizer", $"{AreaData.Get(level.Session.Area).CassetteSong} --- {d.Get("beatIndexOffset")}");
-            } else {
-                Logger.Log(LogLevel.Error, "randomizer", $"not CassetteBlockManager");
-            }
-        }
-
 
         public List<RandoConfigRoom> GetRooms(AreaMode mode)
         {
@@ -470,9 +456,10 @@ namespace Celeste.Mod.Randomizer
         public List<string> CollectableNames = new List<string>();
         public List<RandoMetadataMusic> Music = new List<RandoMetadataMusic>();
         public List<RandoMetadataCampaign> Campaigns = new List<RandoMetadataCampaign>();
-        public List<RandoMetadataBackground> Backgrounds = new List<RandoMetadataBackground>();
-        public List<RandoMetadataBackground> BgEffects = new List<RandoMetadataBackground>();
-        public List<RandoMetadataBackground> FgEffects = new List<RandoMetadataBackground>();
+        public List<RandoMetadataBackground> 
+            Backgrounds = new List<RandoMetadataBackground>(), 
+            BgEffects = new List<RandoMetadataBackground>(), 
+            FgEffects = new List<RandoMetadataBackground>();
 
         [YamlIgnore] public Dictionary<string, RandoMetadataRuleset> RulesetsDict = new Dictionary<string, RandoMetadataRuleset>();
 
@@ -591,20 +578,68 @@ namespace Celeste.Mod.Randomizer
     {
         public string Texture;
         public string Effect;
-        public int CoverTop;
-        public int CoverBottom;
-        public bool Opaque;
-        public bool LoopX = true, LoopY;
-        public bool FlipX, FlipY;
-        public bool NeedsColor;
-        public float ScrollFactorX = 1f, ScrollFactorY = 1f;
-        public bool ProvidesWind;
-        public float Alpha = 1f;
-        public float SpeedX, SpeedY;
-        public int OffX, OffY;
-        public string BlendMode = "alphablend";
+
+        public int? CoverTop;
+        public int? CoverBottom;
+        public bool? Opaque;
+        public bool? LoopX, LoopY;
+        public bool? FlipX, FlipY;
+        public bool? NeedsColor;
+        public float? ScrollFactorX, ScrollFactorY;
+        public bool? ProvidesWind;
+        public float? Alpha;
+        public float? SpeedX, SpeedY;
+        public int? OffX, OffY;
+        public string BlendMode;
 
         public RandoMetadataBackground AndThen;
+        public List<RandoMetadataBackground> Or;
+
+        public void Initialize() {
+            //Texture = Texture ?? null
+            //Effect = Effect ?? null
+            CoverTop = CoverTop ?? 0;
+            CoverBottom = CoverBottom ?? 0;
+            Opaque = Opaque ?? false;
+            LoopX = LoopX ?? true;
+            LoopY = LoopY ?? false;
+            FlipX = FlipX ?? false;
+            FlipY = FlipY ?? false;
+            Opaque = Opaque ?? false;
+            ScrollFactorX = ScrollFactorX ?? 1f;
+            ScrollFactorY = ScrollFactorY ?? 1f;
+            NeedsColor = NeedsColor ?? false;
+            ProvidesWind = ProvidesWind ?? false;
+            Alpha = Alpha ?? 1f;
+            SpeedX = SpeedX ?? 0;
+            SpeedY = SpeedY ?? 0;
+            OffX = OffX ?? 0;
+            OffY = OffY ?? 0;
+            BlendMode = BlendMode ?? "alphablend";
+        }
+        public void Initialize(RandoMetadataBackground bg) {
+            bg.Initialize();
+            Texture = Texture ?? bg.Texture;
+            Effect = Effect ?? bg.Effect;
+            CoverTop = CoverTop ?? bg.CoverTop;
+            CoverBottom = CoverBottom ?? bg.CoverBottom;
+            Opaque = Opaque ?? bg.Opaque;
+            LoopX = LoopX ?? bg.LoopX;
+            LoopY = LoopY ?? bg.LoopY;
+            FlipX = FlipX ?? bg.FlipX;
+            FlipY = FlipY ?? bg.FlipY;
+            Opaque = Opaque ?? bg.Opaque;
+            ScrollFactorX = ScrollFactorX ?? bg.ScrollFactorX;
+            ScrollFactorY = ScrollFactorY ?? bg.ScrollFactorY;
+            NeedsColor = NeedsColor ?? bg.NeedsColor;
+            ProvidesWind = ProvidesWind ?? bg.ProvidesWind;
+            Alpha = Alpha ?? bg.Alpha;
+            SpeedX = SpeedX ?? bg.SpeedX;
+            SpeedY = SpeedY ?? bg.SpeedY;
+            OffX = OffX ?? bg.OffX;
+            OffY = OffY ?? bg.OffY;
+            BlendMode = BlendMode ?? bg.BlendMode;
+        }
     }
 
     public class RandoConfigHolesOfSide {

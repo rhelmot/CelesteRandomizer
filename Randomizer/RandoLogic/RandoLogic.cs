@@ -376,10 +376,11 @@ namespace Celeste.Mod.Randomizer
             {
                 effect = RandoModule.Instance.MetaConfig.FgEffects.First(x => x.Effect == "stardust");
             }
+            effect.Initialize();
             map.Foreground.Children.AddRange(this.Styleground(effect));
 
             var windyOnly = string.Join(",", this.FindWindyLevels(map));
-            if (!effect.ProvidesWind && !string.IsNullOrEmpty(windyOnly))
+            if (!effect.ProvidesWind.Value && !string.IsNullOrEmpty(windyOnly))
             {
                 map.Foreground.Children.Add(new BinaryPacker.Element
                 {
@@ -419,6 +420,14 @@ namespace Celeste.Mod.Randomizer
         private IEnumerable<BinaryPacker.Element> Styleground(RandoMetadataBackground element,
                 float scrollX = 0.3f, float scrollY = 0.3f, int y = 0)
         {
+            if (element.Or != null) {
+                int i = this.Random.Next(0, element.Or.Count);
+                if (i != element.Or.Count) {
+                    var element2 = element.Or[i];
+                    element2.Initialize(element);
+                    element = element2;
+                }
+            };
 
             var color = this.RandomColor();
             if (!string.IsNullOrEmpty(element.Texture))
@@ -455,7 +464,7 @@ namespace Celeste.Mod.Randomizer
                 throw new Exception("Config error: styleground without Texture or Effect");
             }
 
-            if (element.NeedsColor)
+            if (element.NeedsColor.Value)
             {
                 var color2 = this.RandomColor(c => (int)c.R + (int)c.G + (int)c.B > 128 * 3);
                 yield return new BinaryPacker.Element
@@ -475,6 +484,7 @@ namespace Celeste.Mod.Randomizer
 
             if (element.AndThen != null)
             {
+                element.AndThen.Initialize(element);
                 foreach (var e in this.Styleground(element.AndThen, scrollX, scrollY, y))
                 {
                     yield return e;
@@ -493,14 +503,14 @@ namespace Celeste.Mod.Randomizer
             for (int i = 0; i < layers; i++)
             {
                 var picked = this.Random.Choose(RandoModule.Instance.MetaConfig.Backgrounds);
-
-                if (picked.CoverTop != 0 && !picked.LoopY)
+                picked.Initialize();
+                if (picked.CoverTop.Value != 0 && !picked.LoopY.Value)
                 {
                     i--;
                     continue;
                 }
 
-                if (picked.Opaque && this.Random.Next(layers) > i)
+                if (picked.Opaque.Value && this.Random.Next(layers) > i)
                 {
                     // bias not picking opaque backgrounds until we've already added a few
                     i--;
@@ -510,7 +520,7 @@ namespace Celeste.Mod.Randomizer
                 float scrollX = new[] { 0.3f, 0.25f, 0.2f, 0.1f, 0.05f }[i];
                 float scrollY = new[] { 0.1f, 0.05f, 0.03f, 0.02f, 0.01f }[i];
                 int y = 0;
-                if (picked.Texture != null && !(picked.Opaque && !picked.LoopY))
+                if (picked.Texture != null && !(picked.Opaque.Value && !picked.LoopY.Value))
                 {
                     int height = GFX.Game[picked.Texture].Height;
                     y = (int)Math.Ceiling(maxY * scrollY + 180 - height);
@@ -523,13 +533,14 @@ namespace Celeste.Mod.Randomizer
 
                 map.Background.Children.InsertRange(0, this.Styleground(picked, scrollX, scrollY, y));
 
-                if (picked.Opaque)
+                if (picked.Opaque.Value)
                 {
                     break;
                 }
             }
 
             var effect = this.Random.Choose(RandoModule.Instance.MetaConfig.BgEffects);
+            effect.Initialize();
             map.Background.Children.AddRange(this.Styleground(effect));
 
             if (!this.Settings.RandomBackgrounds)
