@@ -16,11 +16,10 @@ namespace Celeste.Mod.Randomizer.Entities {
         }
 
         public override void OnEnter(Player player) {
-            DashBlock block = base.Scene.Tracker.GetEntities<DashBlock>().FirstOrDefault(b => DynamicData.For(b).Get<EntityID>("id").ID == entID) as DashBlock;
-            if (!block.Any()) {
-                Logger.Log("Randomizer", $"No dashBlock:{entID} found in {(Engine.Scene as Level).Session.LevelData.Name}!");
-            } else {
+            if (base.Scene.Tracker.GetEntities<DashBlock>().FirstOrDefault(b => b != null && DynamicData.For(b).Get<EntityID>("id").ID == entID) is DashBlock block) {
                 block.Break(Vector2.Zero, Vector2.Zero, true, true);
+            } else {
+                Logger.Log("Randomizer", $"No dashBlock:{entID} found in {(Engine.Scene as Level).Session.LevelData.Name}!");
             }
             RemoveSelf();
         }
