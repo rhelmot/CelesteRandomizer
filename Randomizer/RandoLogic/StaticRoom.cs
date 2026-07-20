@@ -26,6 +26,8 @@ namespace Celeste.Mod.Randomizer
         public Dictionary<string, StaticNode> Nodes;
         public List<RandoConfigRectangle> ExtraSpace;
 
+        public Dictionary<char, char> RedirectFGTiles;
+
         public List<Hole> Holes;
         public List<StaticCollectable> Collectables;
 
@@ -38,7 +40,7 @@ namespace Celeste.Mod.Randomizer
             return this.Name;
         }
 
-        public StaticRoom(AreaKey Area, RandoConfigRoom config, LevelData Level, List<Hole> Holes)
+        public StaticRoom(AreaKey Area, RandoConfigFile file, RandoConfigRoom config, LevelData Level, List<Hole> Holes)
         {
             // hack: force credits screens into the epilogue roomset
             if (Area.ID == 7 && Level.Name.StartsWith("credits-"))
@@ -246,7 +248,11 @@ namespace Celeste.Mod.Randomizer
                 tweakable.Add(lst);
                 foreach (var ch in line)
                 {
-                    lst.Add(ch);
+                    if (file.RedirectFGTiles.TryGetValue(ch, out var ch2)) {
+                        lst.Add(ch2);
+                    } else {
+                        lst.Add(ch);
+                    }
                 }
             }
 
@@ -261,7 +267,6 @@ namespace Celeste.Mod.Randomizer
                 {
                     tweakable[y].Add('0');
                 }
-
                 tweakable[y][x] = tile;
             }
 

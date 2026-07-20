@@ -9,6 +9,7 @@ using YamlDotNet.Serialization;
 using Microsoft.Xna.Framework;
 using MonoMod.Utils;
 using Microsoft.Xna.Framework.Graphics;
+using YamlDotNet.Core.Tokens;
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 // ReSharper disable CollectionNeverUpdated.Global
@@ -26,6 +27,8 @@ namespace Celeste.Mod.Randomizer
         public List<RandoConfigRoom> ASide { get; set; }
         public List<RandoConfigRoom> BSide { get; set; }
         public List<RandoConfigRoom> CSide { get; set; }
+
+        public Dictionary<char, char> RedirectFGTiles = new Dictionary<char, char>();
 
         public string ConfigPath;
         public string ModName;
@@ -461,6 +464,8 @@ namespace Celeste.Mod.Randomizer
             BgEffects = new List<RandoMetadataBackground>(), 
             FgEffects = new List<RandoMetadataBackground>();
 
+        public Dictionary<char, string> FGTiles = new Dictionary<char, string>();
+
         [YamlIgnore] public Dictionary<string, RandoMetadataRuleset> RulesetsDict = new Dictionary<string, RandoMetadataRuleset>();
 
         public List<RandoMetadataRuleset> Rulesets
@@ -492,6 +497,17 @@ namespace Celeste.Mod.Randomizer
             this.BgEffects.AddRange(other.BgEffects);
             this.FgEffects.AddRange(other.FgEffects);
             this.Rulesets = other.Rulesets; // rely on setter behavior to use this as an updater
+
+            if (other.FGTiles is var tiles) {
+                foreach (var t in tiles.Keys) {
+                    if (this.FGTiles.TryGetValue(t, out var t2)) {
+                        Logger.Log(LogLevel.Debug, "randomizer", $"Registering the rando tiles '{t}' from {other.ModName} but it already registered by other mod!");
+                    } else {
+                        this.FGTiles[t] = other.FGTiles[t];
+                        Logger.Log(LogLevel.Debug, "randomizer", $"registered the rando tiles '{t}' from {other.ModName}");
+                    }
+                }
+            }
         }
 
         public static RandoMetadataFile LoadAll()

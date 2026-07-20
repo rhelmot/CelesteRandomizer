@@ -775,19 +775,24 @@ namespace Celeste.Mod.Randomizer
                 }
             }
 
+            foreach (var kvp in RandoModule.Instance.MetaConfig.FGTiles) {
+                string[] str = kvp.Value.Split(':');
+                AddTileID(GFX.FGAutotiler, kvp.Key, str[0], str[1][0]);
+            }
             CombineAutotilers(GFX.FGAutotiler, fgPaths, settings);
             CombineAutotilers(GFX.BGAutotiler, bgPaths, settings);
             CombineAnimatedTiles(GFX.AnimatedTilesBank, atPaths, settings);
             CombineSprites(GFX.SpriteBank, spPaths, settings);
         }
 
+        private static FieldInfo autotiler_lookup = typeof(Autotiler).GetField("lookup", BindingFlags.Instance | BindingFlags.NonPublic);
         private static void CombineAutotilers(Autotiler basic, List<string> additions, RandoSettings settings)
         {
             var counts = new Dictionary<char, int>();
             var r = new Random((int)settings.IntSeed);
 
             // uhhhhhhh this is intensely sketchy
-            var lookup = (IDictionary)typeof(Autotiler).GetField("lookup", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(basic);
+            var lookup = (IDictionary)autotiler_lookup.GetValue(basic);
             foreach (char k in lookup.Keys)
             {
                 counts[k] = 1;
@@ -796,7 +801,7 @@ namespace Celeste.Mod.Randomizer
             foreach (var path in additions)
             {
                 var advanced = new Autotiler(path);
-                var lookup2 = (IDictionary)typeof(Autotiler).GetField("lookup", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(advanced);
+                var lookup2 = (IDictionary)autotiler_lookup.GetValue(advanced);
                 foreach (char k in lookup2.Keys)
                 {
                     if (counts.ContainsKey(k))
@@ -806,6 +811,7 @@ namespace Celeste.Mod.Randomizer
                         {
                             lookup[k] = lookup2[k];
                         }
+
                     }
                     else
                     {
@@ -816,7 +822,7 @@ namespace Celeste.Mod.Randomizer
             }
         }
 
-        private static void CombineAnimatedTiles(AnimatedTilesBank basic, List<string> additions, RandoSettings settings)
+         private static void CombineAnimatedTiles(AnimatedTilesBank basic, List<string> additions, RandoSettings settings)
         {
             var counts = new Dictionary<string, int>();
             foreach (var key in basic.AnimationsByName.Keys)
@@ -921,6 +927,19 @@ namespace Celeste.Mod.Randomizer
                     }
                 }
 
+            }
+        }
+
+        private static void AddTileID(Autotiler basic, char c, string fgXml, char orig_c) {
+            var lookup = (IDictionary)autotiler_lookup.GetValue(basic);
+
+            var other = new Autotiler(fgXml);
+            var lookup2 = (IDictionary)autotiler_lookup.GetValue(other);
+
+            if (lookup.Contains(c)) {
+                Logger.Log(LogLevel.Warn, "randomizer", $"adding '{c}' for Autotiler of rando but it added.");
+            } else {
+                lookup[c] = lookup2[orig_c];
             }
         }
 
