@@ -421,9 +421,10 @@ namespace Celeste.Mod.Randomizer
                 float scrollX = 0.3f, float scrollY = 0.3f, int y = 0)
         {
             if (element.Or != null) {
-                int i = this.Random.Next(0, element.Or.Count);
-                if (i != element.Or.Count) {
-                    var element2 = element.Or[i];
+                var n = new RandoMetadataBackground();
+                element.Or.Add(n);
+                var element2 = this.Random.Choose(element.Or);
+                if (element2 != n) {
                     element2.Initialize(element);
                     element = element2;
                 }
