@@ -811,6 +811,20 @@ namespace Celeste.Mod.Randomizer
                     case "lightning":
                         entity.Values["perLevel"] = "false";
                         break;
+                    case "fakeBlock":
+                    case "fakeWall":
+                    case "dashBlock":
+                    case "fallingBlock":
+                    case "crumbleWallOnRumble":
+                        if (RedirectFGTiles.TryGetValue(entity.Char("tiletype", '3'), out char c)) {
+                            entity.Values["tiletype"] = c;
+                        }
+                        break;
+                    case "exitBlock":
+                        if (RedirectFGTiles.TryGetValue(entity.Char("tileType", '3'), out char c2)) {
+                            entity.Values["tileType"] = c2;
+                        }
+                        break;
                 }
 
                 foreach (var econfig in this.Tweaks)
