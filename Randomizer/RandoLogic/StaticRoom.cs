@@ -784,6 +784,7 @@ namespace Celeste.Mod.Randomizer
                     case "bloomfadetrigger":
                     case "picoconsole":
                     case "acidhelper/advancedmusiclayerfadetrigger":
+                    case "everest/changeInventoryTrigger":
                         removals.Add(entity);
                         return;
                     case "goldenBerryCollectTrigger":
