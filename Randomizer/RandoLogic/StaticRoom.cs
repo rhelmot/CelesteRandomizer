@@ -786,6 +786,11 @@ namespace Celeste.Mod.Randomizer
                     case "acidhelper/advancedmusiclayerfadetrigger":
                         removals.Add(entity);
                         return;
+                    case "goldenBerryCollectTrigger":
+                        if (this.ReqEnd == null) {
+                            removals.Add(entity);
+                        }
+                        return;
                     case "finalboss":
                     case "badelineoldsite":
                     case "darkchaser":
