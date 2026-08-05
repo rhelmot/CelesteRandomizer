@@ -822,11 +822,15 @@ namespace Celeste.Mod.Randomizer
                     case "dashBlock":
                     case "fallingBlock":
                     case "crumbleWallOnRumble":
+                    case "introCrusher":
+                    case "floatySpaceBlock":
+                    case "coverupWall":
                         if (RedirectFGTiles.TryGetValue(entity.Char("tiletype", '3'), out char c)) {
                             entity.Values["tiletype"] = c;
                         }
                         break;
                     case "exitBlock":
+                    case "conditionBlock":
                         if (RedirectFGTiles.TryGetValue(entity.Char("tileType", '3'), out char c2)) {
                             entity.Values["tileType"] = c2;
                         }
