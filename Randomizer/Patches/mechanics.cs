@@ -323,25 +323,25 @@ namespace Celeste.Mod.Randomizer
             // also, set the core mode right
             // if we're transitioning, we already set it correctly via the direction
             // hack: detect golden berry respawns by checking if the timer is 0
-            if (settings != null && !self.Transitioning && (playerIntro != Player.IntroTypes.Respawn || self.Session.Time == 0))
-            {
-                var leveldata = self.Session.LevelData;
-                var dyn = new DynData<LevelData>(leveldata);
-                RandoConfigCoreMode modes = dyn.Get<RandoConfigCoreMode>("coreModes");
-                self.CoreMode = modes?.All ?? Session.CoreModes.None;
-                self.Session.CoreMode = self.CoreMode;
-            }
+            if (settings != null) {
 
-            if (settings != null && settings.IsLabyrinth && Everest.Loader.DependencyLoaded(new EverestModuleMetadata() { Name = "BingoUI" }))
-            {
-                var ui = LoadGemUI(fromLoader);
-                self.Add(ui); // lord fucking help us
-            }
+                if (!self.Transitioning && (playerIntro != Player.IntroTypes.Respawn || self.Session.Time == 0)) {
+                    var leveldata = self.Session.LevelData;
+                    var dyn = new DynData<LevelData>(leveldata);
+                    RandoConfigCoreMode modes = dyn.Get<RandoConfigCoreMode>("coreModes");
+                    self.CoreMode = modes?.All ?? Session.CoreModes.None;
+                    self.Session.CoreMode = self.CoreMode;
+                }
 
-            if (settings != null && playerIntro == Player.IntroTypes.Transition)
-            {
-                // reset color grading
-                self.NextColorGrade(AreaData.Get(self.Session).ColorGrade, 2f);
+                if (settings.IsLabyrinth && Everest.Loader.DependencyLoaded(new EverestModuleMetadata() { Name = "BingoUI" })) {
+                    var ui = LoadGemUI(fromLoader);
+                    self.Add(ui); // lord fucking help us
+                }
+
+                if (playerIntro == Player.IntroTypes.Transition) {
+                    // reset color grading
+                    self.NextColorGrade(AreaData.Get(self.Session).ColorGrade, 2f);
+                }
             }
         }
 
@@ -380,30 +380,20 @@ namespace Celeste.Mod.Randomizer
         private void OnTransition(Level level, LevelData next, Vector2 direction)
         {
             var settings = this.InRandomizerSettings;
-            if (settings != null)
-            {
+            if (settings != null) {
                 // set core mode
                 var extraData = new DynData<LevelData>(next);
                 var coreModes = extraData.Get<RandoConfigCoreMode>("coreModes");
                 Session.CoreModes newMode;
-                if (coreModes == null)
-                {
+                if (coreModes == null) {
                     newMode = Session.CoreModes.None;
-                }
-                else if (direction.X > 0)
-                {
+                } else if (direction.X > 0) {
                     newMode = coreModes.Left;
-                }
-                else if (direction.X < 0)
-                {
+                } else if (direction.X < 0) {
                     newMode = coreModes.Right;
-                }
-                else if (direction.Y < 0)
-                {
+                } else if (direction.Y < 0) {
                     newMode = coreModes.Down;
-                }
-                else
-                {
+                } else {
                     newMode = coreModes.Up;
                 }
                 level.CoreMode = newMode;
@@ -416,13 +406,11 @@ namespace Celeste.Mod.Randomizer
                 level.CameraUpwardMaxY = level.Camera.Y + 1000f;
 
                 // reset extended variants... maybe!
-                if (new DynData<MapData>(level.Session.MapData).Get<bool?>("HasExtendedVariantTriggers") ?? false)
-                {
+                if (new DynData<MapData>(level.Session.MapData).Get<bool?>("HasExtendedVariantTriggers") ?? false) {
                     this.ResetExtendedVariants();
                 }
                 // reset variants maybe too
-                if (new DynData<MapData>(level.Session.MapData).Get<bool?>("HasIsaVariantTriggers") ?? false)
-                {
+                if (new DynData<MapData>(level.Session.MapData).Get<bool?>("HasIsaVariantTriggers") ?? false) {
                     this.ResetIsaVariants();
                 }
 
@@ -430,6 +418,23 @@ namespace Celeste.Mod.Randomizer
                 SaveData.Instance.CurrentSession.Inventory = settings.Dashes == NumDashes.Zero ? new PlayerInventory(0, true, false, false) :
                                                              settings.Dashes == NumDashes.One ? new PlayerInventory(1, true, false, false) :
                                                                                                  new PlayerInventory(2, true, false, false);
+
+                // uhh cameraTarget jacking with transition.
+                if (level.Tracker?.GetEntity<Player>() is Player player) {
+                    foreach (Trigger trigger in level.Tracker.GetEntities<Trigger>() ?? new List<Entity>()) {
+                        switch (trigger.GetType().ToString()) {
+                            case "Celeste.CameraTargetTrigger":
+                                (trigger as CameraTargetTrigger).LerpStrength = 0f;
+                                break;
+                            case "Celeste.CameraAdvanceTargetTrigger":
+                                (trigger as CameraAdvanceTargetTrigger).LerpStrength = Vector2.Zero;
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    player.CameraAnchorLerp = Vector2.Zero;
+                }
             }
         }
 
