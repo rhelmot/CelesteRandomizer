@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Collections;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace Celeste.Mod.Randomizer
 {
@@ -9,6 +11,7 @@ namespace Celeste.Mod.Randomizer
     {
         private float JournalEase;
         private bool Entering = false;
+        public TextMenu.Item pageToggle;
 
         protected override bool IsDeeperThan(Oui other)
         {
@@ -48,9 +51,9 @@ namespace Celeste.Mod.Randomizer
                 Audio.Play(SFX.ui_world_journal_select);
                 Overworld.Goto<OuiRandoRecords>();
             }
-
             this.JournalEase = Calc.Approach(this.JournalEase, this.Menu?.Active ?? false ? 1f : 0f, Engine.DeltaTime * 4f);
         }
+
 
         private enum OptionsPages
         {
@@ -318,6 +321,7 @@ namespace Celeste.Mod.Randomizer
                 menu.RecalculateSize();
                 menu.Position.Y = menu.ScrollTargetY;
             });
+            this.pageToggle = pageToggle;
 
             void syncRuleset()
             {
@@ -412,10 +416,14 @@ namespace Celeste.Mod.Randomizer
             Scene.Add(menu);
             syncModel();
 
-            menu.OnCancel = () =>
-            {
-                if (this.Entering || RandoModule.MapBuilder != null)
-                {
+            menu.OnCancel = () => {
+                if (this.Entering || RandoModule.MapBuilder != null) {
+                    return;
+                }
+                int i = menu.Items.IndexOf(pageToggle);
+                if (menu.Selection > i) {
+                    menu.Selection = i;
+                    Audio.Play(SFX.ui_main_button_back);
                     return;
                 }
 
