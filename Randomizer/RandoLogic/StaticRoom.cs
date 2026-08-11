@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework;
 using Monocle;
@@ -60,6 +62,7 @@ namespace Celeste.Mod.Randomizer
             this.Worth = config.Worth ?? (float)Math.Sqrt(Level.Bounds.Width * Level.Bounds.Width + Level.Bounds.Height * Level.Bounds.Height) / 369.12870384189847f + 1;
             this.SpinnersShatter = config.SpinnersShatter;
             this.ForceMovingSpinnerToDust = config.ForceMovingSpinnerToDust;
+            this.RedirectFGTiles = file.RedirectFGTiles ?? new Dictionary<char, char>();
 
             this.Collectables = new List<StaticCollectable>();
             foreach (var entity in Level.Entities)
@@ -248,7 +251,7 @@ namespace Celeste.Mod.Randomizer
                 tweakable.Add(lst);
                 foreach (var ch in line)
                 {
-                    if (file.RedirectFGTiles.TryGetValue(ch, out var ch2)) {
+                    if (RedirectFGTiles.TryGetValue(ch, out var ch2)) {
                         lst.Add(ch2);
                     } else {
                         lst.Add(ch);
@@ -759,7 +762,7 @@ namespace Celeste.Mod.Randomizer
             {
                 this.Tweaks = new List<RandoConfigEdit>();
             }
-
+            
             var toRemoveEntities = new List<EntityData>();
             var toRemoveTriggers = new List<EntityData>();
             var toRemoveSpawns = new List<Vector2>();
@@ -784,10 +787,10 @@ namespace Celeste.Mod.Randomizer
                     case "bloomfadetrigger":
                     case "picoconsole":
                     case "acidhelper/advancedmusiclayerfadetrigger":
-                    case "everest/changeInventoryTrigger":
+                    case "everest/changeinventorytrigger":
                         removals.Add(entity);
                         return;
-                    case "goldenBerryCollectTrigger":
+                    case "goldenberrycollecttrigger":
                         if (this.ReqEnd == null) {
                             removals.Add(entity);
                         }
@@ -817,20 +820,20 @@ namespace Celeste.Mod.Randomizer
                     case "lightning":
                         entity.Values["perLevel"] = "false";
                         break;
-                    case "fakeBlock":
-                    case "fakeWall":
-                    case "dashBlock":
-                    case "fallingBlock":
-                    case "crumbleWallOnRumble":
-                    case "introCrusher":
-                    case "floatySpaceBlock":
-                    case "coverupWall":
+                    case "fakeblock":
+                    case "fakewall":
+                    case "dashblock":
+                    case "fallingblock":
+                    case "crumblewallonrumble":
+                    case "introcrusher":
+                    case "floatyspaceblock":
+                    case "coverupwall":
                         if (RedirectFGTiles.TryGetValue(entity.Char("tiletype", '3'), out char c)) {
                             entity.Values["tiletype"] = c;
                         }
                         break;
-                    case "exitBlock":
-                    case "conditionBlock":
+                    case "exitblock":
+                    case "conditionblock":
                         if (RedirectFGTiles.TryGetValue(entity.Char("tileType", '3'), out char c2)) {
                             entity.Values["tileType"] = c2;
                         }
