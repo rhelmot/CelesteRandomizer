@@ -780,11 +780,12 @@ namespace Celeste.Mod.Randomizer
                 }
             }
 
+            CombineAutotilers(GFX.FGAutotiler, fgPaths, settings);
             foreach (var kvp in RandoModule.Instance.MetaConfig.FGTiles) {
                 string[] str = kvp.Value.Split(':');
                 AddTileID(GFX.FGAutotiler, kvp.Key, str[0], str[1][0]);
             }
-            CombineAutotilers(GFX.FGAutotiler, fgPaths, settings);
+
             CombineAutotilers(GFX.BGAutotiler, bgPaths, settings);
             CombineAnimatedTiles(GFX.AnimatedTilesBank, atPaths, settings);
             CombineSprites(GFX.SpriteBank, spPaths, settings);
@@ -942,10 +943,9 @@ namespace Celeste.Mod.Randomizer
             var lookup2 = (IDictionary)autotiler_lookup.GetValue(other);
 
             if (lookup.Contains(c)) {
-                Logger.Log(LogLevel.Warn, "randomizer", $"adding '{c}' for Autotiler of rando but it added.");
-            } else {
-                lookup[c] = lookup2[orig_c];
+                // Logger.Log(LogLevel.Warn, "randomizer", $"adding '{c}' for Autotiler of rando but it added.");
             }
+            lookup[c] = lookup2[orig_c];
         }
 
         public bool TheoGateBW(On.Celeste.TempleGate.orig_TheoIsNearby orig, TempleGate self)
