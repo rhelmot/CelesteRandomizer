@@ -463,7 +463,7 @@ namespace Celeste.Mod.Randomizer
                 }
             }
 
-            void beamHole(Hole hole)
+            void beamHole(Hole hole, Hole hole2)
             {
                 Vector2 center;
                 int rotation;
@@ -487,12 +487,30 @@ namespace Celeste.Mod.Randomizer
                         rotation = 90;
                         break;
                 }
-                center += hole.AlongDir.Unit() * (hole.LowBound * 8 + hole.Size * 4);
+
+                int offset = hole.LowBound;
+                int smaller = Math.Min(hole2.Size, hole.Size);
+
+                if (hole.Side == ScreenDirection.Left || hole.Side == ScreenDirection.Right) {
+                    if (hole.Size > hole2.Size) {
+                        offset += (hole.Size - hole2.Size);
+                    }
+                } else if (hole.Side == ScreenDirection.Up || hole.Side == ScreenDirection.Down) {
+                    int align = hole.Compatible(hole2);
+                    if (hole.LowBound - align != hole2.LowBound) {
+                        offset += align - hole.LowBound + hole2.LowBound;
+                        if (hole2.Size > hole.Size) {
+                            offset += (hole2.Size - hole.Size);
+                        }
+                    }
+                }
+
+                center += hole.AlongDir.Unit() * (offset * 8 + smaller * 4);
                 var e = new EntityData
                 {
                     ID = ++maxID,
                     Name = "lightbeam",
-                    Width = hole.Size * 8,
+                    Width = smaller * 8,
                     Height = 24,
                     Position = center,
                     Level = result,
@@ -586,7 +604,7 @@ namespace Celeste.Mod.Randomizer
                         (hole.Kind == HoleKind.Out || hole.Kind == HoleKind.InOut) &&
                         (hole2.Kind == HoleKind.In || hole2.Kind == HoleKind.Unknown || hole2.Kind == HoleKind.InOut))
                     {
-                        beamHole(hole);
+                        beamHole(hole, hole2);
                     }
                 }
 
