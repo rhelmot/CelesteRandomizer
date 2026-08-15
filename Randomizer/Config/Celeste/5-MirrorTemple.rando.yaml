@@ -2528,7 +2528,7 @@ BSide:
       Update:
         X: 168
     - Name: "spawn"
-      X: 812
+      X: 812   # Oh god this room is just 320 width does anyone know what X: 812 means
       Y: 112
       Update:
         X: 24

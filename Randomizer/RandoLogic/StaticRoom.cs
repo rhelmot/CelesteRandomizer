@@ -301,6 +301,7 @@ namespace Celeste.Mod.Randomizer
                                 (tweak.X == null || (int)tweak.X.Value == (int)decal.Position.X) &&
                                 (tweak.Y == null || (int)tweak.Y.Value == (int)decal.Position.Y))
                         {
+                            tweak.Done = true;
                             if (tweak.Update?.Remove ?? false)
                             {
                                 removals.Add(decal);
@@ -347,6 +348,7 @@ namespace Celeste.Mod.Randomizer
             {
                 if (tweak.Name == "objTiles")
                 {
+                    tweak.Done = true;
                     tilesMap[(int)tweak.X, (int)tweak.Y] = int.Parse(tweak.Update.Tile);
                 }
             }

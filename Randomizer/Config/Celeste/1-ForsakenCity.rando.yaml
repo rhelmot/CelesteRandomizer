@@ -139,9 +139,6 @@ ASide:
         Add: true
         X: 296
         Y: 24
-    - ID: 49
-      Update:
-        Remove: true
     - Name: "cameraOffsetTrigger"
       Update:
         Add: true
