@@ -498,7 +498,7 @@ namespace Celeste.Mod.Randomizer
                 } else if (hole.Side == ScreenDirection.Up || hole.Side == ScreenDirection.Down) {
                     int align = hole.Compatible(hole2);
                     if (hole.LowBound - align != hole2.LowBound) {
-                        offset += align - hole.LowBound + hole2.LowBound;
+                        offset = align + hole2.LowBound;
                         if (hole2.Size > hole.Size) {
                             offset += (hole2.Size - hole.Size);
                         }

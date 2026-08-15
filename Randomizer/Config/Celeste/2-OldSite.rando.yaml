@@ -130,10 +130,6 @@ ASide:
       Y: 280
       Update:
         Default: true
-    - ID: 50
-      Name: "lightbeam"
-      Update:
-        Remove: true
     Subrooms:
     - Room: "berry"
       Holes:
@@ -558,10 +554,6 @@ ASide:
         ReqBoth:
           Dashes: one
     Tweaks:
-    - ID: 97
-      Name: "lightbeam"
-      Update:
-        Remove: true
     - Name: "spawn"
       Update:
         Add: true
@@ -703,11 +695,6 @@ ASide:
     - CustomWarp: true
       ReqOut:
         Dashes: zero
-    Tweaks:
-    - Name: "goldenBerryCollectTrigger"
-      ID: 1
-      Update:
-        Remove: true
   - Room: "d0"
     Hub: true
     Holes:
@@ -1065,10 +1052,6 @@ ASide:
         Add: true
         X: 32
         Y: 320
-    - ID: 0
-      Name: "goldenBerryCollectTrigger"
-      Update:
-        Remove: true
     - Name: "cameraOffsetTrigger"
       Update:
         Add: true

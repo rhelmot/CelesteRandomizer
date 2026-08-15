@@ -1236,7 +1236,7 @@ ASide:
       Update:
         X: 88
     - Name: "spawn"
-      X: 204
+      X: 304
       Y: 192
       Update:
         X: 312
@@ -2377,10 +2377,6 @@ ASide:
       Y: 56
       Update:
         X: 24
-    - Name: "spawn"
-      X: 24
-      Y: 56
-      Update:
         Default: true
     - Name: "jumpThru"
       ID: 209
@@ -5355,7 +5351,7 @@ BSide:
             cameraX: 0
             cameraY: 1.4
       - Name: "badelineBoost"
-        ID: 336
+        ID: 951
         Update:
           Remove: true
   - Room: "g-01"
