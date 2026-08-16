@@ -12,6 +12,7 @@ using MonoMod.Utils;
 using MonoMod.RuntimeDetour;
 using System.Security.Cryptography.X509Certificates;
 using IL.MonoMod;
+using Celeste.Mod.Entities;
 
 namespace Celeste.Mod.Randomizer {
     public partial class RandoModule : EverestModule {
@@ -349,11 +350,12 @@ namespace Celeste.Mod.Randomizer {
                 level.CameraUpwardMaxY = level.Camera.Y + 1000f;
 
                 // reset extended variants... maybe!
-                if (new DynData<MapData>(level.Session.MapData).Get<bool?>("HasExtendedVariantTriggers") ?? false) {
+                var data = DynamicData.For(level.Session.MapData);
+                if (data.Get<bool?>("HasExtendedVariantTriggers") ?? false) {
                     this.ResetExtendedVariants();
                 }
                 // reset variants maybe too
-                if (new DynData<MapData>(level.Session.MapData).Get<bool?>("HasIsaVariantTriggers") ?? false) {
+                if (data.Get<bool?>("HasIsaVariantTriggers") ?? false) {
                     this.ResetIsaVariants();
                 }
 
@@ -362,20 +364,20 @@ namespace Celeste.Mod.Randomizer {
                                                              settings.Dashes == NumDashes.One ? new PlayerInventory(1, true, false, false) :
                                                                                                  new PlayerInventory(2, true, false, false);
 
-                // uhh cameraTarget jacking with transition.
                 if (level.Tracker?.GetEntity<Player>() is Player player) {
                     foreach (Trigger trigger in level.Tracker.GetEntities<Trigger>() ?? new List<Entity>()) {
                         switch (trigger.GetType().ToString()) {
-                            case "Celeste.CameraTargetTrigger":
-                                (trigger as CameraTargetTrigger).LerpStrength = 0f;
-                                break;
+                            case "Celeste.CameraTargetTrigger":   // uhh cameraTarget jacking with transition.
                             case "Celeste.CameraAdvanceTargetTrigger":
-                                (trigger as CameraAdvanceTargetTrigger).LerpStrength = Vector2.Zero;
+                            case "Celeste.CameraOffsetTrigger":
+                            case "Celeste.Mod.Entities.SmoothCameraOffsetTrigger":
+                                trigger.RemoveSelf();
                                 break;
                             default:
                                 break;
                         }
                     }
+                    level.CameraOffset = new Vector2(48f, 32f) * next.CameraOffset;
                     player.CameraAnchorLerp = Vector2.Zero;
                 }
             }
