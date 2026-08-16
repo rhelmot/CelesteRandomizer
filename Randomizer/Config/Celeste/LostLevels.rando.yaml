@@ -2443,6 +2443,10 @@ ASide:
         ID: 213
         Update:
           Remove: true
+      - Name: "invisibleBarrier"
+        ID: 87
+        Update:
+          Remove: true
   - Room: "j-00b"
     Holes:
     - Side: Right
