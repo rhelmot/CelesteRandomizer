@@ -42,7 +42,7 @@ namespace Celeste.Mod.Randomizer {
         public override void Render() {
             if (inputEase <= 0f) return;
 
-            float overworldInputEase = overworld == null ? 0f : (float) overworldInputEaseField.GetValue(overworld);
+            float overworldInputEase = overworld == null ? 0f : (float)overworldInputEaseField.GetValue(overworld);
 
             const float scale = 0.5f;
             float positionOffset = overworldInputEase > 0f ? 48f : 0f;

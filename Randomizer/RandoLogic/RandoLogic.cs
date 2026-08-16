@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.Reflection;
 using System.Collections.Generic;
@@ -11,22 +11,17 @@ using MonoMod.Utils;
 using FMOD;
 using FMOD.Studio;
 
-namespace Celeste.Mod.Randomizer
-{
-    public class GenerationError : Exception
-    {
+namespace Celeste.Mod.Randomizer {
+    public class GenerationError : Exception {
         public GenerationError(string message) : base(message) { }
     }
 
-    public class RetryException : Exception
-    {
+    public class RetryException : Exception {
         public RetryException() : base("Too many backtracks") { }
     }
 
-    public partial class RandoLogic
-    {
-        public static AreaKey GenerateMap(RandoSettings settings)
-        {
+    public partial class RandoLogic {
+        public static AreaKey GenerateMap(RandoSettings settings) {
             StringWriter builder = new StringWriter();
             builder.Write("Generating map with settings:\n");
             YamlHelper.Serializer.Serialize(builder, settings);
@@ -34,13 +29,11 @@ namespace Celeste.Mod.Randomizer
             LazyReload(settings.EnabledMaps);
 
             var newID = AreaData.Areas.Count;
-            if (AreaData.Areas.Last().SID.StartsWith("randomizer/"))
-            {
+            if (AreaData.Areas.Last().SID.StartsWith("randomizer/")) {
                 newID--;
             }
 
-            var newArea = new AreaData
-            {
+            var newArea = new AreaData {
                 IntroType = Player.IntroTypes.WakeUp,
                 Interlude = false,
                 Dreaming = false,
@@ -61,8 +54,7 @@ namespace Celeste.Mod.Randomizer
                 MountainSelect = AreaData.Areas[0].MountainSelect,
                 MountainCursorScale = AreaData.Areas[0].MountainCursorScale,
             };
-            newArea.Meta = new Meta.MapMeta
-            {
+            newArea.Meta = new Meta.MapMeta {
                 Modes = new Meta.MapMetaModeProperties[] {
                     new Meta.MapMetaModeProperties {
                         HeartIsEnd = true,
@@ -71,8 +63,7 @@ namespace Celeste.Mod.Randomizer
                     null, null
                 }
             };
-            newArea.OnLevelBegin = (level) =>
-            {
+            newArea.OnLevelBegin = (level) => {
                 level.Add(new SeekerEffectsController());
             };
             var dyn = new DynData<AreaData>(newArea);
@@ -82,8 +73,7 @@ namespace Celeste.Mod.Randomizer
 
             // avert race condition
             RandoModule.AreaHandoff = newArea;
-            while (RandoModule.AreaHandoff != null)
-            {
+            while (RandoModule.AreaHandoff != null) {
                 Thread.Sleep(10);
             }
 
@@ -93,10 +83,8 @@ namespace Celeste.Mod.Randomizer
             var key = new AreaKey(newArea.ID);
 
             int tryNum = 0;
-            while (true)
-            {
-                try
-                {
+            while (true) {
+                try {
                     var r = new RandoLogic(settings, key, tryNum);
 
                     newArea.Mode[0].MapData = r.MakeMap();
@@ -109,20 +97,16 @@ namespace Celeste.Mod.Randomizer
                     }
 
                     newArea.Mode[0].AudioState = r.PickAudioState();
-                    if (settings.RandomColors)
-                    {
+                    if (settings.RandomColors) {
                         newArea.BloomBase = (float)Math.Pow(r.Random.NextFloat(), 5) * r.Random.NextFloat();
                         newArea.DarknessAlpha = r.Random.NextFloat() * (float)Math.Pow(r.Random.NextFloat(), 0.5) * (float)Math.Pow(r.Random.NextFloat(), 2) * 0.35f;
                         newArea.ColorGrade = r.PickColorGrade();
                     }
                     r.RandomizeDialog();
                     break;
-                }
-                catch (RetryException)
-                {
+                } catch (RetryException) {
                     tryNum++;
-                    if (tryNum >= 500)
-                    {
+                    if (tryNum >= 500) {
                         throw new GenerationError("Cannot create map with these settings");
                     }
                     Logger.Log("randomizer", $"Too many retries ({tryNum}), starting again");
@@ -143,28 +127,22 @@ namespace Celeste.Mod.Randomizer
         private HashSet<String> CassetteSongs = new HashSet<string>();
         public static Dictionary<string, string> RandomDialogMappings = new Dictionary<string, string>();
 
-        private void ResetRooms()
-        {
+        private void ResetRooms() {
             this.RemainingRooms.Clear();
-            foreach (var room in RandoLogic.AllRooms)
-            {
-                if (this.Settings.MapIncluded(room.Area))
-                {
+            foreach (var room in RandoLogic.AllRooms) {
+                if (this.Settings.MapIncluded(room.Area)) {
                     this.RemainingRooms.Add(room);
                 }
             }
 
-            this.RemainingRooms.Sort((x, y) =>
-            {
+            this.RemainingRooms.Sort((x, y) => {
                 var z = String.Compare(x.Area.SID, y.Area.SID, comparisonType: StringComparison.Ordinal);
-                if (z != 0)
-                {
+                if (z != 0) {
                     return z;
                 }
 
                 z = x.Area.Mode.CompareTo(y.Area.Mode);
-                if (z != 0)
-                {
+                if (z != 0) {
                     return z;
                 }
 
@@ -173,23 +151,19 @@ namespace Celeste.Mod.Randomizer
             });
         }
 
-        private RandoLogic(RandoSettings settings, AreaKey key, int tryNum)
-        {
+        private RandoLogic(RandoSettings settings, AreaKey key, int tryNum) {
             this.Random = new Random((int)settings.IntSeed);
-            for (int i = 0; i < settings.EndlessLevel; i++)
-            {
+            for (int i = 0; i < settings.EndlessLevel; i++) {
                 this.Random = new Random(this.Random.Next());
             }
-            for (int i = 0; i < tryNum; i++)
-            {
+            for (int i = 0; i < tryNum; i++) {
                 this.Random.Next();
                 this.Random = new Random(this.Random.Next());
             }
             this.Settings = settings;
             this.Key = key;
             this.ResetRooms();
-            this.Caps = new Capabilities
-            {
+            this.Caps = new Capabilities {
                 Dashes = settings.Dashes,
                 PlayerSkill = settings.Difficulty,
                 HasKey = true,
@@ -197,12 +171,9 @@ namespace Celeste.Mod.Randomizer
             };
         }
 
-        private Action<Scene, bool, Action> PickWipe()
-        {
-            return (scene, wipeIn, onComplete) =>
-            {
-                switch (new Random().Next(10))
-                {
+        private Action<Scene, bool, Action> PickWipe() {
+            return (scene, wipeIn, onComplete) => {
+                switch (new Random().Next(10)) {
                     case 0:
                         new CurtainWipe(scene, wipeIn, onComplete);
                         break;
@@ -237,22 +208,18 @@ namespace Celeste.Mod.Randomizer
             };
         }
 
-        private AudioState PickAudioState()
-        {
+        private AudioState PickAudioState() {
             var result = new AudioState();
             result.Ambience.Event = "event:/env/amb/04_main"; // only way to get wind effects?
 
             float totalWeight = RandoModule.Instance.MetaConfig.Music.Select(t => t.Weight).Sum();
             float weighAt = this.Random.NextFloat(totalWeight);
             float soFar = 0f;
-            foreach (var track in RandoModule.Instance.MetaConfig.Music)
-            {
+            foreach (var track in RandoModule.Instance.MetaConfig.Music) {
                 soFar += track.Weight;
-                if (weighAt < soFar)
-                {
+                if (weighAt < soFar) {
                     result.Music.Event = track.Name;
-                    foreach (var param in track.Parameters)
-                    {
+                    foreach (var param in track.Parameters) {
                         result.Music.Param(param.Key, param.Value);
                     }
                     break;
@@ -262,29 +229,24 @@ namespace Celeste.Mod.Randomizer
             return result;
         }
 
-        private string PickCassetteAudio()
-        {
-            foreach (var area in AreaData.Areas)
-            {
+        private string PickCassetteAudio() {
+            foreach (var area in AreaData.Areas) {
                 if (area.CassetteSong == null) continue;
                 CassetteSongs.Add(area.CassetteSong);
             }
             int songCount = CassetteSongs.Count;
             return CassetteSongs.ElementAt(this.Random.Next(songCount));
         }
-        
-        private string PickCompleteScreen()
-        {
+
+        private string PickCompleteScreen() {
             uint seed = this.Settings.IntSeed;
         tryagain:
             // ensure different rulesets of the same seed have different end screens
             var rulesInt = 0;
-            foreach (var ch in this.Settings.Rules)
-            {
+            foreach (var ch in this.Settings.Rules) {
                 rulesInt += ch;
             }
-            switch ((seed + rulesInt) % 8)
-            {
+            switch ((seed + rulesInt) % 8) {
                 case 0:
                     return AreaData.Areas[1].CompleteScreenName;
                 case 1:
@@ -301,8 +263,7 @@ namespace Celeste.Mod.Randomizer
                     return AreaData.Areas[7].CompleteScreenName;
                 case 7:
                 default:
-                    if (this.Settings.Algorithm == LogicType.Endless)
-                    {
+                    if (this.Settings.Algorithm == LogicType.Endless) {
                         seed = (uint)new Random((int)seed).Next();
                         goto tryagain;
                     }
@@ -310,25 +271,19 @@ namespace Celeste.Mod.Randomizer
             }
         }
 
-        private string PickColorGrade()
-        {
-            if (this.Random.Next(10) != 0)
-            {
+        private string PickColorGrade() {
+            if (this.Random.Next(10) != 0) {
                 return "none";
             }
 
             return this.Random.Choose("cold", "credits", "feelingdown", "golden", "hot", "oldsite", "panicattack", "reflection", "templevoid");
         }
 
-        private MapData MakeMap()
-        {
+        private MapData MakeMap() {
             this.Map = new LinkedMap();
-            if (this.Settings.IsLabyrinth)
-            {
+            if (this.Settings.IsLabyrinth) {
                 this.GenerateLabyrinth();
-            }
-            else
-            {
+            } else {
                 this.GeneratePathway();
             }
 
@@ -347,14 +302,12 @@ namespace Celeste.Mod.Randomizer
             return map;
         }
 
-        private void SetMapBounds(MapData map)
-        {
+        private void SetMapBounds(MapData map) {
             int num1 = int.MaxValue;
             int num2 = int.MaxValue;
             int num3 = int.MinValue;
             int num4 = int.MinValue;
-            foreach (LevelData level in map.Levels)
-            {
+            foreach (LevelData level in map.Levels) {
                 if (level.Bounds.Left < num1)
                     num1 = level.Bounds.Left;
                 if (level.Bounds.Top < num2)
@@ -368,22 +321,18 @@ namespace Celeste.Mod.Randomizer
             map.Bounds = new Rectangle(num1 - 50, num2 - 50, num3 - num1 + 100, num4 - num2 + 100);
         }
 
-        private void SetForeground(MapData map)
-        {
+        private void SetForeground(MapData map) {
             map.Foreground = new BinaryPacker.Element { Children = new List<BinaryPacker.Element>() };
             var effect = this.Random.Choose(RandoModule.Instance.MetaConfig.FgEffects);
-            if (!this.Settings.RandomBackgrounds)
-            {
+            if (!this.Settings.RandomBackgrounds) {
                 effect = RandoModule.Instance.MetaConfig.FgEffects.First(x => x.Effect == "stardust");
             }
             effect.Initialize();
             map.Foreground.Children.AddRange(this.Styleground(effect));
 
             var windyOnly = string.Join(",", this.FindWindyLevels(map));
-            if (!effect.ProvidesWind.Value && !string.IsNullOrEmpty(windyOnly))
-            {
-                map.Foreground.Children.Add(new BinaryPacker.Element
-                {
+            if (!effect.ProvidesWind.Value && !string.IsNullOrEmpty(windyOnly)) {
+                map.Foreground.Children.Add(new BinaryPacker.Element {
                     Name = "stardust",
                     Attributes = new Dictionary<string, object> {
                         {"only", windyOnly}
@@ -393,12 +342,10 @@ namespace Celeste.Mod.Randomizer
 
             // this cutscene hardcodes a reference to a windsnow fg
             // the level should only ever be last on the list, right?
-            if (effect.Effect != "windsnow" && map.Levels.Where(lvl => lvl.Name.StartsWith("Celeste/4-GoldenRidge/A/d-10")).Any())
-            {
+            if (effect.Effect != "windsnow" && map.Levels.Where(lvl => lvl.Name.StartsWith("Celeste/4-GoldenRidge/A/d-10")).Any()) {
                 // There is a miniscule chance of this level being second to last due to fake end
                 var idx = map.Levels.FindIndex(lvl => lvl.Name.StartsWith("Celeste/4-GoldenRidge/A/d-10"));
-                map.Foreground.Children.Add(new BinaryPacker.Element
-                {
+                map.Foreground.Children.Add(new BinaryPacker.Element {
                     Name = "windsnow",
                     Attributes = new Dictionary<string, object> {
                        {"only", map.Levels[idx].Name }
@@ -407,8 +354,7 @@ namespace Celeste.Mod.Randomizer
             }
         }
 
-        private Color RandomColor(Func<Color, bool> filter = null)
-        {
+        private Color RandomColor(Func<Color, bool> filter = null) {
             var possibleColors = new List<Color>(typeof(Color).GetProperties(BindingFlags.Static | BindingFlags.Public)
                 .Where(p => p.PropertyType == typeof(Color))
                 .Select(p => (Color)p.GetValue(null))
@@ -418,8 +364,7 @@ namespace Celeste.Mod.Randomizer
         }
 
         private IEnumerable<BinaryPacker.Element> Styleground(RandoMetadataBackground element,
-                float scrollX = 0.3f, float scrollY = 0.3f, int y = 0)
-        {
+                float scrollX = 0.3f, float scrollY = 0.3f, int y = 0) {
             if (element.Or != null) {
                 var n = new RandoMetadataBackground();
                 element.Or.Add(n);
@@ -428,13 +373,12 @@ namespace Celeste.Mod.Randomizer
                     element2.Initialize(element);
                     element = element2;
                 }
-            };
+            }
+            ;
 
             var color = this.RandomColor();
-            if (!string.IsNullOrEmpty(element.Texture))
-            {
-                yield return new BinaryPacker.Element
-                {
+            if (!string.IsNullOrEmpty(element.Texture)) {
+                yield return new BinaryPacker.Element {
                     Name = "parallax",
                     Attributes = new Dictionary<string, object> {
                         {"texture", element.Texture},
@@ -448,28 +392,21 @@ namespace Celeste.Mod.Randomizer
                         {"alpha", element.Alpha},
                     }
                 };
-            }
-            else if (!string.IsNullOrEmpty(element.Effect))
-            {
-                yield return new BinaryPacker.Element
-                {
+            } else if (!string.IsNullOrEmpty(element.Effect)) {
+                yield return new BinaryPacker.Element {
                     Name = element.Effect,
                     Attributes = new Dictionary<string, object> {
                         {"scrollx", scrollX * element.ScrollFactorX}, {"scrolly", scrollY * element.ScrollFactorY},
                         {"color", $"{color.R:X2}{color.G:X2}{color.B:X2}"},
                     },
                 };
-            }
-            else
-            {
+            } else {
                 throw new Exception("Config error: styleground without Texture or Effect");
             }
 
-            if (element.NeedsColor.Value)
-            {
+            if (element.NeedsColor.Value) {
                 var color2 = this.RandomColor(c => (int)c.R + (int)c.G + (int)c.B > 128 * 3);
-                yield return new BinaryPacker.Element
-                {
+                yield return new BinaryPacker.Element {
                     Name = "parallax",
                     Attributes = new Dictionary<string, object> {
                         {"texture", "bgs/06/fx0"},
@@ -483,36 +420,30 @@ namespace Celeste.Mod.Randomizer
                 };
             }
 
-            if (element.AndThen != null)
-            {
+            if (element.AndThen != null) {
                 element.AndThen.Initialize(element);
-                foreach (var e in this.Styleground(element.AndThen, scrollX, scrollY, y))
-                {
+                foreach (var e in this.Styleground(element.AndThen, scrollX, scrollY, y)) {
                     yield return e;
                 }
             }
         }
 
-        private void SetBackground(MapData map)
-        {
+        private void SetBackground(MapData map) {
             map.BackgroundColor = this.RandomColor();
 
             int maxY = map.Bounds.Bottom - 180;
 
             map.Background = new BinaryPacker.Element { Children = new List<BinaryPacker.Element>() };
             const int layers = 5;
-            for (int i = 0; i < layers; i++)
-            {
+            for (int i = 0; i < layers; i++) {
                 var picked = this.Random.Choose(RandoModule.Instance.MetaConfig.Backgrounds);
                 picked.Initialize();
-                if (picked.CoverTop.Value != 0 && !picked.LoopY.Value)
-                {
+                if (picked.CoverTop.Value != 0 && !picked.LoopY.Value) {
                     i--;
                     continue;
                 }
 
-                if (picked.Opaque.Value && this.Random.Next(layers) > i)
-                {
+                if (picked.Opaque.Value && this.Random.Next(layers) > i) {
                     // bias not picking opaque backgrounds until we've already added a few
                     i--;
                     continue;
@@ -521,21 +452,18 @@ namespace Celeste.Mod.Randomizer
                 float scrollX = new[] { 0.3f, 0.25f, 0.2f, 0.1f, 0.05f }[i];
                 float scrollY = new[] { 0.1f, 0.05f, 0.03f, 0.02f, 0.01f }[i];
                 int y = 0;
-                if (picked.Texture != null && !(picked.Opaque.Value && !picked.LoopY.Value))
-                {
+                if (picked.Texture != null && !(picked.Opaque.Value && !picked.LoopY.Value)) {
                     int height = GFX.Game[picked.Texture].Height;
                     y = (int)Math.Ceiling(maxY * scrollY + 180 - height);
 
-                    if (picked.CoverBottom != 0)
-                    {
+                    if (picked.CoverBottom != 0) {
                         maxY = (int)((180 - height + picked.CoverBottom - y) / -scrollY);
                     }
                 }
 
                 map.Background.Children.InsertRange(0, this.Styleground(picked, scrollX, scrollY, y));
 
-                if (picked.Opaque.Value)
-                {
+                if (picked.Opaque.Value) {
                     break;
                 }
             }
@@ -544,8 +472,7 @@ namespace Celeste.Mod.Randomizer
             effect.Initialize();
             map.Background.Children.AddRange(this.Styleground(effect));
 
-            if (!this.Settings.RandomBackgrounds)
-            {
+            if (!this.Settings.RandomBackgrounds) {
                 map.Background.Children = new List<BinaryPacker.Element> {
                     new BinaryPacker.Element {
                         Name = "parallax",
@@ -560,10 +487,8 @@ namespace Celeste.Mod.Randomizer
 
             // starjump cutscene requires a northernlights bg
             var lightsOnly = string.Join(",", map.Levels.Where(room => room.Name.StartsWith("Celeste/6-Reflection/A/start")));
-            if (map.Background.Children.All(elem => elem.Name != "northernlights") && !string.IsNullOrEmpty("lightsOnly"))
-            {
-                map.Background.Children.Insert(0, new BinaryPacker.Element
-                {
+            if (map.Background.Children.All(elem => elem.Name != "northernlights") && !string.IsNullOrEmpty("lightsOnly")) {
+                map.Background.Children.Insert(0, new BinaryPacker.Element {
                     Name = "northernlights",
                     Attributes = new Dictionary<string, object> {
                         {"only", lightsOnly}
@@ -572,20 +497,13 @@ namespace Celeste.Mod.Randomizer
             }
         }
 
-        private IEnumerable<string> FindWindyLevels(MapData map)
-        {
-            foreach (var lvl in map.Levels)
-            {
-                if (lvl.WindPattern != WindController.Patterns.None)
-                {
+        private IEnumerable<string> FindWindyLevels(MapData map) {
+            foreach (var lvl in map.Levels) {
+                if (lvl.WindPattern != WindController.Patterns.None) {
                     yield return lvl.Name;
-                }
-                else
-                {
-                    foreach (var trigger in lvl.Triggers)
-                    {
-                        if (trigger.Name == "windTrigger")
-                        {
+                } else {
+                    foreach (var trigger in lvl.Triggers) {
+                        if (trigger.Name == "windTrigger") {
                             yield return lvl.Name;
                             break;
                         }
@@ -594,26 +512,19 @@ namespace Celeste.Mod.Randomizer
             }
         }
 
-        private void SetPoem()
-        {
+        private void SetPoem() {
             string poem;
-            if (this.Random.Next(100) == 0)
-            {
+            if (this.Random.Next(100) == 0) {
                 poem = Dialog.Clean($"RANDOHEART_FIXED_{Random.Next(int.Parse(Dialog.Clean("RANDOHEART_FIXED_COUNT")))}");
-            }
-            else
-            {
+            } else {
                 int nounidx = Random.Next(int.Parse(Dialog.Clean("RANDOHEART_NOUN_COUNT")));
                 var adjidx = Random.Next(int.Parse(Dialog.Clean("RANDOHEART_ADJ_COUNT")));
                 string noun = Dialog.Clean($"RANDOHEART_NOUN_{nounidx}");
                 string adj;
-                if (Dialog.Clean("RANDOHEART_GENDER") == "true")
-                { // TODO less restrictive check
+                if (Dialog.Clean("RANDOHEART_GENDER") == "true") { // TODO less restrictive check
                     string gender = Dialog.Clean($"RANDOHEART_NOUN_{nounidx}_GENDER");
                     adj = Dialog.Clean($"RANDOHEART_ADJ_{adjidx}_{gender}");
-                }
-                else
-                {
+                } else {
                     adj = Dialog.Clean($"RANDOHEART_ADJ_{adjidx}");
                 }
                 poem = string.Format(Dialog.Get("RANDOHEART_ADJ_NOUN"), adj, noun);
@@ -624,18 +535,14 @@ namespace Celeste.Mod.Randomizer
             Dialog.Language.Cleaned["POEM_" + key] = poem;
         }
 
-        private void SpawnGolden(MapData map)
-        {
-            if (Settings.SpawnGolden)
-            {
+        private void SpawnGolden(MapData map) {
+            if (Settings.SpawnGolden) {
                 var lvl = map.GetAt(Vector2.Zero);
                 var maxid = 0;
-                foreach (var e in lvl.Entities)
-                {
+                foreach (var e in lvl.Entities) {
                     maxid = Math.Max(maxid, e.ID);
                 }
-                lvl.Entities.Add(new EntityData
-                {
+                lvl.Entities.Add(new EntityData {
                     Level = lvl,
                     Name = "goldenBerry",
                     Position = lvl.Spawns[0],
@@ -643,23 +550,18 @@ namespace Celeste.Mod.Randomizer
                 });
             }
         }
-        private void SetDarkness(MapData map)
-        {
-            if (Settings.Darkness == Darkness.Vanilla)
-            {
+        private void SetDarkness(MapData map) {
+            if (Settings.Darkness == Darkness.Vanilla) {
                 return;
             }
             var dark = Settings.Darkness == Darkness.Always;
-            foreach (var room in map.Levels)
-            {
+            foreach (var room in map.Levels) {
                 room.Dark = dark;
             }
         }
 
-        private void PlaceTheoPhone(MapData map)
-        {
-            while (true)
-            {
+        private void PlaceTheoPhone(MapData map) {
+            while (true) {
                 //Logger.Log("DEBUG", "Trying to place phone...");
                 var lvl = this.Random.Choose(map.Levels);
                 var regex = new Regex("\\r\\n|\\n\\r|\\n|\\r");
@@ -669,24 +571,19 @@ namespace Celeste.Mod.Randomizer
                 var width = lines.Select(j => j.Length).Max();
                 var found = false;
                 int x = 0, y = 0;
-                for (int i = 0; i < 20 && !found; i++)
-                {
+                for (int i = 0; i < 20 && !found; i++) {
                     x = this.Random.Next(width);
                     y = this.Random.Next(height);
                     var ch = at(x, y);
                     var dir = at(x, y) == '0' ? 1 : -1;
-                    for (y += dir; y >= 0 && y < height; y += dir)
-                    {
+                    for (y += dir; y >= 0 && y < height; y += dir) {
                         var ch2 = at(x, y);
                         var edge = (ch == '0') != (ch2 == '0');
-                        if (edge)
-                        {
-                            if (dir == -1)
-                            {
+                        if (edge) {
+                            if (dir == -1) {
                                 y++;
                             }
-                            var BehindEnt = lvl.Entities.Where(e =>
-                            {
+                            var BehindEnt = lvl.Entities.Where(e => {
                                 // entities that don't have these fields default to 0,
                                 // but to be certain the player can see the phone, check one tile over
                                 var entWidth = e.Width + 8;
@@ -694,16 +591,13 @@ namespace Celeste.Mod.Randomizer
 
                                 return e.Position.X / 8 + entWidth / 8 >= x && e.Position.X / 8 - 1 <= x && e.Position.Y / 8 + entHeight / 8 >= y && e.Position.Y / 8 - 1 <= y;
                             }).Any();
-                            var InsideRoof = lvl.FgDecals.Where(fg =>
-                            {
-                                if (fg.Scale.X < 0)
-                                {
+                            var InsideRoof = lvl.FgDecals.Where(fg => {
+                                if (fg.Scale.X < 0) {
                                     return (fg.Position.X) / 8 >= x && (fg.Position.X + 8 * fg.Scale.X) / 8 <= x && (fg.Position.Y + 4) / 8 == y;
                                 }
                                 return (fg.Position.X) / 8 <= x && (fg.Position.X + 8 * fg.Scale.X) / 8 >= x && (fg.Position.Y + 4) / 8 == y;
                             }).Any();
-                            if (at(x + 1, y - 1) == '0' && at(x + 1, y) != '0' && !BehindEnt && !InsideRoof)
-                            {
+                            if (at(x + 1, y - 1) == '0' && at(x + 1, y) != '0' && !BehindEnt && !InsideRoof) {
                                 found = true;
                             }
                             break;
@@ -711,18 +605,15 @@ namespace Celeste.Mod.Randomizer
                     }
                 }
 
-                if (!found)
-                {
+                if (!found) {
                     continue;
                 }
                 var maxid = 0;
-                foreach (var e in lvl.Entities)
-                {
+                foreach (var e in lvl.Entities) {
                     maxid = Math.Max(maxid, e.ID);
                 }
                 Logger.Log("Randomizer", $"Adding phone at {lvl.Name} {x}x{y}");
-                lvl.Entities.Add(new EntityData
-                {
+                lvl.Entities.Add(new EntityData {
                     Level = lvl,
                     Name = "randomizer/TheoPhone",
                     Position = new Vector2(x * 8f + 4f, y * 8f),
@@ -732,26 +623,22 @@ namespace Celeste.Mod.Randomizer
             }
         }
 
-        private void RandomizeDialog()
-        {
+        private void RandomizeDialog() {
             RandomDialogMappings.Clear();
             // Shuffle spoken and nonspoken dialog separately for better results
             List<string> spokenDialogIDs = GetSortedDialogIDs(spoken: true);
             List<string> nonspokenDialogIDs = GetSortedDialogIDs(spoken: false);
             List<string> shuffledSpokenDialogIDs = ShuffleDialogIDsByLength(spokenDialogIDs);
             List<string> shuffledNonspokenDialogIDs = ShuffleDialogIDsByLength(nonspokenDialogIDs);
-            for (int i = 0; i < spokenDialogIDs.Count; i++)
-            {
+            for (int i = 0; i < spokenDialogIDs.Count; i++) {
                 RandomDialogMappings[spokenDialogIDs[i].ToLower()] = shuffledSpokenDialogIDs[i].ToLower();
             }
-            for (int i = 0; i < nonspokenDialogIDs.Count; i++)
-            {
+            for (int i = 0; i < nonspokenDialogIDs.Count; i++) {
                 RandomDialogMappings[nonspokenDialogIDs[i].ToLower()] = shuffledNonspokenDialogIDs[i].ToLower();
             }
         }
 
-        private List<string> GetSortedDialogIDs(bool spoken)
-        {
+        private List<string> GetSortedDialogIDs(bool spoken) {
             List<string> dialogIDs = new List<string>(Dialog.Language.Dialog.Keys);
             // Don't touch poem names or mad lib templates
             dialogIDs.RemoveAll((id) => id.StartsWith("POEM_", StringComparison.InvariantCultureIgnoreCase));
@@ -760,12 +647,9 @@ namespace Celeste.Mod.Randomizer
             // Don't touch anything which is madlib-randomized
             dialogIDs.RemoveAll((id) => Dialog.Has("RANDO_" + id));
             // Quick, naive way to distinguish spoken dialog
-            if (spoken)
-            {
+            if (spoken) {
                 dialogIDs.RemoveAll((id) => !Dialog.Get(id).Contains("portrait"));
-            }
-            else
-            {
+            } else {
                 dialogIDs.RemoveAll((id) => Dialog.Get(id).Contains("portrait"));
             }
             dialogIDs.Sort((s1, s2) => Dialog.Get(s1).Length.CompareTo(Dialog.Get(s2).Length));
@@ -774,14 +658,12 @@ namespace Celeste.Mod.Randomizer
 
         // The idea here is to have our results be random, but reasonably close to the same length
         // ~10% of the list gets shuffled with itself at a time (irregular segment at the end)
-        static List<string> ShuffleDialogIDsByLength(List<string> sortedIDs)
-        {
+        static List<string> ShuffleDialogIDsByLength(List<string> sortedIDs) {
             Random rng = new Random();
             List<string> shuffledIDs = new List<string>(sortedIDs);
             int segments = 10;
             int segSize = shuffledIDs.Count / segments;
-            for (int i = shuffledIDs.Count - 1; i > 0; i--)
-            {
+            for (int i = shuffledIDs.Count - 1; i > 0; i--) {
                 int start = (i / segSize) * segSize;
                 int swapIndex = rng.Next(start, i + 1);
                 string tmp = shuffledIDs[i];
@@ -791,34 +673,25 @@ namespace Celeste.Mod.Randomizer
             return shuffledIDs;
         }
 
-        private List<StaticEdge> AvailableNewEdges(Capabilities capsIn, Capabilities capsOut, Func<StaticEdge, bool> filter = null)
-        {
+        private List<StaticEdge> AvailableNewEdges(Capabilities capsIn, Capabilities capsOut, Func<StaticEdge, bool> filter = null) {
             var result = new List<StaticEdge>();
 
-            foreach (var room in this.RemainingRooms)
-            {
-                foreach (var node in room.Nodes.Values)
-                {
-                    foreach (var edge in node.Edges)
-                    {
-                        if (edge.HoleTarget == null)
-                        {
+            foreach (var room in this.RemainingRooms) {
+                foreach (var node in room.Nodes.Values) {
+                    foreach (var edge in node.Edges) {
+                        if (edge.HoleTarget == null) {
                             continue;
                         }
-                        if (edge.HoleTarget.Kind == HoleKind.Unknown && !this.Settings.EnterUnknown)
-                        {
+                        if (edge.HoleTarget.Kind == HoleKind.Unknown && !this.Settings.EnterUnknown) {
                             continue;
                         }
-                        if (capsIn != null && !edge.ReqIn.Able(capsIn))
-                        {
+                        if (capsIn != null && !edge.ReqIn.Able(capsIn)) {
                             continue;
                         }
-                        if (capsOut != null && !edge.ReqOut.Able(capsOut))
-                        {
+                        if (capsOut != null && !edge.ReqOut.Able(capsOut)) {
                             continue;
                         }
-                        if (filter != null && !filter(edge))
-                        {
+                        if (filter != null && !filter(edge)) {
                             continue;
                         }
                         result.Add(edge);

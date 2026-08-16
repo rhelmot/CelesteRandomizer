@@ -1,11 +1,8 @@
 using Monocle;
 
-namespace Celeste.Mod.Randomizer
-{
-    public class OuiRandoDifficulty : GenericOui
-    {
-        protected override Entity ReloadMenu()
-        {
+namespace Celeste.Mod.Randomizer {
+    public class OuiRandoDifficulty : GenericOui {
+        protected override Entity ReloadMenu() {
             var menu = new TextMenu() {
                 new TextMenu.Header(Dialog.Clean("MODOPTIONS_RANDOMIZER_DIFFICULTY")),
             };
@@ -34,14 +31,12 @@ namespace Celeste.Mod.Randomizer
             menu.Selection = (int)this.Settings.Difficulty + 1;
             menu.Current.OnEnter();
 
-            menu.OnCancel += () =>
-            {
+            menu.OnCancel += () => {
                 Audio.Play(SFX.ui_main_button_back);
                 Overworld.Goto<OuiRandoMode>();
             };
 
-            menu.OnPause += () =>
-            {
+            menu.OnPause += () => {
                 Audio.Play(SFX.ui_main_button_select);
                 Overworld.Goto<OuiMainMenu>();
             };
@@ -49,10 +44,8 @@ namespace Celeste.Mod.Randomizer
             return menu;
         }
 
-        private void Next(Difficulty thing)
-        {
-            if (thing != this.Settings.Difficulty)
-            {
+        private void Next(Difficulty thing) {
+            if (thing != this.Settings.Difficulty) {
                 this.Settings.Rules = "";
             }
             this.Settings.Difficulty = thing;
@@ -61,27 +54,19 @@ namespace Celeste.Mod.Randomizer
             Overworld.Goto<OuiRandoSettings>();
         }
 
-        protected override bool IsDeeperThan(Oui other)
-        {
-            if (other is OuiRandoMode)
-            {
+        protected override bool IsDeeperThan(Oui other) {
+            if (other is OuiRandoMode) {
                 return true;
-            }
-            else if (other is GenericOui)
-            {
+            } else if (other is GenericOui) {
                 return false;
-            }
-            else
-            {
+            } else {
                 return true;
             }
         }
     }
 
-    public class SpecialSizeSubheader : TextMenu.SubHeader
-    {
-        public SpecialSizeSubheader(string title) : base(title)
-        {
+    public class SpecialSizeSubheader : TextMenu.SubHeader {
+        public SpecialSizeSubheader(string title) : base(title) {
         }
 
         public override float LeftWidth() => 0;

@@ -1,20 +1,17 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Celeste.Mod.Randomizer
-{
-    public class Builder : IDisposable
-    {
+namespace Celeste.Mod.Randomizer {
+    public class Builder : IDisposable {
 
         /// <summary>
         /// Possible Builder statuses. Values are ardered by priority so status may only increase in value, so numeric comparisons may be used.
         /// </summary>
-        public enum BuilderStatus
-        {
+        public enum BuilderStatus {
             NotStarted = 0,
             WaitingForThread = 10,
             Running = 20,
@@ -42,17 +39,13 @@ namespace Celeste.Mod.Randomizer
         /// <summary>
         /// The status of the worker. For thread safety, threadLock is required when setting.
         /// </summary>
-        public BuilderStatus Status
-        {
-            get
-            {
-                lock (threadLock)
-                {
+        public BuilderStatus Status {
+            get {
+                lock (threadLock) {
                     return _status;
                 }
             }
-            private set
-            {
+            private set {
                 if (value > _status) _status = value;
             }
         }
@@ -73,10 +66,8 @@ namespace Celeste.Mod.Randomizer
         /// <summary>
         /// Begin building
         /// </summary>
-        public void Go(RandoSettings settings)
-        {
-            lock (threadLock)
-            {
+        public void Go(RandoSettings settings) {
+            lock (threadLock) {
                 if (Status > BuilderStatus.WaitingForThread) return;
                 Status = BuilderStatus.WaitingForThread;
             }
@@ -88,10 +79,8 @@ namespace Celeste.Mod.Randomizer
         /// <summary>
         /// Abort the build if it has been started and dispose of resources
         /// </summary>
-        public void Abort()
-        {
-            lock (threadLock)
-            {
+        public void Abort() {
+            lock (threadLock) {
                 if (Status == BuilderStatus.Disposed) return;
                 worker?.Abort();
                 Status = BuilderStatus.Disposed;
@@ -102,16 +91,13 @@ namespace Celeste.Mod.Randomizer
         /// Call this on the main thread to check its status and trigger OnSuccess/OnError/OnAbort events if necessary.
         /// </summary>
         /// <returns>True if the builder is finished and can be disposed.</returns>
-        public bool Check()
-        {
-            lock (threadLock)
-            {
+        public bool Check() {
+            lock (threadLock) {
                 BuilderStatus status = Status;
                 if (status < BuilderStatus.Success || status == BuilderStatus.Disposed) return false;
                 RandoModule.Instance.SavedData.SavedSettings = settings;
                 RandoModule.Instance.SaveSettings();
-                switch (status)
-                {
+                switch (status) {
                     case BuilderStatus.Success:
                         OnSuccess?.Invoke(generatedArea.Value);
                         break;
@@ -133,10 +119,8 @@ namespace Celeste.Mod.Randomizer
         /// <summary>
         /// Dispose of resources
         /// </summary>
-        public void Dispose()
-        {
-            lock (threadLock)
-            {
+        public void Dispose() {
+            lock (threadLock) {
                 if (Status == BuilderStatus.Disposed) return;
                 worker?.Abort();
                 Status = BuilderStatus.Disposed;
@@ -146,36 +130,27 @@ namespace Celeste.Mod.Randomizer
         /// <summary>
         /// Main function for the worker thread. Performs the map build.
         /// </summary>
-        private void BackgroundThreadMain()
-        {
+        private void BackgroundThreadMain() {
             Status = BuilderStatus.Running;
             settings.Enforce();
             AreaKey newArea;
-            try
-            {
+            try {
                 newArea = RandoLogic.GenerateMap(settings);
-            }
-            catch (ThreadAbortException)
-            {
-                lock (threadLock)
-                {
+            } catch (ThreadAbortException) {
+                lock (threadLock) {
                     Status = BuilderStatus.Abort;
                     worker = null;
                 }
                 return;
-            }
-            catch (Exception e)
-            {
-                lock (threadLock)
-                {
+            } catch (Exception e) {
+                lock (threadLock) {
                     exception = e;
                     Status = BuilderStatus.Error;
                     worker = null;
                 }
                 return;
             }
-            lock (threadLock)
-            {
+            lock (threadLock) {
                 generatedArea = newArea;
                 Status = BuilderStatus.Success;
                 worker = null;
