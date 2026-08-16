@@ -1,19 +1,17 @@
-﻿using MonoMod.ModInterop;
+using MonoMod.ModInterop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Celeste.Mod.Randomizer.Interoperability
-{
+namespace Celeste.Mod.Randomizer.Interoperability {
 
     /// <summary>
     /// Interop class to allow other mods to trigger randomizer generation
     /// </summary>
     [ModExportName("Randomizer.GenerationInterop")]
-    public static class GenerationInterop
-    {
+    public static class GenerationInterop {
         private static Builder.BuilderStatus status = Builder.BuilderStatus.NotStarted;
         private static AreaKey? generatedArea = null;
 
@@ -23,25 +21,20 @@ namespace Celeste.Mod.Randomizer.Interoperability
         /// <param name="settings">the settings object to use for generation</param>
         /// <returns>True if generation was successfully started, false if it could not be started</returns>
         /// <exception cref="ArgumentException">thrown when the settings parameter is not an instance of RandoSettings</exception>
-        public static bool Generate(object settings)
-        {
+        public static bool Generate(object settings) {
             RandoSettings s = settings as RandoSettings ?? InteropHelper.TypeError<RandoSettings>(settings);
-            if (RandoModule.MapBuilder != null)
-            {
+            if (RandoModule.MapBuilder != null) {
                 Logger.Log(LogLevel.Warn, "Randomizer.GenerationInterop", "Cannot start generation; another is already in progress");
                 return false;
             }
             Builder b = new Builder();
-            b.OnAbort = () =>
-            {
+            b.OnAbort = () => {
                 status = Builder.BuilderStatus.Abort;
             };
-            b.OnError = (Exception e) =>
-            {
+            b.OnError = (Exception e) => {
                 status = Builder.BuilderStatus.Error;
             };
-            b.OnSuccess = (AreaKey newArea) =>
-            {
+            b.OnSuccess = (AreaKey newArea) => {
                 generatedArea = newArea;
                 status = Builder.BuilderStatus.Success;
             };
@@ -56,8 +49,7 @@ namespace Celeste.Mod.Randomizer.Interoperability
         /// Gets whether rando map generation via interop is currently running
         /// </summary>
         /// <returns>true if an interop-initiated map generation is in progress, otherwise false</returns>
-        public static bool GenerationInProgress()
-        {
+        public static bool GenerationInProgress() {
             return status == Builder.BuilderStatus.Running;
         }
 
@@ -65,13 +57,11 @@ namespace Celeste.Mod.Randomizer.Interoperability
         /// Gets whether rando map generation via interop is finished and the map ready to enter
         /// </summary>
         /// <returns>true if an interop-initiated map generation is finished and the area ready, otherwise false</returns>
-        public static bool ReadyToLaunch()
-        {
+        public static bool ReadyToLaunch() {
             return status == Builder.BuilderStatus.Success && generatedArea != null;
         }
 
-        public static AreaKey? GetGeneratedArea()
-        {
+        public static AreaKey? GetGeneratedArea() {
             return generatedArea;
         }
 
@@ -79,8 +69,7 @@ namespace Celeste.Mod.Randomizer.Interoperability
         /// Enter the rando level generated via interop
         /// </summary>
         /// <returns>true if the launch provccess was started successfully, otherwise false</returns>
-        public static bool EnterGeneratedArea()
-        {
+        public static bool EnterGeneratedArea() {
             if (!ReadyToLaunch()) return false;
             RandoModule.LaunchIntoRandoArea(generatedArea.Value);
             status = Builder.BuilderStatus.NotStarted;

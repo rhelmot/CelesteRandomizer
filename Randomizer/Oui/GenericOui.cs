@@ -3,10 +3,8 @@ using System.Reflection;
 using Monocle;
 using Microsoft.Xna.Framework;
 
-namespace Celeste.Mod.Randomizer
-{
-    public abstract class GenericOui : Oui
-    {
+namespace Celeste.Mod.Randomizer {
+    public abstract class GenericOui : Oui {
         private const float OnScreenX = 960f;
         private const float OffScreenXGeneric = 2880f;
 
@@ -33,15 +31,13 @@ namespace Celeste.Mod.Randomizer
         public override void Update() {
             base.Update();
         }
-        public override IEnumerator Leave(Oui next)
-        {
+        public override IEnumerator Leave(Oui next) {
             this.Menu.Active = false;
 
             var toRight = this.IsDeeperThan(next);
             var OffScreenX = toRight ? OffScreenXGeneric : -OffScreenXGeneric;
 
-            for (float p = 0f; p < 1f; p += Engine.DeltaTime * 4f)
-            {
+            for (float p = 0f; p < 1f; p += Engine.DeltaTime * 4f) {
                 this.Menu.X = OnScreenX + (OffScreenX - OnScreenX) * Ease.CubeIn(p);
                 yield return null;
             }
