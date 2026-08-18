@@ -365,18 +365,22 @@ namespace Celeste.Mod.Randomizer {
                                                                                                  new PlayerInventory(2, true, false, false);
 
                 if (level.Tracker?.GetEntity<Player>() is Player player) {
+                    var triggers = DynamicData.For(player).Get<HashSet<Trigger>>("triggersInside");
+
                     foreach (Trigger trigger in level.Tracker.GetEntities<Trigger>() ?? new List<Entity>()) {
                         switch (trigger.GetType().ToString()) {
                             case "Celeste.CameraTargetTrigger":   // uhh cameraTarget jacking with transition.
                             case "Celeste.CameraAdvanceTargetTrigger":
                             case "Celeste.CameraOffsetTrigger":
                             case "Celeste.Mod.Entities.SmoothCameraOffsetTrigger":
+                                triggers.Remove(trigger);
                                 trigger.RemoveSelf();
                                 break;
                             default:
                                 break;
                         }
                     }
+
                     level.CameraOffset = new Vector2(48f, 32f) * next.CameraOffset;
                     player.CameraAnchorLerp = Vector2.Zero;
                 }
